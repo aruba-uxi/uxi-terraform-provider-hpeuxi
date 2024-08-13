@@ -9,8 +9,6 @@ docs/HealthAPI.md
 docs/LivenessResponse.md
 docs/ReadinessResponse.md
 docs/StatusResponse.md
-go.mod
-go.sum
 model_error_response.go
 model_liveness_response.go
 model_readiness_response.go
