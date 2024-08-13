@@ -1,5 +1,5 @@
 TMP_DIR := "config-api-client/tmp/configuration-api"
-OPENAPI_SPEC := "config-api-client/tmp/openapi.yaml"
+OPENAPI_SPEC := "config-api-client/api/openapi.yaml"
 
 retrieve-config-api-openapi-spec:
     git clone git@github.com:aruba-uxi/configuration-api.git --depth=1 {{ TMP_DIR }}
@@ -11,6 +11,7 @@ generate-config-api-client: retrieve-config-api-openapi-spec
     -i /local/{{ OPENAPI_SPEC }} \
     -g go \
     -o /local/config-api-client
+    cd config-api-client && go mod tidy
 
 test-client:
     cd config-api-client && go test -v ./...
