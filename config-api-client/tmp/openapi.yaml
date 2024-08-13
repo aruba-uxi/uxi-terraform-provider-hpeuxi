@@ -2,127 +2,112 @@ openapi: 3.0.3
 info:
   title: FastAPI
   version: 1.0.0
-servers:
-- url: /
 paths:
   /health/livez:
     get:
-      description: Check the health of the service.
       operationId: get_livez_health_livez_get
+      summary: Live health check
+      description: Check the health of the service.
       responses:
-        "200":
+        '200':
+          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LivenessResponse'
-          description: Successful Response
-      summary: Live health check
       tags:
-      - health
+        - health
   /health/readyz:
     get:
-      description: Check if the service is ready to process requests.
       operationId: get_readyz_health_readyz_get
+      summary: Ready health check
+      description: Check if the service is ready to process requests.
       responses:
-        "200":
+        '200':
+          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReadinessResponse'
-          description: Successful Response
-        "503":
+        '503':
+          description: Service Unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Service Unavailable
-      summary: Ready health check
       tags:
-      - health
+        - health
   /health/status:
     get:
-      description: Check basic service details.
       operationId: get_status_health_status_get
+      summary: Service stats endpoint
+      description: Check basic service details.
       responses:
-        "200":
+        '200':
+          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StatusResponse'
-          description: Successful Response
-      summary: Service stats endpoint
       tags:
-      - health
+        - health
 components:
   schemas:
     ErrorResponse:
-      example:
-        data:
-          key: data
-        status: ERROR
+      type: object
       properties:
         data:
+          type: object
           additionalProperties:
             type: string
           title: Data
-          type: object
         status:
-          enum:
-          - ERROR
-          title: Status
           type: string
+          enum:
+            - ERROR
+          title: Status
       required:
-      - data
-      - status
+        - data
+        - status
       title: ErrorResponse
-      type: object
     LivenessResponse:
-      example:
-        status: OK
+      type: object
       properties:
         status:
-          enum:
-          - OK
-          title: Status
           type: string
+          enum:
+            - OK
+          title: Status
       required:
-      - status
+        - status
       title: LivenessResponse
-      type: object
     ReadinessResponse:
-      example:
-        data:
-          key: data
-        status: OK
+      type: object
       properties:
         data:
+          type: object
           additionalProperties:
             type: string
           title: Data
-          type: object
         status:
-          enum:
-          - OK
-          title: Status
           type: string
+          enum:
+            - OK
+          title: Status
       required:
-      - data
-      - status
+        - data
+        - status
       title: ReadinessResponse
-      type: object
     StatusResponse:
-      example:
-        name: name
-        version: version
+      type: object
       properties:
         name:
+          type: string
           title: Name
-          type: string
         version:
-          title: Version
           type: string
+          title: Version
       required:
-      - name
-      - version
+        - name
+        - version
       title: StatusResponse
-      type: object
