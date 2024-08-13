@@ -1,19 +1,9 @@
 package main
 
 import (
-	"aruba-uxi/configration_api_client"
-	"fmt"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 )
 
 func main() {
-	client := configuration_api_client.UxiConfigurationApiClient{
-		Token: "Token",
-		Host:  "https://www.google.com",
-	}
-	sensors, err := client.GetSensors()
-
-	fmt.Println(sensors)
-	if err != nil {
-		panic(err)
-	}
+	config_api_client.APIClient{}
 }
