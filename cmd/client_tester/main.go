@@ -1,3 +1,5 @@
+// NOTE: This module is just here for demonstration purposes
+
 package main
 
 import (

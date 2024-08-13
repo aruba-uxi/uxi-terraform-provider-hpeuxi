@@ -1,3 +1,5 @@
+// NOTE: This module is just here for demonstration purposes
+
 module alistair/client_tester
 
 go 1.22.5
