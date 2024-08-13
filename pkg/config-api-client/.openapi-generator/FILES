@@ -1,5 +1,4 @@
 .gitignore
-.travis.yml
 README.md
 api/openapi.yaml
 api_health.go
@@ -10,7 +9,6 @@ docs/HealthAPI.md
 docs/LivenessResponse.md
 docs/ReadinessResponse.md
 docs/StatusResponse.md
-git_push.sh
 go.mod
 go.sum
 model_error_response.go
