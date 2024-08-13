@@ -15,17 +15,17 @@ import (
 
 	"github.com/h2non/gock"
 
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_openapi_HealthAPIService(t *testing.T) {
 
-	configuration := openapiclient.NewConfiguration()
+	configuration := config_api_client.NewConfiguration()
 	configuration.Host = "localhost:80"
 	configuration.Scheme = "http"
-	apiClient := openapiclient.NewAPIClient(configuration)
+	apiClient := config_api_client.NewAPIClient(configuration)
 
 	defer gock.Off()
 
@@ -37,7 +37,7 @@ func Test_openapi_HealthAPIService(t *testing.T) {
 
 		require.Nil(t, err)
 		assert.Equal(t, httpRes.StatusCode, 200)
-		assert.Equal(t, resp, &openapiclient.LivenessResponse{Status: "OK"})
+		assert.Equal(t, resp, &config_api_client.LivenessResponse{Status: "OK"})
 	})
 
 	t.Run("Test HealthAPIService GetReadyzHealthReadyzGet", func(t *testing.T) {
@@ -48,7 +48,7 @@ func Test_openapi_HealthAPIService(t *testing.T) {
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
-		assert.Equal(t, resp, &openapiclient.ReadinessResponse{Status: "OK", Data: map[string]string{}})
+		assert.Equal(t, resp, &config_api_client.ReadinessResponse{Status: "OK", Data: map[string]string{}})
 	})
 
 	t.Run("Test HealthAPIService GetStatusHealthStatusGet", func(t *testing.T) {
@@ -59,7 +59,7 @@ func Test_openapi_HealthAPIService(t *testing.T) {
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
-		assert.Equal(t, resp, &openapiclient.StatusResponse{Name: "Configuration-API", Version: "1.0.0"})
+		assert.Equal(t, resp, &config_api_client.StatusResponse{Name: "Configuration-API", Version: "1.0.0"})
 	})
 
 }
