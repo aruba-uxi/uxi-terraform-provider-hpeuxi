@@ -20,6 +20,9 @@ generate-config-api-client: retrieve-config-api-openapi-spec
   cd {{ CONFIG_API_DIR }} && go mod tidy
   just fmt-client
 
+setup-dev:
+  curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.60.1
+
 test-client:
   cd {{ CONFIG_API_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage
 
@@ -39,6 +42,7 @@ test:
 
 lint:
   just lint-client
+  golangci-lint run
 
 fmt:
   just fmt-client

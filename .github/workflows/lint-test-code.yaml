@@ -32,6 +32,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Dependencies
+        run: just setup-dev
+
       - name: Run Code Linting Test
         run: just lint >> "$GITHUB_STEP_SUMMARY"
 
