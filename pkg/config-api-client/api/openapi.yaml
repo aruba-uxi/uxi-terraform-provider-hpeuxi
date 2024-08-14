@@ -1,0 +1,128 @@
+openapi: 3.0.3
+info:
+  title: FastAPI
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /health/livez:
+    get:
+      description: Check the health of the service.
+      operationId: get_livez_health_livez_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LivenessResponse'
+          description: Successful Response
+      summary: Live health check
+      tags:
+      - health
+  /health/readyz:
+    get:
+      description: Check if the service is ready to process requests.
+      operationId: get_readyz_health_readyz_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadinessResponse'
+          description: Successful Response
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+      summary: Ready health check
+      tags:
+      - health
+  /health/status:
+    get:
+      description: Check basic service details.
+      operationId: get_status_health_status_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+          description: Successful Response
+      summary: Service stats endpoint
+      tags:
+      - health
+components:
+  schemas:
+    ErrorResponse:
+      example:
+        data:
+          key: data
+        status: ERROR
+      properties:
+        data:
+          additionalProperties:
+            type: string
+          title: Data
+          type: object
+        status:
+          enum:
+          - ERROR
+          title: Status
+          type: string
+      required:
+      - data
+      - status
+      title: ErrorResponse
+      type: object
+    LivenessResponse:
+      example:
+        status: OK
+      properties:
+        status:
+          enum:
+          - OK
+          title: Status
+          type: string
+      required:
+      - status
+      title: LivenessResponse
+      type: object
+    ReadinessResponse:
+      example:
+        data:
+          key: data
+        status: OK
+      properties:
+        data:
+          additionalProperties:
+            type: string
+          title: Data
+          type: object
+        status:
+          enum:
+          - OK
+          title: Status
+          type: string
+      required:
+      - data
+      - status
+      title: ReadinessResponse
+      type: object
+    StatusResponse:
+      example:
+        name: name
+        version: version
+      properties:
+        name:
+          title: Name
+          type: string
+        version:
+          title: Version
+          type: string
+      required:
+      - name
+      - version
+      title: StatusResponse
+      type: object
