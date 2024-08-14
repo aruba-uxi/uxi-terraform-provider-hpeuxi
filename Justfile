@@ -32,17 +32,20 @@ fmt-client:
 lint-client:
   #!/usr/bin/env bash
 
-  if [ -n "$(gofmt -d pkg/config-api-client)" ]; then
+  cd pkg/config-api-client
+
+  if [ -n "$(gofmt -d .)" ]; then
     echo "Error: (gofmt) formatting required" >&2
     exit 1
   fi
+
+  golangci-lint run
 
 test:
   just test-client
 
 lint:
   just lint-client
-  golangci-lint run
 
 fmt:
   just fmt-client
