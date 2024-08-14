@@ -18,6 +18,37 @@ generate-config-api-client: retrieve-config-api-openapi-spec
   --git-user-id aruba-uxi \
   --git-repo-id configuration-api-terraform-provider/{{ CONFIG_API_DIR }} \
   cd {{ CONFIG_API_DIR }} && go mod tidy
+  just fmt-client
+
+setup-dev:
+  curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.60.1
 
 test-client:
-  cd {{ CONFIG_API_DIR }} && go test -v ./...
+  cd {{ CONFIG_API_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage
+
+fmt-client:
+  gofmt -w pkg/config-api-client
+
+lint-client:
+  #!/usr/bin/env bash
+
+  cd pkg/config-api-client
+
+  if [ -n "$(gofmt -d .)" ]; then
+    echo "Error: (gofmt) formatting required" >&2
+    exit 1
+  fi
+
+  golangci-lint run
+
+test:
+  just test-client
+
+lint:
+  just lint-client
+
+fmt:
+  just fmt-client
+
+clean:
+  find . -name ".coverage" -type f -delete

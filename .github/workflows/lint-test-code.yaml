@@ -1,0 +1,48 @@
+name: Lint & Test Code
+
+on:
+  push:
+    branches:
+      - "**"
+      - "!main"
+      - "!master"
+
+env:
+  go_version: 1.22
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-test-code:
+    name: Lint & Test Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "${{ env.go_version }}"
+
+      - name: Setup Just
+        uses: extractions/setup-just@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Dependencies
+        run: just setup-dev
+
+      - name: Run Code Linting Test
+        run: just lint >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run Tests
+        run: |
+          just test
+
+      - name: Upload Code Coverage Report
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

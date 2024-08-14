@@ -18,12 +18,11 @@ import (
 	"net/url"
 )
 
-
 // HealthAPIService HealthAPI service
 type HealthAPIService service
 
 type ApiGetLivezHealthLivezGetRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HealthAPIService
 }
 
@@ -36,24 +35,25 @@ GetLivezHealthLivezGet Live health check
 
 Check the health of the service.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetLivezHealthLivezGetRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetLivezHealthLivezGetRequest
 */
 func (a *HealthAPIService) GetLivezHealthLivezGet(ctx context.Context) ApiGetLivezHealthLivezGetRequest {
 	return ApiGetLivezHealthLivezGetRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return LivenessResponse
+//
+//	@return LivenessResponse
 func (a *HealthAPIService) GetLivezHealthLivezGetExecute(r ApiGetLivezHealthLivezGetRequest) (*LivenessResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *LivenessResponse
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *LivenessResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HealthAPIService.GetLivezHealthLivezGet")
@@ -122,7 +122,7 @@ func (a *HealthAPIService) GetLivezHealthLivezGetExecute(r ApiGetLivezHealthLive
 }
 
 type ApiGetReadyzHealthReadyzGetRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HealthAPIService
 }
 
@@ -135,24 +135,25 @@ GetReadyzHealthReadyzGet Ready health check
 
 Check if the service is ready to process requests.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetReadyzHealthReadyzGetRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetReadyzHealthReadyzGetRequest
 */
 func (a *HealthAPIService) GetReadyzHealthReadyzGet(ctx context.Context) ApiGetReadyzHealthReadyzGetRequest {
 	return ApiGetReadyzHealthReadyzGetRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return ReadinessResponse
+//
+//	@return ReadinessResponse
 func (a *HealthAPIService) GetReadyzHealthReadyzGetExecute(r ApiGetReadyzHealthReadyzGetRequest) (*ReadinessResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ReadinessResponse
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ReadinessResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HealthAPIService.GetReadyzHealthReadyzGet")
@@ -212,8 +213,8 @@ func (a *HealthAPIService) GetReadyzHealthReadyzGetExecute(r ApiGetReadyzHealthR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -231,7 +232,7 @@ func (a *HealthAPIService) GetReadyzHealthReadyzGetExecute(r ApiGetReadyzHealthR
 }
 
 type ApiGetStatusHealthStatusGetRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HealthAPIService
 }
 
@@ -244,24 +245,25 @@ GetStatusHealthStatusGet Service stats endpoint
 
 Check basic service details.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetStatusHealthStatusGetRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetStatusHealthStatusGetRequest
 */
 func (a *HealthAPIService) GetStatusHealthStatusGet(ctx context.Context) ApiGetStatusHealthStatusGetRequest {
 	return ApiGetStatusHealthStatusGetRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return StatusResponse
+//
+//	@return StatusResponse
 func (a *HealthAPIService) GetStatusHealthStatusGetExecute(r ApiGetStatusHealthStatusGetRequest) (*StatusResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *StatusResponse
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *StatusResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HealthAPIService.GetStatusHealthStatusGet")
