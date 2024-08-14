@@ -18,6 +18,30 @@ generate-config-api-client: retrieve-config-api-openapi-spec
   --git-user-id aruba-uxi \
   --git-repo-id configuration-api-terraform-provider/{{ CONFIG_API_DIR }} \
   cd {{ CONFIG_API_DIR }} && go mod tidy
+  just fmt-client
 
 test-client:
-  cd {{ CONFIG_API_DIR }} && go test -v ./...
+  cd {{ CONFIG_API_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage
+
+fmt-client:
+  gofmt -w pkg/config-api-client
+
+lint-client:
+  #!/usr/bin/env bash
+
+  if [ -n "$(gofmt -d pkg/config-api-client)" ]; then
+    echo "Error: (gofmt) formatting required" >&2
+    exit 1
+  fi
+
+test:
+  just test-client
+
+lint:
+  just lint-client
+
+fmt:
+  just fmt-client
+
+clean:
+  find . -name ".coverage" -type f -delete
