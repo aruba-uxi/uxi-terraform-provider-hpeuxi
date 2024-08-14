@@ -26,6 +26,9 @@ setup-dev:
 test-client:
   cd {{ CONFIG_API_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage
 
+coverage-client:
+  cd {{ CONFIG_API_DIR }} && go tool cover -html=.coverage -o=.coverage.html
+
 fmt-client:
   gofmt -w pkg/config-api-client
 
@@ -44,6 +47,9 @@ lint-client:
 test:
   just test-client
 
+coverage:
+  just coverage-client
+
 lint:
   just lint-client
 
@@ -51,4 +57,4 @@ fmt:
   just fmt-client
 
 clean:
-  find . -name ".coverage" -type f -delete
+  find . -name ".coverage*" -type f -delete
