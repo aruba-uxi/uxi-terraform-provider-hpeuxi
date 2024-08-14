@@ -17,7 +17,6 @@ generate-config-api-client: retrieve-config-api-openapi-spec
   --package-name config_api_client \
   --git-user-id aruba-uxi \
   --git-repo-id configuration-api-terraform-provider/{{ CONFIG_API_DIR }} \
-  --additional-properties=withGoMod=false
   cd {{ CONFIG_API_DIR }} && go mod tidy
 
 test-client:
