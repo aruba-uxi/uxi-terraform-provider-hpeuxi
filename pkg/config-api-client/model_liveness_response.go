@@ -21,7 +21,7 @@ var _ MappedNullable = &LivenessResponse{}
 
 // LivenessResponse struct for LivenessResponse
 type LivenessResponse struct {
-	status string `json:"status"`
+	Status string `json:"status"`
 }
 
 type _LivenessResponse LivenessResponse
