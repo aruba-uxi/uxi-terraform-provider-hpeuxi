@@ -4,4 +4,4 @@ Any further details ...
 
 ## Related Issue(s)
 
-- <https://uxi.atlassian.net/browse/BEP-XXX>
+- <https://jira.arubanetworks.com/browse/UXI-XXX>
