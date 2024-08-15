@@ -28,7 +28,7 @@ test-client:
   cd {{ CONFIG_API_CLIENT_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage
 
 coverage-client:
-  cd {{ CONFIG_API_DIR }} && go tool cover -html=.coverage -o=.coverage.html
+  cd {{ CONFIG_API_CLIENT_DIR }} && go tool cover -html=.coverage -o=.coverage.html
 
 fmt-client:
   gofmt -w pkg/config-api-client
