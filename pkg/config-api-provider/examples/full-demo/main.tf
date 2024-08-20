@@ -13,6 +13,6 @@ resource "uxi_group" "group" {
   parent_uid = "9999"
 }
 
-output "group" {
-  value = uxi_group.group
-}
+# output "group" {
+#   value = uxi_group.group
+# }
