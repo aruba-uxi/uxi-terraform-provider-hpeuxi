@@ -17,59 +17,59 @@ import (
 	"fmt"
 )
 
-// checks if the LivenessResponse type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &LivenessResponse{}
+// checks if the ErrorDetail type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ErrorDetail{}
 
-// LivenessResponse struct for LivenessResponse
-type LivenessResponse struct {
-	Status string `json:"status"`
+// ErrorDetail struct for ErrorDetail
+type ErrorDetail struct {
+	Message string `json:"message"`
 }
 
-type _LivenessResponse LivenessResponse
+type _ErrorDetail ErrorDetail
 
-// NewLivenessResponse instantiates a new LivenessResponse object
+// NewErrorDetail instantiates a new ErrorDetail object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLivenessResponse(status string) *LivenessResponse {
-	this := LivenessResponse{}
-	this.Status = status
+func NewErrorDetail(message string) *ErrorDetail {
+	this := ErrorDetail{}
+	this.Message = message
 	return &this
 }
 
-// NewLivenessResponseWithDefaults instantiates a new LivenessResponse object
+// NewErrorDetailWithDefaults instantiates a new ErrorDetail object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewLivenessResponseWithDefaults() *LivenessResponse {
-	this := LivenessResponse{}
+func NewErrorDetailWithDefaults() *ErrorDetail {
+	this := ErrorDetail{}
 	return &this
 }
 
-// GetStatus returns the Status field value
-func (o *LivenessResponse) GetStatus() string {
+// GetMessage returns the Message field value
+func (o *ErrorDetail) GetMessage() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Status
+	return o.Message
 }
 
-// GetStatusOk returns a tuple with the Status field value
+// GetMessageOk returns a tuple with the Message field value
 // and a boolean to check if the value has been set.
-func (o *LivenessResponse) GetStatusOk() (*string, bool) {
+func (o *ErrorDetail) GetMessageOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Status, true
+	return &o.Message, true
 }
 
-// SetStatus sets field value
-func (o *LivenessResponse) SetStatus(v string) {
-	o.Status = v
+// SetMessage sets field value
+func (o *ErrorDetail) SetMessage(v string) {
+	o.Message = v
 }
 
-func (o LivenessResponse) MarshalJSON() ([]byte, error) {
+func (o ErrorDetail) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -77,18 +77,18 @@ func (o LivenessResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o LivenessResponse) ToMap() (map[string]interface{}, error) {
+func (o ErrorDetail) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["status"] = o.Status
+	toSerialize["message"] = o.Message
 	return toSerialize, nil
 }
 
-func (o *LivenessResponse) UnmarshalJSON(data []byte) (err error) {
+func (o *ErrorDetail) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"status",
+		"message",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -105,53 +105,53 @@ func (o *LivenessResponse) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varLivenessResponse := _LivenessResponse{}
+	varErrorDetail := _ErrorDetail{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLivenessResponse)
+	err = decoder.Decode(&varErrorDetail)
 
 	if err != nil {
 		return err
 	}
 
-	*o = LivenessResponse(varLivenessResponse)
+	*o = ErrorDetail(varErrorDetail)
 
 	return err
 }
 
-type NullableLivenessResponse struct {
-	value *LivenessResponse
+type NullableErrorDetail struct {
+	value *ErrorDetail
 	isSet bool
 }
 
-func (v NullableLivenessResponse) Get() *LivenessResponse {
+func (v NullableErrorDetail) Get() *ErrorDetail {
 	return v.value
 }
 
-func (v *NullableLivenessResponse) Set(val *LivenessResponse) {
+func (v *NullableErrorDetail) Set(val *ErrorDetail) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableLivenessResponse) IsSet() bool {
+func (v NullableErrorDetail) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableLivenessResponse) Unset() {
+func (v *NullableErrorDetail) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableLivenessResponse(val *LivenessResponse) *NullableLivenessResponse {
-	return &NullableLivenessResponse{value: val, isSet: true}
+func NewNullableErrorDetail(val *ErrorDetail) *NullableErrorDetail {
+	return &NullableErrorDetail{value: val, isSet: true}
 }
 
-func (v NullableLivenessResponse) MarshalJSON() ([]byte, error) {
+func (v NullableErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableLivenessResponse) UnmarshalJSON(src []byte) error {
+func (v *NullableErrorDetail) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
