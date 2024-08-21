@@ -5,7 +5,6 @@ go 1.21
 toolchain go1.22.5
 
 require (
-	github.com/golang/mock v1.6.0
 	github.com/hashicorp/terraform-plugin-framework v1.9.0
 	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-testing v1.10.0

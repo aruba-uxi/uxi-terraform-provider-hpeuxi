@@ -34,7 +34,6 @@ resource "uxi_sensor_group_assignment" "sensor_group_assignment" {
 # Agent
 resource "uxi_agent" "agent_sensor" {
   name = "name"                 # mutable
-  address_note = "address_note" # mutable
   notes = "note"                # mutable
   pcap_mode = "light"           # mutable
 }

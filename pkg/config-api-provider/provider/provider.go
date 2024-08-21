@@ -57,6 +57,8 @@ func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datas
 // Resources defines the resources implemented in the provider.
 func (p *uxiConfigurationProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
+		resources.NewAgentResource,
 		resources.NewGroupResource,
+		resources.NewSensorResource,
 	}
 }
