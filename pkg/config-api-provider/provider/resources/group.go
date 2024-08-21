@@ -160,10 +160,10 @@ func (r *groupResource) ImportState(ctx context.Context, req resource.ImportStat
 }
 
 // Get the group using the configuration-api client
-func GetGroup() groupResonseModel {
+func GetGroup() groupResponseModel {
 	// TODO: Query the group using the client
 
-	return groupResonseModel{
+	return groupResponseModel{
 		UID:       "temporary_uid",
 		Name:      "temporary_name",
 		ParentUid: "temporary_parent_uid",
