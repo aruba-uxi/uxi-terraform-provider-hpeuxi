@@ -26,7 +26,7 @@ type groupResourceModel struct {
 	LastUpdated types.String `tfsdk:"last_updated"`
 }
 
-type groupResonseModel struct {
+type groupResponseModel struct {
 	UID       string
 	Name      string
 	ParentUid string
