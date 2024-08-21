@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
@@ -56,6 +57,6 @@ func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datas
 // Resources defines the resources implemented in the provider.
 func (p *uxiConfigurationProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewGroupResource,
+		resources.NewGroupResource,
 	}
 }
