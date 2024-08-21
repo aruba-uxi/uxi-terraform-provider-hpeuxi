@@ -23,5 +23,4 @@ model_readiness_error_response.go
 model_readiness_response.go
 model_status_response.go
 response.go
-test/api_configuration_test.go
 utils.go
