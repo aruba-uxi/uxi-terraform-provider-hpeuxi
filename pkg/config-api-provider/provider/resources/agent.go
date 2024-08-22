@@ -80,7 +80,7 @@ func (r *agentResource) Create(ctx context.Context, req resource.CreateRequest, 
 	// Retrieve values from plan
 	var plan agentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "creating an agent resource is not supported; agents can only be imported")
+	diags.AddError("operation not supported", "creating an agent is not supported; agents can only be imported")
 	resp.Diagnostics.Append(diags...)
 }
 
@@ -137,7 +137,7 @@ func (r *agentResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 	// Retrieve values from state
 	var state agentResourceModel
 	diags := req.State.Get(ctx, &state)
-	diags.AddError("operation not supported", "deleting an agent resource is not supported; agents can only removed from state")
+	diags.AddError("operation not supported", "deleting an agent is not supported; agents can only removed from state")
 	resp.Diagnostics.Append(diags...)
 }
 

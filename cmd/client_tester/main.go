@@ -15,7 +15,7 @@ func main() {
 	config.Scheme = "http"
 	client := config_api_client.NewAPIClient(config)
 
-	resp, httpResp, err := client.HealthAPI.GetLivezHealthLivezGet(context.Background()).Execute()
+	resp, httpResp, err := client.ConfigurationAPI.GetLivezHealthLivezGet(context.Background()).Execute()
 
 	fmt.Println(resp)
 	fmt.Println(httpResp)

@@ -3,8 +3,7 @@ package resources
 import (
 	"context"
 
-	"time"
-
+	// "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -25,10 +24,10 @@ type sensorResourceModel struct {
 	AddressNote types.String `tfsdk:"address_note"`
 	Notes       types.String `tfsdk:"notes"`
 	PCapMode    types.String `tfsdk:"pcap_mode"`
-	LastUpdated types.String `tfsdk:"last_updated"`
 }
 
-type sensorResponseModel struct {
+// TODO: Switch this to use the Client Model when that becomes available
+type SensorResponseModel struct {
 	UID                string
 	Serial             string
 	Name               string
@@ -40,6 +39,14 @@ type sensorResponseModel struct {
 	Latitude           string
 	Notes              string
 	PCapMode           string
+}
+
+// TODO: Switch this to use the Client Model when that becomes available
+type SensorUpdateRequestModel struct {
+	Name        string
+	AddressNote string
+	Notes       string
+	PCapMode    string
 }
 
 func NewSensorResource() resource.Resource {
@@ -61,9 +68,6 @@ func (r *sensorResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"last_updated": schema.StringAttribute{
-				Computed: true,
-			},
 			"name": schema.StringAttribute{
 				Required: true,
 			},
@@ -81,13 +85,14 @@ func (r *sensorResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 }
 
 func (r *sensorResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+
 }
 
 func (r *sensorResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	// Retrieve values from plan
 	var plan sensorResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "creating a sensor resource is not supported; sensors can only be imported")
+	diags.AddError("operation not supported", "creating a sensor is not supported; sensors can only be imported")
 	resp.Diagnostics.Append(diags...)
 }
 
@@ -100,8 +105,6 @@ func (r *sensorResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	// TODO: Call client create-sensor method
-	// We are mocking the response of the client for this early stage of development
 	response := GetSensor()
 
 	// Update state from client response
@@ -109,7 +112,6 @@ func (r *sensorResource) Read(ctx context.Context, req resource.ReadRequest, res
 	state.AddressNote = types.StringValue(response.AddressNote)
 	state.Notes = types.StringValue(response.Notes)
 	state.PCapMode = types.StringValue(response.PCapMode)
-	state.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -128,10 +130,19 @@ func (r *sensorResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	// TODO: Call client update-sensor method
+	// Update existing order
+	response := UpdateSensor(SensorUpdateRequestModel{
+		Name:        plan.Name.ValueString(),
+		AddressNote: plan.AddressNote.ValueString(),
+		Notes:       plan.Notes.ValueString(),
+		PCapMode:    plan.PCapMode.ValueString(),
+	})
 
-	// Update the state to match the plan (replace with response from client)
-	plan.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
+	// Update resource state with updated items
+	plan.Name = types.StringValue(response.Name)
+	plan.AddressNote = types.StringValue(response.AddressNote)
+	plan.Notes = types.StringValue(response.Notes)
+	plan.PCapMode = types.StringValue(response.PCapMode)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -145,7 +156,7 @@ func (r *sensorResource) Delete(ctx context.Context, req resource.DeleteRequest,
 	// Retrieve values from state
 	var state sensorResourceModel
 	diags := req.State.Get(ctx, &state)
-	diags.AddError("operation not supported", "deleting a sensor resource is not supported; sensors can only removed from state")
+	diags.AddError("operation not supported", "deleting a sensor is not supported; sensors can only removed from state")
 	resp.Diagnostics.Append(diags...)
 }
 
@@ -154,20 +165,39 @@ func (r *sensorResource) ImportState(ctx context.Context, req resource.ImportSta
 }
 
 // Get the sensor using the configuration-api client
-func GetSensor() sensorResponseModel {
+var GetSensor = func() SensorResponseModel {
 	// TODO: Query the sensor using the client
 
-	return sensorResponseModel{
-		UID:                "temporary_uid",
-		Serial:             "temporary_serial",
-		Name:               "temporary_name",
-		ModelNumber:        "temporary_model_number",
-		WifiMacAddress:     "temporary_wifi_mac_address",
-		EthernetMacAddress: "temporary_ethernet_mac_address",
-		AddressNote:        "temporary_address_note",
-		Longitude:          "temporary_longitude",
-		Latitude:           "temporary_latitude",
-		Notes:              "temporary_notes",
-		PCapMode:           "temporary_pcap_mode",
+	return SensorResponseModel{
+		UID:                "mock_uid",
+		Serial:             "mock_serial",
+		Name:               "mock_name",
+		ModelNumber:        "mock_model_number",
+		WifiMacAddress:     "mock_wifi_mac_address",
+		EthernetMacAddress: "mock_ethernet_mac_address",
+		AddressNote:        "mock_address_note",
+		Longitude:          "mock_longitude",
+		Latitude:           "mock_latitude",
+		Notes:              "mock_notes",
+		PCapMode:           "mock_pcap_mode",
+	}
+}
+
+// Update the sensor using the configuration-api client
+var UpdateSensor = func(request SensorUpdateRequestModel) SensorResponseModel {
+	// TODO: Query the sensor using the client
+
+	return SensorResponseModel{
+		UID:                "mock_uid",
+		Serial:             "mock_serial",
+		Name:               request.Name,
+		ModelNumber:        "mock_model_number",
+		WifiMacAddress:     "mock_wifi_mac_address",
+		EthernetMacAddress: "mock_ethernet_mac_address",
+		AddressNote:        request.AddressNote,
+		Longitude:          "mock_longitude",
+		Latitude:           "mock_latitude",
+		Notes:              request.Notes,
+		PCapMode:           request.PCapMode,
 	}
 }
