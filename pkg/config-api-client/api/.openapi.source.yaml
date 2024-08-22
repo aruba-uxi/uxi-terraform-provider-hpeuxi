@@ -1,253 +1,229 @@
 openapi: 3.0.3
 info:
+  title: Configuration Api
+  description: Nice description goes here
+  termsOfService: http://we.dont.care.yet.com/term-of-service
   contact:
-    email: support@capenetworks.com
     name: We need a person
     url: http://we.dont.care.yet.com/contact
-  description: Nice description goes here
+    email: support@capenetworks.com
   license:
-    name: "No idea, but we need something"
-  termsOfService: http://we.dont.care.yet.com/term-of-service
-  title: Configuration Api
+    name: No idea, but we need something
   version: 1.2.0
 servers:
-- url: https://api.capenetworks.com
-- url: https://api.staging.capedev.io
-tags:
-- name: api
-- name: v1
-- name: configuration
-- name: groups
-- name: health
+  - url: https://api.capenetworks.com
+  - url: https://api.staging.capedev.io
 paths:
   /health/livez:
     get:
-      deprecated: true
-      description: Check the health of the service.
       operationId: get_livez_health_livez_get
+      summary: Live health check
+      description: Check the health of the service.
       responses:
-        "200":
+        '200':
+          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LivenessResponse'
-          description: Successful Response
-      summary: Live health check
+      deprecated: true
       tags:
-      - configuration
+        - health
   /health/readyz:
     get:
-      deprecated: true
-      description: Check if the service is ready to process requests.
       operationId: get_readyz_health_readyz_get
+      summary: Ready health check
+      description: Check if the service is ready to process requests.
       responses:
-        "200":
+        '200':
+          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReadinessResponse'
-          description: Successful Response
-        "503":
+        '503':
+          description: Service Unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReadinessErrorResponse'
-          description: Service Unavailable
-      summary: Ready health check
+      deprecated: true
       tags:
-      - configuration
+        - health
   /health/status:
     get:
-      deprecated: true
-      description: Check basic service details.
       operationId: get_status_health_status_get
+      summary: Service stats endpoint
+      description: Check basic service details.
       responses:
-        "200":
+        '200':
+          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StatusResponse'
-          description: Successful Response
-      summary: Service stats endpoint
+      deprecated: true
       tags:
-      - configuration
+        - health
   /configuration/app/v1/groups:
     post:
-      description: Create a new group with the group identified in `parent_uid` as
-        its parent
       operationId: groups_post_configuration_app_v1_groups_post
+      summary: Groups Post
+      description: >-
+        Create a new group with the group identified in `parent_uid` as its parent
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/GroupsPostRequest'
-        required: true
       responses:
-        "200":
+        '200':
+          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupsPostResponse'
-          description: Successful Response
-        "4XX":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+        4XX:
           description: Client Error
-        "5XX":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       security:
-      - HTTPBearer: []
-      summary: Groups Post
+        - HTTPBearer: []
       tags:
-      - configuration
+        - api
+        - configuration
+        - v1
+        - groups
 components:
   schemas:
     ErrorDetail:
-      example:
-        message: message
+      type: object
       properties:
         message:
-          title: Message
           type: string
+          title: Message
       required:
-      - message
+        - message
       title: ErrorDetail
-      type: object
     ErrorResponse:
-      example:
-        detail:
-        - message: message
-        - message: message
+      type: object
       properties:
         detail:
+          type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
           title: Detail
-          type: array
       required:
-      - detail
+        - detail
       title: ErrorResponse
-      type: object
     GroupsPostRequest:
-      example:
-        parent_uid: parent_uid
-        name: name
+      type: object
       properties:
         parent_uid:
+          type: string
           title: Parent Uid
-          type: string
         name:
-          title: Name
           type: string
+          title: Name
       required:
-      - name
-      - parent_uid
+        - parent_uid
+        - name
       title: GroupsPostRequest
-      type: object
     GroupsPostResponse:
-      example:
-        uid: uid
-        path: path
-        parent_uid: parent_uid
-        name: name
+      type: object
       properties:
         parent_uid:
+          type: string
           title: Parent Uid
-          type: string
         name:
-          title: Name
           type: string
+          title: Name
         uid:
+          type: string
           title: Uid
-          type: string
         path:
+          type: string
           title: Path
-          type: string
       required:
-      - name
-      - parent_uid
-      - path
-      - uid
+        - parent_uid
+        - name
+        - uid
+        - path
       title: GroupsPostResponse
-      type: object
     LivenessResponse:
-      example:
-        status: OK
+      type: object
       properties:
         status:
-          enum:
-          - OK
-          title: Status
           type: string
+          enum:
+            - OK
+          title: Status
       required:
-      - status
+        - status
       title: LivenessResponse
-      type: object
     ReadinessErrorResponse:
-      example:
-        data:
-          key: data
-        status: ERROR
+      type: object
       properties:
         data:
+          type: object
           additionalProperties:
             type: string
           title: Data
-          type: object
         status:
-          enum:
-          - ERROR
-          title: Status
           type: string
+          enum:
+            - ERROR
+          title: Status
       required:
-      - data
-      - status
+        - data
+        - status
       title: ReadinessErrorResponse
-      type: object
     ReadinessResponse:
-      example:
-        data:
-          key: data
-        status: OK
+      type: object
       properties:
         data:
+          type: object
           additionalProperties:
             type: string
           title: Data
-          type: object
         status:
-          enum:
-          - OK
-          title: Status
           type: string
+          enum:
+            - OK
+          title: Status
       required:
-      - data
-      - status
+        - data
+        - status
       title: ReadinessResponse
-      type: object
     StatusResponse:
-      example:
-        name: name
-        version: version
+      type: object
       properties:
         name:
+          type: string
           title: Name
-          type: string
         version:
-          title: Version
           type: string
+          title: Version
       required:
-      - name
-      - version
+        - name
+        - version
       title: StatusResponse
-      type: object
   securitySchemes:
     HTTPBearer:
-      scheme: bearer
       type: http
+      scheme: bearer
+tags:
+  - name: api
+  - name: v1
+  - name: configuration
+  - name: groups
+  - name: health
