@@ -1,12 +1,13 @@
-# \HealthAPI
+# \ConfigurationAPI
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://api.capenetworks.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetLivezHealthLivezGet**](HealthAPI.md#GetLivezHealthLivezGet) | **Get** /health/livez | Live health check
-[**GetReadyzHealthReadyzGet**](HealthAPI.md#GetReadyzHealthReadyzGet) | **Get** /health/readyz | Ready health check
-[**GetStatusHealthStatusGet**](HealthAPI.md#GetStatusHealthStatusGet) | **Get** /health/status | Service stats endpoint
+[**GetLivezHealthLivezGet**](ConfigurationAPI.md#GetLivezHealthLivezGet) | **Get** /health/livez | Live health check
+[**GetReadyzHealthReadyzGet**](ConfigurationAPI.md#GetReadyzHealthReadyzGet) | **Get** /health/readyz | Ready health check
+[**GetStatusHealthStatusGet**](ConfigurationAPI.md#GetStatusHealthStatusGet) | **Get** /health/status | Service stats endpoint
+[**GroupsPostConfigurationAppV1GroupsPost**](ConfigurationAPI.md#GroupsPostConfigurationAppV1GroupsPost) | **Post** /configuration/app/v1/groups | Groups Post
 
 
 
@@ -34,13 +35,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.HealthAPI.GetLivezHealthLivezGet(context.Background()).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetLivezHealthLivezGet(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `HealthAPI.GetLivezHealthLivezGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetLivezHealthLivezGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 	// response from `GetLivezHealthLivezGet`: LivenessResponse
-	fmt.Fprintf(os.Stdout, "Response from `HealthAPI.GetLivezHealthLivezGet`: %v\n", resp)
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetLivezHealthLivezGet`: %v\n", resp)
 }
 ```
 
@@ -95,13 +96,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.HealthAPI.GetReadyzHealthReadyzGet(context.Background()).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetReadyzHealthReadyzGet(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `HealthAPI.GetReadyzHealthReadyzGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetReadyzHealthReadyzGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 	// response from `GetReadyzHealthReadyzGet`: ReadinessResponse
-	fmt.Fprintf(os.Stdout, "Response from `HealthAPI.GetReadyzHealthReadyzGet`: %v\n", resp)
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetReadyzHealthReadyzGet`: %v\n", resp)
 }
 ```
 
@@ -156,13 +157,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.HealthAPI.GetStatusHealthStatusGet(context.Background()).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetStatusHealthStatusGet(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `HealthAPI.GetStatusHealthStatusGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetStatusHealthStatusGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 	// response from `GetStatusHealthStatusGet`: StatusResponse
-	fmt.Fprintf(os.Stdout, "Response from `HealthAPI.GetStatusHealthStatusGet`: %v\n", resp)
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetStatusHealthStatusGet`: %v\n", resp)
 }
 ```
 
@@ -186,6 +187,72 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GroupsPostConfigurationAppV1GroupsPost
+
+> GroupsPostResponse GroupsPostConfigurationAppV1GroupsPost(ctx).GroupsPostRequest(groupsPostRequest).Execute()
+
+Groups Post
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	groupsPostRequest := *openapiclient.NewGroupsPostRequest("ParentUid_example", "Name_example") // GroupsPostRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.GroupsPostConfigurationAppV1GroupsPost(context.Background()).GroupsPostRequest(groupsPostRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsPostConfigurationAppV1GroupsPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GroupsPostConfigurationAppV1GroupsPost`: GroupsPostResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsPostConfigurationAppV1GroupsPost`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGroupsPostConfigurationAppV1GroupsPostRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **groupsPostRequest** | [**GroupsPostRequest**](GroupsPostRequest.md) |  | 
+
+### Return type
+
+[**GroupsPostResponse**](GroupsPostResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

@@ -4,14 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Data** | **map[string]string** |  | 
-**Status** | **string** |  | 
+**Detail** | [**[]ErrorDetail**](ErrorDetail.md) |  | 
 
 ## Methods
 
 ### NewErrorResponse
 
-`func NewErrorResponse(data map[string]string, status string, ) *ErrorResponse`
+`func NewErrorResponse(detail []ErrorDetail, ) *ErrorResponse`
 
 NewErrorResponse instantiates a new ErrorResponse object
 This constructor will assign default values to properties that have it defined,
@@ -26,44 +25,24 @@ NewErrorResponseWithDefaults instantiates a new ErrorResponse object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetData
+### GetDetail
 
-`func (o *ErrorResponse) GetData() map[string]string`
+`func (o *ErrorResponse) GetDetail() []ErrorDetail`
 
-GetData returns the Data field if non-nil, zero value otherwise.
+GetDetail returns the Detail field if non-nil, zero value otherwise.
 
-### GetDataOk
+### GetDetailOk
 
-`func (o *ErrorResponse) GetDataOk() (*map[string]string, bool)`
+`func (o *ErrorResponse) GetDetailOk() (*[]ErrorDetail, bool)`
 
-GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
+GetDetailOk returns a tuple with the Detail field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetData
+### SetDetail
 
-`func (o *ErrorResponse) SetData(v map[string]string)`
+`func (o *ErrorResponse) SetDetail(v []ErrorDetail)`
 
-SetData sets Data field to given value.
-
-
-### GetStatus
-
-`func (o *ErrorResponse) GetStatus() string`
-
-GetStatus returns the Status field if non-nil, zero value otherwise.
-
-### GetStatusOk
-
-`func (o *ErrorResponse) GetStatusOk() (*string, bool)`
-
-GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetStatus
-
-`func (o *ErrorResponse) SetStatus(v string)`
-
-SetStatus sets Status field to given value.
+SetDetail sets Detail field to given value.
 
 
 

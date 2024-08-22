@@ -17,38 +17,38 @@ import (
 	"fmt"
 )
 
-// checks if the ReadinessResponse type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &ReadinessResponse{}
+// checks if the ReadinessErrorResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ReadinessErrorResponse{}
 
-// ReadinessResponse struct for ReadinessResponse
-type ReadinessResponse struct {
+// ReadinessErrorResponse struct for ReadinessErrorResponse
+type ReadinessErrorResponse struct {
 	Data   map[string]string `json:"data"`
 	Status string            `json:"status"`
 }
 
-type _ReadinessResponse ReadinessResponse
+type _ReadinessErrorResponse ReadinessErrorResponse
 
-// NewReadinessResponse instantiates a new ReadinessResponse object
+// NewReadinessErrorResponse instantiates a new ReadinessErrorResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReadinessResponse(data map[string]string, status string) *ReadinessResponse {
-	this := ReadinessResponse{}
+func NewReadinessErrorResponse(data map[string]string, status string) *ReadinessErrorResponse {
+	this := ReadinessErrorResponse{}
 	this.Data = data
 	this.Status = status
 	return &this
 }
 
-// NewReadinessResponseWithDefaults instantiates a new ReadinessResponse object
+// NewReadinessErrorResponseWithDefaults instantiates a new ReadinessErrorResponse object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewReadinessResponseWithDefaults() *ReadinessResponse {
-	this := ReadinessResponse{}
+func NewReadinessErrorResponseWithDefaults() *ReadinessErrorResponse {
+	this := ReadinessErrorResponse{}
 	return &this
 }
 
 // GetData returns the Data field value
-func (o *ReadinessResponse) GetData() map[string]string {
+func (o *ReadinessErrorResponse) GetData() map[string]string {
 	if o == nil {
 		var ret map[string]string
 		return ret
@@ -59,7 +59,7 @@ func (o *ReadinessResponse) GetData() map[string]string {
 
 // GetDataOk returns a tuple with the Data field value
 // and a boolean to check if the value has been set.
-func (o *ReadinessResponse) GetDataOk() (*map[string]string, bool) {
+func (o *ReadinessErrorResponse) GetDataOk() (*map[string]string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -67,12 +67,12 @@ func (o *ReadinessResponse) GetDataOk() (*map[string]string, bool) {
 }
 
 // SetData sets field value
-func (o *ReadinessResponse) SetData(v map[string]string) {
+func (o *ReadinessErrorResponse) SetData(v map[string]string) {
 	o.Data = v
 }
 
 // GetStatus returns the Status field value
-func (o *ReadinessResponse) GetStatus() string {
+func (o *ReadinessErrorResponse) GetStatus() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -83,7 +83,7 @@ func (o *ReadinessResponse) GetStatus() string {
 
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
-func (o *ReadinessResponse) GetStatusOk() (*string, bool) {
+func (o *ReadinessErrorResponse) GetStatusOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -91,11 +91,11 @@ func (o *ReadinessResponse) GetStatusOk() (*string, bool) {
 }
 
 // SetStatus sets field value
-func (o *ReadinessResponse) SetStatus(v string) {
+func (o *ReadinessErrorResponse) SetStatus(v string) {
 	o.Status = v
 }
 
-func (o ReadinessResponse) MarshalJSON() ([]byte, error) {
+func (o ReadinessErrorResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -103,14 +103,14 @@ func (o ReadinessResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o ReadinessResponse) ToMap() (map[string]interface{}, error) {
+func (o ReadinessErrorResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["data"] = o.Data
 	toSerialize["status"] = o.Status
 	return toSerialize, nil
 }
 
-func (o *ReadinessResponse) UnmarshalJSON(data []byte) (err error) {
+func (o *ReadinessErrorResponse) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -133,53 +133,53 @@ func (o *ReadinessResponse) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varReadinessResponse := _ReadinessResponse{}
+	varReadinessErrorResponse := _ReadinessErrorResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varReadinessResponse)
+	err = decoder.Decode(&varReadinessErrorResponse)
 
 	if err != nil {
 		return err
 	}
 
-	*o = ReadinessResponse(varReadinessResponse)
+	*o = ReadinessErrorResponse(varReadinessErrorResponse)
 
 	return err
 }
 
-type NullableReadinessResponse struct {
-	value *ReadinessResponse
+type NullableReadinessErrorResponse struct {
+	value *ReadinessErrorResponse
 	isSet bool
 }
 
-func (v NullableReadinessResponse) Get() *ReadinessResponse {
+func (v NullableReadinessErrorResponse) Get() *ReadinessErrorResponse {
 	return v.value
 }
 
-func (v *NullableReadinessResponse) Set(val *ReadinessResponse) {
+func (v *NullableReadinessErrorResponse) Set(val *ReadinessErrorResponse) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableReadinessResponse) IsSet() bool {
+func (v NullableReadinessErrorResponse) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableReadinessResponse) Unset() {
+func (v *NullableReadinessErrorResponse) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableReadinessResponse(val *ReadinessResponse) *NullableReadinessResponse {
-	return &NullableReadinessResponse{value: val, isSet: true}
+func NewNullableReadinessErrorResponse(val *ReadinessErrorResponse) *NullableReadinessErrorResponse {
+	return &NullableReadinessErrorResponse{value: val, isSet: true}
 }
 
-func (v NullableReadinessResponse) MarshalJSON() ([]byte, error) {
+func (v NullableReadinessErrorResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableReadinessResponse) UnmarshalJSON(src []byte) error {
+func (v *NullableReadinessErrorResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
