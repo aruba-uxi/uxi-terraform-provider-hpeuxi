@@ -3,8 +3,7 @@ package resources
 import (
 	"context"
 
-	"time"
-
+	// "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -20,15 +19,15 @@ var (
 )
 
 type agentResourceModel struct {
-	ID          types.String `tfsdk:"id"`
-	Name        types.String `tfsdk:"name"`
-	Notes       types.String `tfsdk:"notes"`
-	PCapMode    types.String `tfsdk:"pcap_mode"`
-	LastUpdated types.String `tfsdk:"last_updated"`
+	ID       types.String `tfsdk:"id"`
+	Name     types.String `tfsdk:"name"`
+	Notes    types.String `tfsdk:"notes"`
+	PCapMode types.String `tfsdk:"pcap_mode"`
 }
 
-type agentResponseModel struct {
-	Uid                string
+// TODO: Switch this to use the Client Model when that becomes available
+type AgentResponseModel struct {
+	UID                string
 	Serial             string
 	Name               string
 	ModelNumber        string
@@ -36,6 +35,13 @@ type agentResponseModel struct {
 	EthernetMacAddress string
 	Notes              string
 	PCapMode           string
+}
+
+// TODO: Switch this to use the Client Model when that becomes available
+type AgentUpdateRequestModel struct {
+	Name     string
+	Notes    string
+	PCapMode string
 }
 
 func NewAgentResource() resource.Resource {
@@ -57,9 +63,6 @@ func (r *agentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"last_updated": schema.StringAttribute{
-				Computed: true,
-			},
 			"name": schema.StringAttribute{
 				Required: true,
 			},
@@ -74,6 +77,7 @@ func (r *agentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 }
 
 func (r *agentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+
 }
 
 func (r *agentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -93,15 +97,12 @@ func (r *agentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		return
 	}
 
-	// TODO: Call client create-agent method
-	// We are mocking the response of the client for this early stage of development
 	response := GetAgent()
 
 	// Update state from client response
 	state.Name = types.StringValue(response.Name)
 	state.Notes = types.StringValue(response.Notes)
 	state.PCapMode = types.StringValue(response.PCapMode)
-	state.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -120,10 +121,17 @@ func (r *agentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	// TODO: Call client update-agent method
+	// Update existing order
+	response := UpdateAgent(AgentUpdateRequestModel{
+		Name:     plan.Name.ValueString(),
+		Notes:    plan.Notes.ValueString(),
+		PCapMode: plan.PCapMode.ValueString(),
+	})
 
-	// Update the state to match the plan (replace with response from client)
-	plan.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
+	// Update resource state with updated items
+	plan.Name = types.StringValue(response.Name)
+	plan.Notes = types.StringValue(response.Notes)
+	plan.PCapMode = types.StringValue(response.PCapMode)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -146,16 +154,33 @@ func (r *agentResource) ImportState(ctx context.Context, req resource.ImportStat
 }
 
 // Get the agent using the configuration-api client
-func GetAgent() agentResponseModel {
+var GetAgent = func() AgentResponseModel {
 	// TODO: Query the agent using the client
 
-	return agentResponseModel{
-		Serial:             "temporary_serial",
-		Name:               "temporary_name",
-		ModelNumber:        "temporary_model_number",
-		WifiMacAddress:     "temporary_wifi_mac_address",
-		EthernetMacAddress: "temporary_ethernet_mac_address",
-		Notes:              "temporary_notes",
-		PCapMode:           "temporary_pcap_mode",
+	return AgentResponseModel{
+		UID:                "mock_uid",
+		Serial:             "mock_serial",
+		Name:               "mock_name",
+		ModelNumber:        "mock_model_number",
+		WifiMacAddress:     "mock_wifi_mac_address",
+		EthernetMacAddress: "mock_ethernet_mac_address",
+		Notes:              "mock_notes",
+		PCapMode:           "mock_pcap_mode",
+	}
+}
+
+// Update the agent using the configuration-api client
+var UpdateAgent = func(request AgentUpdateRequestModel) AgentResponseModel {
+	// TODO: Query the agent using the client
+
+	return AgentResponseModel{
+		UID:                "mock_uid",
+		Serial:             "mock_serial",
+		Name:               request.Name,
+		ModelNumber:        "mock_model_number",
+		WifiMacAddress:     "mock_wifi_mac_address",
+		EthernetMacAddress: "mock_ethernet_mac_address",
+		Notes:              request.Notes,
+		PCapMode:           request.PCapMode,
 	}
 }
