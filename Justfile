@@ -63,7 +63,7 @@ fmt-provider:
   gofmt -w pkg/config-api-provider
 
 test-provider:
-  cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./test/... -race -covermode=atomic -coverprofile=.coverage
+  cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./... -race -covermode=atomic -coverprofile=.coverage
 
 coverage-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} && go tool cover -html=.coverage -o=.coverage.html
@@ -74,7 +74,7 @@ test:
 
 coverage:
   just coverage-client
-  coverage-provider
+  just coverage-provider
 
 lint:
   just lint-client
