@@ -59,11 +59,22 @@ lint-provider:
 
   golangci-lint run
 
+fmt-provider:
+  gofmt -w pkg/config-api-provider
+
+test-provider:
+  cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./... -race -covermode=atomic -coverprofile=.coverage
+
+coverage-provider:
+  cd {{ CONFIG_API_PROVIDER_DIR }} && go tool cover -html=.coverage -o=.coverage.html
+
 test:
   just test-client
+  just test-provider
 
 coverage:
   just coverage-client
+  just coverage-provider
 
 lint:
   just lint-client
@@ -71,6 +82,7 @@ lint:
 
 fmt:
   just fmt-client
+  just fmt-provider
 
 clean:
   find . -name ".coverage*" -type f -delete
