@@ -59,17 +59,15 @@ func TestSensorResource(t *testing.T) {
 
 					import {
 						to = uxi_sensor.my_sensor
-						id = "test_uid"
+						id = "uid"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					// Verify first order item updated
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "imported_name"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "address_note", "imported_address_note"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "imported_notes"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light"),
-					// Verify first coffee item has Computed attributes updated.
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "test_uid"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
 				),
 			},
 			// ImportState testing
