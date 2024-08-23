@@ -145,8 +145,13 @@ func (r *agentResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 	// Retrieve values from state
 	var state agentResourceModel
 	diags := req.State.Get(ctx, &state)
-	diags.AddError("operation not supported", "deleting an agent is not supported; agents can only removed from state")
 	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Delete existing agent using client here
+	// err := r.client.DeleteOrder(state.ID.ValueString())
 }
 
 func (r *agentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

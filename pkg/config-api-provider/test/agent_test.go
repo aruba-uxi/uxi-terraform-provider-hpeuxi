@@ -100,22 +100,7 @@ func TestAgentResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "not_light"),
 				),
 			},
-			// Deleting an agent is not allowed
-			{
-				Config:      providerConfig + ``,
-				ExpectError: regexp.MustCompile(`deleting an agent is not supported; agents can only removed from state`),
-			},
-			// Remove agent from state
-			{
-				Config: providerConfig + `
-					removed {
-						from = uxi_agent.my_agent
-
-						lifecycle {
-							destroy = false
-						}
-					}`,
-			},
+			// Delete testing automatically occurs in TestCase
 		},
 	})
 }
