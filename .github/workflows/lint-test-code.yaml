@@ -47,3 +47,10 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: |
+            pkg/config-api-client/.coverage
+            pkg/config-api-provider/.coverage
+          flage: |
+            client
+            provider
+          fail_ci_if_error: true
