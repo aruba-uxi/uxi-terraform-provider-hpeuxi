@@ -100,7 +100,6 @@ func (r *agentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	response := GetAgent()
 
 	// Update state from client response
-	state.ID = types.StringValue(response.UID)
 	state.Name = types.StringValue(response.Name)
 	state.Notes = types.StringValue(response.Notes)
 	state.PCapMode = types.StringValue(response.PCapMode)

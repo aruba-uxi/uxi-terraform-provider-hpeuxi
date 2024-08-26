@@ -108,7 +108,6 @@ func (r *sensorResource) Read(ctx context.Context, req resource.ReadRequest, res
 	response := GetSensor()
 
 	// Update state from client response
-	state.ID = types.StringValue(response.UID)
 	state.Name = types.StringValue(response.Name)
 	state.AddressNote = types.StringValue(response.AddressNote)
 	state.Notes = types.StringValue(response.Notes)

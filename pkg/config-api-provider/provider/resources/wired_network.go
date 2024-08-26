@@ -87,7 +87,6 @@ func (r *wiredNetworkResource) Read(ctx context.Context, req resource.ReadReques
 	response := GetWiredNetwork()
 
 	// Update state from client response
-	state.ID = types.StringValue(response.Uid)
 	state.Alias = types.StringValue(response.Alias)
 
 	// Set refreshed state
