@@ -6,17 +6,12 @@ import (
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
 func TestAgentResource(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			// we required terraform 1.7.0 and above for the `removed` block
-			tfversion.RequireAbove(tfversion.Version1_7_0),
-		},
 		Steps: []resource.TestStep{
 			// Creating an agent is not allowed
 			{
@@ -54,16 +49,14 @@ func TestAgentResource(t *testing.T) {
 
 					import {
 						to = uxi_agent.my_agent
-						id = "test_uid"
+						id = "uid"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					// Verify first order item updated
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "imported_name"),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "imported_notes"),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
-					// Verify first coffee item has Computed attributes updated.
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "test_uid"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "uid"),
 				),
 			},
 			// ImportState testing

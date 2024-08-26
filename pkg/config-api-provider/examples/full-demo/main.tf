@@ -13,8 +13,24 @@ provider "uxi" {}
 #   parent_uid = "9999"
 # }
 
-// to import: terraform import uxi_sensor.my_sensor my_sensor_uid
-// to remove: terraform state rm uxi_sensor.my_sensor
+// Sensor Resource
+/*
+To import:
+import {
+    to = uxi_sensor.my_sensor
+    id = "uid"
+}
+
+To remove:
+removed {
+    from = uxi_sensor.my_sensor
+
+    lifecycle {
+        destroy = false
+    }
+}
+*/
+
 resource "uxi_sensor" "my_sensor" {
   name         = "name"
   address_note = "address_note"
@@ -22,13 +38,71 @@ resource "uxi_sensor" "my_sensor" {
   pcap_mode    = "pcap_mode"
 }
 
-// to import: terraform import uxi_agent.my_agent my_agent_uid
-// to remove: terraform state rm uxi_agent.my_agent
+// Agent Resource
+/*
+To import:
+import {
+    to = uxi_agent.my_agent
+    id = "uid"
+}
+
+To remove:
+removed {
+    from = uxi_agent.my_agent
+
+    lifecycle {
+        destroy = false
+    }
+}
+*/
 resource "uxi_agent" "my_agent" {
   name         = "name"
   notes        = "notes"
   pcap_mode    = "pcap_mode"
 }
+
+// Wireless Network Resource
+/*
+To import:
+import {
+    to = uxi_wireless_network.my_wireless_network
+    id = "uid"
+}
+
+To remove:
+removed {
+    from = uxi_wireless_network.my_wireless_network
+
+    lifecycle {
+        destroy = false
+    }
+}
+*/
+resource "uxi_wireless_network" "my_wireless_network" {
+    alias = "alias"
+}
+
+// Wired Network Resource
+/*
+To import:
+import {
+    to = uxi_wired_network.my_wired_network
+    id = "uid"
+}
+
+To remove:
+removed {
+    from = uxi_wired_network.my_wired_network
+
+    lifecycle {
+        destroy = false
+    }
+}
+*/
+resource "uxi_wired_network" "my_wired_network" {
+    alias = "alias"
+}
+
 
 # output "group" {
 #   value = uxi_group.group

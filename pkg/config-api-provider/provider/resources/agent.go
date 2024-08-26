@@ -121,7 +121,7 @@ func (r *agentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	// Update existing order
+	// Update existing item
 	response := UpdateAgent(AgentUpdateRequestModel{
 		Name:     plan.Name.ValueString(),
 		Notes:    plan.Notes.ValueString(),

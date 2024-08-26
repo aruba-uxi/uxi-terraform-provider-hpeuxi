@@ -130,7 +130,7 @@ func (r *sensorResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	// Update existing order
+	// Update existing item
 	response := UpdateSensor(SensorUpdateRequestModel{
 		Name:        plan.Name.ValueString(),
 		AddressNote: plan.AddressNote.ValueString(),
