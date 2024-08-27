@@ -8,10 +8,10 @@ terraform {
 
 provider "uxi" {}
 
-# resource "uxi_group" "group" {
-#   name       = "test_name"
-#   parent_uid = "9999"
-# }
+resource "uxi_group" "my_group" {
+  name       = "name"
+  parent_uid = "parent_uid"
+}
 
 // Sensor Resource
 /*
@@ -101,6 +101,27 @@ removed {
 */
 resource "uxi_wired_network" "my_wired_network" {
     alias = "alias"
+}
+
+// Service Test Resource
+/*
+To import:
+import {
+    to = uxi_service_test.my_service_test
+    id = "uid"
+}
+
+To remove:
+removed {
+    from = uxi_service_test.my_service_test
+
+    lifecycle {
+        destroy = false
+    }
+}
+*/
+resource "uxi_service_test" "my_service_test" {
+    title = "title"
 }
 
 

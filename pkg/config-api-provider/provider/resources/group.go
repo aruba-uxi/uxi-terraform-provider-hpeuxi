@@ -3,8 +3,6 @@ package resources
 import (
 	"context"
 
-	"time"
-
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -20,17 +18,25 @@ var (
 )
 
 type groupResourceModel struct {
-	ID          types.String `tfsdk:"id"`
-	Name        types.String `tfsdk:"name"`
-	ParentUid   types.String `tfsdk:"parent_uid"`
-	LastUpdated types.String `tfsdk:"last_updated"`
+	ID        types.String `tfsdk:"id"`
+	Name      types.String `tfsdk:"name"`
+	ParentUid types.String `tfsdk:"parent_uid"`
 }
 
-type groupResponseModel struct {
+type GroupResponseModel struct {
 	UID       string
 	Name      string
 	ParentUid string
 	Path      string
+}
+
+type GroupCreateRequestModel struct {
+	Name      string
+	ParentUid string
+}
+
+type GroupUpdateRequestModel struct {
+	Name string
 }
 
 func NewGroupResource() resource.Resource {
@@ -52,16 +58,15 @@ func (r *groupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"last_updated": schema.StringAttribute{
-				Computed: true,
-			},
 			"name": schema.StringAttribute{
-				Computed: false,
 				Required: true,
 			},
 			"parent_uid": schema.StringAttribute{
-				Computed: false,
 				Required: true,
+				PlanModifiers: []planmodifier.String{
+					// UXI business logic does not permit moving of groups
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 		},
 	}
@@ -81,11 +86,15 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 
 	// TODO: Call client create-group method
 	// We are mocking the response of the client for this early stage of development
-	mock_response_uid := "test_uid"
+	group := CreateGroup(GroupCreateRequestModel{
+		Name:      plan.Name.ValueString(),
+		ParentUid: plan.ParentUid.ValueString(),
+	})
 
 	// Update the state to match the plan (replace with response from client)
-	plan.ID = types.StringValue(mock_response_uid)
-	plan.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
+	plan.ID = types.StringValue(group.UID)
+	plan.Name = types.StringValue(group.Name)
+	plan.ParentUid = types.StringValue(group.ParentUid)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -111,7 +120,6 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	// Update state from client response
 	state.Name = types.StringValue(response.Name)
 	state.ParentUid = types.StringValue(response.ParentUid)
-	state.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -130,10 +138,14 @@ func (r *groupResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	// TODO: Call client create-group method
+	// TODO: Call client updateGroup method
+	group := UpdateGroup(GroupUpdateRequestModel{
+		Name: plan.Name.ValueString(),
+	})
 
 	// Update the state to match the plan (replace with response from client)
-	plan.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
+	plan.Name = types.StringValue(group.Name)
+	plan.ParentUid = types.StringValue(group.ParentUid)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -159,14 +171,35 @@ func (r *groupResource) ImportState(ctx context.Context, req resource.ImportStat
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-// Get the group using the configuration-api client
-func GetGroup() groupResponseModel {
+var GetGroup = func() GroupResponseModel {
 	// TODO: Query the group using the client
 
-	return groupResponseModel{
-		UID:       "temporary_uid",
-		Name:      "temporary_name",
-		ParentUid: "temporary_parent_uid",
-		Path:      "temporary_path",
+	return GroupResponseModel{
+		UID:       "mock_uid",
+		Name:      "mock_name",
+		ParentUid: "mock_parent_uid",
+		Path:      "mock_path",
+	}
+}
+
+var CreateGroup = func(request GroupCreateRequestModel) GroupResponseModel {
+	// TODO: Query the group using the client
+
+	return GroupResponseModel{
+		UID:       "mock_uid",
+		Name:      "mock_name",
+		ParentUid: "mock_parent_uid",
+		Path:      "mock_path",
+	}
+}
+
+var UpdateGroup = func(request GroupUpdateRequestModel) GroupResponseModel {
+	// TODO: Query the group using the client
+
+	return GroupResponseModel{
+		UID:       "mock_uid",
+		Name:      "mock_name",
+		ParentUid: "mock_parent_uid",
+		Path:      "mock_path",
 	}
 }
