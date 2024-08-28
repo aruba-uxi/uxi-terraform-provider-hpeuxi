@@ -30,9 +30,9 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Importing a wired_network
 			{
 				PreConfig: func() {
-					resources.GetWiredNetwork = func() resources.WiredNetworkResponseModel {
+					resources.GetWiredNetwork = func(uid string) resources.WiredNetworkResponseModel {
 						return resources.WiredNetworkResponseModel{
-							Uid:                  "uid",
+							Uid:                  uid,
 							Alias:                "alias",
 							DatetimeCreated:      "datetime_created",
 							DatetimeUpdated:      "datetime_updated",
