@@ -97,7 +97,7 @@ func (r *agentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		return
 	}
 
-	response := GetAgent()
+	response := GetAgent(state.ID.ValueString())
 
 	// Update state from client response
 	state.Name = types.StringValue(response.Name)
@@ -159,11 +159,11 @@ func (r *agentResource) ImportState(ctx context.Context, req resource.ImportStat
 }
 
 // Get the agent using the configuration-api client
-var GetAgent = func() AgentResponseModel {
+var GetAgent = func(uid string) AgentResponseModel {
 	// TODO: Query the agent using the client
 
 	return AgentResponseModel{
-		UID:                "mock_uid",
+		UID:                uid,
 		Serial:             "mock_serial",
 		Name:               "mock_name",
 		ModelNumber:        "mock_model_number",

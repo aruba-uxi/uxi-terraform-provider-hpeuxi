@@ -27,9 +27,9 @@ func TestAgentResource(t *testing.T) {
 			// Importing an agent
 			{
 				PreConfig: func() {
-					resources.GetAgent = func() resources.AgentResponseModel {
+					resources.GetAgent = func(uid string) resources.AgentResponseModel {
 						return resources.AgentResponseModel{
-							UID:                "uid",
+							UID:                uid,
 							Serial:             "serial",
 							Name:               "imported_name",
 							ModelNumber:        "model_number",
@@ -68,9 +68,9 @@ func TestAgentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					resources.GetAgent = func() resources.AgentResponseModel {
+					resources.GetAgent = func(uid string) resources.AgentResponseModel {
 						return resources.AgentResponseModel{
-							UID:                "uid",
+							UID:                uid,
 							Serial:             "serial",
 							Name:               "updated_name",
 							ModelNumber:        "model_number",
