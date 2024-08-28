@@ -28,7 +28,7 @@ func TestGroupResource(t *testing.T) {
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
 						return response
 					}
-					resources.GetGroup = func() resources.GroupResponseModel {
+					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						return response
 					}
 				},
@@ -61,7 +61,7 @@ func TestGroupResource(t *testing.T) {
 					resources.UpdateGroup = func(request resources.GroupUpdateRequestModel) resources.GroupResponseModel {
 						return response
 					}
-					resources.GetGroup = func() resources.GroupResponseModel {
+					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						return response
 					}
 				},
@@ -89,10 +89,8 @@ func TestGroupResource(t *testing.T) {
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
 						return response
 					}
-					called := false
-					resources.GetGroup = func() resources.GroupResponseModel {
-						if !called {
-							called = true
+					resources.GetGroup = func(uid string) resources.GroupResponseModel {
+						if uid == "uid" {
 							return resources.GroupResponseModel{
 								UID:       "uid",
 								Name:      "name",

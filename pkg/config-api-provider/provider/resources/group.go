@@ -115,7 +115,7 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 	// TODO: Call client create-group method
 	// We are mocking the response of the client for this early stage of development
-	response := GetGroup()
+	response := GetGroup(state.ID.ValueString())
 
 	// Update state from client response
 	state.Name = types.StringValue(response.Name)
@@ -171,11 +171,11 @@ func (r *groupResource) ImportState(ctx context.Context, req resource.ImportStat
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-var GetGroup = func() GroupResponseModel {
+var GetGroup = func(uid string) GroupResponseModel {
 	// TODO: Query the group using the client
 
 	return GroupResponseModel{
-		UID:       "mock_uid",
+		UID:       uid,
 		Name:      "mock_name",
 		ParentUid: "mock_parent_uid",
 		Path:      "mock_path",

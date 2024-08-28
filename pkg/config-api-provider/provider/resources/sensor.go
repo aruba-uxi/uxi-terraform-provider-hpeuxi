@@ -105,7 +105,7 @@ func (r *sensorResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	response := GetSensor()
+	response := GetSensor(state.ID.ValueString())
 
 	// Update state from client response
 	state.Name = types.StringValue(response.Name)
@@ -165,11 +165,11 @@ func (r *sensorResource) ImportState(ctx context.Context, req resource.ImportSta
 }
 
 // Get the sensor using the configuration-api client
-var GetSensor = func() SensorResponseModel {
+var GetSensor = func(uid string) SensorResponseModel {
 	// TODO: Query the sensor using the client
 
 	return SensorResponseModel{
-		UID:                "mock_uid",
+		UID:                uid,
 		Serial:             "mock_serial",
 		Name:               "mock_name",
 		ModelNumber:        "mock_model_number",

@@ -15,12 +15,6 @@ resource "uxi_group" "my_group" {
 
 // Sensor Resource
 /*
-To import:
-import {
-    to = uxi_sensor.my_sensor
-    id = "uid"
-}
-
 To remove:
 removed {
     from = uxi_sensor.my_sensor
@@ -38,14 +32,14 @@ resource "uxi_sensor" "my_sensor" {
   pcap_mode    = "pcap_mode"
 }
 
-// Agent Resource
-/*
-To import:
 import {
-    to = uxi_agent.my_agent
+    to = uxi_sensor.my_sensor
     id = "uid"
 }
 
+
+// Agent Resource
+/*
 To remove:
 removed {
     from = uxi_agent.my_agent
@@ -61,14 +55,14 @@ resource "uxi_agent" "my_agent" {
   pcap_mode    = "pcap_mode"
 }
 
-// Wireless Network Resource
-/*
-To import:
 import {
-    to = uxi_wireless_network.my_wireless_network
+    to = uxi_agent.my_agent
     id = "uid"
 }
 
+
+// Wireless Network Resource
+/*
 To remove:
 removed {
     from = uxi_wireless_network.my_wireless_network
@@ -82,14 +76,13 @@ resource "uxi_wireless_network" "my_wireless_network" {
     alias = "alias"
 }
 
-// Wired Network Resource
-/*
-To import:
 import {
-    to = uxi_wired_network.my_wired_network
+    to = uxi_wireless_network.my_wireless_network
     id = "uid"
 }
 
+// Wired Network Resource
+/*
 To remove:
 removed {
     from = uxi_wired_network.my_wired_network
@@ -103,14 +96,12 @@ resource "uxi_wired_network" "my_wired_network" {
     alias = "alias"
 }
 
-// Service Test Resource
-/*
-To import:
 import {
-    to = uxi_service_test.my_service_test
+    to = uxi_wired_network.my_wired_network
     id = "uid"
 }
-
+// Service Test Resource
+/*
 To remove:
 removed {
     from = uxi_service_test.my_service_test
@@ -124,6 +115,15 @@ resource "uxi_service_test" "my_service_test" {
     title = "title"
 }
 
+import {
+    to = uxi_service_test.my_service_test
+    id = "uid"
+}
+
+resource "uxi_sensor_group_assignment" "my_uxi_sensor_group_assignment" {
+    sensor_id = uxi_sensor.my_sensor.id
+    group_id = uxi_group.my_group.id
+}
 
 # output "group" {
 #   value = uxi_group.group

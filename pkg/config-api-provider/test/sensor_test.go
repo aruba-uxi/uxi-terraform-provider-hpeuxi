@@ -33,9 +33,9 @@ func TestSensorResource(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					resources.GetSensor = func() resources.SensorResponseModel {
+					resources.GetSensor = func(uid string) resources.SensorResponseModel {
 						return resources.SensorResponseModel{
-							UID:                "uid",
+							UID:                uid,
 							Serial:             "serial",
 							Name:               "imported_name",
 							ModelNumber:        "model_number",
@@ -79,9 +79,9 @@ func TestSensorResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					resources.GetSensor = func() resources.SensorResponseModel {
+					resources.GetSensor = func(uid string) resources.SensorResponseModel {
 						return resources.SensorResponseModel{
-							UID:                "uid",
+							UID:                uid,
 							Serial:             "serial",
 							Name:               "updated_name",
 							ModelNumber:        "model_number",
