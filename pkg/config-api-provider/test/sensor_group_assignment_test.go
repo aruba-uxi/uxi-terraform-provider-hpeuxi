@@ -17,28 +17,11 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					// required for sensor import
 					resources.GetSensor = func(uid string) resources.SensorResponseModel {
-						return resources.SensorResponseModel{
-							UID:                uid,
-							Serial:             "serial",
-							Name:               "name",
-							ModelNumber:        "model_number",
-							WifiMacAddress:     "wifi_mac_address",
-							EthernetMacAddress: "ethernet_mac_address",
-							AddressNote:        "address_note",
-							Longitude:          "longitude",
-							Latitude:           "latitude",
-							Notes:              "notes",
-							PCapMode:           "light",
-						}
+						return GenerateSensorResponseModel(uid, "")
 					}
 
 					// required for group create
-					groupResponse := resources.GroupResponseModel{
-						UID:       "group_uid",
-						Name:      "name",
-						ParentUid: "parent_uid",
-						Path:      "parent_uid.group_uid",
-					}
+					groupResponse := GenerateGroupResponseModel("group_uid", "", "")
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
 						return groupResponse
 					}
@@ -47,11 +30,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for sensor group assignment create
-					sensorGroupAssignmentResponse := resources.SensorGroupAssignmentResponseModel{
-						UID:       "sensor_group_assignment_uid",
-						GroupUID:  "group_uid",
-						SensorUID: "sensor_uid",
-					}
+					sensorGroupAssignmentResponse := GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")
 					resources.CreateSensorGroupAssignment = func(request resources.SensorGroupAssignmentRequestModel) resources.SensorGroupAssignmentResponseModel {
 						return sensorGroupAssignmentResponse
 					}
@@ -99,74 +78,30 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					resources.GetSensor = func(uid string) resources.SensorResponseModel {
 						if uid == "sensor_uid" {
-							return resources.SensorResponseModel{
-								UID:                "sensor_uid",
-								Serial:             "serial",
-								Name:               "name",
-								ModelNumber:        "model_number",
-								WifiMacAddress:     "wifi_mac_address",
-								EthernetMacAddress: "ethernet_mac_address",
-								AddressNote:        "address_note",
-								Longitude:          "longitude",
-								Latitude:           "latitude",
-								Notes:              "notes",
-								PCapMode:           "light",
-							}
+							return GenerateSensorResponseModel("sensor_uid", "")
 						} else {
-							return resources.SensorResponseModel{
-								UID:                "sensor_uid_2",
-								Serial:             "serial_2",
-								Name:               "name_2",
-								ModelNumber:        "model_number_2",
-								WifiMacAddress:     "wifi_mac_address_2",
-								EthernetMacAddress: "ethernet_mac_address_2",
-								AddressNote:        "address_note_2",
-								Longitude:          "longitude_2",
-								Latitude:           "latitude_2",
-								Notes:              "notes_2",
-								PCapMode:           "light",
-							}
+							return GenerateSensorResponseModel("sensor_uid", "_2")
 						}
 					}
 
 					// required for creating another group
-					newGroupResponse := resources.GroupResponseModel{
-						UID:       "group_uid_2",
-						Name:      "name_2",
-						ParentUid: "parent_uid_2",
-						Path:      "parent_uid_2.group_uid_2",
-					}
+					newGroupResponse := GenerateGroupResponseModel("group_uid_2", "_2", "_2")
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
 						return newGroupResponse
 					}
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
-							return resources.GroupResponseModel{
-								UID:       uid,
-								Name:      "name",
-								ParentUid: "parent_uid",
-								Path:      "parent_uid.group_uid",
-							}
+							return GenerateGroupResponseModel(uid, "", "")
 						} else {
 							return newGroupResponse
 						}
 					}
 
 					// required for sensor group assignment create
-					sensorGroupAssignmentOriginal := resources.SensorGroupAssignmentResponseModel{
-						UID:       "sensor_group_assignment_uid",
-						GroupUID:  "group_uid",
-						SensorUID: "sensor_uid",
-					}
-					sensorGroupAssignmentUpdated := resources.SensorGroupAssignmentResponseModel{
-						UID:       "sensor_group_assignment_uid_2",
-						GroupUID:  "group_uid_2",
-						SensorUID: "sensor_uid_2",
-					}
-
+					sensorGroupAssignmentUpdated := GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2")
 					resources.GetSensorGroupAssignment = func(uid string) resources.SensorGroupAssignmentResponseModel {
 						if uid == "sensor_group_assignment_uid" {
-							return sensorGroupAssignmentOriginal
+							return GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")
 						} else {
 							return sensorGroupAssignmentUpdated
 						}
@@ -204,7 +139,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						name 			= "name_2"
 						address_note 	= "address_note_2"
 						notes 			= "notes_2"
-						pcap_mode 		= "light"
+						pcap_mode 		= "light_2"
 					}
 
 					import {
