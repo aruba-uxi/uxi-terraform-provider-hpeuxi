@@ -31,19 +31,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.GetWiredNetwork = func(uid string) resources.WiredNetworkResponseModel {
-						return resources.WiredNetworkResponseModel{
-							Uid:                  uid,
-							Alias:                "alias",
-							DatetimeCreated:      "datetime_created",
-							DatetimeUpdated:      "datetime_updated",
-							IpVersion:            "ip_version",
-							Security:             "security",
-							DnsLookupDomain:      "dns_lookup_domain",
-							DisableEdns:          false,
-							UseDns64:             false,
-							ExternalConnectivity: false,
-							VlanId:               123,
-						}
+						return GenerateWiredNetworkResponseModel(uid, "")
 					}
 				},
 				Config: providerConfig + `

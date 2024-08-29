@@ -128,7 +128,7 @@ func (r *sensorGroupAssignmentResource) Update(ctx context.Context, req resource
 	// Retrieve values from plan
 	var plan sensorGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "creating a sensor is not supported; sensors can only be imported")
+	diags.AddError("operation not supported", "updating a sensor group assignment is not supported")
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
