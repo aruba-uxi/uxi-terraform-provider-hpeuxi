@@ -152,25 +152,6 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_agent_group_assignment.my_agent_group_assignment", "id", "agent_group_assignment_uid_2"),
 				),
 			},
-			// Remove agents from state
-			{
-				Config: providerConfig + `
-					removed {
-						from = uxi_agent.my_agent
-
-						lifecycle {
-							destroy = false
-						}
-					}
-
-					removed {
-						from = uxi_agent.my_agent_2
-
-						lifecycle {
-							destroy = false
-						}
-					}`,
-			},
 			// Delete testing automatically occurs in TestCase
 		},
 	})
