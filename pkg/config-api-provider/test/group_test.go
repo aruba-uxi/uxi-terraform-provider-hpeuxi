@@ -19,17 +19,11 @@ func TestGroupResource(t *testing.T) {
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					response := resources.GroupResponseModel{
-						UID:       "uid",
-						Name:      "name",
-						ParentUid: "parent_uid",
-						Path:      "parent_uid.uid",
-					}
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return response
+						return GenerateGroupResponseModel("uid", "", "")
 					}
-					resources.GetGroup = func() resources.GroupResponseModel {
-						return response
+					resources.GetGroup = func(uid string) resources.GroupResponseModel {
+						return GenerateGroupResponseModel(uid, "", "")
 					}
 				},
 				Config: providerConfig + `
@@ -52,26 +46,20 @@ func TestGroupResource(t *testing.T) {
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					response := resources.GroupResponseModel{
-						UID:       "uid",
-						Name:      "updated_name",
-						ParentUid: "parent_uid",
-						Path:      "parent_uid.uid",
-					}
 					resources.UpdateGroup = func(request resources.GroupUpdateRequestModel) resources.GroupResponseModel {
-						return response
+						return GenerateGroupResponseModel("uid", "_2", "")
 					}
-					resources.GetGroup = func() resources.GroupResponseModel {
-						return response
+					resources.GetGroup = func(uid string) resources.GroupResponseModel {
+						return GenerateGroupResponseModel(uid, "_2", "")
 					}
 				},
 				Config: providerConfig + `
 					resource "uxi_group" "my_group" {
-						name       = "updated_name"
+						name       = "name_2"
 						parent_uid = "parent_uid"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "updated_name"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_uid", "parent_uid"),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
 				),
@@ -80,43 +68,25 @@ func TestGroupResource(t *testing.T) {
 			// Update that does trigger a recreate
 			{
 				PreConfig: func() {
-					response := resources.GroupResponseModel{
-						UID:       "new_uid",
-						Name:      "name",
-						ParentUid: "updated_parent_uid",
-						Path:      "updated_parent_uid.uid",
-					}
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return response
+						return GenerateGroupResponseModel("new_uid", "", "_2")
 					}
-					called := false
-					resources.GetGroup = func() resources.GroupResponseModel {
-						if !called {
-							called = true
-							return resources.GroupResponseModel{
-								UID:       "uid",
-								Name:      "name",
-								ParentUid: "parent_uid",
-								Path:      "parent_uid.uid",
-							}
+					resources.GetGroup = func(uid string) resources.GroupResponseModel {
+						if uid == "uid" {
+							return GenerateGroupResponseModel(uid, "", "")
 						} else {
-							return resources.GroupResponseModel{
-								UID:       "new_uid",
-								Name:      "name",
-								ParentUid: "updated_parent_uid",
-								Path:      "updated_parent_uid.uid",
-							}
+							return GenerateGroupResponseModel(uid, "", "_2")
 						}
 					}
 				},
 				Config: providerConfig + `
 					resource "uxi_group" "my_group" {
 						name       = "name"
-						parent_uid = "updated_parent_uid"
+						parent_uid = "parent_uid_2"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_uid", "updated_parent_uid"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_uid", "parent_uid_2"),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "new_uid"),
 				),
 			},

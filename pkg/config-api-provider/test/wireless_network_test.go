@@ -31,21 +31,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.GetWirelessNetwork = func() resources.WirelessNetworkResponseModel {
-						return resources.WirelessNetworkResponseModel{
-							Uid:                  "uid",
-							Ssid:                 "ssid",
-							DatetimeCreated:      "datetime_created",
-							DatetimeUpdated:      "datetime_updated",
-							Alias:                "alias",
-							IpVersion:            "ip_version",
-							Security:             "security",
-							Hidden:               false,
-							BandLocking:          "band_locking",
-							DnsLookupDomain:      "dns_lookup_domain",
-							DisableEdns:          false,
-							UseDns64:             false,
-							ExternalConnectivity: false,
-						}
+						return GenerateWirelessNetworkResponseModel("uid", "")
 					}
 				},
 				Config: providerConfig + `

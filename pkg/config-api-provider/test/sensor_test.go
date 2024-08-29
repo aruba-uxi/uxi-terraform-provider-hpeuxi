@@ -33,27 +33,15 @@ func TestSensorResource(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					resources.GetSensor = func() resources.SensorResponseModel {
-						return resources.SensorResponseModel{
-							UID:                "uid",
-							Serial:             "serial",
-							Name:               "imported_name",
-							ModelNumber:        "model_number",
-							WifiMacAddress:     "wifi_mac_address",
-							EthernetMacAddress: "ethernet_mac_address",
-							AddressNote:        "imported_address_note",
-							Longitude:          "imported_longitude",
-							Latitude:           "imported_latitude",
-							Notes:              "imported_notes",
-							PCapMode:           "light",
-						}
+					resources.GetSensor = func(uid string) resources.SensorResponseModel {
+						return GenerateSensorResponseModel(uid, "")
 					}
 				},
 				Config: providerConfig + `
 					resource "uxi_sensor" "my_sensor" {
-						name = "imported_name"
-						address_note = "imported_address_note"
-						notes = "imported_notes"
+						name = "name"
+						address_note = "address_note"
+						notes = "notes"
 						pcap_mode = "light"
 					}
 
@@ -63,9 +51,9 @@ func TestSensorResource(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "imported_name"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "address_note", "imported_address_note"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "imported_notes"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "address_note", "address_note"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
 				),
@@ -79,34 +67,23 @@ func TestSensorResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					resources.GetSensor = func() resources.SensorResponseModel {
-						return resources.SensorResponseModel{
-							UID:                "uid",
-							Serial:             "serial",
-							Name:               "updated_name",
-							ModelNumber:        "model_number",
-							WifiMacAddress:     "wifi_mac_address",
-							EthernetMacAddress: "ethernet_mac_address",
-							AddressNote:        "updated_address_note",
-							Longitude:          "updated_longitude",
-							Latitude:           "updated_latitude",
-							Notes:              "updated_notes",
-							PCapMode:           "not_light",
-						}
+					resources.GetSensor = func(uid string) resources.SensorResponseModel {
+						return GenerateSensorResponseModel(uid, "_2")
 					}
 				},
 				Config: providerConfig + `
 				resource "uxi_sensor" "my_sensor" {
-					name = "updated_name"
-					address_note = "updated_address_note"
-					notes = "updated_notes"
-					pcap_mode = "not_light"
+					name = "name_2"
+					address_note = "address_note_2"
+					notes = "notes_2"
+					pcap_mode = "light_2"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "updated_name"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "address_note", "updated_address_note"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "updated_notes"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "not_light"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "address_note", "address_note_2"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes_2"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light_2"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
 				),
 			},
 			// Deleting a sensor is not allowed

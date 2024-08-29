@@ -28,22 +28,13 @@ func TestAgentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.GetAgent = func() resources.AgentResponseModel {
-						return resources.AgentResponseModel{
-							UID:                "uid",
-							Serial:             "serial",
-							Name:               "imported_name",
-							ModelNumber:        "model_number",
-							WifiMacAddress:     "wifi_mac_address",
-							EthernetMacAddress: "ethernet_mac_address",
-							Notes:              "imported_notes",
-							PCapMode:           "light",
-						}
+						return GenerateAgentResponseModel("uid", "")
 					}
 				},
 				Config: providerConfig + `
 					resource "uxi_agent" "my_agent" {
-						name = "imported_name"
-						notes = "imported_notes"
+						name = "name"
+						notes = "notes"
 						pcap_mode = "light"
 					}
 
@@ -53,8 +44,8 @@ func TestAgentResource(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "imported_name"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "imported_notes"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes"),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "uid"),
 				),
@@ -69,28 +60,19 @@ func TestAgentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.GetAgent = func() resources.AgentResponseModel {
-						return resources.AgentResponseModel{
-							UID:                "uid",
-							Serial:             "serial",
-							Name:               "updated_name",
-							ModelNumber:        "model_number",
-							WifiMacAddress:     "wifi_mac_address",
-							EthernetMacAddress: "ethernet_mac_address",
-							Notes:              "updated_notes",
-							PCapMode:           "not_light",
-						}
+						return GenerateAgentResponseModel("uid", "_2")
 					}
 				},
 				Config: providerConfig + `
 				resource "uxi_agent" "my_agent" {
-					name = "updated_name"
-					notes = "updated_notes"
-					pcap_mode = "not_light"
+					name = "name_2"
+					notes = "notes_2"
+					pcap_mode = "light_2"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "updated_name"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "updated_notes"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "not_light"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name_2"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes_2"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light_2"),
 				),
 			},
 			// Delete testing automatically occurs in TestCase
