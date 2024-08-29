@@ -18,46 +18,23 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					// required for network import
 					resources.GetWiredNetwork = func(uid string) resources.WiredNetworkResponseModel {
-						return resources.WiredNetworkResponseModel{
-							Uid:                  uid,
-							Alias:                "alias",
-							DatetimeCreated:      "datetime_created",
-							DatetimeUpdated:      "datetime_updated",
-							IpVersion:            "ip_version",
-							Security:             "security",
-							DnsLookupDomain:      "dns_lookup_domain",
-							DisableEdns:          false,
-							UseDns64:             false,
-							ExternalConnectivity: false,
-							VlanId:               123,
-						}
+						return GenerateWiredNetworkResponseModel(uid, "")
 					}
 
 					// required for group create
-					groupResponse := resources.GroupResponseModel{
-						UID:       "group_uid",
-						Name:      "name",
-						ParentUid: "parent_uid",
-						Path:      "parent_uid.group_uid",
-					}
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return groupResponse
+						return GenerateGroupResponseModel("group_uid", "", "")
 					}
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return groupResponse
+						return GenerateGroupResponseModel("group_uid", "", "")
 					}
 
 					// required for network group assignment create
-					networkGroupAssignmentResponse := resources.NetworkGroupAssignmentResponseModel{
-						UID:        "network_group_assignment_uid",
-						GroupUID:   "group_uid",
-						NetworkUID: "network_uid",
-					}
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
-						return networkGroupAssignmentResponse
+						return GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")
 					}
 					resources.GetNetworkGroupAssignment = func(uid string) resources.NetworkGroupAssignmentResponseModel {
-						return networkGroupAssignmentResponse
+						return GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")
 					}
 				},
 
@@ -97,80 +74,34 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					resources.GetWiredNetwork = func(uid string) resources.WiredNetworkResponseModel {
 						if uid == "network_uid" {
-							return resources.WiredNetworkResponseModel{
-								Uid:                  uid,
-								Alias:                "alias",
-								DatetimeCreated:      "datetime_created",
-								DatetimeUpdated:      "datetime_updated",
-								IpVersion:            "ip_version",
-								Security:             "security",
-								DnsLookupDomain:      "dns_lookup_domain",
-								DisableEdns:          false,
-								UseDns64:             false,
-								ExternalConnectivity: false,
-								VlanId:               123,
-							}
+							return GenerateWiredNetworkResponseModel(uid, "")
 						} else {
-							return resources.WiredNetworkResponseModel{
-								Uid:                  uid,
-								Alias:                "alias_2",
-								DatetimeCreated:      "datetime_created_2",
-								DatetimeUpdated:      "datetime_updated_2",
-								IpVersion:            "ip_version_2",
-								Security:             "security_2",
-								DnsLookupDomain:      "dns_lookup_domain_2",
-								DisableEdns:          false,
-								UseDns64:             false,
-								ExternalConnectivity: false,
-								VlanId:               123,
-							}
+							return GenerateWiredNetworkResponseModel(uid, "_2")
 						}
 					}
 
 					// required for creating another group
-					newGroupResponse := resources.GroupResponseModel{
-						UID:       "group_uid_2",
-						Name:      "name_2",
-						ParentUid: "parent_uid_2",
-						Path:      "parent_uid_2.group_uid_2",
-					}
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return newGroupResponse
+						return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
 					}
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
-							return resources.GroupResponseModel{
-								UID:       uid,
-								Name:      "name",
-								ParentUid: "parent_uid",
-								Path:      "parent_uid.group_uid",
-							}
+							return GenerateGroupResponseModel("uid", "", "")
 						} else {
-							return newGroupResponse
+							return GenerateGroupResponseModel(uid, "_2", "_2")
 						}
 					}
 
 					// required for network group assignment create
-					networkGroupAssignmentOriginal := resources.NetworkGroupAssignmentResponseModel{
-						UID:        "network_group_assignment_uid",
-						GroupUID:   "group_uid",
-						NetworkUID: "network_uid",
+					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
+						return GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid_2", "_2")
 					}
-					networkGroupAssignmentUpdated := resources.NetworkGroupAssignmentResponseModel{
-						UID:        "network_group_assignment_uid_2",
-						GroupUID:   "group_uid_2",
-						NetworkUID: "network_uid_2",
-					}
-
 					resources.GetNetworkGroupAssignment = func(uid string) resources.NetworkGroupAssignmentResponseModel {
 						if uid == "network_group_assignment_uid" {
-							return networkGroupAssignmentOriginal
+							return GenerateNetworkGroupAssignmentResponse(uid, "")
 						} else {
-							return networkGroupAssignmentUpdated
+							return GenerateNetworkGroupAssignmentResponse(uid, "_2")
 						}
-					}
-					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
-						return networkGroupAssignmentUpdated
 					}
 				},
 				Config: providerConfig + `
@@ -247,48 +178,23 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					// required for network import
 					resources.GetWirelessNetwork = func(uid string) resources.WirelessNetworkResponseModel {
-						return resources.WirelessNetworkResponseModel{
-							Uid:                  uid,
-							Ssid:                 "ssid",
-							DatetimeCreated:      "datetime_created",
-							DatetimeUpdated:      "datetime_updated",
-							Alias:                "alias",
-							IpVersion:            "ip_version",
-							Security:             "security",
-							Hidden:               false,
-							BandLocking:          "band_locking",
-							DnsLookupDomain:      "dns_lookup_domain",
-							DisableEdns:          false,
-							UseDns64:             false,
-							ExternalConnectivity: false,
-						}
+						return GenerateWirelessNetworkResponseModel(uid, "")
 					}
 
 					// required for group create
-					groupResponse := resources.GroupResponseModel{
-						UID:       "group_uid",
-						Name:      "name",
-						ParentUid: "parent_uid",
-						Path:      "parent_uid.group_uid",
-					}
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return groupResponse
+						return GenerateGroupResponseModel("group_uid", "", "")
 					}
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return groupResponse
+						return GenerateGroupResponseModel(uid, "", "")
 					}
 
 					// required for network group assignment create
-					networkGroupAssignmentResponse := resources.NetworkGroupAssignmentResponseModel{
-						UID:        "network_group_assignment_uid",
-						GroupUID:   "group_uid",
-						NetworkUID: "network_uid",
-					}
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
-						return networkGroupAssignmentResponse
+						return GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")
 					}
 					resources.GetNetworkGroupAssignment = func(uid string) resources.NetworkGroupAssignmentResponseModel {
-						return networkGroupAssignmentResponse
+						return GenerateNetworkGroupAssignmentResponse(uid, "")
 					}
 				},
 
@@ -328,84 +234,34 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					resources.GetWirelessNetwork = func(uid string) resources.WirelessNetworkResponseModel {
 						if uid == "network_uid" {
-							return resources.WirelessNetworkResponseModel{
-								Uid:                  uid,
-								Ssid:                 "ssid",
-								DatetimeCreated:      "datetime_created",
-								DatetimeUpdated:      "datetime_updated",
-								Alias:                "alias",
-								IpVersion:            "ip_version",
-								Security:             "security",
-								Hidden:               false,
-								BandLocking:          "band_locking",
-								DnsLookupDomain:      "dns_lookup_domain",
-								DisableEdns:          false,
-								UseDns64:             false,
-								ExternalConnectivity: false,
-							}
+							return GenerateWirelessNetworkResponseModel(uid, "")
 						} else {
-							return resources.WirelessNetworkResponseModel{
-								Uid:                  uid,
-								Ssid:                 "ssid_2",
-								DatetimeCreated:      "datetime_created_2",
-								DatetimeUpdated:      "datetime_updated_2",
-								Alias:                "alias_2",
-								IpVersion:            "ip_version_2",
-								Security:             "security_2",
-								Hidden:               false,
-								BandLocking:          "band_locking_2",
-								DnsLookupDomain:      "dns_lookup_domain_2",
-								DisableEdns:          false,
-								UseDns64:             false,
-								ExternalConnectivity: false,
-							}
+							return GenerateWirelessNetworkResponseModel(uid, "_2")
 						}
 					}
 
 					// required for creating another group
-					newGroupResponse := resources.GroupResponseModel{
-						UID:       "group_uid_2",
-						Name:      "name_2",
-						ParentUid: "parent_uid_2",
-						Path:      "parent_uid_2.group_uid_2",
-					}
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return newGroupResponse
+						return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
 					}
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
-							return resources.GroupResponseModel{
-								UID:       uid,
-								Name:      "name",
-								ParentUid: "parent_uid",
-								Path:      "parent_uid.group_uid",
-							}
+							return GenerateGroupResponseModel(uid, "", "")
 						} else {
-							return newGroupResponse
+							return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
 						}
 					}
 
 					// required for network group assignment create
-					networkGroupAssignmentOriginal := resources.NetworkGroupAssignmentResponseModel{
-						UID:        "network_group_assignment_uid",
-						GroupUID:   "group_uid",
-						NetworkUID: "network_uid",
-					}
-					networkGroupAssignmentUpdated := resources.NetworkGroupAssignmentResponseModel{
-						UID:        "network_group_assignment_uid_2",
-						GroupUID:   "group_uid_2",
-						NetworkUID: "network_uid_2",
-					}
-
 					resources.GetNetworkGroupAssignment = func(uid string) resources.NetworkGroupAssignmentResponseModel {
 						if uid == "network_group_assignment_uid" {
-							return networkGroupAssignmentOriginal
+							return GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")
 						} else {
-							return networkGroupAssignmentUpdated
+							return GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid_2", "_2")
 						}
 					}
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
-						return networkGroupAssignmentUpdated
+						return GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid_2", "_2")
 					}
 				},
 				Config: providerConfig + `

@@ -128,7 +128,7 @@ func (r *networkGroupAssignmentResource) Update(ctx context.Context, req resourc
 	// Retrieve values from plan
 	var plan networkGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "creating a network is not supported; networks can only be imported")
+	diags.AddError("operation not supported", "updating a network group assignment is not supported")
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
