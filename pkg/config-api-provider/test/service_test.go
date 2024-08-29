@@ -31,14 +31,7 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.GetServiceTest = func() resources.ServiceTestResponseModel {
-						return resources.ServiceTestResponseModel{
-							Uid:       "uid",
-							Category:  "external",
-							Title:     "title",
-							Target:    "target",
-							Template:  "template",
-							IsEnabled: true,
-						}
+						return GenerateServiceTestResponseModel("uid", "")
 					}
 				},
 				Config: providerConfig + `
