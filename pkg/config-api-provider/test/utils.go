@@ -93,3 +93,11 @@ func GenerateSensorGroupAssignmentResponse(uid string, postfix string) resources
 		SensorUID: "sensor_uid" + postfix,
 	}
 }
+
+func GenerateAgentGroupAssignmentResponse(uid string, postfix string) resources.AgentGroupAssignmentResponseModel {
+	return resources.AgentGroupAssignmentResponseModel{
+		UID:      "agent_group_assignment_uid" + postfix,
+		GroupUID: "group_uid" + postfix,
+		AgentUID: "agent_uid" + postfix,
+	}
+}

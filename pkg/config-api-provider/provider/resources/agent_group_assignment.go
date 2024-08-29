@@ -128,7 +128,7 @@ func (r *agentGroupAssignmentResource) Update(ctx context.Context, req resource.
 	// Retrieve values from plan
 	var plan agentGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "creating a agent is not supported; agents can only be imported")
+	diags.AddError("operation not supported", "updating an agent group assignment is not supported")
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return

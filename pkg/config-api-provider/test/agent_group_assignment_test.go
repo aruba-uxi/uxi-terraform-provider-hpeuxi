@@ -17,38 +17,19 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					// required for agent import
 					resources.GetAgent = func(uid string) resources.AgentResponseModel {
-						return resources.AgentResponseModel{
-							UID:                uid,
-							Serial:             "serial",
-							Name:               "name",
-							ModelNumber:        "model_number",
-							WifiMacAddress:     "wifi_mac_address",
-							EthernetMacAddress: "ethernet_mac_address",
-							Notes:              "notes",
-							PCapMode:           "light",
-						}
+						return GenerateAgentResponseModel(uid, "")
 					}
 
 					// required for group create
-					groupResponse := resources.GroupResponseModel{
-						UID:       "group_uid",
-						Name:      "name",
-						ParentUid: "parent_uid",
-						Path:      "parent_uid.group_uid",
-					}
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return groupResponse
+						return GenerateGroupResponseModel("group_uid", "", "")
 					}
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return groupResponse
+						return GenerateGroupResponseModel("group_uid", "", "")
 					}
 
 					// required for agent group assignment create
-					agentGroupAssignmentResponse := resources.AgentGroupAssignmentResponseModel{
-						UID:      "agent_group_assignment_uid",
-						GroupUID: "group_uid",
-						AgentUID: "agent_uid",
-					}
+					agentGroupAssignmentResponse := GenerateAgentGroupAssignmentResponse("agent_group_assignment_uid", "")
 					resources.CreateAgentGroupAssignment = func(request resources.AgentGroupAssignmentRequestModel) resources.AgentGroupAssignmentResponseModel {
 						return agentGroupAssignmentResponse
 					}
@@ -95,74 +76,34 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					resources.GetAgent = func(uid string) resources.AgentResponseModel {
 						if uid == "agent_uid" {
-							return resources.AgentResponseModel{
-								UID:                "agent_uid",
-								Serial:             "serial",
-								Name:               "name",
-								ModelNumber:        "model_number",
-								WifiMacAddress:     "wifi_mac_address",
-								EthernetMacAddress: "ethernet_mac_address",
-								Notes:              "notes",
-								PCapMode:           "light",
-							}
+							return GenerateAgentResponseModel(uid, "")
 						} else {
-							return resources.AgentResponseModel{
-								UID:                "agent_uid_2",
-								Serial:             "serial_2",
-								Name:               "name_2",
-								ModelNumber:        "model_number_2",
-								WifiMacAddress:     "wifi_mac_address_2",
-								EthernetMacAddress: "ethernet_mac_address_2",
-								Notes:              "notes_2",
-								PCapMode:           "light",
-							}
+							return GenerateAgentResponseModel(uid, "_2")
 						}
 					}
 
 					// required for creating another group
-					newGroupResponse := resources.GroupResponseModel{
-						UID:       "group_uid_2",
-						Name:      "name_2",
-						ParentUid: "parent_uid_2",
-						Path:      "parent_uid_2.group_uid_2",
-					}
 					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return newGroupResponse
+						return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
 					}
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
-							return resources.GroupResponseModel{
-								UID:       uid,
-								Name:      "name",
-								ParentUid: "parent_uid",
-								Path:      "parent_uid.group_uid",
-							}
+							return GenerateGroupResponseModel(uid, "", "")
 						} else {
-							return newGroupResponse
+							return GenerateGroupResponseModel(uid, "_2", "_2")
 						}
 					}
 
 					// required for agent group assignment create
-					agentGroupAssignmentOriginal := resources.AgentGroupAssignmentResponseModel{
-						UID:      "agent_group_assignment_uid",
-						GroupUID: "group_uid",
-						AgentUID: "agent_uid",
-					}
-					agentGroupAssignmentUpdated := resources.AgentGroupAssignmentResponseModel{
-						UID:      "agent_group_assignment_uid_2",
-						GroupUID: "group_uid_2",
-						AgentUID: "agent_uid_2",
-					}
-
 					resources.GetAgentGroupAssignment = func(uid string) resources.AgentGroupAssignmentResponseModel {
 						if uid == "agent_group_assignment_uid" {
-							return agentGroupAssignmentOriginal
+							return GenerateAgentGroupAssignmentResponse(uid, "")
 						} else {
-							return agentGroupAssignmentUpdated
+							return GenerateAgentGroupAssignmentResponse(uid, "_2")
 						}
 					}
 					resources.CreateAgentGroupAssignment = func(request resources.AgentGroupAssignmentRequestModel) resources.AgentGroupAssignmentResponseModel {
-						return agentGroupAssignmentUpdated
+						return GenerateAgentGroupAssignmentResponse("agent_group_assignment_uid_2", "_2")
 					}
 				},
 				Config: providerConfig + `
@@ -192,7 +133,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					resource "uxi_agent" "my_agent_2" {
 						name 			= "name_2"
 						notes 			= "notes_2"
-						pcap_mode 		= "light"
+						pcap_mode 		= "light_2"
 					}
 
 					import {
