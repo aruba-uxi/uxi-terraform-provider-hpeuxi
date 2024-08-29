@@ -109,3 +109,11 @@ func GenerateNetworkGroupAssignmentResponse(uid string, postfix string) resource
 		NetworkUID: "network_uid" + postfix,
 	}
 }
+
+func GenerateServiceTestGroupAssignmentResponse(uid string, postfix string) resources.ServiceTestGroupAssignmentResponseModel {
+	return resources.ServiceTestGroupAssignmentResponseModel{
+		UID:            "service_test_group_assignment_uid" + postfix,
+		GroupUID:       "group_uid" + postfix,
+		ServiceTestUID: "service_test_uid" + postfix,
+	}
+}
