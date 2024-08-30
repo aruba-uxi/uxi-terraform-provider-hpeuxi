@@ -132,6 +132,12 @@ resource "uxi_agent_group_assignment" "my_uxi_agent_group_assignment" {
     group_id = uxi_group.my_group.id
 }
 
+// Network Group Assignment
+resource "uxi_network_group_assignment" "my_uxi_network_group_assignment" {
+    network_id = uxi_agent.my_agent.id
+    group_id = uxi_group.my_group.id
+}
+
 # output "group" {
 #   value = uxi_group.group
 # }

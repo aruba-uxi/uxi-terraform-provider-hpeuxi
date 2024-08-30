@@ -86,7 +86,7 @@ func (r *wirelessNetworkResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	response := GetWirelessNetwork()
+	response := GetWirelessNetwork(state.ID.ValueString())
 
 	// Update state from client response
 	state.Alias = types.StringValue(response.Alias)
@@ -120,11 +120,11 @@ func (r *wirelessNetworkResource) ImportState(ctx context.Context, req resource.
 }
 
 // Get the wirelessNetwork using the configuration-api client
-var GetWirelessNetwork = func() WirelessNetworkResponseModel {
+var GetWirelessNetwork = func(uid string) WirelessNetworkResponseModel {
 	// TODO: Query the wirelessNetwork using the client
 
 	return WirelessNetworkResponseModel{
-		Uid:                  "mock_uid",
+		Uid:                  uid,
 		Ssid:                 "mock_ssid",
 		DatetimeCreated:      "mock_datetime_created",
 		DatetimeUpdated:      "mock_datetime_updated",

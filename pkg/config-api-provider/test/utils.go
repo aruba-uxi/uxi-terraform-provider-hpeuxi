@@ -101,3 +101,11 @@ func GenerateAgentGroupAssignmentResponse(uid string, postfix string) resources.
 		AgentUID: "agent_uid" + postfix,
 	}
 }
+
+func GenerateNetworkGroupAssignmentResponse(uid string, postfix string) resources.NetworkGroupAssignmentResponseModel {
+	return resources.NetworkGroupAssignmentResponseModel{
+		UID:        "network_group_assignment_uid" + postfix,
+		GroupUID:   "group_uid" + postfix,
+		NetworkUID: "network_uid" + postfix,
+	}
+}

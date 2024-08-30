@@ -84,7 +84,7 @@ func (r *wiredNetworkResource) Read(ctx context.Context, req resource.ReadReques
 		return
 	}
 
-	response := GetWiredNetwork()
+	response := GetWiredNetwork(state.ID.ValueString())
 
 	// Update state from client response
 	state.Alias = types.StringValue(response.Alias)
@@ -118,7 +118,7 @@ func (r *wiredNetworkResource) ImportState(ctx context.Context, req resource.Imp
 }
 
 // Get the wiredNetwork using the configuration-api client
-var GetWiredNetwork = func() WiredNetworkResponseModel {
+var GetWiredNetwork = func(uid string) WiredNetworkResponseModel {
 	// TODO: Query the wiredNetwork using the client
 
 	return WiredNetworkResponseModel{

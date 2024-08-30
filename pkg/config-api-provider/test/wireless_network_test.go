@@ -30,8 +30,8 @@ func TestWirelessNetworkResource(t *testing.T) {
 			// Importing a wireless_network
 			{
 				PreConfig: func() {
-					resources.GetWirelessNetwork = func() resources.WirelessNetworkResponseModel {
-						return GenerateWirelessNetworkResponseModel("uid", "")
+					resources.GetWirelessNetwork = func(uid string) resources.WirelessNetworkResponseModel {
+						return GenerateWirelessNetworkResponseModel(uid, "")
 					}
 				},
 				Config: providerConfig + `
