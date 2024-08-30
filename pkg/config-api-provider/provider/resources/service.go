@@ -79,7 +79,7 @@ func (r *serviceTestResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	response := GetServiceTest()
+	response := GetServiceTest(state.ID.ValueString())
 
 	// Update state from client response
 	state.Title = types.StringValue(response.Title)
@@ -113,11 +113,11 @@ func (r *serviceTestResource) ImportState(ctx context.Context, req resource.Impo
 }
 
 // Get the serviceTest using the configuration-api client
-var GetServiceTest = func() ServiceTestResponseModel {
+var GetServiceTest = func(uid string) ServiceTestResponseModel {
 	// TODO: Query the serviceTest using the client
 
 	return ServiceTestResponseModel{
-		Uid:       "uid",
+		Uid:       uid,
 		Category:  "category",
 		Title:     "title",
 		Target:    "target",

@@ -30,8 +30,8 @@ func TestServiceTestResource(t *testing.T) {
 			// Importing a service_test
 			{
 				PreConfig: func() {
-					resources.GetServiceTest = func() resources.ServiceTestResponseModel {
-						return GenerateServiceTestResponseModel("uid", "")
+					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
+						return GenerateServiceTestResponseModel(uid, "")
 					}
 				},
 				Config: providerConfig + `
