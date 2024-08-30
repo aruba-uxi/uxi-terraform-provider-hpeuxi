@@ -18,9 +18,9 @@ var (
 )
 
 type groupResourceModel struct {
-	ID        types.String `tfsdk:"id"`
-	Name      types.String `tfsdk:"name"`
-	ParentUid types.String `tfsdk:"parent_uid"`
+	ID            types.String `tfsdk:"id"`
+	Name          types.String `tfsdk:"name"`
+	ParentGroupId types.String `tfsdk:"parent_group_id"`
 }
 
 type GroupResponseModel struct {
@@ -61,7 +61,7 @@ func (r *groupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"name": schema.StringAttribute{
 				Required: true,
 			},
-			"parent_uid": schema.StringAttribute{
+			"parent_group_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					// UXI business logic does not permit moving of groups
@@ -88,13 +88,13 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 	// We are mocking the response of the client for this early stage of development
 	group := CreateGroup(GroupCreateRequestModel{
 		Name:      plan.Name.ValueString(),
-		ParentUid: plan.ParentUid.ValueString(),
+		ParentUid: plan.ParentGroupId.ValueString(),
 	})
 
 	// Update the state to match the plan (replace with response from client)
 	plan.ID = types.StringValue(group.UID)
 	plan.Name = types.StringValue(group.Name)
-	plan.ParentUid = types.StringValue(group.ParentUid)
+	plan.ParentGroupId = types.StringValue(group.ParentUid)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -119,7 +119,7 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 	// Update state from client response
 	state.Name = types.StringValue(response.Name)
-	state.ParentUid = types.StringValue(response.ParentUid)
+	state.ParentGroupId = types.StringValue(response.ParentUid)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -145,7 +145,7 @@ func (r *groupResource) Update(ctx context.Context, req resource.UpdateRequest, 
 
 	// Update the state to match the plan (replace with response from client)
 	plan.Name = types.StringValue(group.Name)
-	plan.ParentUid = types.StringValue(group.ParentUid)
+	plan.ParentGroupId = types.StringValue(group.ParentUid)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)

@@ -40,8 +40,8 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 				Config: providerConfig + `
 					resource "uxi_group" "my_group" {
-						name       = "name"
-						parent_uid = "parent_uid"
+						name            = "name"
+						parent_group_id = "parent_uid"
 					}
 
 					resource "uxi_agent" "my_agent" {
@@ -109,8 +109,8 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 				Config: providerConfig + `
 					// the original resources
 					resource "uxi_group" "my_group" {
-						name       = "name"
-						parent_uid = "parent_uid"
+						name            = "name"
+						parent_group_id = "parent_uid"
 					}
 
 					resource "uxi_agent" "my_agent" {
@@ -126,8 +126,8 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					// the new resources we wanna update the assignment to
 					resource "uxi_group" "my_group_2" {
-						name       = "name_2"
-						parent_uid = "parent_uid_2"
+						name            = "name_2"
+						parent_group_id = "parent_uid_2"
 					}
 
 					resource "uxi_agent" "my_agent_2" {

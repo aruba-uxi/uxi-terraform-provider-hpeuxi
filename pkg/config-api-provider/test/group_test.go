@@ -28,12 +28,12 @@ func TestGroupResource(t *testing.T) {
 				},
 				Config: providerConfig + `
 				resource "uxi_group" "my_group" {
-					name       = "name"
-					parent_uid = "parent_uid"
+					name            = "name"
+					parent_group_id = "parent_uid"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_uid", "parent_uid"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_group_id", "parent_uid"),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
 				),
 			},
@@ -55,12 +55,12 @@ func TestGroupResource(t *testing.T) {
 				},
 				Config: providerConfig + `
 					resource "uxi_group" "my_group" {
-						name       = "name_2"
-						parent_uid = "parent_uid"
+						name            = "name_2"
+						parent_group_id = "parent_uid"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_uid", "parent_uid"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_group_id", "parent_uid"),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
 				),
 				Destroy: false,
@@ -81,12 +81,12 @@ func TestGroupResource(t *testing.T) {
 				},
 				Config: providerConfig + `
 					resource "uxi_group" "my_group" {
-						name       = "name"
-						parent_uid = "parent_uid_2"
+						name            = "name"
+						parent_group_id = "parent_uid_2"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_uid", "parent_uid_2"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_group_id", "parent_uid_2"),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "new_uid"),
 				),
 			},
