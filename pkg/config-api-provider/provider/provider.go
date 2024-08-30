@@ -64,5 +64,6 @@ func (p *uxiConfigurationProvider) Resources(_ context.Context) []func() resourc
 		resources.NewWirelessNetworkResource,
 		resources.NewServiceTestResource,
 		resources.NewSensorGroupAssignmentResource,
+		resources.NewAgentGroupAssignmentResource,
 	}
 }
