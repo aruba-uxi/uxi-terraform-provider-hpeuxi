@@ -39,7 +39,7 @@ func GenerateGroupResponseModel(uid string, non_replacement_field_postfix string
 	return resources.GroupResponseModel{
 		UID:       uid,
 		Name:      "name" + non_replacement_field_postfix,
-		ParentUid: parent_uid,
+		ParentUid: &parent_uid,
 		Path:      parent_uid + "." + uid,
 	}
 }
