@@ -62,7 +62,7 @@ func (r *groupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Required: true,
 			},
 			"parent_group_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					// UXI business logic does not permit moving of groups
 					stringplanmodifier.RequiresReplace(),
