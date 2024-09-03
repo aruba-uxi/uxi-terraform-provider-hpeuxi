@@ -1,7 +1,6 @@
 package test
 
 import (
-	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/data-sources"
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
 )
 
@@ -44,8 +43,8 @@ func GenerateGroupResponseModel(uid string, non_replacement_field_postfix string
 	}
 }
 
-func GenerateRootGroupResponseModel(uid string) datasources.RootGroupResponseModel {
-	return datasources.RootGroupResponseModel{
+func GenerateRootGroupResponseModel(uid string) resources.GroupResponseModel {
+	return resources.GroupResponseModel{
 		UID:       uid,
 		Name:      "root",
 		ParentUid: nil,
