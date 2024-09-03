@@ -8,9 +8,23 @@ terraform {
 
 provider "uxi" {}
 
+resource "uxi_group" "my_root_group" {
+  name = "root"
+}
+
+import {
+    to = uxi_group.my_root_group
+    id = "root_group_uid"
+}
+
 resource "uxi_group" "my_group" {
-  name       = "name"
-  parent_uid = "parent_uid"
+  name            = "parent"
+  parent_group_id = uxi_group.my_root_group.id
+}
+
+resource "uxi_group" "my_group_2" {
+  name            = "child"
+  parent_group_id = uxi_group.my_group.id
 }
 
 // Sensor Resource
