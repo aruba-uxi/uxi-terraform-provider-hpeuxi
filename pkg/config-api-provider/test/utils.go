@@ -134,7 +134,7 @@ func StructToMap(obj interface{}) map[string]interface{} {
 }
 
 func MockOAuth() {
-	gock.New("https://sso.common.cloud.hpe.com").
+	gock.New("https://test.sso.common.cloud.hpe.com").
 		Post("/as/token.oauth2").
 		MatchHeader("Content-Type", "application/x-www-form-urlencoded").
 		Reply(200).
