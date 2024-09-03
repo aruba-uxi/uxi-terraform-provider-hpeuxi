@@ -79,27 +79,27 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 	if config.Host.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("host"),
-			"Unknown HashiCups API Host",
-			"The provider cannot create the HashiCups API client as there is an unknown configuration value for the HashiCups API host. "+
-				"Either target apply the source of the value first, set the value statically in the configuration, or use the HASHICUPS_HOST environment variable.",
+			"Unknown UXI API Host",
+			"The provider cannot create the UXI API client as there is an unknown configuration value for the UXI API host. "+
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the UXI_HOST environment variable.",
 		)
 	}
 
 	if config.ClientID.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("client_id"),
-			"Unknown HashiCups API Password",
-			"The provider cannot create the HashiCups API client as there is an unknown configuration value for the HashiCups API password. "+
-				"Either target apply the source of the value first, set the value statically in the configuration, or use the HASHICUPS_PASSWORD environment variable.",
+			"Unknown Client ID",
+			"The provider cannot create the UXI API client as there is an unknown configuration value for the Client ID. "+
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the CLIENT_ID environment variable.",
 		)
 	}
 
 	if config.ClientSecret.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("client_secret"),
-			"Unknown HashiCups API Password",
-			"The provider cannot create the HashiCups API client as there is an unknown configuration value for the HashiCups API password. "+
-				"Either target apply the source of the value first, set the value statically in the configuration, or use the HASHICUPS_PASSWORD environment variable.",
+			"Unknown Client Secret",
+			"The provider cannot create the UXI API client as there is an unknown configuration value for the Client Secret. "+
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the CLIENT_SECRET environment variable.",
 		)
 	}
 
@@ -129,9 +129,9 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 	if host == "" {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("host"),
-			"Missing HashiCups API Host",
-			"The provider cannot create the HashiCups API client as there is a missing or empty value for the HashiCups API host. "+
-				"Set the host value in the configuration or use the HASHICUPS_HOST environment variable. "+
+			"Missing UXI API Host",
+			"The provider cannot create the UXI API client as there is a missing or empty value for the UXI API host. "+
+				"Set the host value in the configuration or use the UXI_HOST environment variable. "+
 				"If either is already set, ensure the value is not empty.",
 		)
 	}
@@ -139,9 +139,9 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 	if clientID == "" {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("client_id"),
-			"Missing HashiCups API Password",
-			"The provider cannot create the HashiCups API client as there is a missing or empty value for the HashiCups API password. "+
-				"Set the password value in the configuration or use the HASHICUPS_PASSWORD environment variable. "+
+			"Missing Client ID",
+			"The provider cannot create the UXI API client as there is a missing or empty value for the Client ID. "+
+				"Set the Client ID value in the configuration or use the CLIENT_ID environment variable. "+
 				"If either is already set, ensure the value is not empty.",
 		)
 	}
@@ -149,9 +149,9 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 	if clientSecret == "" {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("client_secret"),
-			"Missing HashiCups API Password",
-			"The provider cannot create the HashiCups API client as there is a missing or empty value for the HashiCups API password. "+
-				"Set the password value in the configuration or use the HASHICUPS_PASSWORD environment variable. "+
+			"Missing Client Secret",
+			"The provider cannot create the UXI API client as there is a missing or empty value for the Client Secret. "+
+				"Set the Client Secret value in the configuration or use the CLIENT_SECRET environment variable. "+
 				"If either is already set, ensure the value is not empty.",
 		)
 	}
