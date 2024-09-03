@@ -1,7 +1,10 @@
 package test
 
 import (
+	"encoding/json"
+
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
+	"github.com/h2non/gock"
 )
 
 func GenerateSensorResponseModel(uid string, postfix string) resources.SensorResponseModel {
@@ -118,4 +121,36 @@ func GenerateServiceTestGroupAssignmentResponse(uid string, postfix string) reso
 		GroupUID:       "group_uid" + postfix,
 		ServiceTestUID: "service_test_uid" + postfix,
 	}
+}
+
+// Converts a struct to a map while maintaining the json alias as keys
+func StructToMap(obj interface{}) map[string]interface{} {
+	data, _ := json.Marshal(obj) // Convert to a json string
+
+	newMap := map[string]interface{}{}
+
+	_ = json.Unmarshal(data, &newMap) // Convert to a map
+	return newMap
+}
+
+func MockOAuth() {
+	gock.New("https://sso.common.cloud.hpe.com").
+		Post("/as/token.oauth2").
+		MatchHeader("Content-Type", "application/x-www-form-urlencoded").
+		Reply(200).
+		JSON(map[string]interface{}{
+			"access_token": "mock_token",
+			"token_type":   "bearer",
+			"expires_in":   3600,
+		})
+}
+
+func MockPostGroup(response map[string]interface{}) {
+	gock.New("https://test.api.capenetworks.com").
+		Post("/configuration/app/v1/groups").
+		MatchHeader("Content-Type", "application/json").
+		MatchHeader("Authorization", "mock_token").
+		Reply(200).
+		JSON(response)
+
 }

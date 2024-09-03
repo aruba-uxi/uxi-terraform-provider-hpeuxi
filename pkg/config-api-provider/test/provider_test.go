@@ -7,7 +7,11 @@ import (
 )
 
 const (
-	providerConfig = `provider "uxi" {}`
+	providerConfig = `provider "uxi" {
+		host		  = "test.api.capenetworks.com"
+		client_id     = "client_id"
+		client_secret = "client_secret"
+	}`
 )
 
 var (

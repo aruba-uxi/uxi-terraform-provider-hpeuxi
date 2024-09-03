@@ -15,18 +15,16 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			// Creating a sensor group assignment
 			{
 				PreConfig: func() {
+					MockOAuth()
 					// required for sensor import
 					resources.GetSensor = func(uid string) resources.SensorResponseModel {
 						return GenerateSensorResponseModel(uid, "")
 					}
 
 					// required for group create
-					groupResponse := GenerateGroupResponseModel("group_uid", "", "")
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return groupResponse
-					}
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return groupResponse
+						return GenerateGroupResponseModel("group_uid", "", "")
 					}
 
 					// required for sensor group assignment create
@@ -76,6 +74,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
+					MockOAuth()
 					resources.GetSensor = func(uid string) resources.SensorResponseModel {
 						if uid == "sensor_uid" {
 							return GenerateSensorResponseModel("sensor_uid", "")
@@ -85,15 +84,12 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for creating another group
-					newGroupResponse := GenerateGroupResponseModel("group_uid_2", "_2", "_2")
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return newGroupResponse
-					}
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
 							return GenerateGroupResponseModel(uid, "", "")
 						} else {
-							return newGroupResponse
+							return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
 						}
 					}
 

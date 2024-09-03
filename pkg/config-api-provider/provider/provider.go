@@ -2,12 +2,21 @@ package provider
 
 import (
 	"context"
+	"os"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"net/http"
+
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/clientcredentials"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -22,6 +31,13 @@ func New(version string) func() provider.Provider {
 			version: version,
 		}
 	}
+}
+
+// maps provider schema data to a Go type.
+type uxiProviderModel struct {
+	Host         types.String `tfsdk:"host"`
+	ClientID     types.String `tfsdk:"client_id"`
+	ClientSecret types.String `tfsdk:"client_secret"`
 }
 
 type uxiConfigurationProvider struct {
@@ -39,14 +55,120 @@ func (p *uxiConfigurationProvider) Metadata(_ context.Context, _ provider.Metada
 
 // Schema defines the provider-level schema for configuration data.
 func (p *uxiConfigurationProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *provider.SchemaResponse) {
-	resp.Schema = schema.Schema{}
+	resp.Schema = schema.Schema{Attributes: map[string]schema.Attribute{
+		"host":          schema.StringAttribute{Required: true},
+		"client_id":     schema.StringAttribute{Required: true},
+		"client_secret": schema.StringAttribute{Required: true, Sensitive: true},
+	}}
 }
 
 // TODO: Obtain a greenlake access token
 // Configure prepares a Configuration API client for data sources and resources.
 func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
 	// Init
+	var config uxiProviderModel
+	diags := req.Config.Get(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// If practitioner provided a configuration value for any of the
+	// attributes, it must be a known value.
+
+	if config.Host.IsUnknown() {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("host"),
+			"Unknown HashiCups API Host",
+			"The provider cannot create the HashiCups API client as there is an unknown configuration value for the HashiCups API host. "+
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the HASHICUPS_HOST environment variable.",
+		)
+	}
+
+	if config.ClientID.IsUnknown() {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("client_id"),
+			"Unknown HashiCups API Password",
+			"The provider cannot create the HashiCups API client as there is an unknown configuration value for the HashiCups API password. "+
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the HASHICUPS_PASSWORD environment variable.",
+		)
+	}
+
+	if config.ClientSecret.IsUnknown() {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("client_secret"),
+			"Unknown HashiCups API Password",
+			"The provider cannot create the HashiCups API client as there is an unknown configuration value for the HashiCups API password. "+
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the HASHICUPS_PASSWORD environment variable.",
+		)
+	}
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	host := os.Getenv("UXI_HOST")
+	clientID := os.Getenv("CLIENT_ID")
+	clientSecret := os.Getenv("CLIENT_SECRET")
+
+	if !config.Host.IsNull() {
+		host = config.Host.ValueString()
+	}
+
+	if !config.ClientID.IsNull() {
+		clientID = config.ClientID.ValueString()
+	}
+
+	if !config.ClientSecret.IsNull() {
+		clientSecret = config.ClientSecret.ValueString()
+	}
+
+	// If any of the expected configurations are missing, return
+	// errors with provider-specific guidance.
+
+	if host == "" {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("host"),
+			"Missing HashiCups API Host",
+			"The provider cannot create the HashiCups API client as there is a missing or empty value for the HashiCups API host. "+
+				"Set the host value in the configuration or use the HASHICUPS_HOST environment variable. "+
+				"If either is already set, ensure the value is not empty.",
+		)
+	}
+
+	if clientID == "" {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("client_id"),
+			"Missing HashiCups API Password",
+			"The provider cannot create the HashiCups API client as there is a missing or empty value for the HashiCups API password. "+
+				"Set the password value in the configuration or use the HASHICUPS_PASSWORD environment variable. "+
+				"If either is already set, ensure the value is not empty.",
+		)
+	}
+
+	if clientSecret == "" {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("client_secret"),
+			"Missing HashiCups API Password",
+			"The provider cannot create the HashiCups API client as there is a missing or empty value for the HashiCups API password. "+
+				"Set the password value in the configuration or use the HASHICUPS_PASSWORD environment variable. "+
+				"If either is already set, ensure the value is not empty.",
+		)
+	}
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	// initialise client
+	uxiConfiguration := config_api_client.NewConfiguration()
+	uxiConfiguration.Host = host
+	uxiConfiguration.Scheme = "https"
+	uxiConfiguration.HTTPClient = getHttpClient(clientID, clientSecret)
+	uxiClient := config_api_client.NewAPIClient(uxiConfiguration)
+
+	resp.DataSourceData = uxiClient
+	resp.ResourceData = uxiClient
 }
 
 // DataSources defines the data sources implemented in the provider.
@@ -68,4 +190,19 @@ func (p *uxiConfigurationProvider) Resources(_ context.Context) []func() resourc
 		resources.NewNetworkGroupAssignmentResource,
 		resources.NewServiceTestGroupAssignmentResource,
 	}
+}
+
+func getHttpClient(clientID string, clientSecret string) *http.Client {
+	tokenURL := "https://sso.common.cloud.hpe.com/as/token.oauth2"
+
+	// Set up the client credentials config
+	config := &clientcredentials.Config{
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		TokenURL:     tokenURL,
+		AuthStyle:    oauth2.AuthStyleInParams,
+	}
+
+	// Create a context and fetch a tokencould
+	return config.Client(context.Background())
 }

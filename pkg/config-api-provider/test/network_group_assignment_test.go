@@ -16,15 +16,14 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Creating a network group assignment
 			{
 				PreConfig: func() {
+					MockOAuth()
 					// required for network import
 					resources.GetWiredNetwork = func(uid string) resources.WiredNetworkResponseModel {
 						return GenerateWiredNetworkResponseModel(uid, "")
 					}
 
 					// required for group create
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("group_uid", "", "")
-					}
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						return GenerateGroupResponseModel("group_uid", "", "")
 					}
@@ -72,6 +71,7 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
+					MockOAuth()
 					resources.GetWiredNetwork = func(uid string) resources.WiredNetworkResponseModel {
 						if uid == "network_uid" {
 							return GenerateWiredNetworkResponseModel(uid, "")
@@ -81,9 +81,7 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for creating another group
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
-					}
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
 							return GenerateGroupResponseModel("uid", "", "")
@@ -176,15 +174,14 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Creating a network group assignment
 			{
 				PreConfig: func() {
+					MockOAuth()
 					// required for network import
 					resources.GetWirelessNetwork = func(uid string) resources.WirelessNetworkResponseModel {
 						return GenerateWirelessNetworkResponseModel(uid, "")
 					}
 
 					// required for group create
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("group_uid", "", "")
-					}
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						return GenerateGroupResponseModel(uid, "", "")
 					}
@@ -232,6 +229,7 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
+					MockOAuth()
 					resources.GetWirelessNetwork = func(uid string) resources.WirelessNetworkResponseModel {
 						if uid == "network_uid" {
 							return GenerateWirelessNetworkResponseModel(uid, "")
@@ -241,9 +239,7 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for creating another group
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
-					}
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
 							return GenerateGroupResponseModel(uid, "", "")
