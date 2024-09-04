@@ -4,11 +4,73 @@ All URIs are relative to *https://api.capenetworks.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**GetConfigurationAppV1SensorGroupAssignmentsGet**](ConfigurationAPI.md#GetConfigurationAppV1SensorGroupAssignmentsGet) | **Get** /configuration/app/v1/sensor-group-assignments | Get
 [**GetLivezHealthLivezGet**](ConfigurationAPI.md#GetLivezHealthLivezGet) | **Get** /health/livez | Live health check
 [**GetReadyzHealthReadyzGet**](ConfigurationAPI.md#GetReadyzHealthReadyzGet) | **Get** /health/readyz | Ready health check
 [**GetStatusHealthStatusGet**](ConfigurationAPI.md#GetStatusHealthStatusGet) | **Get** /health/status | Service stats endpoint
 [**GroupsPostConfigurationAppV1GroupsPost**](ConfigurationAPI.md#GroupsPostConfigurationAppV1GroupsPost) | **Post** /configuration/app/v1/groups | Groups Post
 
+
+
+## GetConfigurationAppV1SensorGroupAssignmentsGet
+
+> SensorGroupAssignmentsResponse GetConfigurationAppV1SensorGroupAssignmentsGet(ctx).Execute()
+
+Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.GetConfigurationAppV1SensorGroupAssignmentsGet(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetConfigurationAppV1SensorGroupAssignmentsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetConfigurationAppV1SensorGroupAssignmentsGet`: SensorGroupAssignmentsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetConfigurationAppV1SensorGroupAssignmentsGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetConfigurationAppV1SensorGroupAssignmentsGetRequest struct via the builder pattern
+
+
+### Return type
+
+[**SensorGroupAssignmentsResponse**](SensorGroupAssignmentsResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## GetLivezHealthLivezGet

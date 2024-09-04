@@ -62,4 +62,41 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		assert.Equal(t, resp, &openapiclient.GroupsPostResponse{ParentUid: "parent.uid", Name: "name", Uid: "node", Path: "parent.uid.node"})
 	})
 
+	t.Run("Test ConfigurationAPIService GroupsPostConfigurationAppV1GroupsPost", func(t *testing.T) {
+
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Get("/configuration/app/v1/sensor-group-assignments").
+			Reply(200).
+			JSON(map[string]interface{}{
+				"sensor_group_assignments": []map[string]string{
+					{
+						"uid":        "uid",
+						"group_uid":  "group_uid",
+						"sensor_uid": "sensor_uid",
+					},
+				},
+				"pagination": map[string]interface{}{
+					"limit":    10,
+					"first":    nil,
+					"next":     nil,
+					"previous": nil,
+					"last":     nil,
+				},
+			})
+		resp, httpRes, err := apiClient.ConfigurationAPI.GetConfigurationAppV1SensorGroupAssignmentsGet(context.Background()).Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.SensorGroupAssignmentsResponse{
+			SensorGroupAssignments: []openapiclient.SensorGroupAssignment{
+				{
+					Uid:       "uid",
+					GroupUid:  "group_uid",
+					SensorUid: "sensor_uid",
+				},
+			},
+			Pagination: openapiclient.PaginationDetails{Limit: 10},
+		})
+	})
+
 }
