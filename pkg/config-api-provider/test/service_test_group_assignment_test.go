@@ -15,18 +15,16 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			// Creating a serviceTest group assignment
 			{
 				PreConfig: func() {
+					MockOAuth()
 					// required for serviceTest import
 					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
 						return GenerateServiceTestResponseModel(uid, "")
 					}
 
 					// required for group create
-					groupResponse := GenerateGroupResponseModel("group_uid", "", "")
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return groupResponse
-					}
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return groupResponse
+						return GenerateGroupResponseModel("group_uid", "", "")
 					}
 
 					// required for serviceTest group assignment create
@@ -73,6 +71,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
+					MockOAuth()
 					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
 						if uid == "service_test_uid" {
 							return GenerateServiceTestResponseModel("service_test_uid", "")
@@ -82,9 +81,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for creating another group
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
-					}
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
 							return GenerateGroupResponseModel(uid, "", "")

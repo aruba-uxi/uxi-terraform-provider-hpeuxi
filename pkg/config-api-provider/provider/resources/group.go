@@ -3,6 +3,8 @@ package resources
 import (
 	"context"
 
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -24,10 +26,10 @@ type groupResourceModel struct {
 }
 
 type GroupResponseModel struct {
-	UID       string
-	Name      string
-	ParentUid *string
-	Path      string
+	UID       string  `json:"uid"`
+	Name      string  `json:"name"`
+	ParentUid *string `json:"parent_uid"`
+	Path      string  `json:"path"`
 }
 
 type GroupCreateRequestModel struct {
@@ -43,7 +45,9 @@ func NewGroupResource() resource.Resource {
 	return &groupResource{}
 }
 
-type groupResource struct{}
+type groupResource struct {
+	client *config_api_client.APIClient
+}
 
 func (r *groupResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_group"
@@ -73,6 +77,23 @@ func (r *groupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 }
 
 func (r *groupResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	// Add a nil check when handling ProviderData because Terraform
+	// sets that data after it calls the ConfigureProvider RPC.
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*config_api_client.APIClient)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Resource type: Group. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.client = client
 }
 
 func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -84,17 +105,20 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
-	// TODO: Call client create-group method
-	// We are mocking the response of the client for this early stage of development
-	group := CreateGroup(GroupCreateRequestModel{
-		Name:      plan.Name.ValueString(),
-		ParentUid: plan.ParentGroupId.ValueString(),
-	})
+	groups_post_request := config_api_client.NewGroupsPostRequest(plan.ParentGroupId.ValueString(), plan.Name.ValueString())
+	group, _, err := r.client.ConfigurationAPI.GroupsPostConfigurationAppV1GroupsPost(context.Background()).GroupsPostRequest(*groups_post_request).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating group",
+			"Could not create group, unexpected error: "+err.Error(),
+		)
+		return
+	}
 
 	// Update the state to match the plan (replace with response from client)
-	plan.ID = types.StringValue(group.UID)
+	plan.ID = types.StringValue(group.Uid)
 	plan.Name = types.StringValue(group.Name)
-	plan.ParentGroupId = types.StringValue(*group.ParentUid)
+	plan.ParentGroupId = types.StringValue(group.ParentUid)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -181,19 +205,6 @@ var GetGroup = func(uid string) GroupResponseModel {
 
 	return GroupResponseModel{
 		UID:       uid,
-		Name:      "mock_name",
-		ParentUid: &parent_uid,
-		Path:      "mock_path",
-	}
-}
-
-var CreateGroup = func(request GroupCreateRequestModel) GroupResponseModel {
-	// TODO: Query the group using the client
-
-	parent_uid := "mock_parent_uid"
-
-	return GroupResponseModel{
-		UID:       "mock_uid",
 		Name:      "mock_name",
 		ParentUid: &parent_uid,
 		Path:      "mock_path",

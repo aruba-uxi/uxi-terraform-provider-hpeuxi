@@ -20,9 +20,9 @@ func TestGroupResource(t *testing.T) {
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("uid", "", "")
-					}
+					MockOAuth()
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("uid", "", "")))
+
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						return GenerateGroupResponseModel(uid, "", "")
 					}
@@ -69,9 +69,8 @@ func TestGroupResource(t *testing.T) {
 			// Update that does trigger a recreate
 			{
 				PreConfig: func() {
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("new_uid", "", "_2")
-					}
+					MockOAuth()
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("new_uid", "", "_2")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "uid" {
 							return GenerateGroupResponseModel(uid, "", "")

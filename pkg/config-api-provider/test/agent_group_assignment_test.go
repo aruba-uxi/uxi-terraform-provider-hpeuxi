@@ -15,15 +15,14 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			// Creating a agent group assignment
 			{
 				PreConfig: func() {
+					MockOAuth()
 					// required for agent import
 					resources.GetAgent = func(uid string) resources.AgentResponseModel {
 						return GenerateAgentResponseModel(uid, "")
 					}
 
 					// required for group create
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("group_uid", "", "")
-					}
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						return GenerateGroupResponseModel("group_uid", "", "")
 					}
@@ -74,6 +73,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
+					MockOAuth()
 					resources.GetAgent = func(uid string) resources.AgentResponseModel {
 						if uid == "agent_uid" {
 							return GenerateAgentResponseModel(uid, "")
@@ -83,9 +83,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for creating another group
-					resources.CreateGroup = func(request resources.GroupCreateRequestModel) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
-					}
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")))
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
 							return GenerateGroupResponseModel(uid, "", "")
