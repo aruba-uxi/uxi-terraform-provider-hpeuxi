@@ -25,7 +25,7 @@ var (
 	_ provider.Provider = &uxiConfigurationProvider{}
 )
 
-var tokenURLDefault = "https://sso.common.cloud.hpe.com/as/token.oauth2"
+const tokenURLDefault = "https://sso.common.cloud.hpe.com/as/token.oauth2"
 
 // New is a helper function to simplify provider server and testing implementation.
 func New(version string) func() provider.Provider {
@@ -78,49 +78,6 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 		return
 	}
 
-	// If practitioner provided a configuration value for any of the
-	// attributes, it must be a known value.
-
-	if config.Host.IsUnknown() {
-		resp.Diagnostics.AddAttributeError(
-			path.Root("host"),
-			"Unknown UXI API Host",
-			"The provider cannot create the UXI API client as there is an unknown configuration value for the UXI API host. "+
-				"Either target apply the source of the value first, set the value statically in the configuration, or use the UXI_HOST environment variable.",
-		)
-	}
-
-	if config.ClientID.IsUnknown() {
-		resp.Diagnostics.AddAttributeError(
-			path.Root("client_id"),
-			"Unknown Client ID",
-			"The provider cannot create the UXI API client as there is an unknown configuration value for the Client ID. "+
-				"Either target apply the source of the value first, set the value statically in the configuration, or use the CLIENT_ID environment variable.",
-		)
-	}
-
-	if config.ClientSecret.IsUnknown() {
-		resp.Diagnostics.AddAttributeError(
-			path.Root("client_secret"),
-			"Unknown Client Secret",
-			"The provider cannot create the UXI API client as there is an unknown configuration value for the Client Secret. "+
-				"Either target apply the source of the value first, set the value statically in the configuration, or use the CLIENT_SECRET environment variable.",
-		)
-	}
-
-	if config.TokenURL.IsUnknown() {
-		resp.Diagnostics.AddAttributeError(
-			path.Root("token_url"),
-			"Unknown Token URL",
-			"The provider cannot create the UXI API client as there is an unknown configuration value for the Token URL. "+
-				"Either target apply the source of the value first, set the value statically in the configuration, or use the TOKEN_URL environment variable.",
-		)
-	}
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
 	host := os.Getenv("UXI_HOST")
 	clientID := os.Getenv("CLIENT_ID")
 	clientSecret := os.Getenv("CLIENT_SECRET")
@@ -148,8 +105,8 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 	if host == "" {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("host"),
-			"Missing UXI API Host",
-			"The provider cannot create the UXI API client as there is a missing or empty value for the UXI API host. "+
+			"Missing Host",
+			"The provider cannot initialize as there is a missing or empty value for the UXI API host. "+
 				"Set the host value in the configuration or use the UXI_HOST environment variable. "+
 				"If either is already set, ensure the value is not empty.",
 		)
@@ -159,7 +116,7 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 		resp.Diagnostics.AddAttributeError(
 			path.Root("client_id"),
 			"Missing Client ID",
-			"The provider cannot create the UXI API client as there is a missing or empty value for the Client ID. "+
+			"The provider cannot initialize as there is a missing or empty value for the Client ID. "+
 				"Set the Client ID value in the configuration or use the CLIENT_ID environment variable. "+
 				"If either is already set, ensure the value is not empty.",
 		)
@@ -169,7 +126,7 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 		resp.Diagnostics.AddAttributeError(
 			path.Root("client_secret"),
 			"Missing Client Secret",
-			"The provider cannot create the UXI API client as there is a missing or empty value for the Client Secret. "+
+			"The provider cannot initialize as there is a missing or empty value for the Client Secret. "+
 				"Set the Client Secret value in the configuration or use the CLIENT_SECRET environment variable. "+
 				"If either is already set, ensure the value is not empty.",
 		)

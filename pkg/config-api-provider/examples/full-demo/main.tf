@@ -6,7 +6,12 @@ terraform {
   }
 }
 
-provider "uxi" {}
+provider "uxi" {
+    host		  = "test.api.capenetworks.com"
+    client_id     = "client_id"
+    client_secret = var.client_secret
+    token_url     = "https://test.sso.common.cloud.hpe.com/as/token.oauth2"
+}
 
 data "uxi_root_group" "my_root_group" {}
 
