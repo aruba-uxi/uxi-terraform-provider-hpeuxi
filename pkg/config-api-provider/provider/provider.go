@@ -147,6 +147,7 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 	uxiConfiguration.HTTPClient = getHttpClient(clientID, clientSecret, tokenURL)
 	uxiClient := config_api_client.NewAPIClient(uxiConfiguration)
 
+	// Make the client available during DataSource and Resource type Configure methods.
 	resp.DataSourceData = uxiClient
 	resp.ResourceData = uxiClient
 }
