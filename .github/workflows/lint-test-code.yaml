@@ -41,7 +41,7 @@ jobs:
       - name: Check package files up to date
         run: |
           just tidy
-          git diff --exit-code -- pkg/config-api-client/go.* pkg/config-api-provider/go.mod
+          git diff --exit-code -- pkg/config-api-client/go.* pkg/config-api-provider/go.*
 
       - name: Run Tests
         run: |
