@@ -38,6 +38,11 @@ jobs:
       - name: Run Code Linting Test
         run: just lint >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Check package files up to date
+        run: |
+          just tidy
+          git diff --exit-code -- pkg/config-api-client/go.* pkg/config-api-provider/go.mod
+
       - name: Run Tests
         run: |
           just test

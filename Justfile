@@ -35,6 +35,9 @@ coverage-client:
 fmt-client:
   gofmt -w pkg/config-api-client
 
+tidy-client:
+  cd {{ CONFIG_API_CLIENT_DIR }} && go mod tidy
+
 lint-client:
   #!/usr/bin/env bash
 
@@ -62,6 +65,9 @@ lint-provider:
 fmt-provider:
   gofmt -w pkg/config-api-provider
 
+tidy-provider:
+  cd {{ CONFIG_API_PROVIDER_DIR }} && go mod tidy
+
 test-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./... -race -covermode=atomic -coverprofile=.coverage
 
@@ -83,6 +89,10 @@ lint:
 fmt:
   just fmt-client
   just fmt-provider
+
+tidy:
+  just tidy-client
+  just tidy-provider
 
 clean:
   find . -name ".coverage*" -type f -delete
