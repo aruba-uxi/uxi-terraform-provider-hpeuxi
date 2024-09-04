@@ -67,7 +67,7 @@ func (r *groupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Required: true,
 			},
 			"parent_group_id": schema.StringAttribute{
-				Optional: true,
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					// UXI business logic does not permit moving of groups
 					stringplanmodifier.RequiresReplace(),
@@ -134,6 +134,9 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	// Get current state
 	var state groupResourceModel
 	diags := req.State.Get(ctx, &state)
+	if state.ID.ValueString() == GetRootGroupUID() {
+		diags.AddError("operation not supported", "the root node cannot be used as a resource")
+	}
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -221,4 +224,9 @@ var UpdateGroup = func(request GroupUpdateRequestModel) GroupResponseModel {
 		ParentUid: &parent_uid,
 		Path:      "mock_path",
 	}
+}
+
+var GetRootGroupUID = func() string {
+	// Get root node here using the client
+	return "root_group_uid"
 }

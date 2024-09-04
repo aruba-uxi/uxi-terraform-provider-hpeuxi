@@ -46,6 +46,15 @@ func GenerateGroupResponseModel(uid string, non_replacement_field_postfix string
 	}
 }
 
+func GenerateRootGroupResponseModel(uid string) resources.GroupResponseModel {
+	return resources.GroupResponseModel{
+		UID:       uid,
+		Name:      "root",
+		ParentUid: nil,
+		Path:      uid,
+	}
+}
+
 func GenerateServiceTestResponseModel(uid string, postfix string) resources.ServiceTestResponseModel {
 	return resources.ServiceTestResponseModel{
 		Uid:       uid,

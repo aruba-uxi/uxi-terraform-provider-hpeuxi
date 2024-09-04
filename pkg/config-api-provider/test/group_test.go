@@ -1,6 +1,7 @@
 package test
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
@@ -90,6 +91,32 @@ func TestGroupResource(t *testing.T) {
 				),
 			},
 			// Delete testing automatically occurs in TestCase
+		},
+	})
+}
+
+func TestRootGroupResource(t *testing.T) {
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Importing the root group does not work
+			{
+				PreConfig: func() {
+					resources.GetRootGroupUID = func() string { return "my_root_group_uid" }
+				},
+				Config: providerConfig + `
+				resource "uxi_group" "my_root_group" {
+					name            = "name"
+					parent_group_id = "some_random_string"
+				}
+
+				import {
+					to = uxi_group.my_root_group
+					id = "my_root_group_uid"
+				}`,
+				ExpectError: regexp.MustCompile(`the root node cannot be used as a resource`),
+			},
 		},
 	})
 }
