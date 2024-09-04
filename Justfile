@@ -97,10 +97,10 @@ tidy:
 clean:
   find . -name ".coverage*" -type f -delete
 
-plan:
+plan +ARGS='':
   cd {{ CONFIG_API_PROVIDER_DIR }} && go install .
-  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/full-demo && terraform plan
+  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/full-demo && terraform plan -var client_secret=secret {{ ARGS }}
 
-apply:
+apply +ARGS='':
   cd {{ CONFIG_API_PROVIDER_DIR }} && go install .
-  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/full-demo && terraform apply
+  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/full-demo && terraform apply -var client_secret=secret {{ ARGS }}
