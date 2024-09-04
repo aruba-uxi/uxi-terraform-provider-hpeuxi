@@ -1,1 +1,0 @@
-variable "client_secret" {}

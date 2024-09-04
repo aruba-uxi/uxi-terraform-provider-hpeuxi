@@ -2,7 +2,6 @@ package resources
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 
@@ -89,9 +88,8 @@ func (r *groupResource) Configure(_ context.Context, req resource.ConfigureReque
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected *config_api_client.APIClient, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			"Resource type: Group. Please report this issue to the provider developers.",
 		)
-
 		return
 	}
 

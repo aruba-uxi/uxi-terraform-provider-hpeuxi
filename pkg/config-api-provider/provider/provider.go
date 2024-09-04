@@ -184,6 +184,6 @@ func getHttpClient(clientID string, clientSecret string, tokenURL string) *http.
 		AuthStyle:    oauth2.AuthStyleInParams,
 	}
 
-	// Create a context and fetch a tokencould
+	// Create a context and fetch a token
 	return config.Client(context.Background())
 }
