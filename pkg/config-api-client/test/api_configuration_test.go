@@ -66,6 +66,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/configuration/app/v1/sensor-group-assignments").
+			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"sensor_group_assignments": []map[string]string{
