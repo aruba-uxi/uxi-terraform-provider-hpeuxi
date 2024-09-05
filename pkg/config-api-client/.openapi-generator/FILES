@@ -9,8 +9,11 @@ docs/ErrorResponse.md
 docs/GroupsPostRequest.md
 docs/GroupsPostResponse.md
 docs/LivenessResponse.md
+docs/PaginationDetails.md
 docs/ReadinessErrorResponse.md
 docs/ReadinessResponse.md
+docs/SensorGroupAssignment.md
+docs/SensorGroupAssignmentsResponse.md
 docs/StatusResponse.md
 go.mod
 go.sum
@@ -19,8 +22,11 @@ model_error_response.go
 model_groups_post_request.go
 model_groups_post_response.go
 model_liveness_response.go
+model_pagination_details.go
 model_readiness_error_response.go
 model_readiness_response.go
+model_sensor_group_assignment.go
+model_sensor_group_assignments_response.go
 model_status_response.go
 response.go
 utils.go

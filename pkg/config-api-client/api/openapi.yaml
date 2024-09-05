@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 1.2.0
+  version: 1.4.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -19,6 +19,7 @@ tags:
 - name: configuration
 - name: groups
 - name: health
+- name: sensor-group-assignments
 paths:
   /health/livez:
     get:
@@ -106,6 +107,56 @@ paths:
       summary: Groups Post
       tags:
       - configuration
+  /configuration/app/v1/sensor-group-assignments:
+    get:
+      description: Get a list of sensor group assignments
+      operationId: get_configuration_app_v1_sensor_group_assignments_get
+      parameters:
+      - explode: true
+        in: query
+        name: uid
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorGroupAssignmentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Get
+      tags:
+      - configuration
 components:
   schemas:
     ErrorDetail:
@@ -189,6 +240,37 @@ components:
       - status
       title: LivenessResponse
       type: object
+    PaginationDetails:
+      example:
+        next: next
+        previous: previous
+        last: last
+        limit: 0
+        first: first
+      properties:
+        limit:
+          title: Limit
+          type: integer
+        next:
+          title: Next
+          type: string
+        previous:
+          title: Previous
+          type: string
+        first:
+          title: First
+          type: string
+        last:
+          title: Last
+          type: string
+      required:
+      - first
+      - last
+      - limit
+      - next
+      - previous
+      title: PaginationDetails
+      type: object
     ReadinessErrorResponse:
       example:
         data:
@@ -230,6 +312,55 @@ components:
       - data
       - status
       title: ReadinessResponse
+      type: object
+    SensorGroupAssignment:
+      example:
+        group_uid: group_uid
+        uid: uid
+        sensor_uid: sensor_uid
+      properties:
+        uid:
+          title: Uid
+          type: string
+        group_uid:
+          title: Group Uid
+          type: string
+        sensor_uid:
+          title: Sensor Uid
+          type: string
+      required:
+      - group_uid
+      - sensor_uid
+      - uid
+      title: SensorGroupAssignment
+      type: object
+    SensorGroupAssignmentsResponse:
+      example:
+        sensor_group_assignments:
+        - group_uid: group_uid
+          uid: uid
+          sensor_uid: sensor_uid
+        - group_uid: group_uid
+          uid: uid
+          sensor_uid: sensor_uid
+        pagination:
+          next: next
+          previous: previous
+          last: last
+          limit: 0
+          first: first
+      properties:
+        sensor_group_assignments:
+          items:
+            $ref: '#/components/schemas/SensorGroupAssignment'
+          title: Sensor Group Assignments
+          type: array
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+      required:
+      - pagination
+      - sensor_group_assignments
+      title: SensorGroupAssignmentsResponse
       type: object
     StatusResponse:
       example:
