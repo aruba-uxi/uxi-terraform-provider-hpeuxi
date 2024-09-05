@@ -83,7 +83,12 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 					"last":     nil,
 				},
 			})
-		resp, httpRes, err := apiClient.ConfigurationAPI.GetConfigurationAppV1SensorGroupAssignmentsGet(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			GetConfigurationAppV1SensorGroupAssignmentsGet(context.Background()).
+			Uid("uid").
+			Limit(10).
+			Cursor("some-cursor").
+			Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)

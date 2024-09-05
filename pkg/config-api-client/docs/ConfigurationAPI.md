@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## GetConfigurationAppV1SensorGroupAssignmentsGet
 
-> SensorGroupAssignmentsResponse GetConfigurationAppV1SensorGroupAssignmentsGet(ctx).Execute()
+> SensorGroupAssignmentsResponse GetConfigurationAppV1SensorGroupAssignmentsGet(ctx).Uid(uid).Cursor(cursor).Limit(limit).Execute()
 
 Get
 
@@ -33,10 +33,13 @@ import (
 )
 
 func main() {
+	uid := "uid_example" // string |  (optional)
+	cursor := "cursor_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetConfigurationAppV1SensorGroupAssignmentsGet(context.Background()).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetConfigurationAppV1SensorGroupAssignmentsGet(context.Background()).Uid(uid).Cursor(cursor).Limit(limit).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetConfigurationAppV1SensorGroupAssignmentsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -48,12 +51,18 @@ func main() {
 
 ### Path Parameters
 
-This endpoint does not need any parameter.
+
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiGetConfigurationAppV1SensorGroupAssignmentsGetRequest struct via the builder pattern
 
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uid** | **string** |  | 
+ **cursor** | **string** |  | 
+ **limit** | **int32** |  | 
 
 ### Return type
 

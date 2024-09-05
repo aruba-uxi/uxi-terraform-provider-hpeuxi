@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 1.3.0
+  version: 1.4.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -111,6 +111,28 @@ paths:
     get:
       description: Get a list of sensor group assignments
       operationId: get_configuration_app_v1_sensor_group_assignments_get
+      parameters:
+      - explode: true
+        in: query
+        name: uid
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
       responses:
         "200":
           content:

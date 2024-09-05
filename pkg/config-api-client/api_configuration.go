@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.3.0
+API version: 1.4.0
 Contact: support@capenetworks.com
 */
 
@@ -25,6 +25,24 @@ type ConfigurationAPIService service
 type ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
+	uid        *string
+	cursor     *string
+	limit      *int32
+}
+
+func (r ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest) Uid(uid string) ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest {
+	r.uid = &uid
+	return r
+}
+
+func (r ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest) Cursor(cursor string) ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest {
+	r.cursor = &cursor
+	return r
+}
+
+func (r ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest) Limit(limit int32) ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest {
+	r.limit = &limit
+	return r
 }
 
 func (r ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest) Execute() (*SensorGroupAssignmentsResponse, *http.Response, error) {
@@ -68,6 +86,15 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1SensorGroupAssignmentsGet
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if r.uid != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+	}
+	if r.cursor != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
