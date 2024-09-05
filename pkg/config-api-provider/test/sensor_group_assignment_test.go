@@ -22,19 +22,23 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for group create
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")))
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")), 1)
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						return GenerateGroupResponseModel("group_uid", "", "")
 					}
 
 					// required for sensor group assignment create
-					sensorGroupAssignmentResponse := GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")
 					resources.CreateSensorGroupAssignment = func(request resources.SensorGroupAssignmentRequestModel) resources.SensorGroupAssignmentResponseModel {
-						return sensorGroupAssignmentResponse
+						return GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")
 					}
-					resources.GetSensorGroupAssignment = func(uid string) resources.SensorGroupAssignmentResponseModel {
-						return sensorGroupAssignmentResponse
-					}
+					MockGetSensorGroupAssociation(
+						"sensor_group_assignment_uid",
+						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
+							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")),
+						},
+						),
+						1,
+					)
 				},
 
 				Config: providerConfig + `
@@ -67,6 +71,15 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
+				PreConfig: func() {
+					MockGetSensorGroupAssociation(
+						"sensor_group_assignment_uid",
+						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
+							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")),
+						}),
+						1,
+					)
+				},
 				ResourceName:      "uxi_sensor_group_assignment.my_sensor_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
@@ -74,7 +87,6 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					MockOAuth()
 					resources.GetSensor = func(uid string) resources.SensorResponseModel {
 						if uid == "sensor_uid" {
 							return GenerateSensorResponseModel("sensor_uid", "")
@@ -84,7 +96,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for creating another group
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")))
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
 							return GenerateGroupResponseModel(uid, "", "")
@@ -94,16 +106,24 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for sensor group assignment create
-					sensorGroupAssignmentUpdated := GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2")
-					resources.GetSensorGroupAssignment = func(uid string) resources.SensorGroupAssignmentResponseModel {
-						if uid == "sensor_group_assignment_uid" {
-							return GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")
-						} else {
-							return sensorGroupAssignmentUpdated
-						}
-					}
+
+					MockGetSensorGroupAssociation(
+						"sensor_group_assignment_uid",
+						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
+							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")),
+						}),
+						1,
+					)
+					MockGetSensorGroupAssociation(
+						"sensor_group_assignment_uid_2",
+						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
+							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2")),
+						}),
+						1,
+					)
+
 					resources.CreateSensorGroupAssignment = func(request resources.SensorGroupAssignmentRequestModel) resources.SensorGroupAssignmentResponseModel {
-						return sensorGroupAssignmentUpdated
+						return GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2")
 					}
 				},
 				Config: providerConfig + `
@@ -156,6 +176,23 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			},
 			// Remove sensors from state
 			{
+				PreConfig: func() {
+					MockGetSensorGroupAssociation(
+						"sensor_group_assignment_uid",
+						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
+							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")),
+						}),
+						1,
+					)
+					MockGetSensorGroupAssociation(
+						"sensor_group_assignment_uid_2",
+						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
+							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2")),
+						}),
+						1,
+					)
+
+				},
 				Config: providerConfig + `
 					removed {
 						from = uxi_sensor.my_sensor

@@ -21,7 +21,7 @@ func TestGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					MockOAuth()
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("uid", "", "")))
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("uid", "", "")), 1)
 
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						return GenerateGroupResponseModel(uid, "", "")
@@ -70,7 +70,7 @@ func TestGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					MockOAuth()
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("new_uid", "", "_2")))
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("new_uid", "", "_2")), 1)
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "uid" {
 							return GenerateGroupResponseModel(uid, "", "")
