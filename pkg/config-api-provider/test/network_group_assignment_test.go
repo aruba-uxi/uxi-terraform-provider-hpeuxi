@@ -23,7 +23,7 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for group create
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")))
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")), 1)
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						return GenerateGroupResponseModel("group_uid", "", "")
 					}
@@ -81,7 +81,7 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for creating another group
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")))
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
 							return GenerateGroupResponseModel("uid", "", "")
@@ -181,7 +181,7 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for group create
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")))
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")), 1)
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						return GenerateGroupResponseModel(uid, "", "")
 					}
@@ -239,7 +239,7 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for creating another group
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")))
+					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
 					resources.GetGroup = func(uid string) resources.GroupResponseModel {
 						if uid == "group_uid" {
 							return GenerateGroupResponseModel(uid, "", "")

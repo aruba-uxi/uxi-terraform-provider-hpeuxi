@@ -3,6 +3,7 @@ package resources
 import (
 	"context"
 
+	config_api_client "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -24,9 +25,9 @@ type sensorGroupAssignmentResourceModel struct {
 }
 
 type SensorGroupAssignmentResponseModel struct {
-	UID       string //  <assignment_uid>
-	GroupUID  string //  <group_uid:str>,
-	SensorUID string //  <sensor_uid:str>
+	UID       string `json:"uid"`
+	GroupUID  string `json:"group_uid"`
+	SensorUID string `json:"sensor_uid"`
 }
 
 type SensorGroupAssignmentRequestModel struct {
@@ -38,7 +39,9 @@ func NewSensorGroupAssignmentResource() resource.Resource {
 	return &sensorGroupAssignmentResource{}
 }
 
-type sensorGroupAssignmentResource struct{}
+type sensorGroupAssignmentResource struct {
+	client *config_api_client.APIClient
+}
 
 func (r *sensorGroupAssignmentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_sensor_group_assignment"
@@ -70,6 +73,24 @@ func (r *sensorGroupAssignmentResource) Schema(_ context.Context, _ resource.Sch
 }
 
 func (r *sensorGroupAssignmentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	// Add a nil check when handling ProviderData because Terraform
+	// sets that data after it calls the ConfigureProvider RPC.
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*config_api_client.APIClient)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Resource type: Sensor Group Assignment. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.client = client
+
 }
 
 func (r *sensorGroupAssignmentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -109,12 +130,24 @@ func (r *sensorGroupAssignmentResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	// TODO: Call client getSensorGroupAssignment method
-	sensorGroupAssignment := GetSensorGroupAssignment(state.ID.ValueString())
+	sensorGroupAssignmentResponse, _, err := r.client.ConfigurationAPI.
+		GetConfigurationAppV1SensorGroupAssignmentsGet(context.Background()).
+		Uid(state.ID.ValueString()).
+		Execute()
+
+	if err != nil || len(sensorGroupAssignmentResponse.SensorGroupAssignments) != 1 {
+		resp.Diagnostics.AddError(
+			"Error reading Sensor Group Assignment",
+			"Could not retrieve Sensor Group Assignment, unexpected error: "+err.Error(),
+		)
+		return
+	}
+
+	sensorGroupAssignment := sensorGroupAssignmentResponse.SensorGroupAssignments[0]
 
 	// Update state from client response
-	state.GroupID = types.StringValue(sensorGroupAssignment.GroupUID)
-	state.SensorID = types.StringValue(sensorGroupAssignment.SensorUID)
+	state.GroupID = types.StringValue(sensorGroupAssignment.GroupUid)
+	state.SensorID = types.StringValue(sensorGroupAssignment.SensorUid)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -149,16 +182,6 @@ func (r *sensorGroupAssignmentResource) Delete(ctx context.Context, req resource
 
 func (r *sensorGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-var GetSensorGroupAssignment = func(uid string) SensorGroupAssignmentResponseModel {
-	// TODO: Query the sensorGroupAssignment using the client
-
-	return SensorGroupAssignmentResponseModel{
-		UID:       uid,
-		GroupUID:  "mock_group_uid",
-		SensorUID: "mock_sensor_uid",
-	}
 }
 
 var CreateSensorGroupAssignment = func(request SensorGroupAssignmentRequestModel) SensorGroupAssignmentResponseModel {
