@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.4.0
+API version: 1.5.0
 Contact: support@capenetworks.com
 */
 
@@ -94,6 +94,9 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1SensorGroupAssignmentsGet
 	}
 	if r.limit != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	} else {
+		var defaultValue int32 = 50
+		r.limit = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -476,6 +479,157 @@ func (a *ConfigurationAPIService) GetStatusHealthStatusGetExecute(r ApiGetStatus
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGroupsGetConfigurationAppV1GroupsGetRequest struct {
+	ctx        context.Context
+	ApiService *ConfigurationAPIService
+	uid        *string
+	cursor     *string
+	limit      *int32
+}
+
+func (r ApiGroupsGetConfigurationAppV1GroupsGetRequest) Uid(uid string) ApiGroupsGetConfigurationAppV1GroupsGetRequest {
+	r.uid = &uid
+	return r
+}
+
+func (r ApiGroupsGetConfigurationAppV1GroupsGetRequest) Cursor(cursor string) ApiGroupsGetConfigurationAppV1GroupsGetRequest {
+	r.cursor = &cursor
+	return r
+}
+
+func (r ApiGroupsGetConfigurationAppV1GroupsGetRequest) Limit(limit int32) ApiGroupsGetConfigurationAppV1GroupsGetRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r ApiGroupsGetConfigurationAppV1GroupsGetRequest) Execute() (*GroupsGetResponse, *http.Response, error) {
+	return r.ApiService.GroupsGetConfigurationAppV1GroupsGetExecute(r)
+}
+
+/*
+GroupsGetConfigurationAppV1GroupsGet Groups Get
+
+Lists groups matching provided criteria
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGroupsGetConfigurationAppV1GroupsGetRequest
+*/
+func (a *ConfigurationAPIService) GroupsGetConfigurationAppV1GroupsGet(ctx context.Context) ApiGroupsGetConfigurationAppV1GroupsGetRequest {
+	return ApiGroupsGetConfigurationAppV1GroupsGetRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return GroupsGetResponse
+func (a *ConfigurationAPIService) GroupsGetConfigurationAppV1GroupsGetExecute(r ApiGroupsGetConfigurationAppV1GroupsGetRequest) (*GroupsGetResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *GroupsGetResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsGetConfigurationAppV1GroupsGet")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/configuration/app/v1/groups"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.uid != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+	}
+	if r.cursor != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	} else {
+		var defaultValue int32 = 50
+		r.limit = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode >= 400 && localVarHTTPResponse.StatusCode < 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode >= 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

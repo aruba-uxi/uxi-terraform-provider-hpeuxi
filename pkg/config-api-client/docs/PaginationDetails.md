@@ -5,16 +5,16 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Limit** | **int32** |  | 
-**Next** | **string** |  | 
-**Previous** | **string** |  | 
-**First** | **string** |  | 
-**Last** | **string** |  | 
+**Next** | **NullableString** |  | 
+**Previous** | **NullableString** |  | 
+**First** | **NullableString** |  | 
+**Last** | **NullableString** |  | 
 
 ## Methods
 
 ### NewPaginationDetails
 
-`func NewPaginationDetails(limit int32, next string, previous string, first string, last string, ) *PaginationDetails`
+`func NewPaginationDetails(limit int32, next NullableString, previous NullableString, first NullableString, last NullableString, ) *PaginationDetails`
 
 NewPaginationDetails instantiates a new PaginationDetails object
 This constructor will assign default values to properties that have it defined,
@@ -69,6 +69,16 @@ and a boolean to check if the value has been set.
 SetNext sets Next field to given value.
 
 
+### SetNextNil
+
+`func (o *PaginationDetails) SetNextNil(b bool)`
+
+ SetNextNil sets the value for Next to be an explicit nil
+
+### UnsetNext
+`func (o *PaginationDetails) UnsetNext()`
+
+UnsetNext ensures that no value is present for Next, not even an explicit nil
 ### GetPrevious
 
 `func (o *PaginationDetails) GetPrevious() string`
@@ -89,6 +99,16 @@ and a boolean to check if the value has been set.
 SetPrevious sets Previous field to given value.
 
 
+### SetPreviousNil
+
+`func (o *PaginationDetails) SetPreviousNil(b bool)`
+
+ SetPreviousNil sets the value for Previous to be an explicit nil
+
+### UnsetPrevious
+`func (o *PaginationDetails) UnsetPrevious()`
+
+UnsetPrevious ensures that no value is present for Previous, not even an explicit nil
 ### GetFirst
 
 `func (o *PaginationDetails) GetFirst() string`
@@ -109,6 +129,16 @@ and a boolean to check if the value has been set.
 SetFirst sets First field to given value.
 
 
+### SetFirstNil
+
+`func (o *PaginationDetails) SetFirstNil(b bool)`
+
+ SetFirstNil sets the value for First to be an explicit nil
+
+### UnsetFirst
+`func (o *PaginationDetails) UnsetFirst()`
+
+UnsetFirst ensures that no value is present for First, not even an explicit nil
 ### GetLast
 
 `func (o *PaginationDetails) GetLast() string`
@@ -129,6 +159,16 @@ and a boolean to check if the value has been set.
 SetLast sets Last field to given value.
 
 
+### SetLastNil
+
+`func (o *PaginationDetails) SetLastNil(b bool)`
+
+ SetLastNil sets the value for Last to be an explicit nil
+
+### UnsetLast
+`func (o *PaginationDetails) UnsetLast()`
+
+UnsetLast ensures that no value is present for Last, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

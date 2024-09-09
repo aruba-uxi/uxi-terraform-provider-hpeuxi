@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 1.4.0
+  version: 1.5.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -73,6 +73,59 @@ paths:
       tags:
       - configuration
   /configuration/app/v1/groups:
+    get:
+      description: Lists groups matching provided criteria
+      operationId: groups_get_configuration_app_v1_groups_get
+      parameters:
+      - explode: true
+        in: query
+        name: uid
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupsGetResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Groups Get
+      tags:
+      - configuration
     post:
       description: Create a new group with the group identified in `parent_uid` as
         its parent
@@ -117,6 +170,7 @@ paths:
         name: uid
         required: false
         schema:
+          nullable: true
           type: string
         style: form
       - explode: true
@@ -124,6 +178,7 @@ paths:
         name: cursor
         required: false
         schema:
+          nullable: true
           type: string
         style: form
       - explode: true
@@ -131,6 +186,8 @@ paths:
         name: limit
         required: false
         schema:
+          default: 50
+          title: Limit
           type: integer
         style: form
       responses:
@@ -157,6 +214,7 @@ paths:
       summary: Get
       tags:
       - configuration
+      x-stability-level: alpha
 components:
   schemas:
     ErrorDetail:
@@ -184,6 +242,62 @@ components:
       required:
       - detail
       title: ErrorResponse
+      type: object
+    GroupsGetItem:
+      example:
+        uid: uid
+        path: path
+        parent_uid: parent_uid
+        name: name
+      properties:
+        uid:
+          title: Uid
+          type: string
+        name:
+          title: Name
+          type: string
+        path:
+          title: Path
+          type: string
+        parent_uid:
+          title: Parent Uid
+          type: string
+      required:
+      - name
+      - parent_uid
+      - path
+      - uid
+      title: GroupsGetItem
+      type: object
+    GroupsGetResponse:
+      example:
+        pagination:
+          next: next
+          previous: previous
+          last: last
+          limit: 0
+          first: first
+        groups:
+        - uid: uid
+          path: path
+          parent_uid: parent_uid
+          name: name
+        - uid: uid
+          path: path
+          parent_uid: parent_uid
+          name: name
+      properties:
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+        groups:
+          items:
+            $ref: '#/components/schemas/GroupsGetItem'
+          title: Groups
+          type: array
+      required:
+      - groups
+      - pagination
+      title: GroupsGetResponse
       type: object
     GroupsPostRequest:
       example:
@@ -252,16 +366,16 @@ components:
           title: Limit
           type: integer
         next:
-          title: Next
+          nullable: true
           type: string
         previous:
-          title: Previous
+          nullable: true
           type: string
         first:
-          title: First
+          nullable: true
           type: string
         last:
-          title: Last
+          nullable: true
           type: string
       required:
       - first
