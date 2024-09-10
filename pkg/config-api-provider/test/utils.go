@@ -54,6 +54,13 @@ func GenerateGroupResponseModel(uid string, non_replacement_field_postfix string
 	}
 }
 
+func GenerateGroupPaginatedResponse(Groups []map[string]interface{}) map[string]interface{} {
+	return map[string]interface{}{
+		"groups":     Groups,
+		"pagination": mockPaginationResponse,
+	}
+}
+
 func GenerateRootGroupResponseModel(uid string) resources.GroupResponseModel {
 	return resources.GroupResponseModel{
 		UID:       uid,
@@ -176,6 +183,16 @@ func MockPostGroup(response map[string]interface{}, times int) {
 		Post("/configuration/app/v1/groups").
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+func MockGetGroup(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Get("/configuration/app/v1/groups").
+		MatchHeader("Authorization", "mock_token").
+		MatchParam("uid", uid).
 		Times(times).
 		Reply(200).
 		JSON(response)

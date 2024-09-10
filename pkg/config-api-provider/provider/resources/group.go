@@ -140,13 +140,24 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		return
 	}
 
-	// TODO: Call client create-group method
-	// We are mocking the response of the client for this early stage of development
-	response := GetGroup(state.ID.ValueString())
+	groupResponse, _, err := r.client.ConfigurationAPI.
+		GroupsGetConfigurationAppV1GroupsGet(context.Background()).
+		Uid(state.ID.ValueString()).
+		Execute()
+
+	if err != nil || len(groupResponse.Groups) != 1 {
+		resp.Diagnostics.AddError(
+			"Error reading Group",
+			"Could not retrieve Group, unexpected error: "+err.Error(),
+		)
+		return
+	}
+
+	group := groupResponse.Groups[0]
 
 	// Update state from client response
-	state.Name = types.StringValue(response.Name)
-	state.ParentGroupId = types.StringValue(*response.ParentUid)
+	state.Name = types.StringValue(group.Name)
+	state.ParentGroupId = types.StringValue(group.ParentUid)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
