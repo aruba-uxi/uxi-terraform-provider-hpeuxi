@@ -9,7 +9,7 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 1.4.0
+  version: 1.5.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
@@ -66,6 +66,60 @@ paths:
       tags:
         - health
   /configuration/app/v1/groups:
+    get:
+      operationId: groups_get_configuration_app_v1_groups_get
+      summary: Groups Get
+      description: Lists groups matching provided criteria
+      parameters:
+        - name: uid
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Uid
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Cursor
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+            title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupsGetResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1
+        - groups
     post:
       operationId: groups_post_configuration_app_v1_groups_post
       summary: Groups Post
@@ -113,17 +167,25 @@ paths:
           in: query
           required: false
           schema:
-            type: string
+            anyOf:
+              - type: string
+            nullable: true
+            title: Uid
         - name: cursor
           in: query
           required: false
           schema:
-            type: string
+            anyOf:
+              - type: string
+            nullable: true
+            title: Cursor
         - name: limit
           in: query
           required: false
           schema:
             type: integer
+            default: 50
+            title: Limit
       responses:
         '200':
           description: Successful Response
@@ -150,6 +212,7 @@ paths:
         - configuration
         - v1
         - sensor-group-assignments
+      x-stability-level: alpha
 components:
   schemas:
     ErrorDetail:
@@ -172,6 +235,41 @@ components:
       required:
         - detail
       title: ErrorResponse
+    GroupsGetItem:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: Uid
+        name:
+          type: string
+          title: Name
+        path:
+          type: string
+          title: Path
+        parent_uid:
+          type: string
+          title: Parent Uid
+      required:
+        - uid
+        - name
+        - path
+        - parent_uid
+      title: GroupsGetItem
+    GroupsGetResponse:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupsGetItem'
+          title: Groups
+      required:
+        - pagination
+        - groups
+      title: GroupsGetResponse
     GroupsPostRequest:
       type: object
       properties:
@@ -224,16 +322,24 @@ components:
           type: integer
           title: Limit
         next:
-          type: string
+          anyOf:
+            - type: string
+          nullable: true
           title: Next
         previous:
-          type: string
+          anyOf:
+            - type: string
+          nullable: true
           title: Previous
         first:
-          type: string
+          anyOf:
+            - type: string
+          nullable: true
           title: First
         last:
-          type: string
+          anyOf:
+            - type: string
+          nullable: true
           title: Last
       required:
         - limit

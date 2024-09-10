@@ -62,7 +62,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		assert.Equal(t, resp, &openapiclient.GroupsPostResponse{ParentUid: "parent.uid", Name: "name", Uid: "node", Path: "parent.uid.node"})
 	})
 
-	t.Run("Test ConfigurationAPIService GroupsPostConfigurationAppV1GroupsPost", func(t *testing.T) {
+	t.Run("Test ConfigurationAPIService GetConfigurationAppV1SensorGroupAssignmentsGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/configuration/app/v1/sensor-group-assignments").
@@ -101,8 +101,64 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 					SensorUid: "sensor_uid",
 				},
 			},
-			Pagination: openapiclient.PaginationDetails{Limit: 10},
+			Pagination: openapiclient.PaginationDetails{
+				Limit:    10,
+				Next:     *openapiclient.NewNullableString(nil),
+				Previous: *openapiclient.NewNullableString(nil),
+				First:    *openapiclient.NewNullableString(nil),
+				Last:     *openapiclient.NewNullableString(nil),
+			},
 		})
 	})
 
+	t.Run("Test ConfigurationAPIService GetConfigurationAppV1SensorGroupAssignmentsGet", func(t *testing.T) {
+
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Get("/configuration/app/v1/groups").
+			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"groups": []map[string]string{
+					{
+						"uid":        "uid",
+						"name":       "name",
+						"parent_uid": "parent_uid",
+						"path":       "root_uid.parent_uid.uid",
+					},
+				},
+				"pagination": map[string]interface{}{
+					"limit":    10,
+					"first":    nil,
+					"next":     nil,
+					"previous": nil,
+					"last":     nil,
+				},
+			})
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			GroupsGetConfigurationAppV1GroupsGet(context.Background()).
+			Uid("uid").
+			Limit(10).
+			Cursor("some-cursor").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.GroupsGetResponse{
+			Groups: []openapiclient.GroupsGetItem{
+				{
+					Uid:       "uid",
+					Name:      "name",
+					ParentUid: "parent_uid",
+					Path:      "root_uid.parent_uid.uid",
+				},
+			},
+			Pagination: openapiclient.PaginationDetails{
+				Limit:    10,
+				Next:     *openapiclient.NewNullableString(nil),
+				Previous: *openapiclient.NewNullableString(nil),
+				First:    *openapiclient.NewNullableString(nil),
+				Last:     *openapiclient.NewNullableString(nil),
+			},
+		})
+	})
 }

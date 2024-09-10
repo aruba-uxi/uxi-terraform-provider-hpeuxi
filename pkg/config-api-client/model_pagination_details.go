@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.4.0
+API version: 1.5.0
 Contact: support@capenetworks.com
 */
 
@@ -22,11 +22,11 @@ var _ MappedNullable = &PaginationDetails{}
 
 // PaginationDetails struct for PaginationDetails
 type PaginationDetails struct {
-	Limit    int32  `json:"limit"`
-	Next     string `json:"next"`
-	Previous string `json:"previous"`
-	First    string `json:"first"`
-	Last     string `json:"last"`
+	Limit    int32          `json:"limit"`
+	Next     NullableString `json:"next"`
+	Previous NullableString `json:"previous"`
+	First    NullableString `json:"first"`
+	Last     NullableString `json:"last"`
 }
 
 type _PaginationDetails PaginationDetails
@@ -35,7 +35,7 @@ type _PaginationDetails PaginationDetails
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPaginationDetails(limit int32, next string, previous string, first string, last string) *PaginationDetails {
+func NewPaginationDetails(limit int32, next NullableString, previous NullableString, first NullableString, last NullableString) *PaginationDetails {
 	this := PaginationDetails{}
 	this.Limit = limit
 	this.Next = next
@@ -78,99 +78,107 @@ func (o *PaginationDetails) SetLimit(v int32) {
 }
 
 // GetNext returns the Next field value
+// If the value is explicit nil, the zero value for string will be returned
 func (o *PaginationDetails) GetNext() string {
-	if o == nil {
+	if o == nil || o.Next.Get() == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Next
+	return *o.Next.Get()
 }
 
 // GetNextOk returns a tuple with the Next field value
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *PaginationDetails) GetNextOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Next, true
+	return o.Next.Get(), o.Next.IsSet()
 }
 
 // SetNext sets field value
 func (o *PaginationDetails) SetNext(v string) {
-	o.Next = v
+	o.Next.Set(&v)
 }
 
 // GetPrevious returns the Previous field value
+// If the value is explicit nil, the zero value for string will be returned
 func (o *PaginationDetails) GetPrevious() string {
-	if o == nil {
+	if o == nil || o.Previous.Get() == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Previous
+	return *o.Previous.Get()
 }
 
 // GetPreviousOk returns a tuple with the Previous field value
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *PaginationDetails) GetPreviousOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Previous, true
+	return o.Previous.Get(), o.Previous.IsSet()
 }
 
 // SetPrevious sets field value
 func (o *PaginationDetails) SetPrevious(v string) {
-	o.Previous = v
+	o.Previous.Set(&v)
 }
 
 // GetFirst returns the First field value
+// If the value is explicit nil, the zero value for string will be returned
 func (o *PaginationDetails) GetFirst() string {
-	if o == nil {
+	if o == nil || o.First.Get() == nil {
 		var ret string
 		return ret
 	}
 
-	return o.First
+	return *o.First.Get()
 }
 
 // GetFirstOk returns a tuple with the First field value
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *PaginationDetails) GetFirstOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.First, true
+	return o.First.Get(), o.First.IsSet()
 }
 
 // SetFirst sets field value
 func (o *PaginationDetails) SetFirst(v string) {
-	o.First = v
+	o.First.Set(&v)
 }
 
 // GetLast returns the Last field value
+// If the value is explicit nil, the zero value for string will be returned
 func (o *PaginationDetails) GetLast() string {
-	if o == nil {
+	if o == nil || o.Last.Get() == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Last
+	return *o.Last.Get()
 }
 
 // GetLastOk returns a tuple with the Last field value
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *PaginationDetails) GetLastOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Last, true
+	return o.Last.Get(), o.Last.IsSet()
 }
 
 // SetLast sets field value
 func (o *PaginationDetails) SetLast(v string) {
-	o.Last = v
+	o.Last.Set(&v)
 }
 
 func (o PaginationDetails) MarshalJSON() ([]byte, error) {
@@ -184,10 +192,10 @@ func (o PaginationDetails) MarshalJSON() ([]byte, error) {
 func (o PaginationDetails) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["limit"] = o.Limit
-	toSerialize["next"] = o.Next
-	toSerialize["previous"] = o.Previous
-	toSerialize["first"] = o.First
-	toSerialize["last"] = o.Last
+	toSerialize["next"] = o.Next.Get()
+	toSerialize["previous"] = o.Previous.Get()
+	toSerialize["first"] = o.First.Get()
+	toSerialize["last"] = o.Last.Get()
 	return toSerialize, nil
 }
 

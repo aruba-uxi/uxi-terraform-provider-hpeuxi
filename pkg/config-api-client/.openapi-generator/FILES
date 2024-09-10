@@ -6,6 +6,8 @@ configuration.go
 docs/ConfigurationAPI.md
 docs/ErrorDetail.md
 docs/ErrorResponse.md
+docs/GroupsGetItem.md
+docs/GroupsGetResponse.md
 docs/GroupsPostRequest.md
 docs/GroupsPostResponse.md
 docs/LivenessResponse.md
@@ -19,6 +21,8 @@ go.mod
 go.sum
 model_error_detail.go
 model_error_response.go
+model_groups_get_item.go
+model_groups_get_response.go
 model_groups_post_request.go
 model_groups_post_response.go
 model_liveness_response.go

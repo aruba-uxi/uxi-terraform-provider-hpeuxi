@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**GetLivezHealthLivezGet**](ConfigurationAPI.md#GetLivezHealthLivezGet) | **Get** /health/livez | Live health check
 [**GetReadyzHealthReadyzGet**](ConfigurationAPI.md#GetReadyzHealthReadyzGet) | **Get** /health/readyz | Ready health check
 [**GetStatusHealthStatusGet**](ConfigurationAPI.md#GetStatusHealthStatusGet) | **Get** /health/status | Service stats endpoint
+[**GroupsGetConfigurationAppV1GroupsGet**](ConfigurationAPI.md#GroupsGetConfigurationAppV1GroupsGet) | **Get** /configuration/app/v1/groups | Groups Get
 [**GroupsPostConfigurationAppV1GroupsPost**](ConfigurationAPI.md#GroupsPostConfigurationAppV1GroupsPost) | **Post** /configuration/app/v1/groups | Groups Post
 
 
@@ -35,7 +36,7 @@ import (
 func main() {
 	uid := "uid_example" // string |  (optional)
 	cursor := "cursor_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -62,7 +63,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uid** | **string** |  | 
  **cursor** | **string** |  | 
- **limit** | **int32** |  | 
+ **limit** | **int32** |  | [default to 50]
 
 ### Return type
 
@@ -254,6 +255,76 @@ Other parameters are passed through a pointer to a apiGetStatusHealthStatusGetRe
 ### Authorization
 
 No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GroupsGetConfigurationAppV1GroupsGet
+
+> GroupsGetResponse GroupsGetConfigurationAppV1GroupsGet(ctx).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+
+Groups Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	uid := "uid_example" // string |  (optional)
+	cursor := "cursor_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.GroupsGetConfigurationAppV1GroupsGet(context.Background()).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsGetConfigurationAppV1GroupsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GroupsGetConfigurationAppV1GroupsGet`: GroupsGetResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsGetConfigurationAppV1GroupsGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGroupsGetConfigurationAppV1GroupsGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uid** | **string** |  | 
+ **cursor** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**GroupsGetResponse**](GroupsGetResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
