@@ -1,6 +1,7 @@
 package test
 
 import (
+	"github.com/h2non/gock"
 	"testing"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
@@ -8,6 +9,7 @@ import (
 )
 
 func TestNetworkGroupAssignmentResource(t *testing.T) {
+	defer gock.Off()
 
 	// Test Wired Network Group Assignment
 	resource.Test(t, resource.TestCase{
@@ -24,9 +26,12 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 
 					// required for group create
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")), 1)
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("group_uid", "", "")
-					}
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						1,
+					)
 
 					// required for network group assignment create
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
@@ -79,16 +84,21 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 							return GenerateWiredNetworkResponseModel(uid, "_2")
 						}
 					}
+					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						}),
+						1,
+					)
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						3,
+					)
 
 					// required for creating another group
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						if uid == "group_uid" {
-							return GenerateGroupResponseModel("uid", "", "")
-						} else {
-							return GenerateGroupResponseModel(uid, "_2", "_2")
-						}
-					}
 
 					// required for network group assignment create
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
@@ -146,6 +156,20 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			},
 			// Remove networks from state
 			{
+				PreConfig: func() {
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						1,
+					)
+					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						}),
+						1,
+					)
+				},
 				Config: providerConfig + `
 					removed {
 						from = uxi_wired_network.my_network
@@ -182,9 +206,12 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 
 					// required for group create
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")), 1)
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return GenerateGroupResponseModel(uid, "", "")
-					}
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						1,
+					)
 
 					// required for network group assignment create
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
@@ -237,16 +264,21 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 							return GenerateWirelessNetworkResponseModel(uid, "_2")
 						}
 					}
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						2,
+					)
 
 					// required for creating another group
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						if uid == "group_uid" {
-							return GenerateGroupResponseModel(uid, "", "")
-						} else {
-							return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
-						}
-					}
+					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						}),
+						1,
+					)
 
 					// required for network group assignment create
 					resources.GetNetworkGroupAssignment = func(uid string) resources.NetworkGroupAssignmentResponseModel {
@@ -304,6 +336,20 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			},
 			// Remove networks from state
 			{
+				PreConfig: func() {
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						1,
+					)
+					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						}),
+						1,
+					)
+				},
 				Config: providerConfig + `
 					removed {
 						from = uxi_wireless_network.my_network

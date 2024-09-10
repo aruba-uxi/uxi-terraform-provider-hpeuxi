@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
+	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
@@ -13,6 +14,7 @@ type Fetcher interface {
 }
 
 func TestGroupResource(t *testing.T) {
+	defer gock.Off()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -22,10 +24,12 @@ func TestGroupResource(t *testing.T) {
 				PreConfig: func() {
 					MockOAuth()
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("uid", "", "")), 1)
-
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return GenerateGroupResponseModel(uid, "", "")
-					}
+					MockGetGroup("uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("uid", "", "")),
+						}),
+						1,
+					)
 				},
 				Config: providerConfig + `
 				resource "uxi_group" "my_group" {
@@ -40,6 +44,14 @@ func TestGroupResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
+				PreConfig: func() {
+					MockGetGroup("uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("uid", "", "")),
+						}),
+						1,
+					)
+				},
 				ResourceName:      "uxi_group.my_group",
 				ImportState:       true,
 				ImportStateVerify: true,
@@ -50,9 +62,12 @@ func TestGroupResource(t *testing.T) {
 					resources.UpdateGroup = func(request resources.GroupUpdateRequestModel) resources.GroupResponseModel {
 						return GenerateGroupResponseModel("uid", "_2", "")
 					}
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return GenerateGroupResponseModel(uid, "_2", "")
-					}
+					MockGetGroup("uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("uid", "_2", "")),
+						}),
+						2,
+					)
 				},
 				Config: providerConfig + `
 					resource "uxi_group" "my_group" {
@@ -70,14 +85,21 @@ func TestGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					MockOAuth()
+					// existing group
+					MockGetGroup("uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("uid", "", "")),
+						}),
+						1,
+					)
+					// new group (replacement)
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("new_uid", "", "_2")), 1)
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						if uid == "uid" {
-							return GenerateGroupResponseModel(uid, "", "")
-						} else {
-							return GenerateGroupResponseModel(uid, "", "_2")
-						}
-					}
+					MockGetGroup("new_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("new_uid", "", "_2")),
+						}),
+						1,
+					)
 				},
 				Config: providerConfig + `
 					resource "uxi_group" "my_group" {

@@ -4,10 +4,12 @@ import (
 	"testing"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
+	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestServiceTestGroupAssignmentResource(t *testing.T) {
+	defer gock.Off()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -23,9 +25,12 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 
 					// required for group create
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")), 1)
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("group_uid", "", "")
-					}
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						1,
+					)
 
 					// required for serviceTest group assignment create
 					serviceTestGroupAssignmentResponse := GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")
@@ -79,16 +84,21 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 							return GenerateServiceTestResponseModel("service_test_uid", "_2")
 						}
 					}
+					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						}),
+						1,
+					)
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						3,
+					)
 
 					// required for creating another group
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						if uid == "group_uid" {
-							return GenerateGroupResponseModel(uid, "", "")
-						} else {
-							return GenerateGroupResponseModel("group_uid_2", "_2", "_2")
-						}
-					}
 
 					// required for serviceTest group assignment create
 					resources.GetServiceTestGroupAssignment = func(uid string) resources.ServiceTestGroupAssignmentResponseModel {
@@ -146,6 +156,20 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			},
 			// Remove serviceTests from state
 			{
+				PreConfig: func() {
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						1,
+					)
+					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						}),
+						1,
+					)
+				},
 				Config: providerConfig + `
 					removed {
 						from = uxi_service_test.my_service_test

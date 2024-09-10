@@ -4,10 +4,12 @@ import (
 	"testing"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
+	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAgentGroupAssignmentResource(t *testing.T) {
+	defer gock.Off()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -23,9 +25,12 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					// required for group create
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")), 1)
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("group_uid", "", "")
-					}
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						1,
+					)
 
 					// required for agent group assignment create
 					agentGroupAssignmentResponse := GenerateAgentGroupAssignmentResponse("agent_group_assignment_uid", "")
@@ -81,16 +86,21 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 							return GenerateAgentResponseModel(uid, "_2")
 						}
 					}
+					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+						}),
+						2,
+					)
 
 					// required for creating another group
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
-					resources.GetGroup = func(uid string) resources.GroupResponseModel {
-						if uid == "group_uid" {
-							return GenerateGroupResponseModel(uid, "", "")
-						} else {
-							return GenerateGroupResponseModel(uid, "_2", "_2")
-						}
-					}
+					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						}),
+						1,
+					)
 
 					// required for agent group assignment create
 					resources.GetAgentGroupAssignment = func(uid string) resources.AgentGroupAssignmentResponseModel {

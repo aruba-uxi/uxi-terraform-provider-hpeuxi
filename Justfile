@@ -26,8 +26,8 @@ generate-config-api-client: retrieve-config-api-openapi-spec
 setup-dev:
   curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.60.1
 
-test-client:
-  cd {{ CONFIG_API_CLIENT_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage
+test-client +ARGS='':
+  cd {{ CONFIG_API_CLIENT_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 coverage-client:
   cd {{ CONFIG_API_CLIENT_DIR }} && go tool cover -html=.coverage -o=.coverage.html
@@ -68,8 +68,8 @@ fmt-provider:
 tidy-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} && go mod tidy
 
-test-provider:
-  cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./... -race -covermode=atomic -coverprofile=.coverage
+test-provider +ARGS='':
+  cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 coverage-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} && go tool cover -html=.coverage -o=.coverage.html
@@ -99,8 +99,8 @@ clean:
 
 plan +ARGS='':
   cd {{ CONFIG_API_PROVIDER_DIR }} && go install .
-  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/full-demo && terraform plan -var client_secret=secret {{ ARGS }}
+  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/full-demo && terraform plan {{ ARGS }}
 
 apply +ARGS='':
   cd {{ CONFIG_API_PROVIDER_DIR }} && go install .
-  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/full-demo && terraform apply -var client_secret=secret {{ ARGS }}
+  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/full-demo && terraform apply {{ ARGS }}

@@ -5,10 +5,13 @@ import (
 
 	datasources "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/data-sources"
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
+	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestRootGroupDataSource(t *testing.T) {
+	defer gock.Off()
+
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
