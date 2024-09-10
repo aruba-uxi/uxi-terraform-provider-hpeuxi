@@ -86,6 +86,12 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 							return GenerateAgentResponseModel(uid, "_2")
 						}
 					}
+					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
+						[]map[string]interface{}{
+							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						}),
+						1,
+					)
 					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
 							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
@@ -95,12 +101,6 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					// required for creating another group
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
-					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
-						}),
-						1,
-					)
 
 					// required for agent group assignment create
 					resources.GetAgentGroupAssignment = func(uid string) resources.AgentGroupAssignmentResponseModel {
