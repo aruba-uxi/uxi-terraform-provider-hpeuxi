@@ -1,1 +1,2 @@
 pkg/config-api-client/** linguist-generated=true
+pkg/config-api-client/test/** linguist-generated=false
