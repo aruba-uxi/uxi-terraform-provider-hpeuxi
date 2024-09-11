@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.5.0
+API version: 1.9.0
 Contact: support@capenetworks.com
 */
 
@@ -22,10 +22,10 @@ var _ MappedNullable = &GroupsGetItem{}
 
 // GroupsGetItem struct for GroupsGetItem
 type GroupsGetItem struct {
-	Uid       string `json:"uid"`
-	Name      string `json:"name"`
-	Path      string `json:"path"`
-	ParentUid string `json:"parent_uid"`
+	Uid       string         `json:"uid"`
+	Name      string         `json:"name"`
+	Path      string         `json:"path"`
+	ParentUid NullableString `json:"parent_uid"`
 }
 
 type _GroupsGetItem GroupsGetItem
@@ -34,7 +34,7 @@ type _GroupsGetItem GroupsGetItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupsGetItem(uid string, name string, path string, parentUid string) *GroupsGetItem {
+func NewGroupsGetItem(uid string, name string, path string, parentUid NullableString) *GroupsGetItem {
 	this := GroupsGetItem{}
 	this.Uid = uid
 	this.Name = name
@@ -124,27 +124,29 @@ func (o *GroupsGetItem) SetPath(v string) {
 }
 
 // GetParentUid returns the ParentUid field value
+// If the value is explicit nil, the zero value for string will be returned
 func (o *GroupsGetItem) GetParentUid() string {
-	if o == nil {
+	if o == nil || o.ParentUid.Get() == nil {
 		var ret string
 		return ret
 	}
 
-	return o.ParentUid
+	return *o.ParentUid.Get()
 }
 
 // GetParentUidOk returns a tuple with the ParentUid field value
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *GroupsGetItem) GetParentUidOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.ParentUid, true
+	return o.ParentUid.Get(), o.ParentUid.IsSet()
 }
 
 // SetParentUid sets field value
 func (o *GroupsGetItem) SetParentUid(v string) {
-	o.ParentUid = v
+	o.ParentUid.Set(&v)
 }
 
 func (o GroupsGetItem) MarshalJSON() ([]byte, error) {
@@ -160,7 +162,7 @@ func (o GroupsGetItem) ToMap() (map[string]interface{}, error) {
 	toSerialize["uid"] = o.Uid
 	toSerialize["name"] = o.Name
 	toSerialize["path"] = o.Path
-	toSerialize["parent_uid"] = o.ParentUid
+	toSerialize["parent_uid"] = o.ParentUid.Get()
 	return toSerialize, nil
 }
 
