@@ -112,7 +112,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPIService GetConfigurationAppV1SensorGroupAssignmentsGet", func(t *testing.T) {
-
+		parent_uid := "parent_uid"
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/configuration/app/v1/groups").
 			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
@@ -122,7 +122,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 					{
 						"uid":        "uid",
 						"name":       "name",
-						"parent_uid": "parent_uid",
+						"parent_uid": parent_uid,
 						"path":       "root_uid.parent_uid.uid",
 					},
 				},
@@ -148,7 +148,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 				{
 					Uid:       "uid",
 					Name:      "name",
-					ParentUid: "parent_uid",
+					ParentUid: *openapiclient.NewNullableString(&parent_uid),
 					Path:      "root_uid.parent_uid.uid",
 				},
 			},
@@ -161,4 +161,72 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			},
 		})
 	})
+
+	t.Run("Test ConfigurationAPIService GetConfigurationAppV1SensorGroupAssignmentsGet", func(t *testing.T) {
+
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Get("/configuration/app/v1/groups").
+			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"networks": []map[string]interface{}{
+					{
+						"uid":                   "uid",
+						"alias":                 "alias",
+						"datetime_created":      "2024-09-11 12:00:00.000",
+						"datetime_updated":      "2024-09-11 12:00:00.000",
+						"ip_version":            "ip_version",
+						"security":              "security",
+						"dns_lookup_domain":     "dns_lookup_domain",
+						"disable_edns":          true,
+						"use_dns64":             false,
+						"external_connectivity": true,
+						"vlan_id":               1,
+					},
+				},
+				"pagination": map[string]interface{}{
+					"limit":    10,
+					"first":    nil,
+					"next":     nil,
+					"previous": nil,
+					"last":     nil,
+				},
+			})
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			GetConfigurationAppV1WiredNetworksGet(context.Background()).
+			Uid("uid").
+			Limit(10).
+			Cursor("some-cursor").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.WiredNetworksResponse{
+			WiredNetworks: []openapiclient.WiredNetwork{
+				{
+					Uid:       "uid",
+					Alias: "alias"//               string         `json:"alias"`
+					IpVersion: "ip_version"//           string         `json:"ip_version"`
+					SensorCount: "sensor_count"//         int32          `json:"sensor_count"`
+					UpdatedAt: "updated_at"//           time.Time      `json:"updated_at"`
+					CreatedAt: "created_at"//           time.Time      `json:"created_at"`
+					Disabled: "disabled"//            bool           `json:"disabled"`
+					Security: "security"//            NullableString `json:"security"`
+					DnsLookupDomain: "dns_lookup_domain"//     NullableString `json:"dns_lookup_domain"`
+					DisableEdns: "disable_edns"//         bool           `json:"disable_edns"`
+					UseDns64: "use_dns64"//            bool           `json:"use_dns64"`
+					ExternalConnectivity: "external_connectivity"//bool           `json:"external_connectivity"`
+					VlanId: "vlan_id"//              NullableInt32  `json:"vlan_id"`
+								},
+			},
+			Pagination: openapiclient.PaginationDetails{
+				Limit:    10,
+				Next:     *openapiclient.NewNullableString(nil),
+				Previous: *openapiclient.NewNullableString(nil),
+				First:    *openapiclient.NewNullableString(nil),
+				Last:     *openapiclient.NewNullableString(nil),
+			},
+		})
+	})
+
 }
