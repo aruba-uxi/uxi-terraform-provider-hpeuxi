@@ -1,4 +1,4 @@
-# SensorGroupAssignment
+# SensorGroupAssignmentsItem
 
 ## Properties
 
@@ -10,79 +10,79 @@ Name | Type | Description | Notes
 
 ## Methods
 
-### NewSensorGroupAssignment
+### NewSensorGroupAssignmentsItem
 
-`func NewSensorGroupAssignment(uid string, groupUid string, sensorUid string, ) *SensorGroupAssignment`
+`func NewSensorGroupAssignmentsItem(uid string, groupUid string, sensorUid string, ) *SensorGroupAssignmentsItem`
 
-NewSensorGroupAssignment instantiates a new SensorGroupAssignment object
+NewSensorGroupAssignmentsItem instantiates a new SensorGroupAssignmentsItem object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewSensorGroupAssignmentWithDefaults
+### NewSensorGroupAssignmentsItemWithDefaults
 
-`func NewSensorGroupAssignmentWithDefaults() *SensorGroupAssignment`
+`func NewSensorGroupAssignmentsItemWithDefaults() *SensorGroupAssignmentsItem`
 
-NewSensorGroupAssignmentWithDefaults instantiates a new SensorGroupAssignment object
+NewSensorGroupAssignmentsItemWithDefaults instantiates a new SensorGroupAssignmentsItem object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetUid
 
-`func (o *SensorGroupAssignment) GetUid() string`
+`func (o *SensorGroupAssignmentsItem) GetUid() string`
 
 GetUid returns the Uid field if non-nil, zero value otherwise.
 
 ### GetUidOk
 
-`func (o *SensorGroupAssignment) GetUidOk() (*string, bool)`
+`func (o *SensorGroupAssignmentsItem) GetUidOk() (*string, bool)`
 
 GetUidOk returns a tuple with the Uid field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetUid
 
-`func (o *SensorGroupAssignment) SetUid(v string)`
+`func (o *SensorGroupAssignmentsItem) SetUid(v string)`
 
 SetUid sets Uid field to given value.
 
 
 ### GetGroupUid
 
-`func (o *SensorGroupAssignment) GetGroupUid() string`
+`func (o *SensorGroupAssignmentsItem) GetGroupUid() string`
 
 GetGroupUid returns the GroupUid field if non-nil, zero value otherwise.
 
 ### GetGroupUidOk
 
-`func (o *SensorGroupAssignment) GetGroupUidOk() (*string, bool)`
+`func (o *SensorGroupAssignmentsItem) GetGroupUidOk() (*string, bool)`
 
 GetGroupUidOk returns a tuple with the GroupUid field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetGroupUid
 
-`func (o *SensorGroupAssignment) SetGroupUid(v string)`
+`func (o *SensorGroupAssignmentsItem) SetGroupUid(v string)`
 
 SetGroupUid sets GroupUid field to given value.
 
 
 ### GetSensorUid
 
-`func (o *SensorGroupAssignment) GetSensorUid() string`
+`func (o *SensorGroupAssignmentsItem) GetSensorUid() string`
 
 GetSensorUid returns the SensorUid field if non-nil, zero value otherwise.
 
 ### GetSensorUidOk
 
-`func (o *SensorGroupAssignment) GetSensorUidOk() (*string, bool)`
+`func (o *SensorGroupAssignmentsItem) GetSensorUidOk() (*string, bool)`
 
 GetSensorUidOk returns a tuple with the SensorUid field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSensorUid
 
-`func (o *SensorGroupAssignment) SetSensorUid(v string)`
+`func (o *SensorGroupAssignmentsItem) SetSensorUid(v string)`
 
 SetSensorUid sets SensorUid field to given value.
 

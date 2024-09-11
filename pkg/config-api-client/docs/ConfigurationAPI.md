@@ -4,12 +4,83 @@ All URIs are relative to *https://api.capenetworks.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**GetConfigurationAppV1NetworkGroupAssignmentsGet**](ConfigurationAPI.md#GetConfigurationAppV1NetworkGroupAssignmentsGet) | **Get** /configuration/app/v1/network-group-assignments | Get
 [**GetConfigurationAppV1SensorGroupAssignmentsGet**](ConfigurationAPI.md#GetConfigurationAppV1SensorGroupAssignmentsGet) | **Get** /configuration/app/v1/sensor-group-assignments | Get
 [**GetConfigurationAppV1WiredNetworksGet**](ConfigurationAPI.md#GetConfigurationAppV1WiredNetworksGet) | **Get** /configuration/app/v1/wired-networks | Get
 [**GetConfigurationAppV1WirelessNetworksGet**](ConfigurationAPI.md#GetConfigurationAppV1WirelessNetworksGet) | **Get** /configuration/app/v1/wireless-networks | Get
 [**GroupsGetConfigurationAppV1GroupsGet**](ConfigurationAPI.md#GroupsGetConfigurationAppV1GroupsGet) | **Get** /configuration/app/v1/groups | Groups Get
 [**GroupsPostConfigurationAppV1GroupsPost**](ConfigurationAPI.md#GroupsPostConfigurationAppV1GroupsPost) | **Post** /configuration/app/v1/groups | Groups Post
 
+
+
+## GetConfigurationAppV1NetworkGroupAssignmentsGet
+
+> NetworkGroupAssignmentsResponse GetConfigurationAppV1NetworkGroupAssignmentsGet(ctx).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+
+Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	uid := "uid_example" // string |  (optional)
+	cursor := "cursor_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.GetConfigurationAppV1NetworkGroupAssignmentsGet(context.Background()).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetConfigurationAppV1NetworkGroupAssignmentsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetConfigurationAppV1NetworkGroupAssignmentsGet`: NetworkGroupAssignmentsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetConfigurationAppV1NetworkGroupAssignmentsGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uid** | **string** |  | 
+ **cursor** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**NetworkGroupAssignmentsResponse**](NetworkGroupAssignmentsResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## GetConfigurationAppV1SensorGroupAssignmentsGet

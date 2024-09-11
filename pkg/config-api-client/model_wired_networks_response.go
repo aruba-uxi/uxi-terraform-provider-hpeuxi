@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.9.0
+API version: 1.11.0
 Contact: support@capenetworks.com
 */
 
@@ -22,8 +22,8 @@ var _ MappedNullable = &WiredNetworksResponse{}
 
 // WiredNetworksResponse struct for WiredNetworksResponse
 type WiredNetworksResponse struct {
-	WiredNetworks []WiredNetwork    `json:"wired_networks"`
-	Pagination    PaginationDetails `json:"pagination"`
+	WiredNetworks []WiredNetworksItem `json:"wired_networks"`
+	Pagination    PaginationDetails   `json:"pagination"`
 }
 
 type _WiredNetworksResponse WiredNetworksResponse
@@ -32,7 +32,7 @@ type _WiredNetworksResponse WiredNetworksResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWiredNetworksResponse(wiredNetworks []WiredNetwork, pagination PaginationDetails) *WiredNetworksResponse {
+func NewWiredNetworksResponse(wiredNetworks []WiredNetworksItem, pagination PaginationDetails) *WiredNetworksResponse {
 	this := WiredNetworksResponse{}
 	this.WiredNetworks = wiredNetworks
 	this.Pagination = pagination
@@ -48,9 +48,9 @@ func NewWiredNetworksResponseWithDefaults() *WiredNetworksResponse {
 }
 
 // GetWiredNetworks returns the WiredNetworks field value
-func (o *WiredNetworksResponse) GetWiredNetworks() []WiredNetwork {
+func (o *WiredNetworksResponse) GetWiredNetworks() []WiredNetworksItem {
 	if o == nil {
-		var ret []WiredNetwork
+		var ret []WiredNetworksItem
 		return ret
 	}
 
@@ -59,7 +59,7 @@ func (o *WiredNetworksResponse) GetWiredNetworks() []WiredNetwork {
 
 // GetWiredNetworksOk returns a tuple with the WiredNetworks field value
 // and a boolean to check if the value has been set.
-func (o *WiredNetworksResponse) GetWiredNetworksOk() ([]WiredNetwork, bool) {
+func (o *WiredNetworksResponse) GetWiredNetworksOk() ([]WiredNetworksItem, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -67,7 +67,7 @@ func (o *WiredNetworksResponse) GetWiredNetworksOk() ([]WiredNetwork, bool) {
 }
 
 // SetWiredNetworks sets field value
-func (o *WiredNetworksResponse) SetWiredNetworks(v []WiredNetwork) {
+func (o *WiredNetworksResponse) SetWiredNetworks(v []WiredNetworksItem) {
 	o.WiredNetworks = v
 }
 

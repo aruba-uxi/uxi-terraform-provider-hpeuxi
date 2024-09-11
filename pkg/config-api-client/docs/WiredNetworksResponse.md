@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**WiredNetworks** | [**[]WiredNetwork**](WiredNetwork.md) |  | 
+**WiredNetworks** | [**[]WiredNetworksItem**](WiredNetworksItem.md) |  | 
 **Pagination** | [**PaginationDetails**](PaginationDetails.md) |  | 
 
 ## Methods
 
 ### NewWiredNetworksResponse
 
-`func NewWiredNetworksResponse(wiredNetworks []WiredNetwork, pagination PaginationDetails, ) *WiredNetworksResponse`
+`func NewWiredNetworksResponse(wiredNetworks []WiredNetworksItem, pagination PaginationDetails, ) *WiredNetworksResponse`
 
 NewWiredNetworksResponse instantiates a new WiredNetworksResponse object
 This constructor will assign default values to properties that have it defined,
@@ -28,20 +28,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetWiredNetworks
 
-`func (o *WiredNetworksResponse) GetWiredNetworks() []WiredNetwork`
+`func (o *WiredNetworksResponse) GetWiredNetworks() []WiredNetworksItem`
 
 GetWiredNetworks returns the WiredNetworks field if non-nil, zero value otherwise.
 
 ### GetWiredNetworksOk
 
-`func (o *WiredNetworksResponse) GetWiredNetworksOk() (*[]WiredNetwork, bool)`
+`func (o *WiredNetworksResponse) GetWiredNetworksOk() (*[]WiredNetworksItem, bool)`
 
 GetWiredNetworksOk returns a tuple with the WiredNetworks field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetWiredNetworks
 
-`func (o *WiredNetworksResponse) SetWiredNetworks(v []WiredNetwork)`
+`func (o *WiredNetworksResponse) SetWiredNetworks(v []WiredNetworksItem)`
 
 SetWiredNetworks sets WiredNetworks field to given value.
 

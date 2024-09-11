@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.9.0
+API version: 1.11.0
 Contact: support@capenetworks.com
 */
 
@@ -22,8 +22,8 @@ var _ MappedNullable = &WirelessNetworksResponse{}
 
 // WirelessNetworksResponse struct for WirelessNetworksResponse
 type WirelessNetworksResponse struct {
-	WirelessNetworks []WirelessNetwork `json:"wireless_networks"`
-	Pagination       PaginationDetails `json:"pagination"`
+	WirelessNetworks []WirelessNetworksItem `json:"wireless_networks"`
+	Pagination       PaginationDetails      `json:"pagination"`
 }
 
 type _WirelessNetworksResponse WirelessNetworksResponse
@@ -32,7 +32,7 @@ type _WirelessNetworksResponse WirelessNetworksResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWirelessNetworksResponse(wirelessNetworks []WirelessNetwork, pagination PaginationDetails) *WirelessNetworksResponse {
+func NewWirelessNetworksResponse(wirelessNetworks []WirelessNetworksItem, pagination PaginationDetails) *WirelessNetworksResponse {
 	this := WirelessNetworksResponse{}
 	this.WirelessNetworks = wirelessNetworks
 	this.Pagination = pagination
@@ -48,9 +48,9 @@ func NewWirelessNetworksResponseWithDefaults() *WirelessNetworksResponse {
 }
 
 // GetWirelessNetworks returns the WirelessNetworks field value
-func (o *WirelessNetworksResponse) GetWirelessNetworks() []WirelessNetwork {
+func (o *WirelessNetworksResponse) GetWirelessNetworks() []WirelessNetworksItem {
 	if o == nil {
-		var ret []WirelessNetwork
+		var ret []WirelessNetworksItem
 		return ret
 	}
 
@@ -59,7 +59,7 @@ func (o *WirelessNetworksResponse) GetWirelessNetworks() []WirelessNetwork {
 
 // GetWirelessNetworksOk returns a tuple with the WirelessNetworks field value
 // and a boolean to check if the value has been set.
-func (o *WirelessNetworksResponse) GetWirelessNetworksOk() ([]WirelessNetwork, bool) {
+func (o *WirelessNetworksResponse) GetWirelessNetworksOk() ([]WirelessNetworksItem, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -67,7 +67,7 @@ func (o *WirelessNetworksResponse) GetWirelessNetworksOk() ([]WirelessNetwork, b
 }
 
 // SetWirelessNetworks sets field value
-func (o *WirelessNetworksResponse) SetWirelessNetworks(v []WirelessNetwork) {
+func (o *WirelessNetworksResponse) SetWirelessNetworks(v []WirelessNetworksItem) {
 	o.WirelessNetworks = v
 }
 

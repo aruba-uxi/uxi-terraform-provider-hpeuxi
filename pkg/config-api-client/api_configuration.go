@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.9.0
+API version: 1.11.0
 Contact: support@capenetworks.com
 */
 
@@ -21,6 +21,157 @@ import (
 
 // ConfigurationAPIService ConfigurationAPI service
 type ConfigurationAPIService service
+
+type ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest struct {
+	ctx        context.Context
+	ApiService *ConfigurationAPIService
+	uid        *string
+	cursor     *string
+	limit      *int32
+}
+
+func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Uid(uid string) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+	r.uid = &uid
+	return r
+}
+
+func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Cursor(cursor string) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+	r.cursor = &cursor
+	return r
+}
+
+func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Limit(limit int32) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Execute() (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+	return r.ApiService.GetConfigurationAppV1NetworkGroupAssignmentsGetExecute(r)
+}
+
+/*
+GetConfigurationAppV1NetworkGroupAssignmentsGet Get
+
+Get a list of network group assignments
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest
+*/
+func (a *ConfigurationAPIService) GetConfigurationAppV1NetworkGroupAssignmentsGet(ctx context.Context) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+	return ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return NetworkGroupAssignmentsResponse
+func (a *ConfigurationAPIService) GetConfigurationAppV1NetworkGroupAssignmentsGetExecute(r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *NetworkGroupAssignmentsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetConfigurationAppV1NetworkGroupAssignmentsGet")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/configuration/app/v1/network-group-assignments"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.uid != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+	}
+	if r.cursor != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	} else {
+		var defaultValue int32 = 50
+		r.limit = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode >= 400 && localVarHTTPResponse.StatusCode < 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode >= 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
 
 type ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest struct {
 	ctx        context.Context

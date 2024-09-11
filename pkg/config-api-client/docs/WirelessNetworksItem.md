@@ -1,4 +1,4 @@
-# WirelessNetwork
+# WirelessNetworksItem
 
 ## Properties
 
@@ -9,10 +9,8 @@ Name | Type | Description | Notes
 **Ssid** | **string** |  | 
 **Security** | **NullableString** |  | 
 **IpVersion** | **string** |  | 
-**SensorCount** | **int32** |  | 
-**UpdatedAt** | **time.Time** |  | 
-**CreatedAt** | **time.Time** |  | 
-**Disabled** | **bool** |  | 
+**DatetimeCreated** | **time.Time** |  | 
+**DatetimeUpdated** | **time.Time** |  | 
 **Hidden** | **bool** |  | 
 **BandLocking** | **string** |  | 
 **DnsLookupDomain** | **NullableString** |  | 
@@ -22,339 +20,299 @@ Name | Type | Description | Notes
 
 ## Methods
 
-### NewWirelessNetwork
+### NewWirelessNetworksItem
 
-`func NewWirelessNetwork(uid string, alias string, ssid string, security NullableString, ipVersion string, sensorCount int32, updatedAt time.Time, createdAt time.Time, disabled bool, hidden bool, bandLocking string, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, ) *WirelessNetwork`
+`func NewWirelessNetworksItem(uid string, alias string, ssid string, security NullableString, ipVersion string, datetimeCreated time.Time, datetimeUpdated time.Time, hidden bool, bandLocking string, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, ) *WirelessNetworksItem`
 
-NewWirelessNetwork instantiates a new WirelessNetwork object
+NewWirelessNetworksItem instantiates a new WirelessNetworksItem object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewWirelessNetworkWithDefaults
+### NewWirelessNetworksItemWithDefaults
 
-`func NewWirelessNetworkWithDefaults() *WirelessNetwork`
+`func NewWirelessNetworksItemWithDefaults() *WirelessNetworksItem`
 
-NewWirelessNetworkWithDefaults instantiates a new WirelessNetwork object
+NewWirelessNetworksItemWithDefaults instantiates a new WirelessNetworksItem object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetUid
 
-`func (o *WirelessNetwork) GetUid() string`
+`func (o *WirelessNetworksItem) GetUid() string`
 
 GetUid returns the Uid field if non-nil, zero value otherwise.
 
 ### GetUidOk
 
-`func (o *WirelessNetwork) GetUidOk() (*string, bool)`
+`func (o *WirelessNetworksItem) GetUidOk() (*string, bool)`
 
 GetUidOk returns a tuple with the Uid field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetUid
 
-`func (o *WirelessNetwork) SetUid(v string)`
+`func (o *WirelessNetworksItem) SetUid(v string)`
 
 SetUid sets Uid field to given value.
 
 
 ### GetAlias
 
-`func (o *WirelessNetwork) GetAlias() string`
+`func (o *WirelessNetworksItem) GetAlias() string`
 
 GetAlias returns the Alias field if non-nil, zero value otherwise.
 
 ### GetAliasOk
 
-`func (o *WirelessNetwork) GetAliasOk() (*string, bool)`
+`func (o *WirelessNetworksItem) GetAliasOk() (*string, bool)`
 
 GetAliasOk returns a tuple with the Alias field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAlias
 
-`func (o *WirelessNetwork) SetAlias(v string)`
+`func (o *WirelessNetworksItem) SetAlias(v string)`
 
 SetAlias sets Alias field to given value.
 
 
 ### GetSsid
 
-`func (o *WirelessNetwork) GetSsid() string`
+`func (o *WirelessNetworksItem) GetSsid() string`
 
 GetSsid returns the Ssid field if non-nil, zero value otherwise.
 
 ### GetSsidOk
 
-`func (o *WirelessNetwork) GetSsidOk() (*string, bool)`
+`func (o *WirelessNetworksItem) GetSsidOk() (*string, bool)`
 
 GetSsidOk returns a tuple with the Ssid field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSsid
 
-`func (o *WirelessNetwork) SetSsid(v string)`
+`func (o *WirelessNetworksItem) SetSsid(v string)`
 
 SetSsid sets Ssid field to given value.
 
 
 ### GetSecurity
 
-`func (o *WirelessNetwork) GetSecurity() string`
+`func (o *WirelessNetworksItem) GetSecurity() string`
 
 GetSecurity returns the Security field if non-nil, zero value otherwise.
 
 ### GetSecurityOk
 
-`func (o *WirelessNetwork) GetSecurityOk() (*string, bool)`
+`func (o *WirelessNetworksItem) GetSecurityOk() (*string, bool)`
 
 GetSecurityOk returns a tuple with the Security field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSecurity
 
-`func (o *WirelessNetwork) SetSecurity(v string)`
+`func (o *WirelessNetworksItem) SetSecurity(v string)`
 
 SetSecurity sets Security field to given value.
 
 
 ### SetSecurityNil
 
-`func (o *WirelessNetwork) SetSecurityNil(b bool)`
+`func (o *WirelessNetworksItem) SetSecurityNil(b bool)`
 
  SetSecurityNil sets the value for Security to be an explicit nil
 
 ### UnsetSecurity
-`func (o *WirelessNetwork) UnsetSecurity()`
+`func (o *WirelessNetworksItem) UnsetSecurity()`
 
 UnsetSecurity ensures that no value is present for Security, not even an explicit nil
 ### GetIpVersion
 
-`func (o *WirelessNetwork) GetIpVersion() string`
+`func (o *WirelessNetworksItem) GetIpVersion() string`
 
 GetIpVersion returns the IpVersion field if non-nil, zero value otherwise.
 
 ### GetIpVersionOk
 
-`func (o *WirelessNetwork) GetIpVersionOk() (*string, bool)`
+`func (o *WirelessNetworksItem) GetIpVersionOk() (*string, bool)`
 
 GetIpVersionOk returns a tuple with the IpVersion field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetIpVersion
 
-`func (o *WirelessNetwork) SetIpVersion(v string)`
+`func (o *WirelessNetworksItem) SetIpVersion(v string)`
 
 SetIpVersion sets IpVersion field to given value.
 
 
-### GetSensorCount
+### GetDatetimeCreated
 
-`func (o *WirelessNetwork) GetSensorCount() int32`
+`func (o *WirelessNetworksItem) GetDatetimeCreated() time.Time`
 
-GetSensorCount returns the SensorCount field if non-nil, zero value otherwise.
+GetDatetimeCreated returns the DatetimeCreated field if non-nil, zero value otherwise.
 
-### GetSensorCountOk
+### GetDatetimeCreatedOk
 
-`func (o *WirelessNetwork) GetSensorCountOk() (*int32, bool)`
+`func (o *WirelessNetworksItem) GetDatetimeCreatedOk() (*time.Time, bool)`
 
-GetSensorCountOk returns a tuple with the SensorCount field if it's non-nil, zero value otherwise
+GetDatetimeCreatedOk returns a tuple with the DatetimeCreated field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetSensorCount
+### SetDatetimeCreated
 
-`func (o *WirelessNetwork) SetSensorCount(v int32)`
+`func (o *WirelessNetworksItem) SetDatetimeCreated(v time.Time)`
 
-SetSensorCount sets SensorCount field to given value.
+SetDatetimeCreated sets DatetimeCreated field to given value.
 
 
-### GetUpdatedAt
+### GetDatetimeUpdated
 
-`func (o *WirelessNetwork) GetUpdatedAt() time.Time`
+`func (o *WirelessNetworksItem) GetDatetimeUpdated() time.Time`
 
-GetUpdatedAt returns the UpdatedAt field if non-nil, zero value otherwise.
+GetDatetimeUpdated returns the DatetimeUpdated field if non-nil, zero value otherwise.
 
-### GetUpdatedAtOk
+### GetDatetimeUpdatedOk
 
-`func (o *WirelessNetwork) GetUpdatedAtOk() (*time.Time, bool)`
+`func (o *WirelessNetworksItem) GetDatetimeUpdatedOk() (*time.Time, bool)`
 
-GetUpdatedAtOk returns a tuple with the UpdatedAt field if it's non-nil, zero value otherwise
+GetDatetimeUpdatedOk returns a tuple with the DatetimeUpdated field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetUpdatedAt
+### SetDatetimeUpdated
 
-`func (o *WirelessNetwork) SetUpdatedAt(v time.Time)`
+`func (o *WirelessNetworksItem) SetDatetimeUpdated(v time.Time)`
 
-SetUpdatedAt sets UpdatedAt field to given value.
-
-
-### GetCreatedAt
-
-`func (o *WirelessNetwork) GetCreatedAt() time.Time`
-
-GetCreatedAt returns the CreatedAt field if non-nil, zero value otherwise.
-
-### GetCreatedAtOk
-
-`func (o *WirelessNetwork) GetCreatedAtOk() (*time.Time, bool)`
-
-GetCreatedAtOk returns a tuple with the CreatedAt field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetCreatedAt
-
-`func (o *WirelessNetwork) SetCreatedAt(v time.Time)`
-
-SetCreatedAt sets CreatedAt field to given value.
-
-
-### GetDisabled
-
-`func (o *WirelessNetwork) GetDisabled() bool`
-
-GetDisabled returns the Disabled field if non-nil, zero value otherwise.
-
-### GetDisabledOk
-
-`func (o *WirelessNetwork) GetDisabledOk() (*bool, bool)`
-
-GetDisabledOk returns a tuple with the Disabled field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetDisabled
-
-`func (o *WirelessNetwork) SetDisabled(v bool)`
-
-SetDisabled sets Disabled field to given value.
+SetDatetimeUpdated sets DatetimeUpdated field to given value.
 
 
 ### GetHidden
 
-`func (o *WirelessNetwork) GetHidden() bool`
+`func (o *WirelessNetworksItem) GetHidden() bool`
 
 GetHidden returns the Hidden field if non-nil, zero value otherwise.
 
 ### GetHiddenOk
 
-`func (o *WirelessNetwork) GetHiddenOk() (*bool, bool)`
+`func (o *WirelessNetworksItem) GetHiddenOk() (*bool, bool)`
 
 GetHiddenOk returns a tuple with the Hidden field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetHidden
 
-`func (o *WirelessNetwork) SetHidden(v bool)`
+`func (o *WirelessNetworksItem) SetHidden(v bool)`
 
 SetHidden sets Hidden field to given value.
 
 
 ### GetBandLocking
 
-`func (o *WirelessNetwork) GetBandLocking() string`
+`func (o *WirelessNetworksItem) GetBandLocking() string`
 
 GetBandLocking returns the BandLocking field if non-nil, zero value otherwise.
 
 ### GetBandLockingOk
 
-`func (o *WirelessNetwork) GetBandLockingOk() (*string, bool)`
+`func (o *WirelessNetworksItem) GetBandLockingOk() (*string, bool)`
 
 GetBandLockingOk returns a tuple with the BandLocking field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetBandLocking
 
-`func (o *WirelessNetwork) SetBandLocking(v string)`
+`func (o *WirelessNetworksItem) SetBandLocking(v string)`
 
 SetBandLocking sets BandLocking field to given value.
 
 
 ### GetDnsLookupDomain
 
-`func (o *WirelessNetwork) GetDnsLookupDomain() string`
+`func (o *WirelessNetworksItem) GetDnsLookupDomain() string`
 
 GetDnsLookupDomain returns the DnsLookupDomain field if non-nil, zero value otherwise.
 
 ### GetDnsLookupDomainOk
 
-`func (o *WirelessNetwork) GetDnsLookupDomainOk() (*string, bool)`
+`func (o *WirelessNetworksItem) GetDnsLookupDomainOk() (*string, bool)`
 
 GetDnsLookupDomainOk returns a tuple with the DnsLookupDomain field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDnsLookupDomain
 
-`func (o *WirelessNetwork) SetDnsLookupDomain(v string)`
+`func (o *WirelessNetworksItem) SetDnsLookupDomain(v string)`
 
 SetDnsLookupDomain sets DnsLookupDomain field to given value.
 
 
 ### SetDnsLookupDomainNil
 
-`func (o *WirelessNetwork) SetDnsLookupDomainNil(b bool)`
+`func (o *WirelessNetworksItem) SetDnsLookupDomainNil(b bool)`
 
  SetDnsLookupDomainNil sets the value for DnsLookupDomain to be an explicit nil
 
 ### UnsetDnsLookupDomain
-`func (o *WirelessNetwork) UnsetDnsLookupDomain()`
+`func (o *WirelessNetworksItem) UnsetDnsLookupDomain()`
 
 UnsetDnsLookupDomain ensures that no value is present for DnsLookupDomain, not even an explicit nil
 ### GetDisableEdns
 
-`func (o *WirelessNetwork) GetDisableEdns() bool`
+`func (o *WirelessNetworksItem) GetDisableEdns() bool`
 
 GetDisableEdns returns the DisableEdns field if non-nil, zero value otherwise.
 
 ### GetDisableEdnsOk
 
-`func (o *WirelessNetwork) GetDisableEdnsOk() (*bool, bool)`
+`func (o *WirelessNetworksItem) GetDisableEdnsOk() (*bool, bool)`
 
 GetDisableEdnsOk returns a tuple with the DisableEdns field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDisableEdns
 
-`func (o *WirelessNetwork) SetDisableEdns(v bool)`
+`func (o *WirelessNetworksItem) SetDisableEdns(v bool)`
 
 SetDisableEdns sets DisableEdns field to given value.
 
 
 ### GetUseDns64
 
-`func (o *WirelessNetwork) GetUseDns64() bool`
+`func (o *WirelessNetworksItem) GetUseDns64() bool`
 
 GetUseDns64 returns the UseDns64 field if non-nil, zero value otherwise.
 
 ### GetUseDns64Ok
 
-`func (o *WirelessNetwork) GetUseDns64Ok() (*bool, bool)`
+`func (o *WirelessNetworksItem) GetUseDns64Ok() (*bool, bool)`
 
 GetUseDns64Ok returns a tuple with the UseDns64 field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetUseDns64
 
-`func (o *WirelessNetwork) SetUseDns64(v bool)`
+`func (o *WirelessNetworksItem) SetUseDns64(v bool)`
 
 SetUseDns64 sets UseDns64 field to given value.
 
 
 ### GetExternalConnectivity
 
-`func (o *WirelessNetwork) GetExternalConnectivity() bool`
+`func (o *WirelessNetworksItem) GetExternalConnectivity() bool`
 
 GetExternalConnectivity returns the ExternalConnectivity field if non-nil, zero value otherwise.
 
 ### GetExternalConnectivityOk
 
-`func (o *WirelessNetwork) GetExternalConnectivityOk() (*bool, bool)`
+`func (o *WirelessNetworksItem) GetExternalConnectivityOk() (*bool, bool)`
 
 GetExternalConnectivityOk returns a tuple with the ExternalConnectivity field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetExternalConnectivity
 
-`func (o *WirelessNetwork) SetExternalConnectivity(v bool)`
+`func (o *WirelessNetworksItem) SetExternalConnectivity(v bool)`
 
 SetExternalConnectivity sets ExternalConnectivity field to given value.
 

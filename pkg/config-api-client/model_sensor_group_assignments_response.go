@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.9.0
+API version: 1.11.0
 Contact: support@capenetworks.com
 */
 
@@ -22,8 +22,8 @@ var _ MappedNullable = &SensorGroupAssignmentsResponse{}
 
 // SensorGroupAssignmentsResponse struct for SensorGroupAssignmentsResponse
 type SensorGroupAssignmentsResponse struct {
-	SensorGroupAssignments []SensorGroupAssignment `json:"sensor_group_assignments"`
-	Pagination             PaginationDetails       `json:"pagination"`
+	SensorGroupAssignments []SensorGroupAssignmentsItem `json:"sensor_group_assignments"`
+	Pagination             PaginationDetails            `json:"pagination"`
 }
 
 type _SensorGroupAssignmentsResponse SensorGroupAssignmentsResponse
@@ -32,7 +32,7 @@ type _SensorGroupAssignmentsResponse SensorGroupAssignmentsResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorGroupAssignmentsResponse(sensorGroupAssignments []SensorGroupAssignment, pagination PaginationDetails) *SensorGroupAssignmentsResponse {
+func NewSensorGroupAssignmentsResponse(sensorGroupAssignments []SensorGroupAssignmentsItem, pagination PaginationDetails) *SensorGroupAssignmentsResponse {
 	this := SensorGroupAssignmentsResponse{}
 	this.SensorGroupAssignments = sensorGroupAssignments
 	this.Pagination = pagination
@@ -48,9 +48,9 @@ func NewSensorGroupAssignmentsResponseWithDefaults() *SensorGroupAssignmentsResp
 }
 
 // GetSensorGroupAssignments returns the SensorGroupAssignments field value
-func (o *SensorGroupAssignmentsResponse) GetSensorGroupAssignments() []SensorGroupAssignment {
+func (o *SensorGroupAssignmentsResponse) GetSensorGroupAssignments() []SensorGroupAssignmentsItem {
 	if o == nil {
-		var ret []SensorGroupAssignment
+		var ret []SensorGroupAssignmentsItem
 		return ret
 	}
 
@@ -59,7 +59,7 @@ func (o *SensorGroupAssignmentsResponse) GetSensorGroupAssignments() []SensorGro
 
 // GetSensorGroupAssignmentsOk returns a tuple with the SensorGroupAssignments field value
 // and a boolean to check if the value has been set.
-func (o *SensorGroupAssignmentsResponse) GetSensorGroupAssignmentsOk() ([]SensorGroupAssignment, bool) {
+func (o *SensorGroupAssignmentsResponse) GetSensorGroupAssignmentsOk() ([]SensorGroupAssignmentsItem, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -67,7 +67,7 @@ func (o *SensorGroupAssignmentsResponse) GetSensorGroupAssignmentsOk() ([]Sensor
 }
 
 // SetSensorGroupAssignments sets field value
-func (o *SensorGroupAssignmentsResponse) SetSensorGroupAssignments(v []SensorGroupAssignment) {
+func (o *SensorGroupAssignmentsResponse) SetSensorGroupAssignments(v []SensorGroupAssignmentsItem) {
 	o.SensorGroupAssignments = v
 }
 

@@ -9,7 +9,7 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 1.9.0
+  version: 1.11.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
@@ -74,8 +74,7 @@ paths:
       operationId: groups_post_configuration_app_v1_groups_post
       summary: Groups Post
       description: >-
-        Create a new group with the group identified in `parent_uid` as its
-        parent
+        Create a new group with the group identified in `parent_uid` as its parent
       requestBody:
         required: true
         content:
@@ -108,6 +107,62 @@ paths:
         - configuration
         - v1
         - groups
+  /configuration/app/v1/network-group-assignments:
+    get:
+      operationId: get_configuration_app_v1_network_group_assignments_get
+      summary: Get
+      description: Get a list of network group assignments
+      parameters:
+        - name: uid
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Uid
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Cursor
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+            title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkGroupAssignmentsResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1
+        - network-group-assignments
+      x-stability-level: alpha
   /configuration/app/v1/sensor-group-assignments:
     get:
       operationId: get_configuration_app_v1_sensor_group_assignments_get
@@ -369,6 +424,37 @@ components:
         - uid
         - path
       title: GroupsPostResponse
+    NetworkGroupAssignmentsItem:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: Uid
+        group_uid:
+          type: string
+          title: Group Uid
+        network_uid:
+          type: string
+          title: Network Uid
+      required:
+        - uid
+        - group_uid
+        - network_uid
+      title: NetworkGroupAssignmentsItem
+    NetworkGroupAssignmentsResponse:
+      type: object
+      properties:
+        network_group_assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkGroupAssignmentsItem'
+          title: Network Group Assignments
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+      required:
+        - network_group_assignments
+        - pagination
+      title: NetworkGroupAssignmentsResponse
     PaginationDetails:
       type: object
       properties:
@@ -402,7 +488,7 @@ components:
         - first
         - last
       title: PaginationDetails
-    SensorGroupAssignment:
+    SensorGroupAssignmentsItem:
       type: object
       properties:
         uid:
@@ -418,14 +504,14 @@ components:
         - uid
         - group_uid
         - sensor_uid
-      title: SensorGroupAssignment
+      title: SensorGroupAssignmentsItem
     SensorGroupAssignmentsResponse:
       type: object
       properties:
         sensor_group_assignments:
           type: array
           items:
-            $ref: '#/components/schemas/SensorGroupAssignment'
+            $ref: '#/components/schemas/SensorGroupAssignmentsItem'
           title: Sensor Group Assignments
         pagination:
           $ref: '#/components/schemas/PaginationDetails'
@@ -433,7 +519,7 @@ components:
         - sensor_group_assignments
         - pagination
       title: SensorGroupAssignmentsResponse
-    WiredNetwork:
+    WiredNetworksItem:
       type: object
       properties:
         uid:
@@ -445,20 +531,14 @@ components:
         ip_version:
           type: string
           title: Ip Version
-        sensor_count:
-          type: integer
-          title: Sensor Count
-        updated_at:
+        datetime_updated:
           type: string
           format: date-time
-          title: Updated At
-        created_at:
+          title: Datetime Updated
+        datetime_created:
           type: string
           format: date-time
-          title: Created At
-        disabled:
-          type: boolean
-          title: Disabled
+          title: Datetime Created
         security:
           anyOf:
             - type: string
@@ -487,24 +567,22 @@ components:
         - uid
         - alias
         - ip_version
-        - sensor_count
-        - updated_at
-        - created_at
-        - disabled
+        - datetime_updated
+        - datetime_created
         - security
         - dns_lookup_domain
         - disable_edns
         - use_dns64
         - external_connectivity
         - vlan_id
-      title: WiredNetwork
+      title: WiredNetworksItem
     WiredNetworksResponse:
       type: object
       properties:
         wired_networks:
           type: array
           items:
-            $ref: '#/components/schemas/WiredNetwork'
+            $ref: '#/components/schemas/WiredNetworksItem'
           title: Wired Networks
         pagination:
           $ref: '#/components/schemas/PaginationDetails'
@@ -512,7 +590,7 @@ components:
         - wired_networks
         - pagination
       title: WiredNetworksResponse
-    WirelessNetwork:
+    WirelessNetworksItem:
       type: object
       properties:
         uid:
@@ -532,20 +610,14 @@ components:
         ip_version:
           type: string
           title: Ip Version
-        sensor_count:
-          type: integer
-          title: Sensor Count
-        updated_at:
+        datetime_created:
           type: string
           format: date-time
-          title: Updated At
-        created_at:
+          title: Datetime Created
+        datetime_updated:
           type: string
           format: date-time
-          title: Created At
-        disabled:
-          type: boolean
-          title: Disabled
+          title: Datetime Updated
         hidden:
           type: boolean
           title: Hidden
@@ -572,24 +644,22 @@ components:
         - ssid
         - security
         - ip_version
-        - sensor_count
-        - updated_at
-        - created_at
-        - disabled
+        - datetime_created
+        - datetime_updated
         - hidden
         - band_locking
         - dns_lookup_domain
         - disable_edns
         - use_dns64
         - external_connectivity
-      title: WirelessNetwork
+      title: WirelessNetworksItem
     WirelessNetworksResponse:
       type: object
       properties:
         wireless_networks:
           type: array
           items:
-            $ref: '#/components/schemas/WirelessNetwork'
+            $ref: '#/components/schemas/WirelessNetworksItem'
           title: Wireless Networks
         pagination:
           $ref: '#/components/schemas/PaginationDetails'
@@ -607,6 +677,7 @@ tags:
   - name: configuration
   - name: groups
   - name: health
+  - name: network-group-assignments
   - name: sensor-group-assignments
   - name: wired-networks
   - name: wireless-networks

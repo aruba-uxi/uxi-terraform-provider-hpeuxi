@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**WirelessNetworks** | [**[]WirelessNetwork**](WirelessNetwork.md) |  | 
+**WirelessNetworks** | [**[]WirelessNetworksItem**](WirelessNetworksItem.md) |  | 
 **Pagination** | [**PaginationDetails**](PaginationDetails.md) |  | 
 
 ## Methods
 
 ### NewWirelessNetworksResponse
 
-`func NewWirelessNetworksResponse(wirelessNetworks []WirelessNetwork, pagination PaginationDetails, ) *WirelessNetworksResponse`
+`func NewWirelessNetworksResponse(wirelessNetworks []WirelessNetworksItem, pagination PaginationDetails, ) *WirelessNetworksResponse`
 
 NewWirelessNetworksResponse instantiates a new WirelessNetworksResponse object
 This constructor will assign default values to properties that have it defined,
@@ -28,20 +28,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetWirelessNetworks
 
-`func (o *WirelessNetworksResponse) GetWirelessNetworks() []WirelessNetwork`
+`func (o *WirelessNetworksResponse) GetWirelessNetworks() []WirelessNetworksItem`
 
 GetWirelessNetworks returns the WirelessNetworks field if non-nil, zero value otherwise.
 
 ### GetWirelessNetworksOk
 
-`func (o *WirelessNetworksResponse) GetWirelessNetworksOk() (*[]WirelessNetwork, bool)`
+`func (o *WirelessNetworksResponse) GetWirelessNetworksOk() (*[]WirelessNetworksItem, bool)`
 
 GetWirelessNetworksOk returns a tuple with the WirelessNetworks field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetWirelessNetworks
 
-`func (o *WirelessNetworksResponse) SetWirelessNetworks(v []WirelessNetwork)`
+`func (o *WirelessNetworksResponse) SetWirelessNetworks(v []WirelessNetworksItem)`
 
 SetWirelessNetworks sets WirelessNetworks field to given value.
 
