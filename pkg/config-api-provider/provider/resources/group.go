@@ -157,7 +157,7 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 	// Update state from client response
 	state.Name = types.StringValue(group.Name)
-	state.ParentGroupId = types.StringValue(group.ParentUid)
+	state.ParentGroupId = types.StringValue(*group.ParentUid.Get())
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
