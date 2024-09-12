@@ -96,7 +96,7 @@ func (r *wirelessNetworkResource) Read(ctx context.Context, req resource.ReadReq
 	if err != nil || len(networkResponse.WirelessNetworks) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Wireless Networks",
-			"Could not retrieve Group, unexpected error: "+err.Error(),
+			"Could not retrieve Wireless Network, unexpected error: "+err.Error(),
 		)
 		return
 	}

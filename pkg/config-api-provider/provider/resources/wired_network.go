@@ -94,7 +94,7 @@ func (r *wiredNetworkResource) Read(ctx context.Context, req resource.ReadReques
 	if err != nil || len(networkResponse.WiredNetworks) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Wired Network",
-			"Could not retrieve wired network, unexpected error: "+err.Error(),
+			"Could not retrieve Wired Network, unexpected error: "+err.Error(),
 		)
 		return
 	}
