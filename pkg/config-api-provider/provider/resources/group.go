@@ -25,6 +25,7 @@ type groupResourceModel struct {
 	ParentGroupId types.String `tfsdk:"parent_group_id"`
 }
 
+// TODO: Remove this once we rely fully on client for groups
 type GroupResponseModel struct {
 	UID       string  `json:"uid"`
 	Name      string  `json:"name"`
@@ -32,11 +33,7 @@ type GroupResponseModel struct {
 	Path      string  `json:"path"`
 }
 
-type GroupCreateRequestModel struct {
-	Name      string
-	ParentUid string
-}
-
+// TODO: Remove this once we rely fully on client for groups
 type GroupUpdateRequestModel struct {
 	Name string
 }

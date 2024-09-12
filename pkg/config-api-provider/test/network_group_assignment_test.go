@@ -10,6 +10,7 @@ import (
 
 func TestNetworkGroupAssignmentResource(t *testing.T) {
 	defer gock.Off()
+	MockOAuth()
 
 	// Test Wired Network Group Assignment
 	resource.Test(t, resource.TestCase{
@@ -18,12 +19,10 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Creating a network group assignment
 			{
 				PreConfig: func() {
-					MockOAuth()
-					MockGetWiredNetwork("network_uid", GenerateWiredNetworkPaginatedResponse(
-						[]map[string]interface{}{
-							StructToMap(GenerateWiredNetworkResponseModel("network_uid", "")),
-						}),
-						1,
+					MockGetWiredNetwork(
+						"network_uid",
+						GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{GenerateWiredNetworkResponse("network_uid", "")}),
+						2,
 					)
 
 					// required for group create
@@ -78,20 +77,16 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					MockOAuth()
-					MockGetWiredNetwork("network_uid", GenerateWiredNetworkPaginatedResponse(
-						[]map[string]interface{}{
-							StructToMap(GenerateWiredNetworkResponseModel("network_uid", "")),
-						}),
-						1,
+					MockGetWiredNetwork(
+						"network_uid_2",
+						GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{GenerateWiredNetworkResponse("network_uid_2", "_2")}),
+						2,
 					)
-					MockGetWiredNetwork("network_uid_2", GenerateWiredNetworkPaginatedResponse(
-						[]map[string]interface{}{
-							StructToMap(GenerateWiredNetworkResponseModel("network_uid_2", "")),
-						}),
-						1,
+					MockGetWiredNetwork(
+						"network_uid",
+						GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{GenerateWiredNetworkResponse("network_uid", "")}),
+						2,
 					)
-
 					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
 							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
@@ -165,6 +160,16 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Remove networks from state
 			{
 				PreConfig: func() {
+					MockGetWiredNetwork(
+						"network_uid_2",
+						GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{GenerateWiredNetworkResponse("network_uid_2", "_2")}),
+						1,
+					)
+					MockGetWiredNetwork(
+						"network_uid",
+						GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{GenerateWiredNetworkResponse("network_uid", "")}),
+						1,
+					)
 					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
 							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
@@ -206,15 +211,11 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Creating a network group assignment
 			{
 				PreConfig: func() {
-					MockOAuth()
 					// required for network import
-					MockGetWirelessNetwork("network_uid",
-						GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								StructToMap(GenerateWirelessNetworkResponseModel("network_uid", "")),
-							},
-						),
-						1,
+					MockGetWirelessNetwork(
+						"network_uid",
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("network_uid", "")}),
+						2,
 					)
 					// required for group create
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")), 1)
@@ -268,22 +269,15 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					MockOAuth()
-					MockGetWirelessNetwork("network_uid",
-						GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								StructToMap(GenerateWirelessNetworkResponseModel("network_uid", "")),
-							},
-						),
-						1,
+					MockGetWirelessNetwork(
+						"network_uid_2",
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("network_uid_2", "_2")}),
+						2,
 					)
-					MockGetWirelessNetwork("network_uid_2",
-						GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								StructToMap(GenerateWirelessNetworkResponseModel("network_uid_2", "_2")),
-							},
-						),
-						1,
+					MockGetWirelessNetwork(
+						"network_uid",
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("network_uid", "")}),
+						2,
 					)
 
 					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
@@ -359,6 +353,16 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Remove networks from state
 			{
 				PreConfig: func() {
+					MockGetWirelessNetwork(
+						"network_uid_2",
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("network_uid_2", "_2")}),
+						1,
+					)
+					MockGetWirelessNetwork(
+						"network_uid",
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("network_uid", "")}),
+						1,
+					)
 					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
 							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),

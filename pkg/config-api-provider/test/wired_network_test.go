@@ -11,6 +11,7 @@ import (
 
 func TestWiredNetworkResource(t *testing.T) {
 	defer gock.Off()
+	MockOAuth()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -31,11 +32,12 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Importing a wired_network
 			{
 				PreConfig: func() {
-					MockGetWiredNetwork("uid", GenerateWiredNetworkPaginatedResponse(
-						[]map[string]interface{}{
-							StructToMap(GenerateWiredNetworkResponseModel("uid", "")),
-						}),
-						1,
+					MockGetWiredNetwork(
+						"uid",
+						GenerateWiredNetworkPaginatedResponse(
+							[]map[string]interface{}{GenerateWiredNetworkResponse("uid", "")},
+						),
+						2,
 					)
 				},
 				Config: providerConfig + `
@@ -55,12 +57,30 @@ func TestWiredNetworkResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
+				PreConfig: func() {
+					MockGetWiredNetwork(
+						"uid",
+						GenerateWiredNetworkPaginatedResponse(
+							[]map[string]interface{}{GenerateWiredNetworkResponse("uid", "")},
+						),
+						1,
+					)
+				},
 				ResourceName:      "uxi_wired_network.my_wired_network",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			// Updating a wired_network is not allowed
 			{
+				PreConfig: func() {
+					MockGetWiredNetwork(
+						"uid",
+						GenerateWiredNetworkPaginatedResponse(
+							[]map[string]interface{}{GenerateWiredNetworkResponse("uid", "")},
+						),
+						1,
+					)
+				},
 				Config: providerConfig + `
 				resource "uxi_wired_network" "my_wired_network" {
 					alias = "updated_alias"
@@ -69,6 +89,15 @@ func TestWiredNetworkResource(t *testing.T) {
 			},
 			// Deleting a wired_network is not allowed
 			{
+				PreConfig: func() {
+					MockGetWiredNetwork(
+						"uid",
+						GenerateWiredNetworkPaginatedResponse(
+							[]map[string]interface{}{GenerateWiredNetworkResponse("uid", "")},
+						),
+						2,
+					)
+				},
 				Config:      providerConfig + ``,
 				ExpectError: regexp.MustCompile(`(?s)deleting a wired_network is not supported; wired_networks can only removed\s*from state`),
 			},

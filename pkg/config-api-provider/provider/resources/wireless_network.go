@@ -23,23 +23,6 @@ type wirelessNetworkResourceModel struct {
 	Alias types.String `tfsdk:"alias"`
 }
 
-// TODO: Switch this to use the Client Model when that becomes available
-type WirelessNetworkResponseModel struct {
-	Uid                  string // <network_uid:str>,
-	Ssid                 string // <ssid:str>,
-	DatetimeCreated      string // <created_at:str(isoformat(with timezone?))>,
-	DatetimeUpdated      string // <updated_at:str(isoformat(with timezone?))>,
-	Alias                string // <network_alias>,
-	IpVersion            string // <ip_version:str>,
-	Security             string // <security:str>,
-	Hidden               bool   // <hidden:bool>,
-	BandLocking          string // <band_locking:str>,
-	DnsLookupDomain      string // <dns_lookup_domain:str> | Nullable,
-	DisableEdns          bool   // <disable_edns:bool>,
-	UseDns64             bool   // <use_dns64:bool>,
-	ExternalConnectivity bool   // <external_connectivity:bool>
-}
-
 func NewWirelessNetworkResource() resource.Resource {
 	return &wirelessNetworkResource{}
 }
@@ -69,6 +52,23 @@ func (r *wirelessNetworkResource) Schema(_ context.Context, _ resource.SchemaReq
 }
 
 func (r *wirelessNetworkResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	// Add a nil check when handling ProviderData because Terraform
+	// sets that data after it calls the ConfigureProvider RPC.
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*config_api_client.APIClient)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Resource type: Wireless Network. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.client = client
 }
 
 func (r *wirelessNetworkResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {

@@ -10,6 +10,7 @@ import (
 
 func TestSensorGroupAssignmentResource(t *testing.T) {
 	defer gock.Off()
+	MockOAuth()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -17,7 +18,6 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			// Creating a sensor group assignment
 			{
 				PreConfig: func() {
-					MockOAuth()
 					// required for sensor import
 					resources.GetSensor = func(uid string) resources.SensorResponseModel {
 						return GenerateSensorResponseModel(uid, "")

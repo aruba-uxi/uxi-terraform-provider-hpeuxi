@@ -11,6 +11,7 @@ import (
 
 func TestAgentResource(t *testing.T) {
 	defer gock.Off()
+	MockOAuth()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

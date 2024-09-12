@@ -23,21 +23,6 @@ type wiredNetworkResourceModel struct {
 	Alias types.String `tfsdk:"alias"`
 }
 
-// TODO: Switch this to use the Client Model when that becomes available
-type WiredNetworkResponseModel struct {
-	Uid                  string // <network_uid:str>,
-	Alias                string // <network_alias>,
-	DatetimeCreated      string // <created_at:str(isoformat(with timezone?))>,
-	DatetimeUpdated      string // <updated_at:str(isoformat(with timezone?))>,
-	IpVersion            string // <ip_version:str>,
-	Security             string // <security:str>,
-	DnsLookupDomain      string // <dns_lookup_domain:str> | Nullable,
-	DisableEdns          bool   // <disable_edns:bool>,
-	UseDns64             bool   // <use_dns64:bool>,
-	ExternalConnectivity bool   // <external_connectivity:bool>
-	VlanId               int    // <vlan_id:int>
-}
-
 func NewWiredNetworkResource() resource.Resource {
 	return &wiredNetworkResource{}
 }
@@ -67,6 +52,23 @@ func (r *wiredNetworkResource) Schema(_ context.Context, _ resource.SchemaReques
 }
 
 func (r *wiredNetworkResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	// Add a nil check when handling ProviderData because Terraform
+	// sets that data after it calls the ConfigureProvider RPC.
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*config_api_client.APIClient)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Resource type: Wired Network. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.client = client
 }
 
 func (r *wiredNetworkResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
