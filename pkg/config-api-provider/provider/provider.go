@@ -156,6 +156,8 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		datasources.NewGroupDataSource,
+		datasources.NewWiredNetworkDataSource,
+		datasources.NewWirelessNetworkDataSource,
 	}
 }
 
