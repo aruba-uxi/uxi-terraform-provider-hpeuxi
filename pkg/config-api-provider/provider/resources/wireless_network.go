@@ -3,7 +3,7 @@ package resources
 import (
 	"context"
 
-	// "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -44,7 +44,9 @@ func NewWirelessNetworkResource() resource.Resource {
 	return &wirelessNetworkResource{}
 }
 
-type wirelessNetworkResource struct{}
+type wirelessNetworkResource struct {
+	client *config_api_client.APIClient
+}
 
 func (r *wirelessNetworkResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_wireless_network"
@@ -86,10 +88,23 @@ func (r *wirelessNetworkResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	response := GetWirelessNetwork(state.ID.ValueString())
+	networkResponse, _, err := r.client.ConfigurationAPI.
+		GetConfigurationAppV1WirelessNetworksGet(context.Background()).
+		Uid(state.ID.ValueString()).
+		Execute()
+
+	if err != nil || len(networkResponse.WirelessNetworks) != 1 {
+		resp.Diagnostics.AddError(
+			"Error reading Wireless Networks",
+			"Could not retrieve Group, unexpected error: "+err.Error(),
+		)
+		return
+	}
+
+	network := networkResponse.WirelessNetworks[0]
 
 	// Update state from client response
-	state.Alias = types.StringValue(response.Alias)
+	state.Alias = types.StringValue(network.Alias)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -117,25 +132,4 @@ func (r *wirelessNetworkResource) Delete(ctx context.Context, req resource.Delet
 
 func (r *wirelessNetworkResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-// Get the wirelessNetwork using the configuration-api client
-var GetWirelessNetwork = func(uid string) WirelessNetworkResponseModel {
-	// TODO: Query the wirelessNetwork using the client
-
-	return WirelessNetworkResponseModel{
-		Uid:                  uid,
-		Ssid:                 "mock_ssid",
-		DatetimeCreated:      "mock_datetime_created",
-		DatetimeUpdated:      "mock_datetime_updated",
-		Alias:                "mock_alias",
-		IpVersion:            "mock_ip_version",
-		Security:             "mock_security",
-		Hidden:               false,
-		BandLocking:          "mock_band_locking",
-		DnsLookupDomain:      "mock_dns_lookup_domain",
-		DisableEdns:          false,
-		UseDns64:             false,
-		ExternalConnectivity: false,
-	}
 }

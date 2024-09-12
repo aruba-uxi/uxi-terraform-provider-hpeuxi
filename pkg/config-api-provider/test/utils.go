@@ -97,6 +97,13 @@ func GenerateWiredNetworkResponseModel(uid string, postfix string) resources.Wir
 	}
 }
 
+func GenerateWiredNetworkPaginatedResponse(WiredNetworks []map[string]interface{}) map[string]interface{} {
+	return map[string]interface{}{
+		"wired_networks": WiredNetworks,
+		"pagination":     mockPaginationResponse,
+	}
+}
+
 func GenerateWirelessNetworkResponseModel(uid string, postfix string) resources.WirelessNetworkResponseModel {
 	return resources.WirelessNetworkResponseModel{
 		Uid:                  uid,
@@ -112,6 +119,13 @@ func GenerateWirelessNetworkResponseModel(uid string, postfix string) resources.
 		DisableEdns:          false,
 		UseDns64:             false,
 		ExternalConnectivity: false,
+	}
+}
+
+func GeneratePaginatedResponse(wirelessNetworks []map[string]interface{}) map[string]interface{} {
+	return map[string]interface{}{
+		"wireless_networks": wirelessNetworks,
+		"pagination":        mockPaginationResponse,
 	}
 }
 
@@ -191,6 +205,26 @@ func MockPostGroup(response map[string]interface{}, times int) {
 func MockGetGroup(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Get("/configuration/app/v1/groups").
+		MatchHeader("Authorization", "mock_token").
+		MatchParam("uid", uid).
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+func MockGetWiredNetwork(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Get("/configuration/app/v1/wired-networks").
+		MatchHeader("Authorization", "mock_token").
+		MatchParam("uid", uid).
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+func MockGetWirelessNetwork(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Get("/configuration/app/v1/wireless-networks").
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("uid", uid).
 		Times(times).

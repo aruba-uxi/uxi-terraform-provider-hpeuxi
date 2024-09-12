@@ -209,19 +209,6 @@ func (r *groupResource) ImportState(ctx context.Context, req resource.ImportStat
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-var GetGroup = func(uid string) GroupResponseModel {
-	// TODO: Query the group using the client
-
-	parent_uid := "mock_parent_uid"
-
-	return GroupResponseModel{
-		UID:       uid,
-		Name:      "mock_name",
-		ParentUid: &parent_uid,
-		Path:      "mock_path",
-	}
-}
-
 var UpdateGroup = func(request GroupUpdateRequestModel) GroupResponseModel {
 	// TODO: Query the group using the client
 

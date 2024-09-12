@@ -4,7 +4,6 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
@@ -32,9 +31,14 @@ func TestWirelessNetworkResource(t *testing.T) {
 			// Importing a wireless_network
 			{
 				PreConfig: func() {
-					resources.GetWirelessNetwork = func(uid string) resources.WirelessNetworkResponseModel {
-						return GenerateWirelessNetworkResponseModel(uid, "")
-					}
+					MockGetWirelessNetwork("uid",
+						GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								StructToMap(GenerateWirelessNetworkResponseModel("uid", "")),
+							},
+						),
+						1,
+					)
 				},
 				Config: providerConfig + `
 					resource "uxi_wireless_network" "my_wireless_network" {
