@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.5.0
+API version: 1.11.0
 Contact: support@capenetworks.com
 */
 
@@ -17,40 +17,40 @@ import (
 	"fmt"
 )
 
-// checks if the SensorGroupAssignment type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &SensorGroupAssignment{}
+// checks if the SensorGroupAssignmentsItem type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SensorGroupAssignmentsItem{}
 
-// SensorGroupAssignment struct for SensorGroupAssignment
-type SensorGroupAssignment struct {
+// SensorGroupAssignmentsItem struct for SensorGroupAssignmentsItem
+type SensorGroupAssignmentsItem struct {
 	Uid       string `json:"uid"`
 	GroupUid  string `json:"group_uid"`
 	SensorUid string `json:"sensor_uid"`
 }
 
-type _SensorGroupAssignment SensorGroupAssignment
+type _SensorGroupAssignmentsItem SensorGroupAssignmentsItem
 
-// NewSensorGroupAssignment instantiates a new SensorGroupAssignment object
+// NewSensorGroupAssignmentsItem instantiates a new SensorGroupAssignmentsItem object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorGroupAssignment(uid string, groupUid string, sensorUid string) *SensorGroupAssignment {
-	this := SensorGroupAssignment{}
+func NewSensorGroupAssignmentsItem(uid string, groupUid string, sensorUid string) *SensorGroupAssignmentsItem {
+	this := SensorGroupAssignmentsItem{}
 	this.Uid = uid
 	this.GroupUid = groupUid
 	this.SensorUid = sensorUid
 	return &this
 }
 
-// NewSensorGroupAssignmentWithDefaults instantiates a new SensorGroupAssignment object
+// NewSensorGroupAssignmentsItemWithDefaults instantiates a new SensorGroupAssignmentsItem object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewSensorGroupAssignmentWithDefaults() *SensorGroupAssignment {
-	this := SensorGroupAssignment{}
+func NewSensorGroupAssignmentsItemWithDefaults() *SensorGroupAssignmentsItem {
+	this := SensorGroupAssignmentsItem{}
 	return &this
 }
 
 // GetUid returns the Uid field value
-func (o *SensorGroupAssignment) GetUid() string {
+func (o *SensorGroupAssignmentsItem) GetUid() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -61,7 +61,7 @@ func (o *SensorGroupAssignment) GetUid() string {
 
 // GetUidOk returns a tuple with the Uid field value
 // and a boolean to check if the value has been set.
-func (o *SensorGroupAssignment) GetUidOk() (*string, bool) {
+func (o *SensorGroupAssignmentsItem) GetUidOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -69,12 +69,12 @@ func (o *SensorGroupAssignment) GetUidOk() (*string, bool) {
 }
 
 // SetUid sets field value
-func (o *SensorGroupAssignment) SetUid(v string) {
+func (o *SensorGroupAssignmentsItem) SetUid(v string) {
 	o.Uid = v
 }
 
 // GetGroupUid returns the GroupUid field value
-func (o *SensorGroupAssignment) GetGroupUid() string {
+func (o *SensorGroupAssignmentsItem) GetGroupUid() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -85,7 +85,7 @@ func (o *SensorGroupAssignment) GetGroupUid() string {
 
 // GetGroupUidOk returns a tuple with the GroupUid field value
 // and a boolean to check if the value has been set.
-func (o *SensorGroupAssignment) GetGroupUidOk() (*string, bool) {
+func (o *SensorGroupAssignmentsItem) GetGroupUidOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -93,12 +93,12 @@ func (o *SensorGroupAssignment) GetGroupUidOk() (*string, bool) {
 }
 
 // SetGroupUid sets field value
-func (o *SensorGroupAssignment) SetGroupUid(v string) {
+func (o *SensorGroupAssignmentsItem) SetGroupUid(v string) {
 	o.GroupUid = v
 }
 
 // GetSensorUid returns the SensorUid field value
-func (o *SensorGroupAssignment) GetSensorUid() string {
+func (o *SensorGroupAssignmentsItem) GetSensorUid() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -109,7 +109,7 @@ func (o *SensorGroupAssignment) GetSensorUid() string {
 
 // GetSensorUidOk returns a tuple with the SensorUid field value
 // and a boolean to check if the value has been set.
-func (o *SensorGroupAssignment) GetSensorUidOk() (*string, bool) {
+func (o *SensorGroupAssignmentsItem) GetSensorUidOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -117,11 +117,11 @@ func (o *SensorGroupAssignment) GetSensorUidOk() (*string, bool) {
 }
 
 // SetSensorUid sets field value
-func (o *SensorGroupAssignment) SetSensorUid(v string) {
+func (o *SensorGroupAssignmentsItem) SetSensorUid(v string) {
 	o.SensorUid = v
 }
 
-func (o SensorGroupAssignment) MarshalJSON() ([]byte, error) {
+func (o SensorGroupAssignmentsItem) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -129,7 +129,7 @@ func (o SensorGroupAssignment) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o SensorGroupAssignment) ToMap() (map[string]interface{}, error) {
+func (o SensorGroupAssignmentsItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["uid"] = o.Uid
 	toSerialize["group_uid"] = o.GroupUid
@@ -137,7 +137,7 @@ func (o SensorGroupAssignment) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *SensorGroupAssignment) UnmarshalJSON(data []byte) (err error) {
+func (o *SensorGroupAssignmentsItem) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -161,53 +161,53 @@ func (o *SensorGroupAssignment) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varSensorGroupAssignment := _SensorGroupAssignment{}
+	varSensorGroupAssignmentsItem := _SensorGroupAssignmentsItem{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSensorGroupAssignment)
+	err = decoder.Decode(&varSensorGroupAssignmentsItem)
 
 	if err != nil {
 		return err
 	}
 
-	*o = SensorGroupAssignment(varSensorGroupAssignment)
+	*o = SensorGroupAssignmentsItem(varSensorGroupAssignmentsItem)
 
 	return err
 }
 
-type NullableSensorGroupAssignment struct {
-	value *SensorGroupAssignment
+type NullableSensorGroupAssignmentsItem struct {
+	value *SensorGroupAssignmentsItem
 	isSet bool
 }
 
-func (v NullableSensorGroupAssignment) Get() *SensorGroupAssignment {
+func (v NullableSensorGroupAssignmentsItem) Get() *SensorGroupAssignmentsItem {
 	return v.value
 }
 
-func (v *NullableSensorGroupAssignment) Set(val *SensorGroupAssignment) {
+func (v *NullableSensorGroupAssignmentsItem) Set(val *SensorGroupAssignmentsItem) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableSensorGroupAssignment) IsSet() bool {
+func (v NullableSensorGroupAssignmentsItem) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableSensorGroupAssignment) Unset() {
+func (v *NullableSensorGroupAssignmentsItem) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableSensorGroupAssignment(val *SensorGroupAssignment) *NullableSensorGroupAssignment {
-	return &NullableSensorGroupAssignment{value: val, isSet: true}
+func NewNullableSensorGroupAssignmentsItem(val *SensorGroupAssignmentsItem) *NullableSensorGroupAssignmentsItem {
+	return &NullableSensorGroupAssignmentsItem{value: val, isSet: true}
 }
 
-func (v NullableSensorGroupAssignment) MarshalJSON() ([]byte, error) {
+func (v NullableSensorGroupAssignmentsItem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableSensorGroupAssignment) UnmarshalJSON(src []byte) error {
+func (v *NullableSensorGroupAssignmentsItem) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

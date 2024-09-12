@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.5.0
+API version: 1.11.0
 Contact: support@capenetworks.com
 */
 
@@ -21,6 +21,157 @@ import (
 
 // ConfigurationAPIService ConfigurationAPI service
 type ConfigurationAPIService service
+
+type ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest struct {
+	ctx        context.Context
+	ApiService *ConfigurationAPIService
+	uid        *string
+	cursor     *string
+	limit      *int32
+}
+
+func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Uid(uid string) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+	r.uid = &uid
+	return r
+}
+
+func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Cursor(cursor string) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+	r.cursor = &cursor
+	return r
+}
+
+func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Limit(limit int32) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Execute() (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+	return r.ApiService.GetConfigurationAppV1NetworkGroupAssignmentsGetExecute(r)
+}
+
+/*
+GetConfigurationAppV1NetworkGroupAssignmentsGet Get
+
+Get a list of network group assignments
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest
+*/
+func (a *ConfigurationAPIService) GetConfigurationAppV1NetworkGroupAssignmentsGet(ctx context.Context) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+	return ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return NetworkGroupAssignmentsResponse
+func (a *ConfigurationAPIService) GetConfigurationAppV1NetworkGroupAssignmentsGetExecute(r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *NetworkGroupAssignmentsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetConfigurationAppV1NetworkGroupAssignmentsGet")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/configuration/app/v1/network-group-assignments"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.uid != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+	}
+	if r.cursor != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	} else {
+		var defaultValue int32 = 50
+		r.limit = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode >= 400 && localVarHTTPResponse.StatusCode < 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode >= 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
 
 type ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest struct {
 	ctx        context.Context
@@ -173,27 +324,43 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1SensorGroupAssignmentsGet
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetLivezHealthLivezGetRequest struct {
+type ApiGetConfigurationAppV1WiredNetworksGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
+	uid        *string
+	cursor     *string
+	limit      *int32
 }
 
-func (r ApiGetLivezHealthLivezGetRequest) Execute() (*LivenessResponse, *http.Response, error) {
-	return r.ApiService.GetLivezHealthLivezGetExecute(r)
+func (r ApiGetConfigurationAppV1WiredNetworksGetRequest) Uid(uid string) ApiGetConfigurationAppV1WiredNetworksGetRequest {
+	r.uid = &uid
+	return r
+}
+
+func (r ApiGetConfigurationAppV1WiredNetworksGetRequest) Cursor(cursor string) ApiGetConfigurationAppV1WiredNetworksGetRequest {
+	r.cursor = &cursor
+	return r
+}
+
+func (r ApiGetConfigurationAppV1WiredNetworksGetRequest) Limit(limit int32) ApiGetConfigurationAppV1WiredNetworksGetRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r ApiGetConfigurationAppV1WiredNetworksGetRequest) Execute() (*WiredNetworksResponse, *http.Response, error) {
+	return r.ApiService.GetConfigurationAppV1WiredNetworksGetExecute(r)
 }
 
 /*
-GetLivezHealthLivezGet Live health check
+GetConfigurationAppV1WiredNetworksGet Get
 
-Check the health of the service.
+Get a list of wired networks
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetLivezHealthLivezGetRequest
-
-Deprecated
+	@return ApiGetConfigurationAppV1WiredNetworksGetRequest
 */
-func (a *ConfigurationAPIService) GetLivezHealthLivezGet(ctx context.Context) ApiGetLivezHealthLivezGetRequest {
-	return ApiGetLivezHealthLivezGetRequest{
+func (a *ConfigurationAPIService) GetConfigurationAppV1WiredNetworksGet(ctx context.Context) ApiGetConfigurationAppV1WiredNetworksGetRequest {
+	return ApiGetConfigurationAppV1WiredNetworksGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -201,28 +368,38 @@ func (a *ConfigurationAPIService) GetLivezHealthLivezGet(ctx context.Context) Ap
 
 // Execute executes the request
 //
-//	@return LivenessResponse
-//
-// Deprecated
-func (a *ConfigurationAPIService) GetLivezHealthLivezGetExecute(r ApiGetLivezHealthLivezGetRequest) (*LivenessResponse, *http.Response, error) {
+//	@return WiredNetworksResponse
+func (a *ConfigurationAPIService) GetConfigurationAppV1WiredNetworksGetExecute(r ApiGetConfigurationAppV1WiredNetworksGetRequest) (*WiredNetworksResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *LivenessResponse
+		localVarReturnValue *WiredNetworksResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetLivezHealthLivezGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetConfigurationAppV1WiredNetworksGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/health/livez"
+	localVarPath := localBasePath + "/configuration/app/v1/wired-networks"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if r.uid != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+	}
+	if r.cursor != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	} else {
+		var defaultValue int32 = 50
+		r.limit = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -262,112 +439,19 @@ func (a *ConfigurationAPIService) GetLivezHealthLivezGetExecute(r ApiGetLivezHea
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
+		if localVarHTTPResponse.StatusCode >= 400 && localVarHTTPResponse.StatusCode < 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetReadyzHealthReadyzGetRequest struct {
-	ctx        context.Context
-	ApiService *ConfigurationAPIService
-}
-
-func (r ApiGetReadyzHealthReadyzGetRequest) Execute() (*ReadinessResponse, *http.Response, error) {
-	return r.ApiService.GetReadyzHealthReadyzGetExecute(r)
-}
-
-/*
-GetReadyzHealthReadyzGet Ready health check
-
-Check if the service is ready to process requests.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetReadyzHealthReadyzGetRequest
-
-Deprecated
-*/
-func (a *ConfigurationAPIService) GetReadyzHealthReadyzGet(ctx context.Context) ApiGetReadyzHealthReadyzGetRequest {
-	return ApiGetReadyzHealthReadyzGetRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return ReadinessResponse
-//
-// Deprecated
-func (a *ConfigurationAPIService) GetReadyzHealthReadyzGetExecute(r ApiGetReadyzHealthReadyzGetRequest) (*ReadinessResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ReadinessResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetReadyzHealthReadyzGet")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/health/readyz"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 503 {
-			var v ReadinessErrorResponse
+		if localVarHTTPResponse.StatusCode >= 500 {
+			var v ErrorResponse
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -391,27 +475,43 @@ func (a *ConfigurationAPIService) GetReadyzHealthReadyzGetExecute(r ApiGetReadyz
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetStatusHealthStatusGetRequest struct {
+type ApiGetConfigurationAppV1WirelessNetworksGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
+	uid        *string
+	cursor     *string
+	limit      *int32
 }
 
-func (r ApiGetStatusHealthStatusGetRequest) Execute() (*StatusResponse, *http.Response, error) {
-	return r.ApiService.GetStatusHealthStatusGetExecute(r)
+func (r ApiGetConfigurationAppV1WirelessNetworksGetRequest) Uid(uid string) ApiGetConfigurationAppV1WirelessNetworksGetRequest {
+	r.uid = &uid
+	return r
+}
+
+func (r ApiGetConfigurationAppV1WirelessNetworksGetRequest) Cursor(cursor string) ApiGetConfigurationAppV1WirelessNetworksGetRequest {
+	r.cursor = &cursor
+	return r
+}
+
+func (r ApiGetConfigurationAppV1WirelessNetworksGetRequest) Limit(limit int32) ApiGetConfigurationAppV1WirelessNetworksGetRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r ApiGetConfigurationAppV1WirelessNetworksGetRequest) Execute() (*WirelessNetworksResponse, *http.Response, error) {
+	return r.ApiService.GetConfigurationAppV1WirelessNetworksGetExecute(r)
 }
 
 /*
-GetStatusHealthStatusGet Service stats endpoint
+GetConfigurationAppV1WirelessNetworksGet Get
 
-Check basic service details.
+Get a list of wireless networks
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetStatusHealthStatusGetRequest
-
-Deprecated
+	@return ApiGetConfigurationAppV1WirelessNetworksGetRequest
 */
-func (a *ConfigurationAPIService) GetStatusHealthStatusGet(ctx context.Context) ApiGetStatusHealthStatusGetRequest {
-	return ApiGetStatusHealthStatusGetRequest{
+func (a *ConfigurationAPIService) GetConfigurationAppV1WirelessNetworksGet(ctx context.Context) ApiGetConfigurationAppV1WirelessNetworksGetRequest {
+	return ApiGetConfigurationAppV1WirelessNetworksGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -419,28 +519,38 @@ func (a *ConfigurationAPIService) GetStatusHealthStatusGet(ctx context.Context) 
 
 // Execute executes the request
 //
-//	@return StatusResponse
-//
-// Deprecated
-func (a *ConfigurationAPIService) GetStatusHealthStatusGetExecute(r ApiGetStatusHealthStatusGetRequest) (*StatusResponse, *http.Response, error) {
+//	@return WirelessNetworksResponse
+func (a *ConfigurationAPIService) GetConfigurationAppV1WirelessNetworksGetExecute(r ApiGetConfigurationAppV1WirelessNetworksGetRequest) (*WirelessNetworksResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *StatusResponse
+		localVarReturnValue *WirelessNetworksResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetStatusHealthStatusGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetConfigurationAppV1WirelessNetworksGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/health/status"
+	localVarPath := localBasePath + "/configuration/app/v1/wireless-networks"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if r.uid != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+	}
+	if r.cursor != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	} else {
+		var defaultValue int32 = 50
+		r.limit = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -479,6 +589,27 @@ func (a *ConfigurationAPIService) GetStatusHealthStatusGetExecute(r ApiGetStatus
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode >= 400 && localVarHTTPResponse.StatusCode < 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode >= 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

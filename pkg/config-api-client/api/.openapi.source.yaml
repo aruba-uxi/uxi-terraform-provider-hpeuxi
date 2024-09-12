@@ -9,62 +9,11 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 1.5.0
+  version: 1.11.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
 paths:
-  /health/livez:
-    get:
-      operationId: get_livez_health_livez_get
-      summary: Live health check
-      description: Check the health of the service.
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LivenessResponse'
-      deprecated: true
-      tags:
-        - health
-  /health/readyz:
-    get:
-      operationId: get_readyz_health_readyz_get
-      summary: Ready health check
-      description: Check if the service is ready to process requests.
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReadinessResponse'
-        '503':
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReadinessErrorResponse'
-      deprecated: true
-      tags:
-        - health
-  /health/status:
-    get:
-      operationId: get_status_health_status_get
-      summary: Service stats endpoint
-      description: Check basic service details.
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusResponse'
-      deprecated: true
-      tags:
-        - health
   /configuration/app/v1/groups:
     get:
       operationId: groups_get_configuration_app_v1_groups_get
@@ -120,6 +69,7 @@ paths:
         - configuration
         - v1
         - groups
+      x-stability-level: alpha
     post:
       operationId: groups_post_configuration_app_v1_groups_post
       summary: Groups Post
@@ -157,6 +107,62 @@ paths:
         - configuration
         - v1
         - groups
+  /configuration/app/v1/network-group-assignments:
+    get:
+      operationId: get_configuration_app_v1_network_group_assignments_get
+      summary: Get
+      description: Get a list of network group assignments
+      parameters:
+        - name: uid
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Uid
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Cursor
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+            title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkGroupAssignmentsResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1
+        - network-group-assignments
+      x-stability-level: alpha
   /configuration/app/v1/sensor-group-assignments:
     get:
       operationId: get_configuration_app_v1_sensor_group_assignments_get
@@ -213,6 +219,118 @@ paths:
         - v1
         - sensor-group-assignments
       x-stability-level: alpha
+  /configuration/app/v1/wired-networks:
+    get:
+      operationId: get_configuration_app_v1_wired_networks_get
+      summary: Get
+      description: Get a list of wired networks
+      parameters:
+        - name: uid
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Uid
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Cursor
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+            title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WiredNetworksResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1
+        - wired-networks
+      x-stability-level: alpha
+  /configuration/app/v1/wireless-networks:
+    get:
+      operationId: get_configuration_app_v1_wireless_networks_get
+      summary: Get
+      description: Get a list of wireless networks
+      parameters:
+        - name: uid
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Uid
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Cursor
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+            title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WirelessNetworksResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1
+        - wireless-networks
+      x-stability-level: alpha
 components:
   schemas:
     ErrorDetail:
@@ -248,7 +366,9 @@ components:
           type: string
           title: Path
         parent_uid:
-          type: string
+          anyOf:
+            - type: string
+          nullable: true
           title: Parent Uid
       required:
         - uid
@@ -304,17 +424,37 @@ components:
         - uid
         - path
       title: GroupsPostResponse
-    LivenessResponse:
+    NetworkGroupAssignmentsItem:
       type: object
       properties:
-        status:
+        uid:
           type: string
-          enum:
-            - OK
-          title: Status
+          title: Uid
+        group_uid:
+          type: string
+          title: Group Uid
+        network_uid:
+          type: string
+          title: Network Uid
       required:
-        - status
-      title: LivenessResponse
+        - uid
+        - group_uid
+        - network_uid
+      title: NetworkGroupAssignmentsItem
+    NetworkGroupAssignmentsResponse:
+      type: object
+      properties:
+        network_group_assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkGroupAssignmentsItem'
+          title: Network Group Assignments
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+      required:
+        - network_group_assignments
+        - pagination
+      title: NetworkGroupAssignmentsResponse
     PaginationDetails:
       type: object
       properties:
@@ -348,41 +488,7 @@ components:
         - first
         - last
       title: PaginationDetails
-    ReadinessErrorResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties:
-            type: string
-          title: Data
-        status:
-          type: string
-          enum:
-            - ERROR
-          title: Status
-      required:
-        - data
-        - status
-      title: ReadinessErrorResponse
-    ReadinessResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties:
-            type: string
-          title: Data
-        status:
-          type: string
-          enum:
-            - OK
-          title: Status
-      required:
-        - data
-        - status
-      title: ReadinessResponse
-    SensorGroupAssignment:
+    SensorGroupAssignmentsItem:
       type: object
       properties:
         uid:
@@ -398,14 +504,14 @@ components:
         - uid
         - group_uid
         - sensor_uid
-      title: SensorGroupAssignment
+      title: SensorGroupAssignmentsItem
     SensorGroupAssignmentsResponse:
       type: object
       properties:
         sensor_group_assignments:
           type: array
           items:
-            $ref: '#/components/schemas/SensorGroupAssignment'
+            $ref: '#/components/schemas/SensorGroupAssignmentsItem'
           title: Sensor Group Assignments
         pagination:
           $ref: '#/components/schemas/PaginationDetails'
@@ -413,19 +519,154 @@ components:
         - sensor_group_assignments
         - pagination
       title: SensorGroupAssignmentsResponse
-    StatusResponse:
+    WiredNetworksItem:
       type: object
       properties:
-        name:
+        uid:
           type: string
-          title: Name
-        version:
+          title: Uid
+        alias:
           type: string
-          title: Version
+          title: Alias
+        ip_version:
+          type: string
+          title: Ip Version
+        datetime_updated:
+          type: string
+          format: date-time
+          title: Datetime Updated
+        datetime_created:
+          type: string
+          format: date-time
+          title: Datetime Created
+        security:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Security
+        dns_lookup_domain:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Dns Lookup Domain
+        disable_edns:
+          type: boolean
+          title: Disable Edns
+        use_dns64:
+          type: boolean
+          title: Use Dns64
+        external_connectivity:
+          type: boolean
+          title: External Connectivity
+        vlan_id:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Vlan Id
       required:
-        - name
-        - version
-      title: StatusResponse
+        - uid
+        - alias
+        - ip_version
+        - datetime_updated
+        - datetime_created
+        - security
+        - dns_lookup_domain
+        - disable_edns
+        - use_dns64
+        - external_connectivity
+        - vlan_id
+      title: WiredNetworksItem
+    WiredNetworksResponse:
+      type: object
+      properties:
+        wired_networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/WiredNetworksItem'
+          title: Wired Networks
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+      required:
+        - wired_networks
+        - pagination
+      title: WiredNetworksResponse
+    WirelessNetworksItem:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: Uid
+        alias:
+          type: string
+          title: Alias
+        ssid:
+          type: string
+          title: Ssid
+        security:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Security
+        ip_version:
+          type: string
+          title: Ip Version
+        datetime_created:
+          type: string
+          format: date-time
+          title: Datetime Created
+        datetime_updated:
+          type: string
+          format: date-time
+          title: Datetime Updated
+        hidden:
+          type: boolean
+          title: Hidden
+        band_locking:
+          type: string
+          title: Band Locking
+        dns_lookup_domain:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Dns Lookup Domain
+        disable_edns:
+          type: boolean
+          title: Disable Edns
+        use_dns64:
+          type: boolean
+          title: Use Dns64
+        external_connectivity:
+          type: boolean
+          title: External Connectivity
+      required:
+        - uid
+        - alias
+        - ssid
+        - security
+        - ip_version
+        - datetime_created
+        - datetime_updated
+        - hidden
+        - band_locking
+        - dns_lookup_domain
+        - disable_edns
+        - use_dns64
+        - external_connectivity
+      title: WirelessNetworksItem
+    WirelessNetworksResponse:
+      type: object
+      properties:
+        wireless_networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/WirelessNetworksItem'
+          title: Wireless Networks
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+      required:
+        - wireless_networks
+        - pagination
+      title: WirelessNetworksResponse
   securitySchemes:
     HTTPBearer:
       type: http
@@ -436,4 +677,7 @@ tags:
   - name: configuration
   - name: groups
   - name: health
+  - name: network-group-assignments
   - name: sensor-group-assignments
+  - name: wired-networks
+  - name: wireless-networks

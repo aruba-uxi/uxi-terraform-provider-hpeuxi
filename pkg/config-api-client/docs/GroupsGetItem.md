@@ -7,13 +7,13 @@ Name | Type | Description | Notes
 **Uid** | **string** |  | 
 **Name** | **string** |  | 
 **Path** | **string** |  | 
-**ParentUid** | **string** |  | 
+**ParentUid** | **NullableString** |  | 
 
 ## Methods
 
 ### NewGroupsGetItem
 
-`func NewGroupsGetItem(uid string, name string, path string, parentUid string, ) *GroupsGetItem`
+`func NewGroupsGetItem(uid string, name string, path string, parentUid NullableString, ) *GroupsGetItem`
 
 NewGroupsGetItem instantiates a new GroupsGetItem object
 This constructor will assign default values to properties that have it defined,
@@ -108,6 +108,16 @@ and a boolean to check if the value has been set.
 SetParentUid sets ParentUid field to given value.
 
 
+### SetParentUidNil
+
+`func (o *GroupsGetItem) SetParentUidNil(b bool)`
+
+ SetParentUidNil sets the value for ParentUid to be an explicit nil
+
+### UnsetParentUid
+`func (o *GroupsGetItem) UnsetParentUid()`
+
+UnsetParentUid ensures that no value is present for ParentUid, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

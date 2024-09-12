@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 1.5.0
+  version: 1.11.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -19,59 +19,11 @@ tags:
 - name: configuration
 - name: groups
 - name: health
+- name: network-group-assignments
 - name: sensor-group-assignments
+- name: wired-networks
+- name: wireless-networks
 paths:
-  /health/livez:
-    get:
-      deprecated: true
-      description: Check the health of the service.
-      operationId: get_livez_health_livez_get
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LivenessResponse'
-          description: Successful Response
-      summary: Live health check
-      tags:
-      - configuration
-  /health/readyz:
-    get:
-      deprecated: true
-      description: Check if the service is ready to process requests.
-      operationId: get_readyz_health_readyz_get
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReadinessResponse'
-          description: Successful Response
-        "503":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReadinessErrorResponse'
-          description: Service Unavailable
-      summary: Ready health check
-      tags:
-      - configuration
-  /health/status:
-    get:
-      deprecated: true
-      description: Check basic service details.
-      operationId: get_status_health_status_get
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusResponse'
-          description: Successful Response
-      summary: Service stats endpoint
-      tags:
-      - configuration
   /configuration/app/v1/groups:
     get:
       description: Lists groups matching provided criteria
@@ -126,6 +78,7 @@ paths:
       summary: Groups Get
       tags:
       - configuration
+      x-stability-level: alpha
     post:
       description: Create a new group with the group identified in `parent_uid` as
         its parent
@@ -160,6 +113,61 @@ paths:
       summary: Groups Post
       tags:
       - configuration
+  /configuration/app/v1/network-group-assignments:
+    get:
+      description: Get a list of network group assignments
+      operationId: get_configuration_app_v1_network_group_assignments_get
+      parameters:
+      - explode: true
+        in: query
+        name: uid
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkGroupAssignmentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Get
+      tags:
+      - configuration
+      x-stability-level: alpha
   /configuration/app/v1/sensor-group-assignments:
     get:
       description: Get a list of sensor group assignments
@@ -196,6 +204,116 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SensorGroupAssignmentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /configuration/app/v1/wired-networks:
+    get:
+      description: Get a list of wired networks
+      operationId: get_configuration_app_v1_wired_networks_get
+      parameters:
+      - explode: true
+        in: query
+        name: uid
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WiredNetworksResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /configuration/app/v1/wireless-networks:
+    get:
+      description: Get a list of wireless networks
+      operationId: get_configuration_app_v1_wireless_networks_get
+      parameters:
+      - explode: true
+        in: query
+        name: uid
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WirelessNetworksResponse'
           description: Successful Response
         "4XX":
           content:
@@ -260,7 +378,7 @@ components:
           title: Path
           type: string
         parent_uid:
-          title: Parent Uid
+          nullable: true
           type: string
       required:
       - name
@@ -341,18 +459,54 @@ components:
       - uid
       title: GroupsPostResponse
       type: object
-    LivenessResponse:
+    NetworkGroupAssignmentsItem:
       example:
-        status: OK
+        group_uid: group_uid
+        uid: uid
+        network_uid: network_uid
       properties:
-        status:
-          enum:
-          - OK
-          title: Status
+        uid:
+          title: Uid
+          type: string
+        group_uid:
+          title: Group Uid
+          type: string
+        network_uid:
+          title: Network Uid
           type: string
       required:
-      - status
-      title: LivenessResponse
+      - group_uid
+      - network_uid
+      - uid
+      title: NetworkGroupAssignmentsItem
+      type: object
+    NetworkGroupAssignmentsResponse:
+      example:
+        pagination:
+          next: next
+          previous: previous
+          last: last
+          limit: 0
+          first: first
+        network_group_assignments:
+        - group_uid: group_uid
+          uid: uid
+          network_uid: network_uid
+        - group_uid: group_uid
+          uid: uid
+          network_uid: network_uid
+      properties:
+        network_group_assignments:
+          items:
+            $ref: '#/components/schemas/NetworkGroupAssignmentsItem'
+          title: Network Group Assignments
+          type: array
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+      required:
+      - network_group_assignments
+      - pagination
+      title: NetworkGroupAssignmentsResponse
       type: object
     PaginationDetails:
       example:
@@ -385,49 +539,7 @@ components:
       - previous
       title: PaginationDetails
       type: object
-    ReadinessErrorResponse:
-      example:
-        data:
-          key: data
-        status: ERROR
-      properties:
-        data:
-          additionalProperties:
-            type: string
-          title: Data
-          type: object
-        status:
-          enum:
-          - ERROR
-          title: Status
-          type: string
-      required:
-      - data
-      - status
-      title: ReadinessErrorResponse
-      type: object
-    ReadinessResponse:
-      example:
-        data:
-          key: data
-        status: OK
-      properties:
-        data:
-          additionalProperties:
-            type: string
-          title: Data
-          type: object
-        status:
-          enum:
-          - OK
-          title: Status
-          type: string
-      required:
-      - data
-      - status
-      title: ReadinessResponse
-      type: object
-    SensorGroupAssignment:
+    SensorGroupAssignmentsItem:
       example:
         group_uid: group_uid
         uid: uid
@@ -446,7 +558,7 @@ components:
       - group_uid
       - sensor_uid
       - uid
-      title: SensorGroupAssignment
+      title: SensorGroupAssignmentsItem
       type: object
     SensorGroupAssignmentsResponse:
       example:
@@ -466,7 +578,7 @@ components:
       properties:
         sensor_group_assignments:
           items:
-            $ref: '#/components/schemas/SensorGroupAssignment'
+            $ref: '#/components/schemas/SensorGroupAssignmentsItem'
           title: Sensor Group Assignments
           type: array
         pagination:
@@ -476,21 +588,233 @@ components:
       - sensor_group_assignments
       title: SensorGroupAssignmentsResponse
       type: object
-    StatusResponse:
+    WiredNetworksItem:
       example:
-        name: name
-        version: version
+        uid: uid
+        datetime_updated: 2000-01-23T04:56:07.000+00:00
+        security: security
+        vlan_id: 0
+        ip_version: ip_version
+        alias: alias
+        datetime_created: 2000-01-23T04:56:07.000+00:00
+        external_connectivity: true
+        use_dns64: true
+        dns_lookup_domain: dns_lookup_domain
+        disable_edns: true
       properties:
-        name:
-          title: Name
+        uid:
+          title: Uid
           type: string
-        version:
-          title: Version
+        alias:
+          title: Alias
           type: string
+        ip_version:
+          title: Ip Version
+          type: string
+        datetime_updated:
+          format: date-time
+          title: Datetime Updated
+          type: string
+        datetime_created:
+          format: date-time
+          title: Datetime Created
+          type: string
+        security:
+          nullable: true
+          type: string
+        dns_lookup_domain:
+          nullable: true
+          type: string
+        disable_edns:
+          title: Disable Edns
+          type: boolean
+        use_dns64:
+          title: Use Dns64
+          type: boolean
+        external_connectivity:
+          title: External Connectivity
+          type: boolean
+        vlan_id:
+          nullable: true
+          type: integer
       required:
-      - name
-      - version
-      title: StatusResponse
+      - alias
+      - datetime_created
+      - datetime_updated
+      - disable_edns
+      - dns_lookup_domain
+      - external_connectivity
+      - ip_version
+      - security
+      - uid
+      - use_dns64
+      - vlan_id
+      title: WiredNetworksItem
+      type: object
+    WiredNetworksResponse:
+      example:
+        pagination:
+          next: next
+          previous: previous
+          last: last
+          limit: 0
+          first: first
+        wired_networks:
+        - uid: uid
+          datetime_updated: 2000-01-23T04:56:07.000+00:00
+          security: security
+          vlan_id: 0
+          ip_version: ip_version
+          alias: alias
+          datetime_created: 2000-01-23T04:56:07.000+00:00
+          external_connectivity: true
+          use_dns64: true
+          dns_lookup_domain: dns_lookup_domain
+          disable_edns: true
+        - uid: uid
+          datetime_updated: 2000-01-23T04:56:07.000+00:00
+          security: security
+          vlan_id: 0
+          ip_version: ip_version
+          alias: alias
+          datetime_created: 2000-01-23T04:56:07.000+00:00
+          external_connectivity: true
+          use_dns64: true
+          dns_lookup_domain: dns_lookup_domain
+          disable_edns: true
+      properties:
+        wired_networks:
+          items:
+            $ref: '#/components/schemas/WiredNetworksItem'
+          title: Wired Networks
+          type: array
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+      required:
+      - pagination
+      - wired_networks
+      title: WiredNetworksResponse
+      type: object
+    WirelessNetworksItem:
+      example:
+        datetime_updated: 2000-01-23T04:56:07.000+00:00
+        hidden: true
+        external_connectivity: true
+        ssid: ssid
+        dns_lookup_domain: dns_lookup_domain
+        disable_edns: true
+        uid: uid
+        security: security
+        ip_version: ip_version
+        alias: alias
+        datetime_created: 2000-01-23T04:56:07.000+00:00
+        use_dns64: true
+        band_locking: band_locking
+      properties:
+        uid:
+          title: Uid
+          type: string
+        alias:
+          title: Alias
+          type: string
+        ssid:
+          title: Ssid
+          type: string
+        security:
+          nullable: true
+          type: string
+        ip_version:
+          title: Ip Version
+          type: string
+        datetime_created:
+          format: date-time
+          title: Datetime Created
+          type: string
+        datetime_updated:
+          format: date-time
+          title: Datetime Updated
+          type: string
+        hidden:
+          title: Hidden
+          type: boolean
+        band_locking:
+          title: Band Locking
+          type: string
+        dns_lookup_domain:
+          nullable: true
+          type: string
+        disable_edns:
+          title: Disable Edns
+          type: boolean
+        use_dns64:
+          title: Use Dns64
+          type: boolean
+        external_connectivity:
+          title: External Connectivity
+          type: boolean
+      required:
+      - alias
+      - band_locking
+      - datetime_created
+      - datetime_updated
+      - disable_edns
+      - dns_lookup_domain
+      - external_connectivity
+      - hidden
+      - ip_version
+      - security
+      - ssid
+      - uid
+      - use_dns64
+      title: WirelessNetworksItem
+      type: object
+    WirelessNetworksResponse:
+      example:
+        wireless_networks:
+        - datetime_updated: 2000-01-23T04:56:07.000+00:00
+          hidden: true
+          external_connectivity: true
+          ssid: ssid
+          dns_lookup_domain: dns_lookup_domain
+          disable_edns: true
+          uid: uid
+          security: security
+          ip_version: ip_version
+          alias: alias
+          datetime_created: 2000-01-23T04:56:07.000+00:00
+          use_dns64: true
+          band_locking: band_locking
+        - datetime_updated: 2000-01-23T04:56:07.000+00:00
+          hidden: true
+          external_connectivity: true
+          ssid: ssid
+          dns_lookup_domain: dns_lookup_domain
+          disable_edns: true
+          uid: uid
+          security: security
+          ip_version: ip_version
+          alias: alias
+          datetime_created: 2000-01-23T04:56:07.000+00:00
+          use_dns64: true
+          band_locking: band_locking
+        pagination:
+          next: next
+          previous: previous
+          last: last
+          limit: 0
+          first: first
+      properties:
+        wireless_networks:
+          items:
+            $ref: '#/components/schemas/WirelessNetworksItem'
+          title: Wireless Networks
+          type: array
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+      required:
+      - pagination
+      - wireless_networks
+      title: WirelessNetworksResponse
       type: object
   securitySchemes:
     HTTPBearer:
