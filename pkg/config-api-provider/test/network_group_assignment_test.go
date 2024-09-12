@@ -214,7 +214,7 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					// required for network import
 					MockGetWirelessNetwork(
 						"network_uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("network_uid", "")}),
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("network_uid", "")}),
 						2,
 					)
 					// required for group create
@@ -271,12 +271,12 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					MockGetWirelessNetwork(
 						"network_uid_2",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("network_uid_2", "_2")}),
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("network_uid_2", "_2")}),
 						2,
 					)
 					MockGetWirelessNetwork(
 						"network_uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("network_uid", "")}),
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("network_uid", "")}),
 						2,
 					)
 
@@ -355,12 +355,12 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					MockGetWirelessNetwork(
 						"network_uid_2",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("network_uid_2", "_2")}),
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("network_uid_2", "_2")}),
 						1,
 					)
 					MockGetWirelessNetwork(
 						"network_uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("network_uid", "")}),
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("network_uid", "")}),
 						1,
 					)
 					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(

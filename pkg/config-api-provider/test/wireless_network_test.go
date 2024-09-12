@@ -34,7 +34,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					MockGetWirelessNetwork(
 						"uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("uid", "")}),
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("uid", "")}),
 						2,
 					)
 				},
@@ -58,7 +58,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					MockGetWirelessNetwork(
 						"uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("uid", "")}),
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},
@@ -71,7 +71,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					MockGetWirelessNetwork(
 						"uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("uid", "")}),
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},
@@ -86,7 +86,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					MockGetWirelessNetwork(
 						"uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("uid", "")}),
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},
@@ -98,7 +98,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					MockGetWirelessNetwork(
 						"uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponseModel("uid", "")}),
+						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},

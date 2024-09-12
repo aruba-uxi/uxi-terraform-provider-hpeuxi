@@ -104,7 +104,7 @@ func GenerateWiredNetworkPaginatedResponse(wiredNetworks []map[string]interface{
 	}
 }
 
-func GenerateWirelessNetworkResponseModel(uid string, postfix string) map[string]interface{} {
+func GenerateWirelessNetworkResponse(uid string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"uid":                   uid,
 		"ssid":                  "ssid" + postfix,
