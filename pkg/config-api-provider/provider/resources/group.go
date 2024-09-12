@@ -25,6 +25,7 @@ type groupResourceModel struct {
 	ParentGroupId types.String `tfsdk:"parent_group_id"`
 }
 
+// TODO: Remove this once we rely fully on client for groups
 type GroupResponseModel struct {
 	UID       string  `json:"uid"`
 	Name      string  `json:"name"`
@@ -32,11 +33,7 @@ type GroupResponseModel struct {
 	Path      string  `json:"path"`
 }
 
-type GroupCreateRequestModel struct {
-	Name      string
-	ParentUid string
-}
-
+// TODO: Remove this once we rely fully on client for groups
 type GroupUpdateRequestModel struct {
 	Name string
 }
@@ -207,19 +204,6 @@ func (r *groupResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 
 func (r *groupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-var GetGroup = func(uid string) GroupResponseModel {
-	// TODO: Query the group using the client
-
-	parent_uid := "mock_parent_uid"
-
-	return GroupResponseModel{
-		UID:       uid,
-		Name:      "mock_name",
-		ParentUid: &parent_uid,
-		Path:      "mock_path",
-	}
 }
 
 var UpdateGroup = func(request GroupUpdateRequestModel) GroupResponseModel {

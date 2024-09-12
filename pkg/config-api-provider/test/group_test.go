@@ -15,6 +15,7 @@ type Fetcher interface {
 
 func TestGroupResource(t *testing.T) {
 	defer gock.Off()
+	MockOAuth()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -22,7 +23,6 @@ func TestGroupResource(t *testing.T) {
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					MockOAuth()
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("uid", "", "")), 1)
 					MockGetGroup("uid", GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
@@ -84,7 +84,6 @@ func TestGroupResource(t *testing.T) {
 			// Update that does trigger a recreate
 			{
 				PreConfig: func() {
-					MockOAuth()
 					// existing group
 					MockGetGroup("uid", GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{

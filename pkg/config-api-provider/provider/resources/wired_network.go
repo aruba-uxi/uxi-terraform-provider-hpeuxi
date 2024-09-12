@@ -3,7 +3,7 @@ package resources
 import (
 	"context"
 
-	// "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -23,26 +23,13 @@ type wiredNetworkResourceModel struct {
 	Alias types.String `tfsdk:"alias"`
 }
 
-// TODO: Switch this to use the Client Model when that becomes available
-type WiredNetworkResponseModel struct {
-	Uid                  string // <network_uid:str>,
-	Alias                string // <network_alias>,
-	DatetimeCreated      string // <created_at:str(isoformat(with timezone?))>,
-	DatetimeUpdated      string // <updated_at:str(isoformat(with timezone?))>,
-	IpVersion            string // <ip_version:str>,
-	Security             string // <security:str>,
-	DnsLookupDomain      string // <dns_lookup_domain:str> | Nullable,
-	DisableEdns          bool   // <disable_edns:bool>,
-	UseDns64             bool   // <use_dns64:bool>,
-	ExternalConnectivity bool   // <external_connectivity:bool>
-	VlanId               int    // <vlan_id:int>
-}
-
 func NewWiredNetworkResource() resource.Resource {
 	return &wiredNetworkResource{}
 }
 
-type wiredNetworkResource struct{}
+type wiredNetworkResource struct {
+	client *config_api_client.APIClient
+}
 
 func (r *wiredNetworkResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_wired_network"
@@ -65,6 +52,23 @@ func (r *wiredNetworkResource) Schema(_ context.Context, _ resource.SchemaReques
 }
 
 func (r *wiredNetworkResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	// Add a nil check when handling ProviderData because Terraform
+	// sets that data after it calls the ConfigureProvider RPC.
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*config_api_client.APIClient)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Resource type: Wired Network. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.client = client
 }
 
 func (r *wiredNetworkResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -84,10 +88,23 @@ func (r *wiredNetworkResource) Read(ctx context.Context, req resource.ReadReques
 		return
 	}
 
-	response := GetWiredNetwork(state.ID.ValueString())
+	networkResponse, _, err := r.client.ConfigurationAPI.
+		GetConfigurationAppV1WiredNetworksGet(context.Background()).
+		Uid(state.ID.ValueString()).
+		Execute()
+
+	if err != nil || len(networkResponse.WiredNetworks) != 1 {
+		resp.Diagnostics.AddError(
+			"Error reading Wired Network",
+			"Could not retrieve Wired Network, unexpected error: "+err.Error(),
+		)
+		return
+	}
+
+	network := networkResponse.WiredNetworks[0]
 
 	// Update state from client response
-	state.Alias = types.StringValue(response.Alias)
+	state.Alias = types.StringValue(network.Alias)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -115,23 +132,4 @@ func (r *wiredNetworkResource) Delete(ctx context.Context, req resource.DeleteRe
 
 func (r *wiredNetworkResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-// Get the wiredNetwork using the configuration-api client
-var GetWiredNetwork = func(uid string) WiredNetworkResponseModel {
-	// TODO: Query the wiredNetwork using the client
-
-	return WiredNetworkResponseModel{
-		Uid:                  "mock_uid",
-		Alias:                "mock_alias",
-		DatetimeCreated:      "mock_datetime_created",
-		DatetimeUpdated:      "mock_datetime_updated",
-		IpVersion:            "mock_ip_version",
-		Security:             "mock_security",
-		DnsLookupDomain:      "mock_dns_lookup_domain",
-		DisableEdns:          false,
-		UseDns64:             false,
-		ExternalConnectivity: false,
-		VlanId:               123,
-	}
 }

@@ -44,19 +44,19 @@ func GenerateAgentResponseModel(uid string, postfix string) resources.AgentRespo
 	}
 }
 
-func GenerateGroupResponseModel(uid string, non_replacement_field_postfix string, replacement_field_postfix string) resources.GroupResponseModel {
-	parent_uid := "parent_uid" + replacement_field_postfix
+func GenerateGroupResponseModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) resources.GroupResponseModel {
+	parent_uid := "parent_uid" + replacementFieldPostfix
 	return resources.GroupResponseModel{
 		UID:       uid,
-		Name:      "name" + non_replacement_field_postfix,
+		Name:      "name" + nonReplacementFieldPostfix,
 		ParentUid: &parent_uid,
 		Path:      parent_uid + "." + uid,
 	}
 }
 
-func GenerateGroupPaginatedResponse(Groups []map[string]interface{}) map[string]interface{} {
+func GenerateGroupPaginatedResponse(groups []map[string]interface{}) map[string]interface{} {
 	return map[string]interface{}{
-		"groups":     Groups,
+		"groups":     groups,
 		"pagination": mockPaginationResponse,
 	}
 }
@@ -81,37 +81,51 @@ func GenerateServiceTestResponseModel(uid string, postfix string) resources.Serv
 	}
 }
 
-func GenerateWiredNetworkResponseModel(uid string, postfix string) resources.WiredNetworkResponseModel {
-	return resources.WiredNetworkResponseModel{
-		Uid:                  uid,
-		Alias:                "alias" + postfix,
-		DatetimeCreated:      "datetime_created" + postfix,
-		DatetimeUpdated:      "datetime_updated" + postfix,
-		IpVersion:            "ip_version" + postfix,
-		Security:             "security" + postfix,
-		DnsLookupDomain:      "dns_lookup_domain" + postfix,
-		DisableEdns:          false,
-		UseDns64:             false,
-		ExternalConnectivity: false,
-		VlanId:               123,
+func GenerateWiredNetworkResponse(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"uid":                   uid,
+		"alias":                 "alias" + postfix,
+		"datetime_created":      "2024-09-11T12:00:00.000Z",
+		"datetime_updated":      "2024-09-11T12:00:00.000Z",
+		"ip_version":            "ip_version" + postfix,
+		"security":              "security" + postfix,
+		"dns_lookup_domain":     "dns_lookup_domain" + postfix,
+		"disable_edns":          false,
+		"use_dns64":             false,
+		"external_connectivity": false,
+		"vlan_id":               123,
 	}
 }
 
-func GenerateWirelessNetworkResponseModel(uid string, postfix string) resources.WirelessNetworkResponseModel {
-	return resources.WirelessNetworkResponseModel{
-		Uid:                  uid,
-		Ssid:                 "ssid" + postfix,
-		DatetimeCreated:      "datetime_created" + postfix,
-		DatetimeUpdated:      "datetime_updated" + postfix,
-		Alias:                "alias" + postfix,
-		IpVersion:            "ip_version" + postfix,
-		Security:             "security" + postfix,
-		Hidden:               false,
-		BandLocking:          "band_locking" + postfix,
-		DnsLookupDomain:      "dns_lookup_domain" + postfix,
-		DisableEdns:          false,
-		UseDns64:             false,
-		ExternalConnectivity: false,
+func GenerateWiredNetworkPaginatedResponse(wiredNetworks []map[string]interface{}) map[string]interface{} {
+	return map[string]interface{}{
+		"wired_networks": wiredNetworks,
+		"pagination":     mockPaginationResponse,
+	}
+}
+
+func GenerateWirelessNetworkResponseModel(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"uid":                   uid,
+		"ssid":                  "ssid" + postfix,
+		"datetime_created":      "2024-09-11T12:00:00.000Z",
+		"datetime_updated":      "2024-09-11T12:00:00.000Z",
+		"alias":                 "alias" + postfix,
+		"ip_version":            "ip_version" + postfix,
+		"security":              "security" + postfix,
+		"hidden":                false,
+		"band_locking":          "band_locking" + postfix,
+		"dns_lookup_domain":     "dns_lookup_domain" + postfix,
+		"disable_edns":          false,
+		"use_dns64":             false,
+		"external_connectivity": false,
+	}
+}
+
+func GenerateWirelessNetworkPaginatedResponse(wirelessNetworks []map[string]interface{}) map[string]interface{} {
+	return map[string]interface{}{
+		"wireless_networks": wirelessNetworks,
+		"pagination":        mockPaginationResponse,
 	}
 }
 
@@ -191,6 +205,26 @@ func MockPostGroup(response map[string]interface{}, times int) {
 func MockGetGroup(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Get("/configuration/app/v1/groups").
+		MatchHeader("Authorization", "mock_token").
+		MatchParam("uid", uid).
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+func MockGetWiredNetwork(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Get("/configuration/app/v1/wired-networks").
+		MatchHeader("Authorization", "mock_token").
+		MatchParam("uid", uid).
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+func MockGetWirelessNetwork(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Get("/configuration/app/v1/wireless-networks").
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("uid", uid).
 		Times(times).

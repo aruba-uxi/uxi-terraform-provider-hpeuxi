@@ -10,6 +10,7 @@ import (
 
 func TestAgentGroupAssignmentResource(t *testing.T) {
 	defer gock.Off()
+	MockOAuth()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -17,7 +18,6 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			// Creating a agent group assignment
 			{
 				PreConfig: func() {
-					MockOAuth()
 					// required for agent import
 					resources.GetAgent = func(uid string) resources.AgentResponseModel {
 						return GenerateAgentResponseModel(uid, "")
@@ -78,7 +78,6 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					MockOAuth()
 					resources.GetAgent = func(uid string) resources.AgentResponseModel {
 						if uid == "agent_uid" {
 							return GenerateAgentResponseModel(uid, "")
