@@ -9,7 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ datasource.DataSource              = &groupDataSource{}
 	_ datasource.DataSourceWithConfigure = &groupDataSource{}
@@ -24,8 +23,11 @@ type groupDataSource struct {
 }
 
 type groupDataSourceModel struct {
-	ID     types.String `tfsdk:"id"`
-	Filter struct {
+	ID            types.String `tfsdk:"id"`
+	Path          types.String `tfsdk:"path"`
+	ParentGroupID types.String `tfsdk:"parent_group_id"`
+	Name          types.String `tfsdk:"name"`
+	Filter        struct {
 		GroupID *string `tfsdk:"group_id"`
 		IsRoot  *bool   `tfsdk:"is_root"`
 	} `tfsdk:"filter"`
@@ -39,6 +41,16 @@ func (d *groupDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
+				Computed: true,
+			},
+			"path": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+			},
+			"parent_group_id": schema.StringAttribute{
+				Computed: true,
+			},
+			"name": schema.StringAttribute{
 				Computed: true,
 			},
 			"filter": schema.SingleNestedAttribute{
@@ -91,6 +103,11 @@ func (d *groupDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 
 	group := groupResponse.Groups[0]
 	state.ID = types.StringValue(group.Uid)
+	state.Name = types.StringValue(group.Name)
+	state.Path = types.StringValue(group.Path)
+	if group.ParentUid.IsSet() {
+		state.ParentGroupID = types.StringValue(*group.ParentUid.Get())
+	}
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)
