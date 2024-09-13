@@ -232,7 +232,7 @@ func MockGetWirelessNetwork(uid string, response map[string]interface{}, times i
 		JSON(response)
 }
 
-func MockGetSensorGroupAssociation(uid string, response map[string]interface{}, times int) {
+func MockGetSensorGroupAssignment(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Get("/configuration/app/v1/sensor-group-assignments").
 		MatchHeader("Authorization", "mock_token").
