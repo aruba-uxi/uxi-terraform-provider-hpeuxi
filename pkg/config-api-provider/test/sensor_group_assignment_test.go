@@ -36,7 +36,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					resources.CreateSensorGroupAssignment = func(request resources.SensorGroupAssignmentRequestModel) resources.SensorGroupAssignmentResponseModel {
 						return GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")
 					}
-					MockGetSensorGroupAssociation(
+					MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
 						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
 							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")),
@@ -76,7 +76,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					MockGetSensorGroupAssociation(
+					MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
 						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
 							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")),
@@ -115,14 +115,14 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
 
 					// required for sensor group assignment create
-					MockGetSensorGroupAssociation(
+					MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
 						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
 							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")),
 						}),
 						1,
 					)
-					MockGetSensorGroupAssociation(
+					MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid_2",
 						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
 							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2")),
@@ -197,14 +197,14 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						}),
 						1,
 					)
-					MockGetSensorGroupAssociation(
+					MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
 						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
 							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")),
 						}),
 						1,
 					)
-					MockGetSensorGroupAssociation(
+					MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid_2",
 						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
 							StructToMap(GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2")),

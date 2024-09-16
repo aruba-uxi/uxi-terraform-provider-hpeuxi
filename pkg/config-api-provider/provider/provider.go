@@ -158,6 +158,7 @@ func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datas
 		datasources.NewRootGroupDataSource,
 		datasources.NewWiredNetworkDataSource,
 		datasources.NewWirelessNetworkDataSource,
+		datasources.NewSensorGroupAssignmentDataSource,
 	}
 }
 
