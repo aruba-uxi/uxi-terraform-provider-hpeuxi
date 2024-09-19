@@ -1,23 +1,25 @@
-package test
+package data_source
 
 import (
 	"regexp"
 	"testing"
 
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestGroupDataSource(t *testing.T) {
 	defer gock.Off()
-	MockOAuth()
+	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Test no filters set
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {}
 					}
@@ -26,7 +28,7 @@ func TestGroupDataSource(t *testing.T) {
 			},
 			// Test too many filters set
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
 							is_root  = true
@@ -42,13 +44,13 @@ func TestGroupDataSource(t *testing.T) {
 			// Test Read, is_root not set
 			{
 				PreConfig: func() {
-					MockGetGroup(
+					util.MockGetGroup(
 						"uid",
-						GenerateGroupPaginatedResponse([]map[string]interface{}{StructToMap(GenerateGroupResponseModel("uid", "", ""))}),
+						util.GenerateGroupPaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseModel("uid", "", ""))}),
 						3,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
 							group_id = "uid"
@@ -62,13 +64,13 @@ func TestGroupDataSource(t *testing.T) {
 			// Test Read, is_root is false
 			{
 				PreConfig: func() {
-					MockGetGroup(
+					util.MockGetGroup(
 						"uid",
-						GenerateGroupPaginatedResponse([]map[string]interface{}{StructToMap(GenerateGroupResponseModel("uid", "", ""))}),
+						util.GenerateGroupPaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseModel("uid", "", ""))}),
 						3,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
 							is_root  = false
@@ -83,4 +85,6 @@ func TestGroupDataSource(t *testing.T) {
 			// TODO: Test retrieving the root group
 		},
 	})
+
+	mockOAuth.Mock.Disable()
 }

@@ -1,12 +1,13 @@
 package test
 
 import (
-	"regexp"
-	"testing"
-
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"regexp"
+	"testing"
 )
 
 type Fetcher interface {
@@ -15,23 +16,23 @@ type Fetcher interface {
 
 func TestGroupResource(t *testing.T) {
 	defer gock.Off()
-	MockOAuth()
+	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("uid", "", "")), 1)
-					MockGetGroup("uid", GenerateGroupPaginatedResponse(
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")), 1)
+					util.MockGetGroup("uid", util.GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("uid", "", "")),
+							util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")),
 						}),
 						1,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 				resource "uxi_group" "my_group" {
 					name            = "name"
 					parent_group_id = "parent_uid"
@@ -45,9 +46,9 @@ func TestGroupResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					MockGetGroup("uid", GenerateGroupPaginatedResponse(
+					util.MockGetGroup("uid", util.GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("uid", "", "")),
+							util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")),
 						}),
 						1,
 					)
@@ -60,16 +61,16 @@ func TestGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.UpdateGroup = func(request resources.GroupUpdateRequestModel) resources.GroupResponseModel {
-						return GenerateGroupResponseModel("uid", "_2", "")
+						return util.GenerateGroupResponseModel("uid", "_2", "")
 					}
-					MockGetGroup("uid", GenerateGroupPaginatedResponse(
+					util.MockGetGroup("uid", util.GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("uid", "_2", "")),
+							util.StructToMap(util.GenerateGroupResponseModel("uid", "_2", "")),
 						}),
 						2,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
 						name            = "name_2"
 						parent_group_id = "parent_uid"
@@ -85,22 +86,22 @@ func TestGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					MockGetGroup("uid", GenerateGroupPaginatedResponse(
+					util.MockGetGroup("uid", util.GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("uid", "", "")),
+							util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")),
 						}),
 						1,
 					)
 					// new group (replacement)
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("new_uid", "", "_2")), 1)
-					MockGetGroup("new_uid", GenerateGroupPaginatedResponse(
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("new_uid", "", "_2")), 1)
+					util.MockGetGroup("new_uid", util.GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("new_uid", "", "_2")),
+							util.StructToMap(util.GenerateGroupResponseModel("new_uid", "", "_2")),
 						}),
 						1,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_uid_2"
@@ -114,19 +115,21 @@ func TestGroupResource(t *testing.T) {
 			// Delete testing automatically occurs in TestCase
 		},
 	})
+
+	mockOAuth.Mock.Disable()
 }
 
 func TestRootGroupResource(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Importing the root group does not work
 			{
 				PreConfig: func() {
 					resources.GetRootGroupUID = func() string { return "my_root_group_uid" }
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 				resource "uxi_group" "my_root_group" {
 					name            = "name"
 					parent_group_id = "some_random_string"

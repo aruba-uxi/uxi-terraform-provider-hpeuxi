@@ -1,24 +1,25 @@
 package test
 
 import (
-	"regexp"
-	"testing"
-
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"regexp"
+	"testing"
 )
 
 func TestAgentResource(t *testing.T) {
 	defer gock.Off()
-	MockOAuth()
+	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Creating an agent is not allowed
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_agent" "my_agent" {
 						name = "name"
 						notes = "note"
@@ -31,10 +32,10 @@ func TestAgentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.GetAgent = func(uid string) resources.AgentResponseModel {
-						return GenerateAgentResponseModel(uid, "")
+						return util.GenerateAgentResponseModel(uid, "")
 					}
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_agent" "my_agent" {
 						name = "name"
 						notes = "notes"
@@ -63,10 +64,10 @@ func TestAgentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.GetAgent = func(uid string) resources.AgentResponseModel {
-						return GenerateAgentResponseModel(uid, "_2")
+						return util.GenerateAgentResponseModel(uid, "_2")
 					}
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 				resource "uxi_agent" "my_agent" {
 					name = "name_2"
 					notes = "notes_2"
@@ -81,4 +82,6 @@ func TestAgentResource(t *testing.T) {
 			// Delete testing automatically occurs in TestCase
 		},
 	})
+
+	mockOAuth.Mock.Disable()
 }

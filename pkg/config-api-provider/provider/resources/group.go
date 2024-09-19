@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/util"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -103,7 +104,8 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 
 	groups_post_request := config_api_client.NewGroupsPostRequest(plan.ParentGroupId.ValueString(), plan.Name.ValueString())
-	group, _, err := r.client.ConfigurationAPI.GroupsPostConfigurationAppV1GroupsPost(context.Background()).GroupsPostRequest(*groups_post_request).Execute()
+	request := r.client.ConfigurationAPI.GroupsPostConfigurationAppV1GroupsPost(context.Background()).GroupsPostRequest(*groups_post_request)
+	group, _, err := util.RetryFor429(request.Execute)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating group",
