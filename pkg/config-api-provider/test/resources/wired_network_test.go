@@ -1,6 +1,8 @@
-package test
+package resource_test
 
 import (
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"regexp"
 	"testing"
 
@@ -11,10 +13,10 @@ import (
 
 func TestWiredNetworkResource(t *testing.T) {
 	defer gock.Off()
-	MockOAuth()
+	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// we required terraform 1.7.0 and above for the `removed` block
 			tfversion.RequireAbove(tfversion.Version1_7_0),
@@ -22,7 +24,7 @@ func TestWiredNetworkResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Creating a wired_network is not allowed
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_wired_network" "my_wired_network" {
 						alias = "alias"
 					}`,
@@ -32,15 +34,15 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Importing a wired_network
 			{
 				PreConfig: func() {
-					MockGetWiredNetwork(
+					util.MockGetWiredNetwork(
 						"uid",
-						GenerateWiredNetworkPaginatedResponse(
-							[]map[string]interface{}{GenerateWiredNetworkResponse("uid", "")},
+						util.GenerateWiredNetworkPaginatedResponse(
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
 						),
 						2,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_wired_network" "my_wired_network" {
 						alias = "alias"
 					}
@@ -58,10 +60,10 @@ func TestWiredNetworkResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					MockGetWiredNetwork(
+					util.MockGetWiredNetwork(
 						"uid",
-						GenerateWiredNetworkPaginatedResponse(
-							[]map[string]interface{}{GenerateWiredNetworkResponse("uid", "")},
+						util.GenerateWiredNetworkPaginatedResponse(
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
 						),
 						1,
 					)
@@ -73,15 +75,15 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Updating a wired_network is not allowed
 			{
 				PreConfig: func() {
-					MockGetWiredNetwork(
+					util.MockGetWiredNetwork(
 						"uid",
-						GenerateWiredNetworkPaginatedResponse(
-							[]map[string]interface{}{GenerateWiredNetworkResponse("uid", "")},
+						util.GenerateWiredNetworkPaginatedResponse(
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
 						),
 						1,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 				resource "uxi_wired_network" "my_wired_network" {
 					alias = "updated_alias"
 				}`,
@@ -90,20 +92,20 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Deleting a wired_network is not allowed
 			{
 				PreConfig: func() {
-					MockGetWiredNetwork(
+					util.MockGetWiredNetwork(
 						"uid",
-						GenerateWiredNetworkPaginatedResponse(
-							[]map[string]interface{}{GenerateWiredNetworkResponse("uid", "")},
+						util.GenerateWiredNetworkPaginatedResponse(
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
 						),
 						2,
 					)
 				},
-				Config:      providerConfig + ``,
+				Config:      provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(`(?s)deleting a wired_network is not supported; wired_networks can only removed\s*from state`),
 			},
 			// Remove wired_network from state
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					removed {
 						from = uxi_wired_network.my_wired_network
 
@@ -114,4 +116,6 @@ func TestWiredNetworkResource(t *testing.T) {
 			},
 		},
 	})
+
+	mockOAuth.Mock.Disable()
 }

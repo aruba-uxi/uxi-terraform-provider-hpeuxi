@@ -1,4 +1,4 @@
-package test
+package provider
 
 import (
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider"
@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	providerConfig = `provider "uxi" {
+	ProviderConfig = `provider "uxi" {
 		host		  = "test.api.capenetworks.com"
 		client_id     = "client_id"
 		client_secret = "client_secret"
@@ -16,11 +16,11 @@ const (
 )
 
 var (
-	// testAccProtoV6ProviderFactories are used to instantiate a provider during
+	// TestAccProtoV6ProviderFactories are used to instantiate a provider during
 	// acceptance testing. The factory function will be invoked for every Terraform
 	// CLI command executed to create a provider server to which the CLI can
 	// reattach.
-	testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
+	TestAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
 		"uxi": providerserver.NewProtocol6WithError(provider.New("test")()),
 	}
 )

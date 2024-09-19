@@ -1,31 +1,32 @@
-package test
+package data_source_test
 
 import (
-	"testing"
-
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"testing"
 )
 
 func TestSensorGroupAssignmentDataSource(t *testing.T) {
 	defer gock.Off()
-	MockOAuth()
+	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Read testing
 			{
 				PreConfig: func() {
-					MockGetSensorGroupAssignment(
+					util.MockGetSensorGroupAssignment(
 						"uid",
-						GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
-							StructToMap(GenerateSensorGroupAssignmentResponse("uid", "")),
+						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
+							util.StructToMap(util.GenerateSensorGroupAssignmentResponse("uid", "")),
 						}),
 						3,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
 							sensor_group_assignment_id = "uid"
@@ -40,4 +41,6 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 			},
 		},
 	})
+
+	mockOAuth.Mock.Disable()
 }

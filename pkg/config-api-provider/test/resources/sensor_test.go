@@ -1,6 +1,8 @@
-package test
+package resource_test
 
 import (
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"regexp"
 	"testing"
 
@@ -12,10 +14,10 @@ import (
 
 func TestSensorResource(t *testing.T) {
 	defer gock.Off()
-	MockOAuth()
+	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// we required terraform 1.7.0 and above for the `removed` block
 			tfversion.RequireAbove(tfversion.Version1_7_0),
@@ -23,7 +25,7 @@ func TestSensorResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Creating a sensor is not allowed
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_sensor" "my_sensor" {
 						name = "name"
 						address_note = "address_note"
@@ -37,10 +39,10 @@ func TestSensorResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.GetSensor = func(uid string) resources.SensorResponseModel {
-						return GenerateSensorResponseModel(uid, "")
+						return util.GenerateSensorResponseModel(uid, "")
 					}
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_sensor" "my_sensor" {
 						name = "name"
 						address_note = "address_note"
@@ -71,10 +73,10 @@ func TestSensorResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.GetSensor = func(uid string) resources.SensorResponseModel {
-						return GenerateSensorResponseModel(uid, "_2")
+						return util.GenerateSensorResponseModel(uid, "_2")
 					}
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 				resource "uxi_sensor" "my_sensor" {
 					name = "name_2"
 					address_note = "address_note_2"
@@ -91,12 +93,12 @@ func TestSensorResource(t *testing.T) {
 			},
 			// Deleting a sensor is not allowed
 			{
-				Config:      providerConfig + ``,
+				Config:      provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(`deleting a sensor is not supported; sensors can only removed from state`),
 			},
 			// Remove sensor from state
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					removed {
 						from = uxi_sensor.my_sensor
 
@@ -107,4 +109,6 @@ func TestSensorResource(t *testing.T) {
 			},
 		},
 	})
+
+	mockOAuth.Mock.Disable()
 }

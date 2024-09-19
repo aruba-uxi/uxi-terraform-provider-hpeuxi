@@ -1,6 +1,8 @@
-package test
+package resource_test
 
 import (
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"regexp"
 	"testing"
 
@@ -12,10 +14,10 @@ import (
 
 func TestServiceTestResource(t *testing.T) {
 	defer gock.Off()
-	MockOAuth()
+	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// we required terraform 1.7.0 and above for the `removed` block
 			tfversion.RequireAbove(tfversion.Version1_7_0),
@@ -23,7 +25,7 @@ func TestServiceTestResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Creating a service_test is not allowed
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_service_test" "my_service_test" {
 						title = "title"
 					}`,
@@ -34,10 +36,10 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
-						return GenerateServiceTestResponseModel(uid, "")
+						return util.GenerateServiceTestResponseModel(uid, "")
 					}
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_service_test" "my_service_test" {
 						title = "title"
 					}
@@ -60,7 +62,7 @@ func TestServiceTestResource(t *testing.T) {
 			},
 			// Updating a service_test is not allowed
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 				resource "uxi_service_test" "my_service_test" {
 					title = "updated_title"
 				}`,
@@ -68,12 +70,12 @@ func TestServiceTestResource(t *testing.T) {
 			},
 			// Deleting a service_test is not allowed
 			{
-				Config:      providerConfig + ``,
+				Config:      provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(`(?s)deleting a service_test is not supported; service_tests can only removed from\s*state`),
 			},
 			// Remove service_test from state
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					removed {
 						from = uxi_service_test.my_service_test
 
@@ -84,4 +86,6 @@ func TestServiceTestResource(t *testing.T) {
 			},
 		},
 	})
+
+	mockOAuth.Mock.Disable()
 }

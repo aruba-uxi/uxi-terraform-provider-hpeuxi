@@ -1,6 +1,8 @@
-package test
+package resource_test
 
 import (
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"regexp"
 	"testing"
 
@@ -11,10 +13,10 @@ import (
 
 func TestWirelessNetworkResource(t *testing.T) {
 	defer gock.Off()
-	MockOAuth()
+	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// we required terraform 1.7.0 and above for the `removed` block
 			tfversion.RequireAbove(tfversion.Version1_7_0),
@@ -22,7 +24,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Creating a wireless_network is not allowed
 			{
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_wireless_network" "my_wireless_network" {
 						alias = "alias"
 					}`,
@@ -32,13 +34,13 @@ func TestWirelessNetworkResource(t *testing.T) {
 			// Importing a wireless_network
 			{
 				PreConfig: func() {
-					MockGetWirelessNetwork(
+					util.MockGetWirelessNetwork(
 						"uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("uid", "")}),
+						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						2,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_wireless_network" "my_wireless_network" {
 						alias = "alias"
 					}
@@ -56,9 +58,9 @@ func TestWirelessNetworkResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					MockGetWirelessNetwork(
+					util.MockGetWirelessNetwork(
 						"uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("uid", "")}),
+						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},
@@ -69,13 +71,13 @@ func TestWirelessNetworkResource(t *testing.T) {
 			// Updating a wireless_network is not allowed
 			{
 				PreConfig: func() {
-					MockGetWirelessNetwork(
+					util.MockGetWirelessNetwork(
 						"uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("uid", "")}),
+						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 				resource "uxi_wireless_network" "my_wireless_network" {
 					alias = "updated_alias"
 				}`,
@@ -84,25 +86,25 @@ func TestWirelessNetworkResource(t *testing.T) {
 			// Deleting a wireless_network is not allowed
 			{
 				PreConfig: func() {
-					MockGetWirelessNetwork(
+					util.MockGetWirelessNetwork(
 						"uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("uid", "")}),
+						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},
-				Config:      providerConfig + ``,
+				Config:      provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(`(?s)deleting a wireless_network is not supported; wireless_networks can only\s*removed from state`),
 			},
 			// Remove wireless_network from state
 			{
 				PreConfig: func() {
-					MockGetWirelessNetwork(
+					util.MockGetWirelessNetwork(
 						"uid",
-						GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{GenerateWirelessNetworkResponse("uid", "")}),
+						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					removed {
 						from = uxi_wireless_network.my_wireless_network
 
@@ -113,4 +115,6 @@ func TestWirelessNetworkResource(t *testing.T) {
 			},
 		},
 	})
+
+	mockOAuth.Mock.Disable()
 }

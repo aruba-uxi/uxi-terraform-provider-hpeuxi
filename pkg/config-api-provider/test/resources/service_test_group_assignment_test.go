@@ -1,6 +1,8 @@
-package test
+package resource_test
 
 import (
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"testing"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
@@ -10,30 +12,30 @@ import (
 
 func TestServiceTestGroupAssignmentResource(t *testing.T) {
 	defer gock.Off()
-	MockOAuth()
+	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Creating a serviceTest group assignment
 			{
 				PreConfig: func() {
 					// required for serviceTest import
 					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
-						return GenerateServiceTestResponseModel(uid, "")
+						return util.GenerateServiceTestResponseModel(uid, "")
 					}
 
 					// required for group create
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid", "", "")), 1)
-					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
+					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
 						}),
 						1,
 					)
 
 					// required for serviceTest group assignment create
-					serviceTestGroupAssignmentResponse := GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")
+					serviceTestGroupAssignmentResponse := util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")
 					resources.CreateServiceTestGroupAssignment = func(request resources.ServiceTestGroupAssignmentRequestModel) resources.ServiceTestGroupAssignmentResponseModel {
 						return serviceTestGroupAssignmentResponse
 					}
@@ -42,7 +44,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					}
 				},
 
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_uid"
@@ -78,40 +80,40 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
 						if uid == "service_test_uid" {
-							return GenerateServiceTestResponseModel("service_test_uid", "")
+							return util.GenerateServiceTestResponseModel("service_test_uid", "")
 						} else {
-							return GenerateServiceTestResponseModel("service_test_uid", "_2")
+							return util.GenerateServiceTestResponseModel("service_test_uid", "_2")
 						}
 					}
-					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
+					util.MockGetGroup("group_uid_2", util.GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+							util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
 						}),
 						1,
 					)
-					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
 						}),
 						3,
 					)
 
 					// required for creating another group
-					MockPostGroup(StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
 
 					// required for serviceTest group assignment create
 					resources.GetServiceTestGroupAssignment = func(uid string) resources.ServiceTestGroupAssignmentResponseModel {
 						if uid == "service_test_group_assignment_uid" {
-							return GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")
+							return util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")
 						} else {
-							return GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid_2", "_2")
+							return util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid_2", "_2")
 						}
 					}
 					resources.CreateServiceTestGroupAssignment = func(request resources.ServiceTestGroupAssignmentRequestModel) resources.ServiceTestGroupAssignmentResponseModel {
-						return GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid_2", "_2")
+						return util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid_2", "_2")
 					}
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					// the original resources
 					resource "uxi_group" "my_group" {
 						name            = "name"
@@ -156,20 +158,20 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			// Remove serviceTests from state
 			{
 				PreConfig: func() {
-					MockGetGroup("group_uid", GenerateGroupPaginatedResponse(
+					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("group_uid", "", "")),
+							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
 						}),
 						1,
 					)
-					MockGetGroup("group_uid_2", GenerateGroupPaginatedResponse(
+					util.MockGetGroup("group_uid_2", util.GenerateGroupPaginatedResponse(
 						[]map[string]interface{}{
-							StructToMap(GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+							util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
 						}),
 						1,
 					)
 				},
-				Config: providerConfig + `
+				Config: provider.ProviderConfig + `
 					removed {
 						from = uxi_service_test.my_service_test
 
@@ -189,4 +191,6 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			// Delete testing automatically occurs in TestCase
 		},
 	})
+
+	mockOAuth.Mock.Disable()
 }

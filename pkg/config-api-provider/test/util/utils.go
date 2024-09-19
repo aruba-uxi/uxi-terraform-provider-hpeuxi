@@ -1,4 +1,4 @@
-package test
+package util
 
 import (
 	"encoding/json"
@@ -178,8 +178,8 @@ func StructToMap(obj interface{}) map[string]interface{} {
 	return newMap
 }
 
-func MockOAuth() {
-	gock.New("https://test.sso.common.cloud.hpe.com").
+func MockOAuth() *gock.Response {
+	return gock.New("https://test.sso.common.cloud.hpe.com").
 		Post("/as/token.oauth2").
 		MatchHeader("Content-Type", "application/x-www-form-urlencoded").
 		Persist().
