@@ -1,4 +1,4 @@
-package data_source
+package data_source_test
 
 import (
 	"regexp"

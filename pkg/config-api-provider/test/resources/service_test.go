@@ -1,4 +1,4 @@
-package test
+package resource_test
 
 import (
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
