@@ -24,7 +24,18 @@ type wirelessNetworkDataSource struct {
 }
 
 type wirelessNetworkDataSourceModel struct {
-	ID     types.String `tfsdk:"id"`
+	ID                   types.String `tfsdk:"id"`
+	Ssid                 types.String `tfsdk:"ssid"`
+	Alias                types.String `tfsdk:"alias"`
+	IpVersion            types.String `tfsdk:"ip_version"`
+	Security             types.String `tfsdk:"security"`
+	Hidden               types.Bool   `tfsdk:"hidden"`
+	BandLocking          types.String `tfsdk:"band_locking"`
+	DnsLookupDomain      types.String `tfsdk:"dns_lookup_domain"`
+	DisableEdns          types.Bool   `tfsdk:"disable_edns"`
+	UseDns64             types.Bool   `tfsdk:"use_dns64"`
+	ExternalConnectivity types.Bool   `tfsdk:"external_connectivity"`
+
 	Filter struct {
 		WirelessNetworkID string `tfsdk:"wireless_network_id"`
 	} `tfsdk:"filter"`
@@ -38,6 +49,36 @@ func (d *wirelessNetworkDataSource) Schema(_ context.Context, _ datasource.Schem
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
+				Computed: true,
+			},
+			"ssid": schema.StringAttribute{
+				Computed: true,
+			},
+			"alias": schema.StringAttribute{
+				Computed: true,
+			},
+			"ip_version": schema.StringAttribute{
+				Computed: true,
+			},
+			"security": schema.StringAttribute{
+				Computed: true,
+			},
+			"hidden": schema.BoolAttribute{
+				Computed: true,
+			},
+			"band_locking": schema.StringAttribute{
+				Computed: true,
+			},
+			"dns_lookup_domain": schema.StringAttribute{
+				Computed: true,
+			},
+			"disable_edns": schema.BoolAttribute{
+				Computed: true,
+			},
+			"use_dns64": schema.BoolAttribute{
+				Computed: true,
+			},
+			"external_connectivity": schema.BoolAttribute{
 				Computed: true,
 			},
 			"filter": schema.SingleNestedAttribute{
@@ -77,6 +118,16 @@ func (d *wirelessNetworkDataSource) Read(ctx context.Context, req datasource.Rea
 
 	network := networkResponse.WirelessNetworks[0]
 	state.ID = types.StringValue(network.Uid)
+	state.Ssid = types.StringValue(network.Ssid)
+	state.Alias = types.StringValue(network.Alias)
+	state.IpVersion = types.StringValue(network.IpVersion)
+	state.Security = types.StringValue(*network.Security.Get())
+	state.Hidden = types.BoolValue(network.Hidden)
+	state.BandLocking = types.StringValue(network.BandLocking)
+	state.DnsLookupDomain = types.StringValue(*network.DnsLookupDomain.Get())
+	state.DisableEdns = types.BoolValue(network.DisableEdns)
+	state.UseDns64 = types.BoolValue(network.UseDns64)
+	state.ExternalConnectivity = types.BoolValue(network.ExternalConnectivity)
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)

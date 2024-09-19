@@ -24,7 +24,16 @@ type wiredNetworkDataSource struct {
 }
 
 type wiredNetworkDataSourceModel struct {
-	ID     types.String `tfsdk:"id"`
+	ID                   types.String `tfsdk:"id"`
+	Alias                types.String `tfsdk:"alias"`
+	IpVersion            types.String `tfsdk:"ip_version"`
+	Security             types.String `tfsdk:"security"`
+	DnsLookupDomain      types.String `tfsdk:"dns_lookup_domain"`
+	DisableEdns          types.Bool   `tfsdk:"disable_edns"`
+	UseDns64             types.Bool   `tfsdk:"use_dns64"`
+	ExternalConnectivity types.Bool   `tfsdk:"external_connectivity"`
+	VlanId               types.Int64  `tfsdk:"vlan_id"`
+
 	Filter struct {
 		WiredNetworkID string `tfsdk:"wired_network_id"`
 	} `tfsdk:"filter"`
@@ -38,6 +47,30 @@ func (d *wiredNetworkDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
+				Computed: true,
+			},
+			"alias": schema.StringAttribute{
+				Computed: true,
+			},
+			"ip_version": schema.StringAttribute{
+				Computed: true,
+			},
+			"security": schema.StringAttribute{
+				Computed: true,
+			},
+			"dns_lookup_domain": schema.StringAttribute{
+				Computed: true,
+			},
+			"disable_edns": schema.BoolAttribute{
+				Computed: true,
+			},
+			"use_dns64": schema.BoolAttribute{
+				Computed: true,
+			},
+			"external_connectivity": schema.BoolAttribute{
+				Computed: true,
+			},
+			"vlan_id": schema.Int64Attribute{
 				Computed: true,
 			},
 			"filter": schema.SingleNestedAttribute{
@@ -77,6 +110,14 @@ func (d *wiredNetworkDataSource) Read(ctx context.Context, req datasource.ReadRe
 
 	network := networkResponse.WiredNetworks[0]
 	state.ID = types.StringValue(network.Uid)
+	state.Alias = types.StringValue(network.Alias)
+	state.IpVersion = types.StringValue(network.IpVersion)
+	state.Security = types.StringValue(*network.Security.Get())
+	state.DnsLookupDomain = types.StringValue(*network.DnsLookupDomain.Get())
+	state.DisableEdns = types.BoolValue(network.DisableEdns)
+	state.UseDns64 = types.BoolValue(network.UseDns64)
+	state.ExternalConnectivity = types.BoolValue(network.ExternalConnectivity)
+	state.VlanId = types.Int64Value(int64(*network.VlanId.Get()))
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)
