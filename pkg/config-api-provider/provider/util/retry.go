@@ -17,7 +17,7 @@ func RetryFor429[T any](f func() (T, *http.Response, error)) (T, *http.Response,
 	for i := 0; i < config.MaxRetriesFor429; i++ {
 		result, httpResponse, err = f()
 
-		if httpResponse != nil && httpResponse.StatusCode != 429 {
+		if httpResponse == nil || httpResponse.StatusCode != 429 {
 			return result, httpResponse, err
 		}
 
