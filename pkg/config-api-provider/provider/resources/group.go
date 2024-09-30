@@ -139,10 +139,11 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		return
 	}
 
-	groupResponse, _, err := r.client.ConfigurationAPI.
+	request := r.client.ConfigurationAPI.
 		GroupsGetConfigurationAppV1GroupsGet(context.Background()).
-		Uid(state.ID.ValueString()).
-		Execute()
+		Uid(state.ID.ValueString())
+
+	groupResponse, _, err := util.RetryFor429(request.Execute)
 
 	if err != nil || len(groupResponse.Groups) != 1 {
 		resp.Diagnostics.AddError(

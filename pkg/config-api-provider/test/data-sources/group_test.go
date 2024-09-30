@@ -1,7 +1,6 @@
 package data_source_test
 
 import (
-	"fmt"
 	"regexp"
 	"testing"
 
@@ -95,6 +94,7 @@ func TestGroupDataSource(t *testing.T) {
 func TestGroupDataSource429Handling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	var mock429 *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -103,7 +103,7 @@ func TestGroupDataSource429Handling(t *testing.T) {
 			// Test Read, is_root not set
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					mock429 = gock.New("https://test.api.capenetworks.com").
 						Get("/configuration/app/v1/groups").
 						Reply(429).
 						SetHeaders(map[string]string{
@@ -114,7 +114,7 @@ func TestGroupDataSource429Handling(t *testing.T) {
 					util.MockGetGroup(
 						"uid",
 						util.GenerateGroupPaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseModel("uid", "", ""))}),
-						2,
+						3,
 					)
 				},
 				Config: provider.ProviderConfig + `
@@ -126,55 +126,14 @@ func TestGroupDataSource429Handling(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "uid"),
-					PendingMockCheck{t: t, mocksToExclude: []gock.Mock{mockOAuth.Mock}}.AssertNoPendingMocks(),
+					func(s *terraform.State) error {
+						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						return nil
+					},
 				),
 			},
 		},
 	})
 
 	mockOAuth.Mock.Disable()
-}
-
-func removeElements(slice1, slice2 []gock.Mock) []gock.Mock {
-	result := []gock.Mock{}
-	for _, v1 := range slice1 {
-		found := false
-		for _, v2 := range slice2 {
-			if v1 == v2 {
-				found = true
-				break
-			}
-		}
-		if !found {
-			result = append(result, v1)
-		}
-	}
-	return result
-}
-
-type PendingMockCheck struct {
-	t              st.Fatalf
-	mocksToExclude []gock.Mock
-}
-
-func (p PendingMockCheck) AssertNoPendingMocks() resource.TestCheckFunc {
-	return func(s *terraform.State) error {
-		stillPending := removeElements(gock.Pending(), p.mocksToExclude)
-
-		if len(stillPending) > 0 {
-			for _, mock := range stillPending {
-				fmt.Printf(
-					"Mock still pending: %s %s\tpending calls: %d, done: %t\n",
-					mock.Request().Method,
-					mock.Request().URLStruct,
-					mock.Request().Counter,
-					mock.Done(),
-				)
-			}
-		}
-
-		st.Assert(p.t, len(stillPending), 0)
-
-		return nil
-	}
 }
