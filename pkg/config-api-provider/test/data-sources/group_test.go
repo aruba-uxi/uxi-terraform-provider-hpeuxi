@@ -1,6 +1,7 @@
 package data_source_test
 
 import (
+	config_api_client "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 	"regexp"
 	"testing"
 
@@ -19,31 +20,7 @@ func TestGroupDataSource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Test no filters set
-			{
-				Config: provider.ProviderConfig + `
-					data "uxi_group" "my_group" {
-						filter = {}
-					}
-				`,
-				ExpectError: regexp.MustCompile(`either filter.group_id must be set or 'filter.is_root = true' is required`),
-			},
-			// Test too many filters set
-			{
-				Config: provider.ProviderConfig + `
-					data "uxi_group" "my_group" {
-						filter = {
-							is_root  = true
-							group_id = "uid"
-						}
-					}
-				`,
-				ExpectError: regexp.MustCompile(`group_id and 'is_root = true' cannot both be set`),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_root_group.my_root_group", "id", "mock_uid"),
-				),
-			},
-			// Test Read, is_root not set
+			// Test Read
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
@@ -55,27 +32,6 @@ func TestGroupDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "uid"
-						}
-					}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "uid"),
-				),
-			},
-			// Test Read, is_root is false
-			{
-				PreConfig: func() {
-					util.MockGetGroup(
-						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
-						3,
-					)
-				},
-				Config: provider.ProviderConfig + `
-					data "uxi_group" "my_group" {
-						filter = {
-							is_root  = false
 							group_id = "uid"
 						}
 					}
@@ -85,6 +41,28 @@ func TestGroupDataSource(t *testing.T) {
 				),
 			},
 			// TODO: Test retrieving the root group
+			{
+				PreConfig: func() {
+					util.MockGetGroup(
+						"my_root_group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(config_api_client.GroupsGetItem{
+							Id:     "my_root_group_uid",
+							Name:   "root",
+							Parent: *config_api_client.NewNullableParent(nil),
+							Path:   "my_root_group_uid",
+						})}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					data "uxi_group" "my_group" {
+						filter = {
+							group_id = "my_root_group_uid"
+						}
+					}
+				`,
+				ExpectError: regexp.MustCompile(`the root group cannot be used as a data source`),
+			},
 		},
 	})
 
@@ -100,7 +78,7 @@ func TestGroupDataSource429Handling(t *testing.T) {
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 
-			// Test Read, is_root not set
+			// Test Read
 			{
 				PreConfig: func() {
 					mock429 = gock.New("https://test.api.capenetworks.com").

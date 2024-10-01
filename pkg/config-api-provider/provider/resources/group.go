@@ -125,9 +125,6 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	// Get current state
 	var state groupResourceModel
 	diags := req.State.Get(ctx, &state)
-	if state.ID.ValueString() == GetRootGroupUID() {
-		diags.AddError("operation not supported", "the root node cannot be used as a resource")
-	}
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -146,8 +143,12 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		)
 		return
 	}
-
 	group := groupResponse.Items[0]
+
+	if util.IsRoot(group) {
+		resp.Diagnostics.AddError("operation not supported", "the root group cannot be used as a resource")
+		return
+	}
 
 	// Update state from client response
 	state.Name = types.StringValue(group.Name)
@@ -214,9 +215,4 @@ var UpdateGroup = func(request GroupUpdateRequestModel) config_api_client.Groups
 		ParentUid: parent_uid,
 		Path:      "mock_path",
 	}
-}
-
-var GetRootGroupUID = func() string {
-	// Get root node here using the client
-	return "root_group_uid"
 }
