@@ -4,6 +4,7 @@ import (
 	"context"
 
 	config_api_client "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/util"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -95,10 +96,10 @@ func (d *wiredNetworkDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
-	networkResponse, _, err := d.client.ConfigurationAPI.
+	request := d.client.ConfigurationAPI.
 		GetConfigurationAppV1WiredNetworksGet(context.Background()).
-		Uid(state.Filter.WiredNetworkID).
-		Execute()
+		Uid(state.Filter.WiredNetworkID)
+	networkResponse, _, err := util.RetryFor429(request.Execute)
 
 	if err != nil || len(networkResponse.WiredNetworks) != 1 {
 		resp.Diagnostics.AddError(

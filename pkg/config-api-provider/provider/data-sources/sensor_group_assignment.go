@@ -4,6 +4,7 @@ import (
 	"context"
 
 	config_api_client "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/util"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -70,10 +71,10 @@ func (d *sensorGroupAssignmentDataSource) Read(ctx context.Context, req datasour
 		return
 	}
 
-	sensorGroupAssignmentResponse, _, err := d.client.ConfigurationAPI.
+	request := d.client.ConfigurationAPI.
 		GetConfigurationAppV1SensorGroupAssignmentsGet(context.Background()).
-		Uid(state.Filter.SensorGroupAssignmentID).
-		Execute()
+		Uid(state.Filter.SensorGroupAssignmentID)
+	sensorGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
 
 	if err != nil || len(sensorGroupAssignmentResponse.SensorGroupAssignments) != 1 {
 		resp.Diagnostics.AddError(

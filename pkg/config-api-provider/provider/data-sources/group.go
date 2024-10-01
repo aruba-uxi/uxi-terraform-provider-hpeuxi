@@ -4,6 +4,7 @@ import (
 	"context"
 
 	config_api_client "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/util"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -91,7 +92,7 @@ func (d *groupDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 		request = request.Uid(*state.Filter.GroupID)
 	}
 
-	groupResponse, _, err := request.Execute()
+	groupResponse, _, err := util.RetryFor429(request.Execute)
 
 	if err != nil || len(groupResponse.Groups) != 1 {
 		resp.Diagnostics.AddError(
