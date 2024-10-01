@@ -2,6 +2,7 @@ package util
 
 import (
 	"encoding/json"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
 	"github.com/h2non/gock"
@@ -44,29 +45,33 @@ func GenerateAgentResponseModel(uid string, postfix string) resources.AgentRespo
 	}
 }
 
-func GenerateGroupResponseModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) resources.GroupResponseModel {
-	parent_uid := "parent_uid" + replacementFieldPostfix
-	return resources.GroupResponseModel{
-		UID:       uid,
+func GenerateGroupResponseGetModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) config_api_client.GroupsGetItem {
+	parentId := "parent_uid" + replacementFieldPostfix
+
+	return config_api_client.GroupsGetItem{
+		Id:     uid,
+		Name:   "name" + nonReplacementFieldPostfix,
+		Parent: *config_api_client.NewNullableParent(&config_api_client.Parent{Id: parentId}),
+		Path:   parentId + "." + uid,
+	}
+}
+
+func GenerateGroupResponsePostModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) config_api_client.GroupsPostResponse {
+	parentId := "parent_uid" + replacementFieldPostfix
+
+	return config_api_client.GroupsPostResponse{
+		Uid:       uid,
 		Name:      "name" + nonReplacementFieldPostfix,
-		ParentUid: &parent_uid,
-		Path:      parent_uid + "." + uid,
+		ParentUid: parentId,
+		Path:      parentId + "." + uid,
 	}
 }
 
-func GenerateGroupPaginatedResponse(groups []map[string]interface{}) map[string]interface{} {
+func GeneratePaginatedResponse(items []map[string]interface{}) map[string]interface{} {
 	return map[string]interface{}{
-		"groups":     groups,
-		"pagination": mockPaginationResponse,
-	}
-}
-
-func GenerateRootGroupResponseModel(uid string) resources.GroupResponseModel {
-	return resources.GroupResponseModel{
-		UID:       uid,
-		Name:      "root",
-		ParentUid: nil,
-		Path:      uid,
+		"items": items,
+		"next":  nil,
+		"count": len(items),
 	}
 }
 
@@ -194,7 +199,7 @@ func MockOAuth() *gock.Response {
 
 func MockPostGroup(response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
-		Post("/configuration/app/v1/groups").
+		Post("/uxi/v1alpha1/groups").
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
@@ -204,7 +209,7 @@ func MockPostGroup(response map[string]interface{}, times int) {
 
 func MockGetGroup(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
-		Get("/configuration/app/v1/groups").
+		Get("/uxi/v1alpha1/groups").
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("uid", uid).
 		Times(times).
@@ -214,7 +219,7 @@ func MockGetGroup(uid string, response map[string]interface{}, times int) {
 
 func MockGetWiredNetwork(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
-		Get("/configuration/app/v1/wired-networks").
+		Get("/uxi/v1alpha1/wired-networks").
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("uid", uid).
 		Times(times).
@@ -224,7 +229,7 @@ func MockGetWiredNetwork(uid string, response map[string]interface{}, times int)
 
 func MockGetWirelessNetwork(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
-		Get("/configuration/app/v1/wireless-networks").
+		Get("/uxi/v1alpha1/wireless-networks").
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("uid", uid).
 		Times(times).
@@ -234,7 +239,7 @@ func MockGetWirelessNetwork(uid string, response map[string]interface{}, times i
 
 func MockGetSensorGroupAssignment(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
-		Get("/configuration/app/v1/sensor-group-assignments").
+		Get("/uxi/v1alpha1/sensor-group-assignments").
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("uid", uid).
 		Times(times).

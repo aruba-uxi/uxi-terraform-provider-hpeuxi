@@ -4,16 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Uid** | **string** |  | 
+**Id** | **string** |  | 
 **Name** | **string** |  | 
+**Parent** | [**NullableParent**](Parent.md) |  | 
 **Path** | **string** |  | 
-**ParentUid** | **NullableString** |  | 
+**Type** | Pointer to **string** |  | [optional] [default to "uxi/group"]
 
 ## Methods
 
 ### NewGroupsGetItem
 
-`func NewGroupsGetItem(uid string, name string, path string, parentUid NullableString, ) *GroupsGetItem`
+`func NewGroupsGetItem(id string, name string, parent NullableParent, path string, ) *GroupsGetItem`
 
 NewGroupsGetItem instantiates a new GroupsGetItem object
 This constructor will assign default values to properties that have it defined,
@@ -28,24 +29,24 @@ NewGroupsGetItemWithDefaults instantiates a new GroupsGetItem object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetUid
+### GetId
 
-`func (o *GroupsGetItem) GetUid() string`
+`func (o *GroupsGetItem) GetId() string`
 
-GetUid returns the Uid field if non-nil, zero value otherwise.
+GetId returns the Id field if non-nil, zero value otherwise.
 
-### GetUidOk
+### GetIdOk
 
-`func (o *GroupsGetItem) GetUidOk() (*string, bool)`
+`func (o *GroupsGetItem) GetIdOk() (*string, bool)`
 
-GetUidOk returns a tuple with the Uid field if it's non-nil, zero value otherwise
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetUid
+### SetId
 
-`func (o *GroupsGetItem) SetUid(v string)`
+`func (o *GroupsGetItem) SetId(v string)`
 
-SetUid sets Uid field to given value.
+SetId sets Id field to given value.
 
 
 ### GetName
@@ -68,6 +69,36 @@ and a boolean to check if the value has been set.
 SetName sets Name field to given value.
 
 
+### GetParent
+
+`func (o *GroupsGetItem) GetParent() Parent`
+
+GetParent returns the Parent field if non-nil, zero value otherwise.
+
+### GetParentOk
+
+`func (o *GroupsGetItem) GetParentOk() (*Parent, bool)`
+
+GetParentOk returns a tuple with the Parent field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetParent
+
+`func (o *GroupsGetItem) SetParent(v Parent)`
+
+SetParent sets Parent field to given value.
+
+
+### SetParentNil
+
+`func (o *GroupsGetItem) SetParentNil(b bool)`
+
+ SetParentNil sets the value for Parent to be an explicit nil
+
+### UnsetParent
+`func (o *GroupsGetItem) UnsetParent()`
+
+UnsetParent ensures that no value is present for Parent, not even an explicit nil
 ### GetPath
 
 `func (o *GroupsGetItem) GetPath() string`
@@ -88,36 +119,31 @@ and a boolean to check if the value has been set.
 SetPath sets Path field to given value.
 
 
-### GetParentUid
+### GetType
 
-`func (o *GroupsGetItem) GetParentUid() string`
+`func (o *GroupsGetItem) GetType() string`
 
-GetParentUid returns the ParentUid field if non-nil, zero value otherwise.
+GetType returns the Type field if non-nil, zero value otherwise.
 
-### GetParentUidOk
+### GetTypeOk
 
-`func (o *GroupsGetItem) GetParentUidOk() (*string, bool)`
+`func (o *GroupsGetItem) GetTypeOk() (*string, bool)`
 
-GetParentUidOk returns a tuple with the ParentUid field if it's non-nil, zero value otherwise
+GetTypeOk returns a tuple with the Type field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetParentUid
+### SetType
 
-`func (o *GroupsGetItem) SetParentUid(v string)`
+`func (o *GroupsGetItem) SetType(v string)`
 
-SetParentUid sets ParentUid field to given value.
+SetType sets Type field to given value.
 
+### HasType
 
-### SetParentUidNil
+`func (o *GroupsGetItem) HasType() bool`
 
-`func (o *GroupsGetItem) SetParentUidNil(b bool)`
+HasType returns a boolean if a field has been set.
 
- SetParentUidNil sets the value for ParentUid to be an explicit nil
-
-### UnsetParentUid
-`func (o *GroupsGetItem) UnsetParentUid()`
-
-UnsetParentUid ensures that no value is present for ParentUid, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

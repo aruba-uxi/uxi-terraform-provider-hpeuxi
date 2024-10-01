@@ -4,13 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Message** | **string** |  | 
+**Issues** | [**[]Issue**](Issue.md) |  | 
+**Type** | **string** |  | 
 
 ## Methods
 
 ### NewErrorDetail
 
-`func NewErrorDetail(message string, ) *ErrorDetail`
+`func NewErrorDetail(issues []Issue, type_ string, ) *ErrorDetail`
 
 NewErrorDetail instantiates a new ErrorDetail object
 This constructor will assign default values to properties that have it defined,
@@ -25,24 +26,44 @@ NewErrorDetailWithDefaults instantiates a new ErrorDetail object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetMessage
+### GetIssues
 
-`func (o *ErrorDetail) GetMessage() string`
+`func (o *ErrorDetail) GetIssues() []Issue`
 
-GetMessage returns the Message field if non-nil, zero value otherwise.
+GetIssues returns the Issues field if non-nil, zero value otherwise.
 
-### GetMessageOk
+### GetIssuesOk
 
-`func (o *ErrorDetail) GetMessageOk() (*string, bool)`
+`func (o *ErrorDetail) GetIssuesOk() (*[]Issue, bool)`
 
-GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
+GetIssuesOk returns a tuple with the Issues field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetMessage
+### SetIssues
 
-`func (o *ErrorDetail) SetMessage(v string)`
+`func (o *ErrorDetail) SetIssues(v []Issue)`
 
-SetMessage sets Message field to given value.
+SetIssues sets Issues field to given value.
+
+
+### GetType
+
+`func (o *ErrorDetail) GetType() string`
+
+GetType returns the Type field if non-nil, zero value otherwise.
+
+### GetTypeOk
+
+`func (o *ErrorDetail) GetTypeOk() (*string, bool)`
+
+GetTypeOk returns a tuple with the Type field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetType
+
+`func (o *ErrorDetail) SetType(v string)`
+
+SetType sets Type field to given value.
 
 
 

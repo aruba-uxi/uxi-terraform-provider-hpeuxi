@@ -26,10 +26,10 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for group create
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
-					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("group_uid", "", "")), 1)
+					util.MockGetGroup("group_uid", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+							util.StructToMap(util.GenerateGroupResponseGetModel("group_uid", "", "")),
 						}),
 						1,
 					)
@@ -87,21 +87,21 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 							return util.GenerateAgentResponseModel(uid, "_2")
 						}
 					}
-					util.MockGetGroup("group_uid_2", util.GenerateGroupPaginatedResponse(
+					util.MockGetGroup("group_uid_2", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+							util.StructToMap(util.GenerateGroupResponseGetModel("group_uid_2", "_2", "_2")),
 						}),
 						1,
 					)
-					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
+					util.MockGetGroup("group_uid", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+							util.StructToMap(util.GenerateGroupResponseGetModel("group_uid", "", "")),
 						}),
 						2,
 					)
 
 					// required for creating another group
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("group_uid_2", "_2", "_2")), 1)
 
 					// required for agent group assignment create
 					resources.GetAgentGroupAssignment = func(uid string) resources.AgentGroupAssignmentResponseModel {

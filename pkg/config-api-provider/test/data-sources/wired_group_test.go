@@ -65,7 +65,7 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 			{
 				PreConfig: func() {
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Get("/configuration/app/v1/wired-networks").
+						Get("/uxi/v1alpha1/wired-networks").
 						Reply(429).
 						SetHeaders(map[string]string{
 							"X-RateLimit-Limit":     "100",

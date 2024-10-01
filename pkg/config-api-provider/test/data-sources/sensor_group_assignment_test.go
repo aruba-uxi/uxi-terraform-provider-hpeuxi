@@ -23,9 +23,7 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetSensorGroupAssignment(
 						"uid",
-						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
-							util.StructToMap(util.GenerateSensorGroupAssignmentResponse("uid", "")),
-						}),
+						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateSensorGroupAssignmentResponse("uid", ""))}),
 						3,
 					)
 				},
@@ -60,7 +58,7 @@ func TestSensorGroupAssignmentSource429Handling(t *testing.T) {
 			{
 				PreConfig: func() {
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Get("/configuration/app/v1/sensor-group-assignments").
+						Get("/uxi/v1alpha1/sensor-group-assignments").
 						Reply(429).
 						SetHeaders(map[string]string{
 							"X-RateLimit-Limit":     "100",
@@ -69,9 +67,7 @@ func TestSensorGroupAssignmentSource429Handling(t *testing.T) {
 						})
 					util.MockGetSensorGroupAssignment(
 						"uid",
-						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{
-							util.StructToMap(util.GenerateSensorGroupAssignmentResponse("uid", "")),
-						}),
+						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateSensorGroupAssignmentResponse("uid", ""))}),
 						3,
 					)
 				},

@@ -28,11 +28,9 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					)
 
 					// required for group create
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
-					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
-						}),
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("group_uid", "", "")), 1)
+					util.MockGetGroup("group_uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid", "", ""))}),
 						2,
 					)
 
@@ -89,21 +87,19 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
 						2,
 					)
-					util.MockGetGroup("group_uid_2", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
-						}),
+					util.MockGetGroup(
+						"group_uid_2",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid_2", "_2", "_2"))}),
 						1,
 					)
-					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
-						}),
+					util.MockGetGroup(
+						"group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid", "", ""))}),
 						3,
 					)
 
 					// required for creating another group
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("group_uid_2", "_2", "_2")), 1)
 
 					// required for network group assignment create
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
@@ -172,16 +168,12 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
 						1,
 					)
-					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
-						}),
+					util.MockGetGroup("group_uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid", "", ""))}),
 						2,
 					)
-					util.MockGetGroup("group_uid_2", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
-						}),
+					util.MockGetGroup("group_uid_2", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid_2", "_2", "_2"))}),
 						1,
 					)
 				},
@@ -220,11 +212,10 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 						2,
 					)
 					// required for group create
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
-					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
-						}),
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("group_uid", "", "")), 1)
+					util.MockGetGroup(
+						"group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid", "", ""))}),
 						1,
 					)
 
@@ -283,18 +274,16 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					)
 
 					// required for creating another group
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
-					util.MockGetGroup("group_uid_2", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
-						}),
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("group_uid_2", "_2", "_2")), 1)
+					util.MockGetGroup(
+						"group_uid_2",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid_2", "_2", "_2"))}),
 						1,
 					)
 
-					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
-						}),
+					util.MockGetGroup(
+						"group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid", "", ""))}),
 						3,
 					)
 
@@ -365,16 +354,14 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid", "")}),
 						1,
 					)
-					util.MockGetGroup("group_uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
-						}),
+					util.MockGetGroup(
+						"group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid", "", ""))}),
 						2,
 					)
-					util.MockGetGroup("group_uid_2", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
-						}),
+					util.MockGetGroup(
+						"group_uid_2",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid_2", "_2", "_2"))}),
 						1,
 					)
 				},

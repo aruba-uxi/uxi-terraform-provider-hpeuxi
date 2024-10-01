@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.11.0
+API version: 1.14.0
 Contact: support@capenetworks.com
 */
 
@@ -41,7 +41,7 @@ var (
 	queryDescape    = strings.NewReplacer("%5B", "[", "%5D", "]")
 )
 
-// APIClient manages communication with the Configuration Api API v1.11.0
+// APIClient manages communication with the Configuration Api API v1.14.0
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration
@@ -142,7 +142,7 @@ func parameterValueToString(obj interface{}, key string) string {
 
 // parameterAddToHeaderOrQuery adds the provided object to the request header or url query
 // supporting deep object syntax
-func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix string, obj interface{}, collectionType string) {
+func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix string, obj interface{}, style string, collectionType string) {
 	var v = reflect.ValueOf(obj)
 	var value = ""
 	if v == reflect.ValueOf(nil) {
@@ -158,11 +158,11 @@ func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix stri
 				if err != nil {
 					return
 				}
-				parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, dataMap, collectionType)
+				parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, dataMap, style, collectionType)
 				return
 			}
 			if t, ok := obj.(time.Time); ok {
-				parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, t.Format(time.RFC3339Nano), collectionType)
+				parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, t.Format(time.RFC3339Nano), style, collectionType)
 				return
 			}
 			value = v.Type().String() + " value"
@@ -174,7 +174,11 @@ func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix stri
 			var lenIndValue = indValue.Len()
 			for i := 0; i < lenIndValue; i++ {
 				var arrayValue = indValue.Index(i)
-				parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, arrayValue.Interface(), collectionType)
+				var keyPrefixForCollectionType = keyPrefix
+				if style == "deepObject" {
+					keyPrefixForCollectionType = keyPrefix + "[" + strconv.Itoa(i) + "]"
+				}
+				parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefixForCollectionType, arrayValue.Interface(), style, collectionType)
 			}
 			return
 
@@ -186,14 +190,14 @@ func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix stri
 			iter := indValue.MapRange()
 			for iter.Next() {
 				k, v := iter.Key(), iter.Value()
-				parameterAddToHeaderOrQuery(headerOrQueryParams, fmt.Sprintf("%s[%s]", keyPrefix, k.String()), v.Interface(), collectionType)
+				parameterAddToHeaderOrQuery(headerOrQueryParams, fmt.Sprintf("%s[%s]", keyPrefix, k.String()), v.Interface(), style, collectionType)
 			}
 			return
 
 		case reflect.Interface:
 			fallthrough
 		case reflect.Ptr:
-			parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, v.Elem().Interface(), collectionType)
+			parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, v.Elem().Interface(), style, collectionType)
 			return
 
 		case reflect.Int, reflect.Int8, reflect.Int16,

@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.11.0
+API version: 1.14.0
 Contact: support@capenetworks.com
 */
 
@@ -22,8 +22,9 @@ var _ MappedNullable = &GroupsGetResponse{}
 
 // GroupsGetResponse struct for GroupsGetResponse
 type GroupsGetResponse struct {
-	Pagination PaginationDetails `json:"pagination"`
-	Groups     []GroupsGetItem   `json:"groups"`
+	Items []GroupsGetItem `json:"items"`
+	Count int32           `json:"count"`
+	Next  NullableString  `json:"next"`
 }
 
 type _GroupsGetResponse GroupsGetResponse
@@ -32,10 +33,11 @@ type _GroupsGetResponse GroupsGetResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupsGetResponse(pagination PaginationDetails, groups []GroupsGetItem) *GroupsGetResponse {
+func NewGroupsGetResponse(items []GroupsGetItem, count int32, next NullableString) *GroupsGetResponse {
 	this := GroupsGetResponse{}
-	this.Pagination = pagination
-	this.Groups = groups
+	this.Items = items
+	this.Count = count
+	this.Next = next
 	return &this
 }
 
@@ -47,52 +49,78 @@ func NewGroupsGetResponseWithDefaults() *GroupsGetResponse {
 	return &this
 }
 
-// GetPagination returns the Pagination field value
-func (o *GroupsGetResponse) GetPagination() PaginationDetails {
-	if o == nil {
-		var ret PaginationDetails
-		return ret
-	}
-
-	return o.Pagination
-}
-
-// GetPaginationOk returns a tuple with the Pagination field value
-// and a boolean to check if the value has been set.
-func (o *GroupsGetResponse) GetPaginationOk() (*PaginationDetails, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Pagination, true
-}
-
-// SetPagination sets field value
-func (o *GroupsGetResponse) SetPagination(v PaginationDetails) {
-	o.Pagination = v
-}
-
-// GetGroups returns the Groups field value
-func (o *GroupsGetResponse) GetGroups() []GroupsGetItem {
+// GetItems returns the Items field value
+func (o *GroupsGetResponse) GetItems() []GroupsGetItem {
 	if o == nil {
 		var ret []GroupsGetItem
 		return ret
 	}
 
-	return o.Groups
+	return o.Items
 }
 
-// GetGroupsOk returns a tuple with the Groups field value
+// GetItemsOk returns a tuple with the Items field value
 // and a boolean to check if the value has been set.
-func (o *GroupsGetResponse) GetGroupsOk() ([]GroupsGetItem, bool) {
+func (o *GroupsGetResponse) GetItemsOk() ([]GroupsGetItem, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.Groups, true
+	return o.Items, true
 }
 
-// SetGroups sets field value
-func (o *GroupsGetResponse) SetGroups(v []GroupsGetItem) {
-	o.Groups = v
+// SetItems sets field value
+func (o *GroupsGetResponse) SetItems(v []GroupsGetItem) {
+	o.Items = v
+}
+
+// GetCount returns the Count field value
+func (o *GroupsGetResponse) GetCount() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.Count
+}
+
+// GetCountOk returns a tuple with the Count field value
+// and a boolean to check if the value has been set.
+func (o *GroupsGetResponse) GetCountOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Count, true
+}
+
+// SetCount sets field value
+func (o *GroupsGetResponse) SetCount(v int32) {
+	o.Count = v
+}
+
+// GetNext returns the Next field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *GroupsGetResponse) GetNext() string {
+	if o == nil || o.Next.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.Next.Get()
+}
+
+// GetNextOk returns a tuple with the Next field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *GroupsGetResponse) GetNextOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Next.Get(), o.Next.IsSet()
+}
+
+// SetNext sets field value
+func (o *GroupsGetResponse) SetNext(v string) {
+	o.Next.Set(&v)
 }
 
 func (o GroupsGetResponse) MarshalJSON() ([]byte, error) {
@@ -105,8 +133,9 @@ func (o GroupsGetResponse) MarshalJSON() ([]byte, error) {
 
 func (o GroupsGetResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["pagination"] = o.Pagination
-	toSerialize["groups"] = o.Groups
+	toSerialize["items"] = o.Items
+	toSerialize["count"] = o.Count
+	toSerialize["next"] = o.Next.Get()
 	return toSerialize, nil
 }
 
@@ -115,8 +144,9 @@ func (o *GroupsGetResponse) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"pagination",
-		"groups",
+		"items",
+		"count",
+		"next",
 	}
 
 	allProperties := make(map[string]interface{})

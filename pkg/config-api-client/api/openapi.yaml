@@ -9,13 +9,14 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 1.11.0
+  version: 1.14.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
 tags:
 - name: api
 - name: v1
+- name: v1alpha1
 - name: configuration
 - name: groups
 - name: health
@@ -24,10 +25,10 @@ tags:
 - name: wired-networks
 - name: wireless-networks
 paths:
-  /configuration/app/v1/groups:
+  /uxi/v1alpha1/groups:
     get:
       description: Lists groups matching provided criteria
-      operationId: groups_get_configuration_app_v1_groups_get
+      operationId: groups_get_uxi_v1alpha1_groups_get
       parameters:
       - explode: true
         in: query
@@ -82,7 +83,7 @@ paths:
     post:
       description: Create a new group with the group identified in `parent_uid` as
         its parent
-      operationId: groups_post_configuration_app_v1_groups_post
+      operationId: groups_post_uxi_v1alpha1_groups_post
       requestBody:
         content:
           application/json:
@@ -113,10 +114,11 @@ paths:
       summary: Groups Post
       tags:
       - configuration
-  /configuration/app/v1/network-group-assignments:
+      x-stability-level: alpha
+  /uxi/v1alpha1/network-group-assignments:
     get:
       description: Get a list of network group assignments
-      operationId: get_configuration_app_v1_network_group_assignments_get
+      operationId: get_uxi_v1alpha1_network_group_assignments_get
       parameters:
       - explode: true
         in: query
@@ -168,10 +170,10 @@ paths:
       tags:
       - configuration
       x-stability-level: alpha
-  /configuration/app/v1/sensor-group-assignments:
+  /uxi/v1alpha1/sensor-group-assignments:
     get:
       description: Get a list of sensor group assignments
-      operationId: get_configuration_app_v1_sensor_group_assignments_get
+      operationId: get_uxi_v1alpha1_sensor_group_assignments_get
       parameters:
       - explode: true
         in: query
@@ -223,10 +225,44 @@ paths:
       tags:
       - configuration
       x-stability-level: alpha
-  /configuration/app/v1/wired-networks:
+    post:
+      description: Create sensor group assignment
+      operationId: post_uxi_v1alpha1_sensor_group_assignments_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SensorGroupAssignmentsPostRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorGroupAssignmentResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Post
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /uxi/v1alpha1/wired-networks:
     get:
       description: Get a list of wired networks
-      operationId: get_configuration_app_v1_wired_networks_get
+      operationId: get_uxi_v1alpha1_wired_networks_get
       parameters:
       - explode: true
         in: query
@@ -278,10 +314,10 @@ paths:
       tags:
       - configuration
       x-stability-level: alpha
-  /configuration/app/v1/wireless-networks:
+  /uxi/v1alpha1/wireless-networks:
     get:
       description: Get a list of wireless networks
-      operationId: get_configuration_app_v1_wireless_networks_get
+      operationId: get_uxi_v1alpha1_wireless_networks_get
       parameters:
       - explode: true
         in: query
@@ -337,120 +373,188 @@ components:
   schemas:
     ErrorDetail:
       example:
-        message: message
+        type: type
+        issues:
+        - subject: field
+          description: description
+          source: source
+        - subject: field
+          description: description
+          source: source
       properties:
-        message:
-          title: Message
+        issues:
+          items:
+            $ref: '#/components/schemas/Issue'
+          title: Issues
+          type: array
+        type:
+          title: Type
           type: string
       required:
-      - message
+      - issues
+      - type
       title: ErrorDetail
       type: object
     ErrorResponse:
       example:
-        detail:
-        - message: message
-        - message: message
+        errorCode: errorCode
+        debugId: debugId
+        message: message
+        httpStatusCode: 6
+        errorDetails:
+        - type: type
+          issues:
+          - subject: field
+            description: description
+            source: source
+          - subject: field
+            description: description
+            source: source
+        - type: type
+          issues:
+          - subject: field
+            description: description
+            source: source
+          - subject: field
+            description: description
+            source: source
       properties:
-        detail:
+        debugId:
+          title: Debugid
+          type: string
+        errorCode:
+          title: Errorcode
+          type: string
+        httpStatusCode:
+          title: Httpstatuscode
+          type: integer
+        message:
+          title: Message
+          type: string
+        errorDetails:
           items:
             $ref: '#/components/schemas/ErrorDetail'
-          title: Detail
+          nullable: true
           type: array
       required:
-      - detail
+      - debugId
+      - errorCode
+      - errorDetails
+      - httpStatusCode
+      - message
       title: ErrorResponse
+      type: object
+    Group:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: Group
       type: object
     GroupsGetItem:
       example:
-        uid: uid
+        parent:
+          id: id
         path: path
-        parent_uid: parent_uid
         name: name
+        id: id
+        type: uxi/group
       properties:
-        uid:
-          title: Uid
+        id:
+          title: Id
           type: string
         name:
           title: Name
           type: string
+        parent:
+          $ref: '#/components/schemas/Parent'
         path:
           title: Path
           type: string
-        parent_uid:
-          nullable: true
+        type:
+          default: uxi/group
+          title: Type
           type: string
       required:
+      - id
       - name
-      - parent_uid
+      - parent
       - path
-      - uid
       title: GroupsGetItem
       type: object
     GroupsGetResponse:
       example:
-        pagination:
-          next: next
-          previous: previous
-          last: last
-          limit: 0
-          first: first
-        groups:
-        - uid: uid
+        next: next
+        count: 0
+        items:
+        - parent:
+            id: id
           path: path
-          parent_uid: parent_uid
           name: name
-        - uid: uid
+          id: id
+          type: uxi/group
+        - parent:
+            id: id
           path: path
-          parent_uid: parent_uid
           name: name
+          id: id
+          type: uxi/group
       properties:
-        pagination:
-          $ref: '#/components/schemas/PaginationDetails'
-        groups:
+        items:
           items:
             $ref: '#/components/schemas/GroupsGetItem'
-          title: Groups
+          title: Items
           type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
       required:
-      - groups
-      - pagination
+      - count
+      - items
+      - next
       title: GroupsGetResponse
       type: object
     GroupsPostRequest:
       example:
-        parent_uid: parent_uid
         name: name
+        parentId: parentId
       properties:
-        parent_uid:
-          title: Parent Uid
+        parentId:
+          title: Parentid
           type: string
         name:
           title: Name
           type: string
       required:
       - name
-      - parent_uid
+      - parentId
       title: GroupsPostRequest
       type: object
     GroupsPostResponse:
       example:
-        uid: uid
         path: path
+        uid: uid
         parent_uid: parent_uid
         name: name
       properties:
-        parent_uid:
-          title: Parent Uid
-          type: string
         name:
           title: Name
           type: string
-        uid:
-          title: Uid
-          type: string
         path:
           title: Path
+          type: string
+        parent_uid:
+          title: Parent Uid
+          type: string
+        uid:
+          title: Uid
           type: string
       required:
       - name
@@ -459,6 +563,33 @@ components:
       - uid
       title: GroupsPostResponse
       type: object
+    Issue:
+      example:
+        subject: field
+        description: description
+        source: source
+      properties:
+        description:
+          title: Description
+          type: string
+        subject:
+          $ref: '#/components/schemas/IssueSubject'
+        source:
+          title: Source
+          type: string
+      required:
+      - description
+      - source
+      - subject
+      title: Issue
+      type: object
+    IssueSubject:
+      enum:
+      - field
+      - header
+      - query.parameter
+      title: IssueSubject
+      type: string
     NetworkGroupAssignmentsItem:
       example:
         group_uid: group_uid
@@ -539,6 +670,54 @@ components:
       - previous
       title: PaginationDetails
       type: object
+    Parent:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: Parent
+      type: object
+    Sensor:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: Sensor
+      type: object
+    SensorGroupAssignmentResponse:
+      example:
+        sensor:
+          id: id
+        id: id
+        type: uxi/sensor-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        sensor:
+          $ref: '#/components/schemas/Sensor'
+        type:
+          default: uxi/sensor-group-assignment
+          title: Type
+          type: string
+      required:
+      - group
+      - id
+      - sensor
+      title: SensorGroupAssignmentResponse
+      type: object
     SensorGroupAssignmentsItem:
       example:
         group_uid: group_uid
@@ -559,6 +738,22 @@ components:
       - sensor_uid
       - uid
       title: SensorGroupAssignmentsItem
+      type: object
+    SensorGroupAssignmentsPostRequest:
+      example:
+        groupId: groupId
+        sensorId: sensorId
+      properties:
+        groupId:
+          title: Groupid
+          type: string
+        sensorId:
+          title: Sensorid
+          type: string
+      required:
+      - groupId
+      - sensorId
+      title: SensorGroupAssignmentsPostRequest
       type: object
     SensorGroupAssignmentsResponse:
       example:

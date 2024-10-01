@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.11.0
+API version: 1.14.0
 Contact: support@capenetworks.com
 */
 
@@ -22,10 +22,11 @@ var _ MappedNullable = &GroupsGetItem{}
 
 // GroupsGetItem struct for GroupsGetItem
 type GroupsGetItem struct {
-	Uid       string         `json:"uid"`
-	Name      string         `json:"name"`
-	Path      string         `json:"path"`
-	ParentUid NullableString `json:"parent_uid"`
+	Id     string         `json:"id"`
+	Name   string         `json:"name"`
+	Parent NullableParent `json:"parent"`
+	Path   string         `json:"path"`
+	Type   *string        `json:"type,omitempty"`
 }
 
 type _GroupsGetItem GroupsGetItem
@@ -34,12 +35,14 @@ type _GroupsGetItem GroupsGetItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupsGetItem(uid string, name string, path string, parentUid NullableString) *GroupsGetItem {
+func NewGroupsGetItem(id string, name string, parent NullableParent, path string) *GroupsGetItem {
 	this := GroupsGetItem{}
-	this.Uid = uid
+	this.Id = id
 	this.Name = name
+	this.Parent = parent
 	this.Path = path
-	this.ParentUid = parentUid
+	var type_ string = "uxi/group"
+	this.Type = &type_
 	return &this
 }
 
@@ -48,31 +51,33 @@ func NewGroupsGetItem(uid string, name string, path string, parentUid NullableSt
 // but it doesn't guarantee that properties required by API are set
 func NewGroupsGetItemWithDefaults() *GroupsGetItem {
 	this := GroupsGetItem{}
+	var type_ string = "uxi/group"
+	this.Type = &type_
 	return &this
 }
 
-// GetUid returns the Uid field value
-func (o *GroupsGetItem) GetUid() string {
+// GetId returns the Id field value
+func (o *GroupsGetItem) GetId() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Uid
+	return o.Id
 }
 
-// GetUidOk returns a tuple with the Uid field value
+// GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *GroupsGetItem) GetUidOk() (*string, bool) {
+func (o *GroupsGetItem) GetIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Uid, true
+	return &o.Id, true
 }
 
-// SetUid sets field value
-func (o *GroupsGetItem) SetUid(v string) {
-	o.Uid = v
+// SetId sets field value
+func (o *GroupsGetItem) SetId(v string) {
+	o.Id = v
 }
 
 // GetName returns the Name field value
@@ -99,6 +104,32 @@ func (o *GroupsGetItem) SetName(v string) {
 	o.Name = v
 }
 
+// GetParent returns the Parent field value
+// If the value is explicit nil, the zero value for Parent will be returned
+func (o *GroupsGetItem) GetParent() Parent {
+	if o == nil || o.Parent.Get() == nil {
+		var ret Parent
+		return ret
+	}
+
+	return *o.Parent.Get()
+}
+
+// GetParentOk returns a tuple with the Parent field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *GroupsGetItem) GetParentOk() (*Parent, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Parent.Get(), o.Parent.IsSet()
+}
+
+// SetParent sets field value
+func (o *GroupsGetItem) SetParent(v Parent) {
+	o.Parent.Set(&v)
+}
+
 // GetPath returns the Path field value
 func (o *GroupsGetItem) GetPath() string {
 	if o == nil {
@@ -123,30 +154,36 @@ func (o *GroupsGetItem) SetPath(v string) {
 	o.Path = v
 }
 
-// GetParentUid returns the ParentUid field value
-// If the value is explicit nil, the zero value for string will be returned
-func (o *GroupsGetItem) GetParentUid() string {
-	if o == nil || o.ParentUid.Get() == nil {
+// GetType returns the Type field value if set, zero value otherwise.
+func (o *GroupsGetItem) GetType() string {
+	if o == nil || IsNil(o.Type) {
 		var ret string
 		return ret
 	}
-
-	return *o.ParentUid.Get()
+	return *o.Type
 }
 
-// GetParentUidOk returns a tuple with the ParentUid field value
+// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *GroupsGetItem) GetParentUidOk() (*string, bool) {
-	if o == nil {
+func (o *GroupsGetItem) GetTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.Type) {
 		return nil, false
 	}
-	return o.ParentUid.Get(), o.ParentUid.IsSet()
+	return o.Type, true
 }
 
-// SetParentUid sets field value
-func (o *GroupsGetItem) SetParentUid(v string) {
-	o.ParentUid.Set(&v)
+// HasType returns a boolean if a field has been set.
+func (o *GroupsGetItem) HasType() bool {
+	if o != nil && !IsNil(o.Type) {
+		return true
+	}
+
+	return false
+}
+
+// SetType gets a reference to the given string and assigns it to the Type field.
+func (o *GroupsGetItem) SetType(v string) {
+	o.Type = &v
 }
 
 func (o GroupsGetItem) MarshalJSON() ([]byte, error) {
@@ -159,10 +196,13 @@ func (o GroupsGetItem) MarshalJSON() ([]byte, error) {
 
 func (o GroupsGetItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["uid"] = o.Uid
+	toSerialize["id"] = o.Id
 	toSerialize["name"] = o.Name
+	toSerialize["parent"] = o.Parent.Get()
 	toSerialize["path"] = o.Path
-	toSerialize["parent_uid"] = o.ParentUid.Get()
+	if !IsNil(o.Type) {
+		toSerialize["type"] = o.Type
+	}
 	return toSerialize, nil
 }
 
@@ -171,10 +211,10 @@ func (o *GroupsGetItem) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"uid",
+		"id",
 		"name",
+		"parent",
 		"path",
-		"parent_uid",
 	}
 
 	allProperties := make(map[string]interface{})

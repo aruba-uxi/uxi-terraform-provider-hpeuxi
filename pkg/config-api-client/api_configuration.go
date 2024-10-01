@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.11.0
+API version: 1.14.0
 Contact: support@capenetworks.com
 */
 
@@ -22,7 +22,7 @@ import (
 // ConfigurationAPIService ConfigurationAPI service
 type ConfigurationAPIService service
 
-type ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest struct {
+type ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	uid        *string
@@ -30,35 +30,35 @@ type ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Uid(uid string) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Uid(uid string) ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest {
 	r.uid = &uid
 	return r
 }
 
-func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Cursor(cursor string) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Cursor(cursor string) ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest {
 	r.cursor = &cursor
 	return r
 }
 
-func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Limit(limit int32) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
+func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Limit(limit int32) ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) Execute() (*NetworkGroupAssignmentsResponse, *http.Response, error) {
-	return r.ApiService.GetConfigurationAppV1NetworkGroupAssignmentsGetExecute(r)
+func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Execute() (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+	return r.ApiService.GetUxiV1alpha1NetworkGroupAssignmentsGetExecute(r)
 }
 
 /*
-GetConfigurationAppV1NetworkGroupAssignmentsGet Get
+GetUxiV1alpha1NetworkGroupAssignmentsGet Get
 
 Get a list of network group assignments
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest
+	@return ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest
 */
-func (a *ConfigurationAPIService) GetConfigurationAppV1NetworkGroupAssignmentsGet(ctx context.Context) ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest {
-	return ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest{
+func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx context.Context) ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest {
+	return ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -67,7 +67,7 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1NetworkGroupAssignmentsGe
 // Execute executes the request
 //
 //	@return NetworkGroupAssignmentsResponse
-func (a *ConfigurationAPIService) GetConfigurationAppV1NetworkGroupAssignmentsGetExecute(r ApiGetConfigurationAppV1NetworkGroupAssignmentsGetRequest) (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGetExecute(r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) (*NetworkGroupAssignmentsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -75,25 +75,25 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1NetworkGroupAssignmentsGe
 		localVarReturnValue *NetworkGroupAssignmentsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetConfigurationAppV1NetworkGroupAssignmentsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1NetworkGroupAssignmentsGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/configuration/app/v1/network-group-assignments"
+	localVarPath := localBasePath + "/uxi/v1alpha1/network-group-assignments"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
 	if r.uid != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "form", "")
 	}
 	if r.cursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	} else {
 		var defaultValue int32 = 50
 		r.limit = &defaultValue
@@ -173,7 +173,7 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1NetworkGroupAssignmentsGe
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest struct {
+type ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	uid        *string
@@ -181,35 +181,35 @@ type ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest) Uid(uid string) ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest {
+func (r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) Uid(uid string) ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest {
 	r.uid = &uid
 	return r
 }
 
-func (r ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest) Cursor(cursor string) ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest {
+func (r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) Cursor(cursor string) ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest {
 	r.cursor = &cursor
 	return r
 }
 
-func (r ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest) Limit(limit int32) ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest {
+func (r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) Limit(limit int32) ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest) Execute() (*SensorGroupAssignmentsResponse, *http.Response, error) {
-	return r.ApiService.GetConfigurationAppV1SensorGroupAssignmentsGetExecute(r)
+func (r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) Execute() (*SensorGroupAssignmentsResponse, *http.Response, error) {
+	return r.ApiService.GetUxiV1alpha1SensorGroupAssignmentsGetExecute(r)
 }
 
 /*
-GetConfigurationAppV1SensorGroupAssignmentsGet Get
+GetUxiV1alpha1SensorGroupAssignmentsGet Get
 
 Get a list of sensor group assignments
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest
+	@return ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest
 */
-func (a *ConfigurationAPIService) GetConfigurationAppV1SensorGroupAssignmentsGet(ctx context.Context) ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest {
-	return ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest{
+func (a *ConfigurationAPIService) GetUxiV1alpha1SensorGroupAssignmentsGet(ctx context.Context) ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest {
+	return ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -218,7 +218,7 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1SensorGroupAssignmentsGet
 // Execute executes the request
 //
 //	@return SensorGroupAssignmentsResponse
-func (a *ConfigurationAPIService) GetConfigurationAppV1SensorGroupAssignmentsGetExecute(r ApiGetConfigurationAppV1SensorGroupAssignmentsGetRequest) (*SensorGroupAssignmentsResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GetUxiV1alpha1SensorGroupAssignmentsGetExecute(r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) (*SensorGroupAssignmentsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -226,25 +226,25 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1SensorGroupAssignmentsGet
 		localVarReturnValue *SensorGroupAssignmentsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetConfigurationAppV1SensorGroupAssignmentsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1SensorGroupAssignmentsGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/configuration/app/v1/sensor-group-assignments"
+	localVarPath := localBasePath + "/uxi/v1alpha1/sensor-group-assignments"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
 	if r.uid != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "form", "")
 	}
 	if r.cursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	} else {
 		var defaultValue int32 = 50
 		r.limit = &defaultValue
@@ -324,7 +324,7 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1SensorGroupAssignmentsGet
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetConfigurationAppV1WiredNetworksGetRequest struct {
+type ApiGetUxiV1alpha1WiredNetworksGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	uid        *string
@@ -332,35 +332,35 @@ type ApiGetConfigurationAppV1WiredNetworksGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGetConfigurationAppV1WiredNetworksGetRequest) Uid(uid string) ApiGetConfigurationAppV1WiredNetworksGetRequest {
+func (r ApiGetUxiV1alpha1WiredNetworksGetRequest) Uid(uid string) ApiGetUxiV1alpha1WiredNetworksGetRequest {
 	r.uid = &uid
 	return r
 }
 
-func (r ApiGetConfigurationAppV1WiredNetworksGetRequest) Cursor(cursor string) ApiGetConfigurationAppV1WiredNetworksGetRequest {
+func (r ApiGetUxiV1alpha1WiredNetworksGetRequest) Cursor(cursor string) ApiGetUxiV1alpha1WiredNetworksGetRequest {
 	r.cursor = &cursor
 	return r
 }
 
-func (r ApiGetConfigurationAppV1WiredNetworksGetRequest) Limit(limit int32) ApiGetConfigurationAppV1WiredNetworksGetRequest {
+func (r ApiGetUxiV1alpha1WiredNetworksGetRequest) Limit(limit int32) ApiGetUxiV1alpha1WiredNetworksGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGetConfigurationAppV1WiredNetworksGetRequest) Execute() (*WiredNetworksResponse, *http.Response, error) {
-	return r.ApiService.GetConfigurationAppV1WiredNetworksGetExecute(r)
+func (r ApiGetUxiV1alpha1WiredNetworksGetRequest) Execute() (*WiredNetworksResponse, *http.Response, error) {
+	return r.ApiService.GetUxiV1alpha1WiredNetworksGetExecute(r)
 }
 
 /*
-GetConfigurationAppV1WiredNetworksGet Get
+GetUxiV1alpha1WiredNetworksGet Get
 
 Get a list of wired networks
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetConfigurationAppV1WiredNetworksGetRequest
+	@return ApiGetUxiV1alpha1WiredNetworksGetRequest
 */
-func (a *ConfigurationAPIService) GetConfigurationAppV1WiredNetworksGet(ctx context.Context) ApiGetConfigurationAppV1WiredNetworksGetRequest {
-	return ApiGetConfigurationAppV1WiredNetworksGetRequest{
+func (a *ConfigurationAPIService) GetUxiV1alpha1WiredNetworksGet(ctx context.Context) ApiGetUxiV1alpha1WiredNetworksGetRequest {
+	return ApiGetUxiV1alpha1WiredNetworksGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -369,7 +369,7 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1WiredNetworksGet(ctx cont
 // Execute executes the request
 //
 //	@return WiredNetworksResponse
-func (a *ConfigurationAPIService) GetConfigurationAppV1WiredNetworksGetExecute(r ApiGetConfigurationAppV1WiredNetworksGetRequest) (*WiredNetworksResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GetUxiV1alpha1WiredNetworksGetExecute(r ApiGetUxiV1alpha1WiredNetworksGetRequest) (*WiredNetworksResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -377,25 +377,25 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1WiredNetworksGetExecute(r
 		localVarReturnValue *WiredNetworksResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetConfigurationAppV1WiredNetworksGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1WiredNetworksGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/configuration/app/v1/wired-networks"
+	localVarPath := localBasePath + "/uxi/v1alpha1/wired-networks"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
 	if r.uid != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "form", "")
 	}
 	if r.cursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	} else {
 		var defaultValue int32 = 50
 		r.limit = &defaultValue
@@ -475,7 +475,7 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1WiredNetworksGetExecute(r
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetConfigurationAppV1WirelessNetworksGetRequest struct {
+type ApiGetUxiV1alpha1WirelessNetworksGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	uid        *string
@@ -483,35 +483,35 @@ type ApiGetConfigurationAppV1WirelessNetworksGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGetConfigurationAppV1WirelessNetworksGetRequest) Uid(uid string) ApiGetConfigurationAppV1WirelessNetworksGetRequest {
+func (r ApiGetUxiV1alpha1WirelessNetworksGetRequest) Uid(uid string) ApiGetUxiV1alpha1WirelessNetworksGetRequest {
 	r.uid = &uid
 	return r
 }
 
-func (r ApiGetConfigurationAppV1WirelessNetworksGetRequest) Cursor(cursor string) ApiGetConfigurationAppV1WirelessNetworksGetRequest {
+func (r ApiGetUxiV1alpha1WirelessNetworksGetRequest) Cursor(cursor string) ApiGetUxiV1alpha1WirelessNetworksGetRequest {
 	r.cursor = &cursor
 	return r
 }
 
-func (r ApiGetConfigurationAppV1WirelessNetworksGetRequest) Limit(limit int32) ApiGetConfigurationAppV1WirelessNetworksGetRequest {
+func (r ApiGetUxiV1alpha1WirelessNetworksGetRequest) Limit(limit int32) ApiGetUxiV1alpha1WirelessNetworksGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGetConfigurationAppV1WirelessNetworksGetRequest) Execute() (*WirelessNetworksResponse, *http.Response, error) {
-	return r.ApiService.GetConfigurationAppV1WirelessNetworksGetExecute(r)
+func (r ApiGetUxiV1alpha1WirelessNetworksGetRequest) Execute() (*WirelessNetworksResponse, *http.Response, error) {
+	return r.ApiService.GetUxiV1alpha1WirelessNetworksGetExecute(r)
 }
 
 /*
-GetConfigurationAppV1WirelessNetworksGet Get
+GetUxiV1alpha1WirelessNetworksGet Get
 
 Get a list of wireless networks
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetConfigurationAppV1WirelessNetworksGetRequest
+	@return ApiGetUxiV1alpha1WirelessNetworksGetRequest
 */
-func (a *ConfigurationAPIService) GetConfigurationAppV1WirelessNetworksGet(ctx context.Context) ApiGetConfigurationAppV1WirelessNetworksGetRequest {
-	return ApiGetConfigurationAppV1WirelessNetworksGetRequest{
+func (a *ConfigurationAPIService) GetUxiV1alpha1WirelessNetworksGet(ctx context.Context) ApiGetUxiV1alpha1WirelessNetworksGetRequest {
+	return ApiGetUxiV1alpha1WirelessNetworksGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -520,7 +520,7 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1WirelessNetworksGet(ctx c
 // Execute executes the request
 //
 //	@return WirelessNetworksResponse
-func (a *ConfigurationAPIService) GetConfigurationAppV1WirelessNetworksGetExecute(r ApiGetConfigurationAppV1WirelessNetworksGetRequest) (*WirelessNetworksResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GetUxiV1alpha1WirelessNetworksGetExecute(r ApiGetUxiV1alpha1WirelessNetworksGetRequest) (*WirelessNetworksResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -528,25 +528,25 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1WirelessNetworksGetExecut
 		localVarReturnValue *WirelessNetworksResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetConfigurationAppV1WirelessNetworksGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1WirelessNetworksGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/configuration/app/v1/wireless-networks"
+	localVarPath := localBasePath + "/uxi/v1alpha1/wireless-networks"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
 	if r.uid != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "form", "")
 	}
 	if r.cursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	} else {
 		var defaultValue int32 = 50
 		r.limit = &defaultValue
@@ -626,7 +626,7 @@ func (a *ConfigurationAPIService) GetConfigurationAppV1WirelessNetworksGetExecut
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGroupsGetConfigurationAppV1GroupsGetRequest struct {
+type ApiGroupsGetUxiV1alpha1GroupsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	uid        *string
@@ -634,35 +634,35 @@ type ApiGroupsGetConfigurationAppV1GroupsGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGroupsGetConfigurationAppV1GroupsGetRequest) Uid(uid string) ApiGroupsGetConfigurationAppV1GroupsGetRequest {
+func (r ApiGroupsGetUxiV1alpha1GroupsGetRequest) Uid(uid string) ApiGroupsGetUxiV1alpha1GroupsGetRequest {
 	r.uid = &uid
 	return r
 }
 
-func (r ApiGroupsGetConfigurationAppV1GroupsGetRequest) Cursor(cursor string) ApiGroupsGetConfigurationAppV1GroupsGetRequest {
+func (r ApiGroupsGetUxiV1alpha1GroupsGetRequest) Cursor(cursor string) ApiGroupsGetUxiV1alpha1GroupsGetRequest {
 	r.cursor = &cursor
 	return r
 }
 
-func (r ApiGroupsGetConfigurationAppV1GroupsGetRequest) Limit(limit int32) ApiGroupsGetConfigurationAppV1GroupsGetRequest {
+func (r ApiGroupsGetUxiV1alpha1GroupsGetRequest) Limit(limit int32) ApiGroupsGetUxiV1alpha1GroupsGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGroupsGetConfigurationAppV1GroupsGetRequest) Execute() (*GroupsGetResponse, *http.Response, error) {
-	return r.ApiService.GroupsGetConfigurationAppV1GroupsGetExecute(r)
+func (r ApiGroupsGetUxiV1alpha1GroupsGetRequest) Execute() (*GroupsGetResponse, *http.Response, error) {
+	return r.ApiService.GroupsGetUxiV1alpha1GroupsGetExecute(r)
 }
 
 /*
-GroupsGetConfigurationAppV1GroupsGet Groups Get
+GroupsGetUxiV1alpha1GroupsGet Groups Get
 
 Lists groups matching provided criteria
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGroupsGetConfigurationAppV1GroupsGetRequest
+	@return ApiGroupsGetUxiV1alpha1GroupsGetRequest
 */
-func (a *ConfigurationAPIService) GroupsGetConfigurationAppV1GroupsGet(ctx context.Context) ApiGroupsGetConfigurationAppV1GroupsGetRequest {
-	return ApiGroupsGetConfigurationAppV1GroupsGetRequest{
+func (a *ConfigurationAPIService) GroupsGetUxiV1alpha1GroupsGet(ctx context.Context) ApiGroupsGetUxiV1alpha1GroupsGetRequest {
+	return ApiGroupsGetUxiV1alpha1GroupsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -671,7 +671,7 @@ func (a *ConfigurationAPIService) GroupsGetConfigurationAppV1GroupsGet(ctx conte
 // Execute executes the request
 //
 //	@return GroupsGetResponse
-func (a *ConfigurationAPIService) GroupsGetConfigurationAppV1GroupsGetExecute(r ApiGroupsGetConfigurationAppV1GroupsGetRequest) (*GroupsGetResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GroupsGetUxiV1alpha1GroupsGetExecute(r ApiGroupsGetUxiV1alpha1GroupsGetRequest) (*GroupsGetResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -679,25 +679,25 @@ func (a *ConfigurationAPIService) GroupsGetConfigurationAppV1GroupsGetExecute(r 
 		localVarReturnValue *GroupsGetResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsGetConfigurationAppV1GroupsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsGetUxiV1alpha1GroupsGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/configuration/app/v1/groups"
+	localVarPath := localBasePath + "/uxi/v1alpha1/groups"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
 	if r.uid != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "form", "")
 	}
 	if r.cursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	} else {
 		var defaultValue int32 = 50
 		r.limit = &defaultValue
@@ -777,31 +777,31 @@ func (a *ConfigurationAPIService) GroupsGetConfigurationAppV1GroupsGetExecute(r 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGroupsPostConfigurationAppV1GroupsPostRequest struct {
+type ApiGroupsPostUxiV1alpha1GroupsPostRequest struct {
 	ctx               context.Context
 	ApiService        *ConfigurationAPIService
 	groupsPostRequest *GroupsPostRequest
 }
 
-func (r ApiGroupsPostConfigurationAppV1GroupsPostRequest) GroupsPostRequest(groupsPostRequest GroupsPostRequest) ApiGroupsPostConfigurationAppV1GroupsPostRequest {
+func (r ApiGroupsPostUxiV1alpha1GroupsPostRequest) GroupsPostRequest(groupsPostRequest GroupsPostRequest) ApiGroupsPostUxiV1alpha1GroupsPostRequest {
 	r.groupsPostRequest = &groupsPostRequest
 	return r
 }
 
-func (r ApiGroupsPostConfigurationAppV1GroupsPostRequest) Execute() (*GroupsPostResponse, *http.Response, error) {
-	return r.ApiService.GroupsPostConfigurationAppV1GroupsPostExecute(r)
+func (r ApiGroupsPostUxiV1alpha1GroupsPostRequest) Execute() (*GroupsPostResponse, *http.Response, error) {
+	return r.ApiService.GroupsPostUxiV1alpha1GroupsPostExecute(r)
 }
 
 /*
-GroupsPostConfigurationAppV1GroupsPost Groups Post
+GroupsPostUxiV1alpha1GroupsPost Groups Post
 
 Create a new group with the group identified in `parent_uid` as its parent
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGroupsPostConfigurationAppV1GroupsPostRequest
+	@return ApiGroupsPostUxiV1alpha1GroupsPostRequest
 */
-func (a *ConfigurationAPIService) GroupsPostConfigurationAppV1GroupsPost(ctx context.Context) ApiGroupsPostConfigurationAppV1GroupsPostRequest {
-	return ApiGroupsPostConfigurationAppV1GroupsPostRequest{
+func (a *ConfigurationAPIService) GroupsPostUxiV1alpha1GroupsPost(ctx context.Context) ApiGroupsPostUxiV1alpha1GroupsPostRequest {
+	return ApiGroupsPostUxiV1alpha1GroupsPostRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -810,7 +810,7 @@ func (a *ConfigurationAPIService) GroupsPostConfigurationAppV1GroupsPost(ctx con
 // Execute executes the request
 //
 //	@return GroupsPostResponse
-func (a *ConfigurationAPIService) GroupsPostConfigurationAppV1GroupsPostExecute(r ApiGroupsPostConfigurationAppV1GroupsPostRequest) (*GroupsPostResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GroupsPostUxiV1alpha1GroupsPostExecute(r ApiGroupsPostUxiV1alpha1GroupsPostRequest) (*GroupsPostResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -818,12 +818,12 @@ func (a *ConfigurationAPIService) GroupsPostConfigurationAppV1GroupsPostExecute(
 		localVarReturnValue *GroupsPostResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsPostConfigurationAppV1GroupsPost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsPostUxiV1alpha1GroupsPost")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/configuration/app/v1/groups"
+	localVarPath := localBasePath + "/uxi/v1alpha1/groups"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -851,6 +851,138 @@ func (a *ConfigurationAPIService) GroupsPostConfigurationAppV1GroupsPostExecute(
 	}
 	// body params
 	localVarPostBody = r.groupsPostRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode >= 400 && localVarHTTPResponse.StatusCode < 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode >= 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest struct {
+	ctx                               context.Context
+	ApiService                        *ConfigurationAPIService
+	sensorGroupAssignmentsPostRequest *SensorGroupAssignmentsPostRequest
+}
+
+func (r ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest) SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest SensorGroupAssignmentsPostRequest) ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest {
+	r.sensorGroupAssignmentsPostRequest = &sensorGroupAssignmentsPostRequest
+	return r
+}
+
+func (r ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest) Execute() (*SensorGroupAssignmentResponse, *http.Response, error) {
+	return r.ApiService.PostUxiV1alpha1SensorGroupAssignmentsPostExecute(r)
+}
+
+/*
+PostUxiV1alpha1SensorGroupAssignmentsPost Post
+
+Create sensor group assignment
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest
+*/
+func (a *ConfigurationAPIService) PostUxiV1alpha1SensorGroupAssignmentsPost(ctx context.Context) ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest {
+	return ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return SensorGroupAssignmentResponse
+func (a *ConfigurationAPIService) PostUxiV1alpha1SensorGroupAssignmentsPostExecute(r ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest) (*SensorGroupAssignmentResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SensorGroupAssignmentResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.PostUxiV1alpha1SensorGroupAssignmentsPost")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/uxi/v1alpha1/sensor-group-assignments"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.sensorGroupAssignmentsPostRequest == nil {
+		return localVarReturnValue, nil, reportError("sensorGroupAssignmentsPostRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.sensorGroupAssignmentsPostRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
