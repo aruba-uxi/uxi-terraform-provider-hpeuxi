@@ -134,11 +134,19 @@ func GenerateWirelessNetworkPaginatedResponse(wirelessNetworks []map[string]inte
 	}
 }
 
-func GenerateSensorGroupAssignmentResponse(uid string, postfix string) resources.SensorGroupAssignmentResponseModel {
-	return resources.SensorGroupAssignmentResponseModel{
-		UID:       uid,
-		GroupUID:  "group_uid" + postfix,
-		SensorUID: "sensor_uid" + postfix,
+func GenerateSensorGroupAssignmentPostResponse(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"id":     uid,
+		"group":  map[string]string{"id": "group_uid" + postfix},
+		"sensor": map[string]string{"id": "sensor_uid" + postfix},
+	}
+}
+
+func GenerateSensorGroupAssignmentGetResponse(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"uid":        uid,
+		"group_uid":  "group_uid" + postfix,
+		"sensor_uid": "sensor_uid" + postfix,
 	}
 }
 
@@ -245,4 +253,15 @@ func MockGetSensorGroupAssignment(uid string, response map[string]interface{}, t
 		Times(times).
 		Reply(200).
 		JSON(response)
+}
+
+func MockPostSensorGroupAssignment(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Post("/uxi/v1alpha1/sensor-group-assignments").
+		MatchHeader("Content-Type", "application/json").
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(200).
+		JSON(response)
+
 }

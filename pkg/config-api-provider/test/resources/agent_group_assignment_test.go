@@ -27,10 +27,9 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("group_uid", "", "")), 1)
-					util.MockGetGroup("group_uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseGetModel("group_uid", "", "")),
-						}),
+					util.MockGetGroup(
+						"group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid", "", ""))}),
 						1,
 					)
 

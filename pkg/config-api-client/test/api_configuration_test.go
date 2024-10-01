@@ -80,7 +80,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPIService PostUxiV1alpha1SensorGroupAssignmentsGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPIService PostUxiV1alpha1SensorGroupAssignmentsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/uxi/v1alpha1/sensor-group-assignments").
