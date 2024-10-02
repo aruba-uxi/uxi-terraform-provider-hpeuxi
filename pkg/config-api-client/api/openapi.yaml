@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 1.14.0
+  version: 1.15.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -150,7 +150,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NetworkGroupAssignmentsResponse'
+                $ref: '#/components/schemas/NetworkGroupAssignmentsGetResponse'
           description: Successful Response
         "4XX":
           content:
@@ -590,28 +590,7 @@ components:
       - query.parameter
       title: IssueSubject
       type: string
-    NetworkGroupAssignmentsItem:
-      example:
-        group_uid: group_uid
-        uid: uid
-        network_uid: network_uid
-      properties:
-        uid:
-          title: Uid
-          type: string
-        group_uid:
-          title: Group Uid
-          type: string
-        network_uid:
-          title: Network Uid
-          type: string
-      required:
-      - group_uid
-      - network_uid
-      - uid
-      title: NetworkGroupAssignmentsItem
-      type: object
-    NetworkGroupAssignmentsResponse:
+    NetworkGroupAssignmentsGetResponse:
       example:
         pagination:
           next: next
@@ -637,7 +616,28 @@ components:
       required:
       - network_group_assignments
       - pagination
-      title: NetworkGroupAssignmentsResponse
+      title: NetworkGroupAssignmentsGetResponse
+      type: object
+    NetworkGroupAssignmentsItem:
+      example:
+        group_uid: group_uid
+        uid: uid
+        network_uid: network_uid
+      properties:
+        uid:
+          title: Uid
+          type: string
+        group_uid:
+          title: Group Uid
+          type: string
+        network_uid:
+          title: Network Uid
+          type: string
+      required:
+      - group_uid
+      - network_uid
+      - uid
+      title: NetworkGroupAssignmentsItem
       type: object
     PaginationDetails:
       example:

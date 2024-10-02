@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 ## GetUxiV1alpha1NetworkGroupAssignmentsGet
 
-> NetworkGroupAssignmentsResponse GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+> NetworkGroupAssignmentsGetResponse GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).Uid(uid).Cursor(cursor).Limit(limit).Execute()
 
 Get
 
@@ -46,7 +46,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1NetworkGroupAssignmentsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetUxiV1alpha1NetworkGroupAssignmentsGet`: NetworkGroupAssignmentsResponse
+	// response from `GetUxiV1alpha1NetworkGroupAssignmentsGet`: NetworkGroupAssignmentsGetResponse
 	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetUxiV1alpha1NetworkGroupAssignmentsGet`: %v\n", resp)
 }
 ```
@@ -68,7 +68,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**NetworkGroupAssignmentsResponse**](NetworkGroupAssignmentsResponse.md)
+[**NetworkGroupAssignmentsGetResponse**](NetworkGroupAssignmentsGetResponse.md)
 
 ### Authorization
 

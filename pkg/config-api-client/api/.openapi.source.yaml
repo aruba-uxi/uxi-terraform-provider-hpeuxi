@@ -9,7 +9,7 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 1.14.0
+  version: 1.15.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
@@ -143,7 +143,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NetworkGroupAssignmentsResponse'
+                $ref: '#/components/schemas/NetworkGroupAssignmentsGetResponse'
         4XX:
           description: Client Error
           content:
@@ -528,6 +528,20 @@ components:
         - header
         - query.parameter
       title: IssueSubject
+    NetworkGroupAssignmentsGetResponse:
+      type: object
+      properties:
+        network_group_assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkGroupAssignmentsItem'
+          title: Network Group Assignments
+        pagination:
+          $ref: '#/components/schemas/PaginationDetails'
+      required:
+        - network_group_assignments
+        - pagination
+      title: NetworkGroupAssignmentsGetResponse
     NetworkGroupAssignmentsItem:
       type: object
       properties:
@@ -545,20 +559,6 @@ components:
         - group_uid
         - network_uid
       title: NetworkGroupAssignmentsItem
-    NetworkGroupAssignmentsResponse:
-      type: object
-      properties:
-        network_group_assignments:
-          type: array
-          items:
-            $ref: '#/components/schemas/NetworkGroupAssignmentsItem'
-          title: Network Group Assignments
-        pagination:
-          $ref: '#/components/schemas/PaginationDetails'
-      required:
-        - network_group_assignments
-        - pagination
-      title: NetworkGroupAssignmentsResponse
     PaginationDetails:
       type: object
       properties:

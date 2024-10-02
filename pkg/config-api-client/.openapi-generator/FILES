@@ -13,8 +13,8 @@ docs/GroupsPostRequest.md
 docs/GroupsPostResponse.md
 docs/Issue.md
 docs/IssueSubject.md
+docs/NetworkGroupAssignmentsGetResponse.md
 docs/NetworkGroupAssignmentsItem.md
-docs/NetworkGroupAssignmentsResponse.md
 docs/PaginationDetails.md
 docs/Parent.md
 docs/Sensor.md
@@ -37,8 +37,8 @@ model_groups_post_request.go
 model_groups_post_response.go
 model_issue.go
 model_issue_subject.go
+model_network_group_assignments_get_response.go
 model_network_group_assignments_item.go
-model_network_group_assignments_response.go
 model_pagination_details.go
 model_parent.go
 model_sensor.go

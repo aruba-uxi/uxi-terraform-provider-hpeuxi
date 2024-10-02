@@ -20,6 +20,47 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 	defer gock.Off()
 
+	t.Run("Test ConfigurationAPIService GroupsGetUxiV1alpha1GroupsGet", func(t *testing.T) {
+		parent_uid := "parent_uid"
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Get("/uxi/v1alpha1/groups").
+			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"items": []map[string]interface{}{
+					{
+						"id":     "uid",
+						"name":   "name",
+						"parent": map[string]string{"id": parent_uid},
+						"path":   "root_uid.parent_uid.uid",
+					},
+				},
+				"next":  nil,
+				"count": 1,
+			})
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			GroupsGetUxiV1alpha1GroupsGet(context.Background()).
+			Uid("uid").
+			Limit(10).
+			Cursor("some-cursor").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.GroupsGetResponse{
+			Items: []openapiclient.GroupsGetItem{
+				{
+					Id:     "uid",
+					Name:   "name",
+					Parent: *openapiclient.NewNullableParent(openapiclient.NewParent("parent_uid")),
+					Path:   "root_uid.parent_uid.uid",
+				},
+			},
+			Next:  *openapiclient.NewNullableString(nil),
+			Count: 1,
+		})
+	})
+
 	t.Run("Test ConfigurationAPIService GroupsPostUxiV1alpha1GroupsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).Post("/uxi/v1alpha1/groups").Reply(200).JSON(map[string]string{"parent_uid": "parent.uid", "name": "name", "uid": "node", "path": "parent.uid.node"})
@@ -106,47 +147,6 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			Group:  *openapiclient.NewGroup("group_uid"),
 			Sensor: *openapiclient.NewSensor("sensor_uid"),
 			Type:   &resourceType,
-		})
-	})
-
-	t.Run("Test ConfigurationAPIService GroupsGetUxiV1alpha1GroupsGet", func(t *testing.T) {
-		parent_uid := "parent_uid"
-		gock.New(configuration.Scheme + "://" + configuration.Host).
-			Get("/uxi/v1alpha1/groups").
-			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
-			Reply(200).
-			JSON(map[string]interface{}{
-				"items": []map[string]interface{}{
-					{
-						"id":     "uid",
-						"name":   "name",
-						"parent": map[string]string{"id": parent_uid},
-						"path":   "root_uid.parent_uid.uid",
-					},
-				},
-				"next":  nil,
-				"count": 1,
-			})
-		resp, httpRes, err := apiClient.ConfigurationAPI.
-			GroupsGetUxiV1alpha1GroupsGet(context.Background()).
-			Uid("uid").
-			Limit(10).
-			Cursor("some-cursor").
-			Execute()
-
-		require.Nil(t, err)
-		assert.Equal(t, 200, httpRes.StatusCode)
-		assert.Equal(t, resp, &openapiclient.GroupsGetResponse{
-			Items: []openapiclient.GroupsGetItem{
-				{
-					Id:     "uid",
-					Name:   "name",
-					Parent: *openapiclient.NewNullableParent(openapiclient.NewParent("parent_uid")),
-					Path:   "root_uid.parent_uid.uid",
-				},
-			},
-			Next:  *openapiclient.NewNullableString(nil),
-			Count: 1,
 		})
 	})
 
@@ -279,6 +279,55 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 					DisableEdns:          true,
 					UseDns64:             false,
 					ExternalConnectivity: true,
+				},
+			},
+			Pagination: openapiclient.PaginationDetails{
+				Limit:    10,
+				Next:     *openapiclient.NewNullableString(nil),
+				Previous: *openapiclient.NewNullableString(nil),
+				First:    *openapiclient.NewNullableString(nil),
+				Last:     *openapiclient.NewNullableString(nil),
+			},
+		})
+	})
+
+	t.Run("Test ConfigurationAPIService GetUxiV1alpha1NetworkGroupAssignmentsGet", func(t *testing.T) {
+
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Get("/uxi/v1alpha1/network-group-assignments").
+			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"network_group_assignments": []map[string]interface{}{
+					{
+						"uid":         "uid",
+						"group_uid":   "group_uid",
+						"network_uid": "network_uid",
+					},
+				},
+				"pagination": map[string]interface{}{
+					"limit":    10,
+					"first":    nil,
+					"next":     nil,
+					"previous": nil,
+					"last":     nil,
+				},
+			})
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			GetUxiV1alpha1NetworkGroupAssignmentsGet(context.Background()).
+			Uid("uid").
+			Limit(10).
+			Cursor("some-cursor").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.NetworkGroupAssignmentsGetResponse{
+			NetworkGroupAssignments: []openapiclient.NetworkGroupAssignmentsItem{
+				{
+					Uid:        "uid",
+					GroupUid:   "group_uid",
+					NetworkUid: "network_uid",
 				},
 			},
 			Pagination: openapiclient.PaginationDetails{

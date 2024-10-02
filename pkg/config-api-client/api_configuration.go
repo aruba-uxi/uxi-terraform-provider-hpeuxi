@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.14.0
+API version: 1.15.0
 Contact: support@capenetworks.com
 */
 
@@ -45,7 +45,7 @@ func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Limit(limit int32) A
 	return r
 }
 
-func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Execute() (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Execute() (*NetworkGroupAssignmentsGetResponse, *http.Response, error) {
 	return r.ApiService.GetUxiV1alpha1NetworkGroupAssignmentsGetExecute(r)
 }
 
@@ -66,13 +66,13 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx c
 
 // Execute executes the request
 //
-//	@return NetworkGroupAssignmentsResponse
-func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGetExecute(r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+//	@return NetworkGroupAssignmentsGetResponse
+func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGetExecute(r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) (*NetworkGroupAssignmentsGetResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *NetworkGroupAssignmentsResponse
+		localVarReturnValue *NetworkGroupAssignmentsGetResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1NetworkGroupAssignmentsGet")
