@@ -30,7 +30,6 @@ type groupDataSourceModel struct {
 	Name          types.String `tfsdk:"name"`
 	Filter        struct {
 		GroupID *string `tfsdk:"group_id"`
-		IsRoot  *bool   `tfsdk:"is_root"`
 	} `tfsdk:"filter"`
 }
 
@@ -46,7 +45,6 @@ func (d *groupDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 			},
 			"path": schema.StringAttribute{
 				Computed: true,
-				Optional: true,
 			},
 			"parent_group_id": schema.StringAttribute{
 				Computed: true,
@@ -58,10 +56,7 @@ func (d *groupDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"group_id": schema.StringAttribute{
-						Optional: true,
-					},
-					"is_root": schema.BoolAttribute{
-						Optional: true,
+						Required: true,
 					},
 				},
 			},
@@ -74,23 +69,14 @@ func (d *groupDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 
 	// Read configuration from request
 	diags := req.Config.Get(ctx, &state)
-	if state.Filter.GroupID == nil && (state.Filter.IsRoot == nil || !*state.Filter.IsRoot) {
-		diags.AddError("invalid Group data source", "either filter.group_id must be set or 'filter.is_root = true' is required")
-	} else if state.Filter.GroupID != nil && state.Filter.IsRoot != nil && *state.Filter.IsRoot {
-		diags.AddError("invalid Group data source", "group_id and 'is_root = true' cannot both be set")
-	}
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	request := d.client.ConfigurationAPI.GroupsGetUxiV1alpha1GroupsGet(context.Background())
-
-	if state.Filter.IsRoot != nil && *state.Filter.IsRoot {
-		request = request.Uid(*state.Filter.GroupID) // TODO: use root group filter here
-	} else {
-		request = request.Uid(*state.Filter.GroupID)
-	}
+	request := d.client.ConfigurationAPI.
+		GroupsGetUxiV1alpha1GroupsGet(context.Background()).
+		Uid(*state.Filter.GroupID)
 
 	groupResponse, _, err := util.RetryFor429(request.Execute)
 
@@ -103,12 +89,15 @@ func (d *groupDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 	}
 
 	group := groupResponse.Items[0]
+	if util.IsRoot(group) {
+		resp.Diagnostics.AddError("operation not supported", "the root group cannot be used as a data source")
+		return
+	}
+
 	state.ID = types.StringValue(group.Id)
 	state.Name = types.StringValue(group.Name)
 	state.Path = types.StringValue(group.Path)
-	if group.Parent.IsSet() {
-		state.ParentGroupID = types.StringValue(group.Parent.Get().Id)
-	}
+	state.ParentGroupID = types.StringValue(group.Parent.Get().Id)
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)
