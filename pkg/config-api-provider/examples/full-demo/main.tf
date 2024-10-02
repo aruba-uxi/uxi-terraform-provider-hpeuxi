@@ -13,11 +13,8 @@ provider "uxi" {
     token_url     = "https://test.sso.common.cloud.hpe.com/as/token.oauth2"
 }
 
-data "uxi_root_group" "my_root_group" {}
-
 resource "uxi_group" "my_group" {
   name            = "parent"
-  parent_group_id = data.uxi_root_group.my_root_group.id
 }
 
 resource "uxi_group" "my_group_2" {

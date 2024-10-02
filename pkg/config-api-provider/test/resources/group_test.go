@@ -114,6 +114,8 @@ func TestGroupResource(t *testing.T) {
 }
 
 func TestRootGroupResource(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -121,22 +123,32 @@ func TestRootGroupResource(t *testing.T) {
 			// Importing the root group does not work
 			{
 				PreConfig: func() {
-					resources.GetRootGroupUID = func() string { return "my_root_group_uid" }
+					util.MockGetGroup(
+						"my_root_group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(config_api_client.GroupsGetItem{
+							Id:     "my_root_group_uid",
+							Name:   "root",
+							Parent: *config_api_client.NewNullableParent(nil),
+							Path:   "my_root_group_uid",
+						})}),
+						1,
+					)
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_group" "my_root_group" {
 					name            = "name"
-					parent_group_id = "some_random_string"
 				}
 
 				import {
 					to = uxi_group.my_root_group
 					id = "my_root_group_uid"
 				}`,
-				ExpectError: regexp.MustCompile(`the root node cannot be used as a resource`),
+				ExpectError: regexp.MustCompile(`the root group cannot be used as a resource`),
 			},
 		},
 	})
+
+	mockOAuth.Mock.Disable()
 }
 
 func TestGroupResource429Handling(t *testing.T) {
