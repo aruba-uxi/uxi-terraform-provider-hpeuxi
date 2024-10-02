@@ -104,7 +104,7 @@ func (r *sensorGroupAssignmentResource) Create(ctx context.Context, req resource
 	}
 
 	postRequest := config_api_client.NewSensorGroupAssignmentsPostRequest(plan.GroupID.ValueString(), plan.SensorID.ValueString())
-	request := r.client.ConfigurationAPI.PostUxiV1alpha1SensorGroupAssignmentsPost(context.Background()).SensorGroupAssignmentsPostRequest(*postRequest)
+	request := r.client.ConfigurationAPI.PostUxiV1alpha1SensorGroupAssignmentsPost(ctx).SensorGroupAssignmentsPostRequest(*postRequest)
 	sensorGroupAssignment, _, err := util.RetryFor429(request.Execute)
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -135,7 +135,7 @@ func (r *sensorGroupAssignmentResource) Read(ctx context.Context, req resource.R
 	}
 
 	request := r.client.ConfigurationAPI.
-		GetUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).
+		GetUxiV1alpha1SensorGroupAssignmentsGet(ctx).
 		Uid(state.ID.ValueString())
 	sensorGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
 

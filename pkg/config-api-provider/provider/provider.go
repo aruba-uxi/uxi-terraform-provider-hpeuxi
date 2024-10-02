@@ -144,7 +144,7 @@ func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.C
 	uxiConfiguration := config_api_client.NewConfiguration()
 	uxiConfiguration.Host = host
 	uxiConfiguration.Scheme = "https"
-	uxiConfiguration.HTTPClient = getHttpClient(clientID, clientSecret, tokenURL)
+	uxiConfiguration.HTTPClient = getHttpClient(ctx, clientID, clientSecret, tokenURL)
 	uxiClient := config_api_client.NewAPIClient(uxiConfiguration)
 
 	// Make the client available during DataSource and Resource type Configure methods.
@@ -178,7 +178,7 @@ func (p *uxiConfigurationProvider) Resources(_ context.Context) []func() resourc
 	}
 }
 
-func getHttpClient(clientID string, clientSecret string, tokenURL string) *http.Client {
+func getHttpClient(ctx context.Context, clientID string, clientSecret string, tokenURL string) *http.Client {
 	// Set up the client credentials config
 	config := &clientcredentials.Config{
 		ClientID:     clientID,
@@ -188,5 +188,5 @@ func getHttpClient(clientID string, clientSecret string, tokenURL string) *http.
 	}
 
 	// Create a context and fetch a token
-	return config.Client(context.Background())
+	return config.Client(ctx)
 }
