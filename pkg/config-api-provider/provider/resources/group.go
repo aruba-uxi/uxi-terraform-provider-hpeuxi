@@ -98,7 +98,7 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 
 	groups_post_request := config_api_client.NewGroupsPostRequest(plan.ParentGroupId.ValueString(), plan.Name.ValueString())
-	request := r.client.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(context.Background()).GroupsPostRequest(*groups_post_request)
+	request := r.client.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(ctx).GroupsPostRequest(*groups_post_request)
 	group, _, err := util.RetryFor429(request.Execute)
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -131,7 +131,7 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	}
 
 	request := r.client.ConfigurationAPI.
-		GroupsGetUxiV1alpha1GroupsGet(context.Background()).
+		GroupsGetUxiV1alpha1GroupsGet(ctx).
 		Uid(state.ID.ValueString())
 
 	groupResponse, _, err := util.RetryFor429(request.Execute)
