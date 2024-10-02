@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ datasource.DataSource              = &networkGroupAssignmentDataSource{}
 	_ datasource.DataSourceWithConfigure = &networkGroupAssignmentDataSource{}
@@ -64,7 +63,6 @@ func (d *networkGroupAssignmentDataSource) Schema(_ context.Context, _ datasourc
 func (d *networkGroupAssignmentDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var state networkGroupAssignmentDataSourceModel
 
-	// Read configuration from request
 	diags := req.Config.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -89,7 +87,6 @@ func (d *networkGroupAssignmentDataSource) Read(ctx context.Context, req datasou
 	state.NetworkID = types.StringValue(networkGroupAssignment.NetworkUid)
 	state.GroupID = types.StringValue(networkGroupAssignment.GroupUid)
 
-	// Set state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -98,8 +95,6 @@ func (d *networkGroupAssignmentDataSource) Read(ctx context.Context, req datasou
 }
 
 func (d *networkGroupAssignmentDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}
