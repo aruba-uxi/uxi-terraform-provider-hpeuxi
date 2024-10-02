@@ -34,12 +34,14 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					)
 
 					// required for sensor group assignment create
-					resources.CreateSensorGroupAssignment = func(request resources.SensorGroupAssignmentRequestModel) resources.SensorGroupAssignmentResponseModel {
-						return util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")
-					}
+					util.MockPostSensorGroupAssignment(
+						"sensor_group_assignment_uid",
+						util.GenerateSensorGroupAssignmentPostResponse("sensor_group_assignment_uid", ""),
+						1,
+					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", ""))}),
+						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentGetResponse("sensor_group_assignment_uid", "")}),
 						1,
 					)
 				},
@@ -77,7 +79,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", ""))}),
+						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentGetResponse("sensor_group_assignment_uid", "")}),
 						1,
 					)
 				},
@@ -112,18 +114,20 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					// required for sensor group assignment create
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", ""))}),
+						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentGetResponse("sensor_group_assignment_uid", "")}),
 						1,
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid_2",
-						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2"))}),
+						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentGetResponse("sensor_group_assignment_uid_2", "_2")}),
 						1,
 					)
 
-					resources.CreateSensorGroupAssignment = func(request resources.SensorGroupAssignmentRequestModel) resources.SensorGroupAssignmentResponseModel {
-						return util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2")
-					}
+					util.MockPostSensorGroupAssignment(
+						"sensor_group_assignment_uid_2",
+						util.GenerateSensorGroupAssignmentPostResponse("sensor_group_assignment_uid_2", "_2"),
+						1,
+					)
 				},
 				Config: provider.ProviderConfig + `
 					// the original resources
@@ -188,7 +192,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", ""))}),
+						util.GenerateSensorGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentGetResponse("sensor_group_assignment_uid", "")}),
 						1,
 					)
 				},

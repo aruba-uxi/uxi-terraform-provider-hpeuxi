@@ -103,18 +103,21 @@ func (r *sensorGroupAssignmentResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	// TODO: Call client createSensorGroupAssignment method
-	sensorGroupAssignment := CreateSensorGroupAssignment(SensorGroupAssignmentRequestModel{
-		GroupUID:  plan.GroupID.ValueString(),
-		SensorUID: plan.SensorID.ValueString(),
-	})
+	postRequest := config_api_client.NewSensorGroupAssignmentsPostRequest(plan.GroupID.ValueString(), plan.SensorID.ValueString())
+	request := r.client.ConfigurationAPI.PostUxiV1alpha1SensorGroupAssignmentsPost(context.Background()).SensorGroupAssignmentsPostRequest(*postRequest)
+	sensorGroupAssignment, _, err := util.RetryFor429(request.Execute)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating sensor group assignment",
+			"Could not create sensor group assignment, unexpected error: "+err.Error(),
+		)
+		return
+	}
 
-	// Update the state to match the plan
-	plan.ID = types.StringValue(sensorGroupAssignment.UID)
-	plan.GroupID = types.StringValue(sensorGroupAssignment.GroupUID)
-	plan.SensorID = types.StringValue(sensorGroupAssignment.SensorUID)
+	plan.ID = types.StringValue(sensorGroupAssignment.Id)
+	plan.GroupID = types.StringValue(sensorGroupAssignment.Group.Id)
+	plan.SensorID = types.StringValue(sensorGroupAssignment.Sensor.Id)
 
-	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
