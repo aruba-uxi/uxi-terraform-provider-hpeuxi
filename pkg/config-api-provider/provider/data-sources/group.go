@@ -84,7 +84,7 @@ func (d *groupDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 		return
 	}
 
-	request := d.client.ConfigurationAPI.GroupsGetConfigurationAppV1GroupsGet(context.Background())
+	request := d.client.ConfigurationAPI.GroupsGetUxiV1alpha1GroupsGet(context.Background())
 
 	if state.Filter.IsRoot != nil && *state.Filter.IsRoot {
 		request = request.Uid(*state.Filter.GroupID) // TODO: use root group filter here
@@ -94,7 +94,7 @@ func (d *groupDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 
 	groupResponse, _, err := util.RetryFor429(request.Execute)
 
-	if err != nil || len(groupResponse.Groups) != 1 {
+	if err != nil || len(groupResponse.Items) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Group",
 			"Could not retrieve Group, unexpected error: "+err.Error(),
@@ -102,12 +102,12 @@ func (d *groupDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 		return
 	}
 
-	group := groupResponse.Groups[0]
-	state.ID = types.StringValue(group.Uid)
+	group := groupResponse.Items[0]
+	state.ID = types.StringValue(group.Id)
 	state.Name = types.StringValue(group.Name)
 	state.Path = types.StringValue(group.Path)
-	if group.ParentUid.IsSet() {
-		state.ParentGroupID = types.StringValue(*group.ParentUid.Get())
+	if group.Parent.IsSet() {
+		state.ParentGroupID = types.StringValue(group.Parent.Get().Id)
 	}
 
 	// Set state

@@ -132,7 +132,7 @@ func (r *sensorGroupAssignmentResource) Read(ctx context.Context, req resource.R
 	}
 
 	request := r.client.ConfigurationAPI.
-		GetConfigurationAppV1SensorGroupAssignmentsGet(context.Background()).
+		GetUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).
 		Uid(state.ID.ValueString())
 	sensorGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
 

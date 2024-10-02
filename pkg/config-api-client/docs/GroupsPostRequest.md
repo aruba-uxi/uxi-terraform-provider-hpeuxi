@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ParentUid** | **string** |  | 
+**ParentId** | **string** |  | 
 **Name** | **string** |  | 
 
 ## Methods
 
 ### NewGroupsPostRequest
 
-`func NewGroupsPostRequest(parentUid string, name string, ) *GroupsPostRequest`
+`func NewGroupsPostRequest(parentId string, name string, ) *GroupsPostRequest`
 
 NewGroupsPostRequest instantiates a new GroupsPostRequest object
 This constructor will assign default values to properties that have it defined,
@@ -26,24 +26,24 @@ NewGroupsPostRequestWithDefaults instantiates a new GroupsPostRequest object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetParentUid
+### GetParentId
 
-`func (o *GroupsPostRequest) GetParentUid() string`
+`func (o *GroupsPostRequest) GetParentId() string`
 
-GetParentUid returns the ParentUid field if non-nil, zero value otherwise.
+GetParentId returns the ParentId field if non-nil, zero value otherwise.
 
-### GetParentUidOk
+### GetParentIdOk
 
-`func (o *GroupsPostRequest) GetParentUidOk() (*string, bool)`
+`func (o *GroupsPostRequest) GetParentIdOk() (*string, bool)`
 
-GetParentUidOk returns a tuple with the ParentUid field if it's non-nil, zero value otherwise
+GetParentIdOk returns a tuple with the ParentId field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetParentUid
+### SetParentId
 
-`func (o *GroupsPostRequest) SetParentUid(v string)`
+`func (o *GroupsPostRequest) SetParentId(v string)`
 
-SetParentUid sets ParentUid field to given value.
+SetParentId sets ParentId field to given value.
 
 
 ### GetName

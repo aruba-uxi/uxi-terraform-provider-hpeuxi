@@ -1,6 +1,10 @@
 package resource_test
 
 import (
+	"regexp"
+	"testing"
+
+	config_api_client "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
@@ -8,8 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/nbio/st"
-	"regexp"
-	"testing"
 )
 
 type Fetcher interface {
@@ -26,11 +28,9 @@ func TestGroupResource(t *testing.T) {
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")), 1)
-					util.MockGetGroup("uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")),
-						}),
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("uid", "", "")), 1)
+					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
 						1,
 					)
 				},
@@ -48,10 +48,8 @@ func TestGroupResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					util.MockGetGroup("uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")),
-						}),
+					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
 						1,
 					)
 				},
@@ -62,13 +60,11 @@ func TestGroupResource(t *testing.T) {
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					resources.UpdateGroup = func(request resources.GroupUpdateRequestModel) resources.GroupResponseModel {
-						return util.GenerateGroupResponseModel("uid", "_2", "")
+					resources.UpdateGroup = func(request resources.GroupUpdateRequestModel) config_api_client.GroupsPostResponse {
+						return util.GenerateGroupResponsePostModel("uid", "_2", "")
 					}
-					util.MockGetGroup("uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("uid", "_2", "")),
-						}),
+					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "_2", ""))}),
 						2,
 					)
 				},
@@ -88,18 +84,14 @@ func TestGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetGroup("uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")),
-						}),
+					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
 						1,
 					)
 					// new group (replacement)
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("new_uid", "", "_2")), 1)
-					util.MockGetGroup("new_uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("new_uid", "", "_2")),
-						}),
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("new_uid", "", "_2")), 1)
+					util.MockGetGroup("new_uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("new_uid", "", "_2"))}),
 						1,
 					)
 				},
@@ -159,18 +151,17 @@ func TestGroupResource429Handling(t *testing.T) {
 			{
 				PreConfig: func() {
 					create429 = gock.New("https://test.api.capenetworks.com").
-						Post("/configuration/app/v1/groups").
+						Post("/uxi/v1alpha1/groups").
 						Reply(429).
 						SetHeaders(map[string]string{
 							"X-RateLimit-Limit":     "100",
 							"X-RateLimit-Remaining": "0",
 							"X-RateLimit-Reset":     "1",
 						})
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")), 1)
-					util.MockGetGroup("uid", util.GenerateGroupPaginatedResponse(
-						[]map[string]interface{}{
-							util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")),
-						}),
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("uid", "", "")), 1)
+					util.MockGetGroup(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
 						1,
 					)
 				},

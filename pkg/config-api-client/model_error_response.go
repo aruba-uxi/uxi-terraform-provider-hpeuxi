@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.11.0
+API version: 1.14.0
 Contact: support@capenetworks.com
 */
 
@@ -22,7 +22,11 @@ var _ MappedNullable = &ErrorResponse{}
 
 // ErrorResponse struct for ErrorResponse
 type ErrorResponse struct {
-	Detail []ErrorDetail `json:"detail"`
+	DebugId        string        `json:"debugId"`
+	ErrorCode      string        `json:"errorCode"`
+	HttpStatusCode int32         `json:"httpStatusCode"`
+	Message        string        `json:"message"`
+	ErrorDetails   []ErrorDetail `json:"errorDetails"`
 }
 
 type _ErrorResponse ErrorResponse
@@ -31,9 +35,13 @@ type _ErrorResponse ErrorResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewErrorResponse(detail []ErrorDetail) *ErrorResponse {
+func NewErrorResponse(debugId string, errorCode string, httpStatusCode int32, message string, errorDetails []ErrorDetail) *ErrorResponse {
 	this := ErrorResponse{}
-	this.Detail = detail
+	this.DebugId = debugId
+	this.ErrorCode = errorCode
+	this.HttpStatusCode = httpStatusCode
+	this.Message = message
+	this.ErrorDetails = errorDetails
 	return &this
 }
 
@@ -45,28 +53,126 @@ func NewErrorResponseWithDefaults() *ErrorResponse {
 	return &this
 }
 
-// GetDetail returns the Detail field value
-func (o *ErrorResponse) GetDetail() []ErrorDetail {
+// GetDebugId returns the DebugId field value
+func (o *ErrorResponse) GetDebugId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.DebugId
+}
+
+// GetDebugIdOk returns a tuple with the DebugId field value
+// and a boolean to check if the value has been set.
+func (o *ErrorResponse) GetDebugIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.DebugId, true
+}
+
+// SetDebugId sets field value
+func (o *ErrorResponse) SetDebugId(v string) {
+	o.DebugId = v
+}
+
+// GetErrorCode returns the ErrorCode field value
+func (o *ErrorResponse) GetErrorCode() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.ErrorCode
+}
+
+// GetErrorCodeOk returns a tuple with the ErrorCode field value
+// and a boolean to check if the value has been set.
+func (o *ErrorResponse) GetErrorCodeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.ErrorCode, true
+}
+
+// SetErrorCode sets field value
+func (o *ErrorResponse) SetErrorCode(v string) {
+	o.ErrorCode = v
+}
+
+// GetHttpStatusCode returns the HttpStatusCode field value
+func (o *ErrorResponse) GetHttpStatusCode() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.HttpStatusCode
+}
+
+// GetHttpStatusCodeOk returns a tuple with the HttpStatusCode field value
+// and a boolean to check if the value has been set.
+func (o *ErrorResponse) GetHttpStatusCodeOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.HttpStatusCode, true
+}
+
+// SetHttpStatusCode sets field value
+func (o *ErrorResponse) SetHttpStatusCode(v int32) {
+	o.HttpStatusCode = v
+}
+
+// GetMessage returns the Message field value
+func (o *ErrorResponse) GetMessage() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Message
+}
+
+// GetMessageOk returns a tuple with the Message field value
+// and a boolean to check if the value has been set.
+func (o *ErrorResponse) GetMessageOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Message, true
+}
+
+// SetMessage sets field value
+func (o *ErrorResponse) SetMessage(v string) {
+	o.Message = v
+}
+
+// GetErrorDetails returns the ErrorDetails field value
+// If the value is explicit nil, the zero value for []ErrorDetail will be returned
+func (o *ErrorResponse) GetErrorDetails() []ErrorDetail {
 	if o == nil {
 		var ret []ErrorDetail
 		return ret
 	}
 
-	return o.Detail
+	return o.ErrorDetails
 }
 
-// GetDetailOk returns a tuple with the Detail field value
+// GetErrorDetailsOk returns a tuple with the ErrorDetails field value
 // and a boolean to check if the value has been set.
-func (o *ErrorResponse) GetDetailOk() ([]ErrorDetail, bool) {
-	if o == nil {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ErrorResponse) GetErrorDetailsOk() ([]ErrorDetail, bool) {
+	if o == nil || IsNil(o.ErrorDetails) {
 		return nil, false
 	}
-	return o.Detail, true
+	return o.ErrorDetails, true
 }
 
-// SetDetail sets field value
-func (o *ErrorResponse) SetDetail(v []ErrorDetail) {
-	o.Detail = v
+// SetErrorDetails sets field value
+func (o *ErrorResponse) SetErrorDetails(v []ErrorDetail) {
+	o.ErrorDetails = v
 }
 
 func (o ErrorResponse) MarshalJSON() ([]byte, error) {
@@ -79,7 +185,13 @@ func (o ErrorResponse) MarshalJSON() ([]byte, error) {
 
 func (o ErrorResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["detail"] = o.Detail
+	toSerialize["debugId"] = o.DebugId
+	toSerialize["errorCode"] = o.ErrorCode
+	toSerialize["httpStatusCode"] = o.HttpStatusCode
+	toSerialize["message"] = o.Message
+	if o.ErrorDetails != nil {
+		toSerialize["errorDetails"] = o.ErrorDetails
+	}
 	return toSerialize, nil
 }
 
@@ -88,7 +200,11 @@ func (o *ErrorResponse) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"detail",
+		"debugId",
+		"errorCode",
+		"httpStatusCode",
+		"message",
+		"errorDetails",
 	}
 
 	allProperties := make(map[string]interface{})

@@ -4,13 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Detail** | [**[]ErrorDetail**](ErrorDetail.md) |  | 
+**DebugId** | **string** |  | 
+**ErrorCode** | **string** |  | 
+**HttpStatusCode** | **int32** |  | 
+**Message** | **string** |  | 
+**ErrorDetails** | [**[]ErrorDetail**](ErrorDetail.md) |  | 
 
 ## Methods
 
 ### NewErrorResponse
 
-`func NewErrorResponse(detail []ErrorDetail, ) *ErrorResponse`
+`func NewErrorResponse(debugId string, errorCode string, httpStatusCode int32, message string, errorDetails []ErrorDetail, ) *ErrorResponse`
 
 NewErrorResponse instantiates a new ErrorResponse object
 This constructor will assign default values to properties that have it defined,
@@ -25,26 +29,116 @@ NewErrorResponseWithDefaults instantiates a new ErrorResponse object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetDetail
+### GetDebugId
 
-`func (o *ErrorResponse) GetDetail() []ErrorDetail`
+`func (o *ErrorResponse) GetDebugId() string`
 
-GetDetail returns the Detail field if non-nil, zero value otherwise.
+GetDebugId returns the DebugId field if non-nil, zero value otherwise.
 
-### GetDetailOk
+### GetDebugIdOk
 
-`func (o *ErrorResponse) GetDetailOk() (*[]ErrorDetail, bool)`
+`func (o *ErrorResponse) GetDebugIdOk() (*string, bool)`
 
-GetDetailOk returns a tuple with the Detail field if it's non-nil, zero value otherwise
+GetDebugIdOk returns a tuple with the DebugId field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetDetail
+### SetDebugId
 
-`func (o *ErrorResponse) SetDetail(v []ErrorDetail)`
+`func (o *ErrorResponse) SetDebugId(v string)`
 
-SetDetail sets Detail field to given value.
+SetDebugId sets DebugId field to given value.
 
 
+### GetErrorCode
+
+`func (o *ErrorResponse) GetErrorCode() string`
+
+GetErrorCode returns the ErrorCode field if non-nil, zero value otherwise.
+
+### GetErrorCodeOk
+
+`func (o *ErrorResponse) GetErrorCodeOk() (*string, bool)`
+
+GetErrorCodeOk returns a tuple with the ErrorCode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetErrorCode
+
+`func (o *ErrorResponse) SetErrorCode(v string)`
+
+SetErrorCode sets ErrorCode field to given value.
+
+
+### GetHttpStatusCode
+
+`func (o *ErrorResponse) GetHttpStatusCode() int32`
+
+GetHttpStatusCode returns the HttpStatusCode field if non-nil, zero value otherwise.
+
+### GetHttpStatusCodeOk
+
+`func (o *ErrorResponse) GetHttpStatusCodeOk() (*int32, bool)`
+
+GetHttpStatusCodeOk returns a tuple with the HttpStatusCode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetHttpStatusCode
+
+`func (o *ErrorResponse) SetHttpStatusCode(v int32)`
+
+SetHttpStatusCode sets HttpStatusCode field to given value.
+
+
+### GetMessage
+
+`func (o *ErrorResponse) GetMessage() string`
+
+GetMessage returns the Message field if non-nil, zero value otherwise.
+
+### GetMessageOk
+
+`func (o *ErrorResponse) GetMessageOk() (*string, bool)`
+
+GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMessage
+
+`func (o *ErrorResponse) SetMessage(v string)`
+
+SetMessage sets Message field to given value.
+
+
+### GetErrorDetails
+
+`func (o *ErrorResponse) GetErrorDetails() []ErrorDetail`
+
+GetErrorDetails returns the ErrorDetails field if non-nil, zero value otherwise.
+
+### GetErrorDetailsOk
+
+`func (o *ErrorResponse) GetErrorDetailsOk() (*[]ErrorDetail, bool)`
+
+GetErrorDetailsOk returns a tuple with the ErrorDetails field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetErrorDetails
+
+`func (o *ErrorResponse) SetErrorDetails(v []ErrorDetail)`
+
+SetErrorDetails sets ErrorDetails field to given value.
+
+
+### SetErrorDetailsNil
+
+`func (o *ErrorResponse) SetErrorDetailsNil(b bool)`
+
+ SetErrorDetailsNil sets the value for ErrorDetails to be an explicit nil
+
+### UnsetErrorDetails
+`func (o *ErrorResponse) UnsetErrorDetails()`
+
+UnsetErrorDetails ensures that no value is present for ErrorDetails, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

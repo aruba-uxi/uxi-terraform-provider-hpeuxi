@@ -9,14 +9,14 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 1.11.0
+  version: 1.14.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
 paths:
-  /configuration/app/v1/groups:
+  /uxi/v1alpha1/groups:
     get:
-      operationId: groups_get_configuration_app_v1_groups_get
+      operationId: groups_get_uxi_v1alpha1_groups_get
       summary: Groups Get
       description: Lists groups matching provided criteria
       parameters:
@@ -67,11 +67,11 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - groups
       x-stability-level: alpha
     post:
-      operationId: groups_post_configuration_app_v1_groups_post
+      operationId: groups_post_uxi_v1alpha1_groups_post
       summary: Groups Post
       description: >-
         Create a new group with the group identified in `parent_uid` as its parent
@@ -105,11 +105,12 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - groups
-  /configuration/app/v1/network-group-assignments:
+      x-stability-level: alpha
+  /uxi/v1alpha1/network-group-assignments:
     get:
-      operationId: get_configuration_app_v1_network_group_assignments_get
+      operationId: get_uxi_v1alpha1_network_group_assignments_get
       summary: Get
       description: Get a list of network group assignments
       parameters:
@@ -160,12 +161,12 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - network-group-assignments
       x-stability-level: alpha
-  /configuration/app/v1/sensor-group-assignments:
+  /uxi/v1alpha1/sensor-group-assignments:
     get:
-      operationId: get_configuration_app_v1_sensor_group_assignments_get
+      operationId: get_uxi_v1alpha1_sensor_group_assignments_get
       summary: Get
       description: Get a list of sensor group assignments
       parameters:
@@ -216,12 +217,49 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - sensor-group-assignments
       x-stability-level: alpha
-  /configuration/app/v1/wired-networks:
+    post:
+      operationId: post_uxi_v1alpha1_sensor_group_assignments_post
+      summary: Post
+      description: Create sensor group assignment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SensorGroupAssignmentsPostRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorGroupAssignmentResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - sensor-group-assignments
+      x-stability-level: alpha
+  /uxi/v1alpha1/wired-networks:
     get:
-      operationId: get_configuration_app_v1_wired_networks_get
+      operationId: get_uxi_v1alpha1_wired_networks_get
       summary: Get
       description: Get a list of wired networks
       parameters:
@@ -272,12 +310,12 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - wired-networks
       x-stability-level: alpha
-  /configuration/app/v1/wireless-networks:
+  /uxi/v1alpha1/wireless-networks:
     get:
-      operationId: get_configuration_app_v1_wireless_networks_get
+      operationId: get_uxi_v1alpha1_wireless_networks_get
       summary: Get
       description: Get a list of wireless networks
       parameters:
@@ -328,7 +366,7 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - wireless-networks
       x-stability-level: alpha
 components:
@@ -336,94 +374,160 @@ components:
     ErrorDetail:
       type: object
       properties:
-        message:
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/Issue'
+          title: Issues
+        type:
           type: string
-          title: Message
+          title: Type
       required:
-        - message
+        - issues
+        - type
       title: ErrorDetail
     ErrorResponse:
       type: object
       properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          title: Detail
+        debugId:
+          type: string
+          title: Debugid
+        errorCode:
+          type: string
+          title: Errorcode
+        httpStatusCode:
+          type: integer
+          title: Httpstatuscode
+        message:
+          type: string
+          title: Message
+        errorDetails:
+          anyOf:
+            - items:
+                $ref: '#/components/schemas/ErrorDetail'
+              type: array
+          nullable: true
+          title: Errordetails
       required:
-        - detail
+        - debugId
+        - errorCode
+        - httpStatusCode
+        - message
+        - errorDetails
       title: ErrorResponse
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: Group
     GroupsGetItem:
       type: object
       properties:
-        uid:
+        id:
           type: string
-          title: Uid
+          title: Id
         name:
           type: string
           title: Name
+        parent:
+          anyOf:
+            - $ref: '#/components/schemas/Parent'
+          nullable: true
         path:
           type: string
           title: Path
-        parent_uid:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Parent Uid
+        type:
+          type: string
+          default: uxi/group
+          title: Type
       required:
-        - uid
+        - id
         - name
+        - parent
         - path
-        - parent_uid
       title: GroupsGetItem
     GroupsGetResponse:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/PaginationDetails'
-        groups:
+        items:
           type: array
           items:
             $ref: '#/components/schemas/GroupsGetItem'
-          title: Groups
+          title: Items
+        count:
+          type: integer
+          title: Count
+        next:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Next
       required:
-        - pagination
-        - groups
+        - items
+        - count
+        - next
       title: GroupsGetResponse
     GroupsPostRequest:
       type: object
       properties:
-        parent_uid:
+        parentId:
           type: string
-          title: Parent Uid
+          title: Parentid
         name:
           type: string
           title: Name
       required:
-        - parent_uid
+        - parentId
         - name
       title: GroupsPostRequest
     GroupsPostResponse:
       type: object
       properties:
-        parent_uid:
-          type: string
-          title: Parent Uid
         name:
           type: string
           title: Name
-        uid:
-          type: string
-          title: Uid
         path:
           type: string
           title: Path
+        parent_uid:
+          type: string
+          title: Parent Uid
+        uid:
+          type: string
+          title: Uid
       required:
-        - parent_uid
         - name
-        - uid
         - path
+        - parent_uid
+        - uid
       title: GroupsPostResponse
+    Issue:
+      type: object
+      properties:
+        description:
+          type: string
+          title: Description
+        subject:
+          $ref: '#/components/schemas/IssueSubject'
+        source:
+          type: string
+          title: Source
+      required:
+        - description
+        - subject
+        - source
+      title: Issue
+    IssueSubject:
+      type: string
+      enum:
+        - field
+        - header
+        - query.parameter
+      title: IssueSubject
     NetworkGroupAssignmentsItem:
       type: object
       properties:
@@ -488,6 +592,43 @@ components:
         - first
         - last
       title: PaginationDetails
+    Parent:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: Parent
+    Sensor:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: Sensor
+    SensorGroupAssignmentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        group:
+          $ref: '#/components/schemas/Group'
+        sensor:
+          $ref: '#/components/schemas/Sensor'
+        type:
+          type: string
+          default: uxi/sensor-group-assignment
+          title: Type
+      required:
+        - id
+        - group
+        - sensor
+      title: SensorGroupAssignmentResponse
     SensorGroupAssignmentsItem:
       type: object
       properties:
@@ -505,6 +646,19 @@ components:
         - group_uid
         - sensor_uid
       title: SensorGroupAssignmentsItem
+    SensorGroupAssignmentsPostRequest:
+      type: object
+      properties:
+        groupId:
+          type: string
+          title: Groupid
+        sensorId:
+          type: string
+          title: Sensorid
+      required:
+        - groupId
+        - sensorId
+      title: SensorGroupAssignmentsPostRequest
     SensorGroupAssignmentsResponse:
       type: object
       properties:
@@ -674,6 +828,7 @@ components:
 tags:
   - name: api
   - name: v1
+  - name: v1alpha1
   - name: configuration
   - name: groups
   - name: health

@@ -27,12 +27,6 @@ type groupResourceModel struct {
 }
 
 // TODO: Remove this once we rely fully on client for groups
-type GroupResponseModel struct {
-	UID       string  `json:"uid"`
-	Name      string  `json:"name"`
-	ParentUid *string `json:"parent_uid"`
-	Path      string  `json:"path"`
-}
 
 // TODO: Remove this once we rely fully on client for groups
 type GroupUpdateRequestModel struct {
@@ -64,7 +58,7 @@ func (r *groupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Required: true,
 			},
 			"parent_group_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					// UXI business logic does not permit moving of groups
 					stringplanmodifier.RequiresReplace(),
@@ -104,7 +98,7 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 
 	groups_post_request := config_api_client.NewGroupsPostRequest(plan.ParentGroupId.ValueString(), plan.Name.ValueString())
-	request := r.client.ConfigurationAPI.GroupsPostConfigurationAppV1GroupsPost(context.Background()).GroupsPostRequest(*groups_post_request)
+	request := r.client.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(context.Background()).GroupsPostRequest(*groups_post_request)
 	group, _, err := util.RetryFor429(request.Execute)
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -140,12 +134,12 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	}
 
 	request := r.client.ConfigurationAPI.
-		GroupsGetConfigurationAppV1GroupsGet(context.Background()).
+		GroupsGetUxiV1alpha1GroupsGet(context.Background()).
 		Uid(state.ID.ValueString())
 
 	groupResponse, _, err := util.RetryFor429(request.Execute)
 
-	if err != nil || len(groupResponse.Groups) != 1 {
+	if err != nil || len(groupResponse.Items) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Group",
 			"Could not retrieve Group, unexpected error: "+err.Error(),
@@ -153,11 +147,11 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		return
 	}
 
-	group := groupResponse.Groups[0]
+	group := groupResponse.Items[0]
 
 	// Update state from client response
 	state.Name = types.StringValue(group.Name)
-	state.ParentGroupId = types.StringValue(*group.ParentUid.Get())
+	state.ParentGroupId = types.StringValue(group.Parent.Get().Id)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -183,7 +177,7 @@ func (r *groupResource) Update(ctx context.Context, req resource.UpdateRequest, 
 
 	// Update the state to match the plan (replace with response from client)
 	plan.Name = types.StringValue(group.Name)
-	plan.ParentGroupId = types.StringValue(*group.ParentUid)
+	plan.ParentGroupId = types.StringValue(group.ParentUid)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -209,15 +203,15 @@ func (r *groupResource) ImportState(ctx context.Context, req resource.ImportStat
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-var UpdateGroup = func(request GroupUpdateRequestModel) GroupResponseModel {
+var UpdateGroup = func(request GroupUpdateRequestModel) config_api_client.GroupsPostResponse {
 	// TODO: Query the group using the client
 
 	parent_uid := "mock_parent_uid"
 
-	return GroupResponseModel{
-		UID:       "mock_uid",
+	return config_api_client.GroupsPostResponse{
+		Uid:       "mock_uid",
 		Name:      "mock_name",
-		ParentUid: &parent_uid,
+		ParentUid: parent_uid,
 		Path:      "mock_path",
 	}
 }

@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.11.0
+API version: 1.14.0
 Contact: support@capenetworks.com
 */
 
@@ -22,10 +22,10 @@ var _ MappedNullable = &GroupsPostResponse{}
 
 // GroupsPostResponse struct for GroupsPostResponse
 type GroupsPostResponse struct {
-	ParentUid string `json:"parent_uid"`
 	Name      string `json:"name"`
-	Uid       string `json:"uid"`
 	Path      string `json:"path"`
+	ParentUid string `json:"parent_uid"`
+	Uid       string `json:"uid"`
 }
 
 type _GroupsPostResponse GroupsPostResponse
@@ -34,12 +34,12 @@ type _GroupsPostResponse GroupsPostResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupsPostResponse(parentUid string, name string, uid string, path string) *GroupsPostResponse {
+func NewGroupsPostResponse(name string, path string, parentUid string, uid string) *GroupsPostResponse {
 	this := GroupsPostResponse{}
-	this.ParentUid = parentUid
 	this.Name = name
-	this.Uid = uid
 	this.Path = path
+	this.ParentUid = parentUid
+	this.Uid = uid
 	return &this
 }
 
@@ -49,30 +49,6 @@ func NewGroupsPostResponse(parentUid string, name string, uid string, path strin
 func NewGroupsPostResponseWithDefaults() *GroupsPostResponse {
 	this := GroupsPostResponse{}
 	return &this
-}
-
-// GetParentUid returns the ParentUid field value
-func (o *GroupsPostResponse) GetParentUid() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.ParentUid
-}
-
-// GetParentUidOk returns a tuple with the ParentUid field value
-// and a boolean to check if the value has been set.
-func (o *GroupsPostResponse) GetParentUidOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.ParentUid, true
-}
-
-// SetParentUid sets field value
-func (o *GroupsPostResponse) SetParentUid(v string) {
-	o.ParentUid = v
 }
 
 // GetName returns the Name field value
@@ -99,30 +75,6 @@ func (o *GroupsPostResponse) SetName(v string) {
 	o.Name = v
 }
 
-// GetUid returns the Uid field value
-func (o *GroupsPostResponse) GetUid() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Uid
-}
-
-// GetUidOk returns a tuple with the Uid field value
-// and a boolean to check if the value has been set.
-func (o *GroupsPostResponse) GetUidOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Uid, true
-}
-
-// SetUid sets field value
-func (o *GroupsPostResponse) SetUid(v string) {
-	o.Uid = v
-}
-
 // GetPath returns the Path field value
 func (o *GroupsPostResponse) GetPath() string {
 	if o == nil {
@@ -147,6 +99,54 @@ func (o *GroupsPostResponse) SetPath(v string) {
 	o.Path = v
 }
 
+// GetParentUid returns the ParentUid field value
+func (o *GroupsPostResponse) GetParentUid() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.ParentUid
+}
+
+// GetParentUidOk returns a tuple with the ParentUid field value
+// and a boolean to check if the value has been set.
+func (o *GroupsPostResponse) GetParentUidOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.ParentUid, true
+}
+
+// SetParentUid sets field value
+func (o *GroupsPostResponse) SetParentUid(v string) {
+	o.ParentUid = v
+}
+
+// GetUid returns the Uid field value
+func (o *GroupsPostResponse) GetUid() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Uid
+}
+
+// GetUidOk returns a tuple with the Uid field value
+// and a boolean to check if the value has been set.
+func (o *GroupsPostResponse) GetUidOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Uid, true
+}
+
+// SetUid sets field value
+func (o *GroupsPostResponse) SetUid(v string) {
+	o.Uid = v
+}
+
 func (o GroupsPostResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -157,10 +157,10 @@ func (o GroupsPostResponse) MarshalJSON() ([]byte, error) {
 
 func (o GroupsPostResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["parent_uid"] = o.ParentUid
 	toSerialize["name"] = o.Name
-	toSerialize["uid"] = o.Uid
 	toSerialize["path"] = o.Path
+	toSerialize["parent_uid"] = o.ParentUid
+	toSerialize["uid"] = o.Uid
 	return toSerialize, nil
 }
 
@@ -169,10 +169,10 @@ func (o *GroupsPostResponse) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"parent_uid",
 		"name",
-		"uid",
 		"path",
+		"parent_uid",
+		"uid",
 	}
 
 	allProperties := make(map[string]interface{})

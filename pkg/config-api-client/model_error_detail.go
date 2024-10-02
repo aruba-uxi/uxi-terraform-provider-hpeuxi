@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.11.0
+API version: 1.14.0
 Contact: support@capenetworks.com
 */
 
@@ -22,7 +22,8 @@ var _ MappedNullable = &ErrorDetail{}
 
 // ErrorDetail struct for ErrorDetail
 type ErrorDetail struct {
-	Message string `json:"message"`
+	Issues []Issue `json:"issues"`
+	Type   string  `json:"type"`
 }
 
 type _ErrorDetail ErrorDetail
@@ -31,9 +32,10 @@ type _ErrorDetail ErrorDetail
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewErrorDetail(message string) *ErrorDetail {
+func NewErrorDetail(issues []Issue, type_ string) *ErrorDetail {
 	this := ErrorDetail{}
-	this.Message = message
+	this.Issues = issues
+	this.Type = type_
 	return &this
 }
 
@@ -45,28 +47,52 @@ func NewErrorDetailWithDefaults() *ErrorDetail {
 	return &this
 }
 
-// GetMessage returns the Message field value
-func (o *ErrorDetail) GetMessage() string {
+// GetIssues returns the Issues field value
+func (o *ErrorDetail) GetIssues() []Issue {
+	if o == nil {
+		var ret []Issue
+		return ret
+	}
+
+	return o.Issues
+}
+
+// GetIssuesOk returns a tuple with the Issues field value
+// and a boolean to check if the value has been set.
+func (o *ErrorDetail) GetIssuesOk() ([]Issue, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Issues, true
+}
+
+// SetIssues sets field value
+func (o *ErrorDetail) SetIssues(v []Issue) {
+	o.Issues = v
+}
+
+// GetType returns the Type field value
+func (o *ErrorDetail) GetType() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Message
+	return o.Type
 }
 
-// GetMessageOk returns a tuple with the Message field value
+// GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
-func (o *ErrorDetail) GetMessageOk() (*string, bool) {
+func (o *ErrorDetail) GetTypeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Message, true
+	return &o.Type, true
 }
 
-// SetMessage sets field value
-func (o *ErrorDetail) SetMessage(v string) {
-	o.Message = v
+// SetType sets field value
+func (o *ErrorDetail) SetType(v string) {
+	o.Type = v
 }
 
 func (o ErrorDetail) MarshalJSON() ([]byte, error) {
@@ -79,7 +105,8 @@ func (o ErrorDetail) MarshalJSON() ([]byte, error) {
 
 func (o ErrorDetail) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["message"] = o.Message
+	toSerialize["issues"] = o.Issues
+	toSerialize["type"] = o.Type
 	return toSerialize, nil
 }
 
@@ -88,7 +115,8 @@ func (o *ErrorDetail) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"message",
+		"issues",
+		"type",
 	}
 
 	allProperties := make(map[string]interface{})
