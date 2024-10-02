@@ -2,6 +2,8 @@ package resources
 
 import (
 	"context"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/util"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -38,7 +40,9 @@ func NewNetworkGroupAssignmentResource() resource.Resource {
 	return &networkGroupAssignmentResource{}
 }
 
-type networkGroupAssignmentResource struct{}
+type networkGroupAssignmentResource struct {
+	client *config_api_client.APIClient
+}
 
 func (r *networkGroupAssignmentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_network_group_assignment"
@@ -70,6 +74,21 @@ func (r *networkGroupAssignmentResource) Schema(_ context.Context, _ resource.Sc
 }
 
 func (r *networkGroupAssignmentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*config_api_client.APIClient)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Resource type: Network Group Assignment. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.client = client
 }
 
 func (r *networkGroupAssignmentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -110,11 +129,23 @@ func (r *networkGroupAssignmentResource) Read(ctx context.Context, req resource.
 	}
 
 	// TODO: Call client getNetworkGroupAssignment method
-	networkGroupAssignment := GetNetworkGroupAssignment(state.ID.ValueString())
+	request := r.client.ConfigurationAPI.
+		GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).
+		Uid(state.ID.ValueString())
+
+	networkGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
+	if err != nil || len(networkGroupAssignmentResponse.NetworkGroupAssignments) != 1 {
+		resp.Diagnostics.AddError(
+			"Error reading Network Group Assignment",
+			"Could not retrieve Network Group Assignment, unexpected error: "+err.Error(),
+		)
+		return
+	}
+	networkGroupAssignment := networkGroupAssignmentResponse.NetworkGroupAssignments[0]
 
 	// Update state from client response
-	state.GroupID = types.StringValue(networkGroupAssignment.GroupUID)
-	state.NetworkID = types.StringValue(networkGroupAssignment.NetworkUID)
+	state.GroupID = types.StringValue(networkGroupAssignment.GroupUid)
+	state.NetworkID = types.StringValue(networkGroupAssignment.NetworkUid)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -149,16 +180,6 @@ func (r *networkGroupAssignmentResource) Delete(ctx context.Context, req resourc
 
 func (r *networkGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-var GetNetworkGroupAssignment = func(uid string) NetworkGroupAssignmentResponseModel {
-	// TODO: Query the networkGroupAssignment using the client
-
-	return NetworkGroupAssignmentResponseModel{
-		UID:        uid,
-		GroupUID:   "mock_group_uid",
-		NetworkUID: "mock_network_uid",
-	}
 }
 
 var CreateNetworkGroupAssignment = func(request NetworkGroupAssignmentRequestModel) NetworkGroupAssignmentResponseModel {

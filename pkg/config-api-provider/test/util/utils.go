@@ -173,6 +173,21 @@ func GenerateNetworkGroupAssignmentResponse(uid string, postfix string) resource
 	}
 }
 
+func GenerateNetworkGroupAssignmentPaginatedResponse(networkGroupAssignments []map[string]interface{}) map[string]interface{} {
+	return map[string]interface{}{
+		"network_group_assignments": networkGroupAssignments,
+		"pagination":                mockPaginationResponse,
+	}
+}
+
+func GenerateNetworkGroupAssignmentGetResponse(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"uid":         uid,
+		"group_uid":   "group_uid" + postfix,
+		"network_uid": "network_uid" + postfix,
+	}
+}
+
 func GenerateServiceTestGroupAssignmentResponse(uid string, postfix string) resources.ServiceTestGroupAssignmentResponseModel {
 	return resources.ServiceTestGroupAssignmentResponseModel{
 		UID:            uid,
@@ -263,5 +278,14 @@ func MockPostSensorGroupAssignment(uid string, response map[string]interface{}, 
 		Times(times).
 		Reply(200).
 		JSON(response)
+}
 
+func MockGetNetworkGroupAssignment(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Get("/uxi/v1alpha1/network-group-assignments").
+		MatchHeader("Authorization", "mock_token").
+		MatchParam("uid", uid).
+		Times(times).
+		Reply(200).
+		JSON(response)
 }
