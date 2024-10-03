@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestNetworkGroupAssignmentResource(t *testing.T) {
+func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
@@ -38,9 +38,11 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
 						return util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")
 					}
-					resources.GetNetworkGroupAssignment = func(uid string) resources.NetworkGroupAssignmentResponseModel {
-						return util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")
-					}
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						1,
+					)
 				},
 
 				Config: provider.ProviderConfig + `
@@ -70,6 +72,13 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
+				PreConfig: func() {
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						1,
+					)
+				},
 				ResourceName:      "uxi_network_group_assignment.my_network_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
@@ -105,13 +114,16 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
 						return util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid_2", "_2")
 					}
-					resources.GetNetworkGroupAssignment = func(uid string) resources.NetworkGroupAssignmentResponseModel {
-						if uid == "network_group_assignment_uid" {
-							return util.GenerateNetworkGroupAssignmentResponse(uid, "")
-						} else {
-							return util.GenerateNetworkGroupAssignmentResponse(uid, "_2")
-						}
-					}
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid_2",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
+						2,
+					)
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						2,
+					)
 				},
 				Config: provider.ProviderConfig + `
 					// the original resources
@@ -147,7 +159,7 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					// the assignment update, updated from network/group to network_2/group_2
 					resource "uxi_network_group_assignment" "my_network_group_assignment" {
 						network_id       = uxi_wired_network.my_network_2.id
-						group_id 		= uxi_group.my_group_2.id
+						group_id 		 = uxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_network_group_assignment.my_network_group_assignment", "network_id", "network_uid_2"),
@@ -176,6 +188,16 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid_2", "_2", "_2"))}),
 						1,
 					)
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid_2",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
+						1,
+					)
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						1,
+					)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
@@ -197,6 +219,13 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			// Delete testing automatically occurs in TestCase
 		},
 	})
+
+	mockOAuth.Mock.Disable()
+}
+
+func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
 
 	// Test Wireless Network Group Assignment
 	resource.Test(t, resource.TestCase{
@@ -223,9 +252,11 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
 						return util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")
 					}
-					resources.GetNetworkGroupAssignment = func(uid string) resources.NetworkGroupAssignmentResponseModel {
-						return util.GenerateNetworkGroupAssignmentResponse(uid, "")
-					}
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						1,
+					)
 				},
 
 				Config: provider.ProviderConfig + `
@@ -255,6 +286,13 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
+				PreConfig: func() {
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						1,
+					)
+				},
 				ResourceName:      "uxi_network_group_assignment.my_network_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
@@ -288,13 +326,16 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					)
 
 					// required for network group assignment create
-					resources.GetNetworkGroupAssignment = func(uid string) resources.NetworkGroupAssignmentResponseModel {
-						if uid == "network_group_assignment_uid" {
-							return util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")
-						} else {
-							return util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid_2", "_2")
-						}
-					}
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid_2",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
+						2,
+					)
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						2,
+					)
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
 						return util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid_2", "_2")
 					}
@@ -362,6 +403,16 @@ func TestNetworkGroupAssignmentResource(t *testing.T) {
 					util.MockGetGroup(
 						"group_uid_2",
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("group_uid_2", "_2", "_2"))}),
+						1,
+					)
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid_2",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
+						1,
+					)
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						1,
 					)
 				},
