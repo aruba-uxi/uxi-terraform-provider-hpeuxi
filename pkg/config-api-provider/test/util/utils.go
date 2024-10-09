@@ -8,14 +8,6 @@ import (
 	"github.com/h2non/gock"
 )
 
-var mockPaginationResponse = map[string]interface{}{
-	"limit":    10,
-	"first":    nil,
-	"next":     nil,
-	"previous": nil,
-	"last":     nil,
-}
-
 func GenerateSensorResponseModel(uid string, postfix string) resources.SensorResponseModel {
 	return resources.SensorResponseModel{
 		UID:                uid,
@@ -60,10 +52,10 @@ func GenerateGroupResponsePostModel(uid string, nonReplacementFieldPostfix strin
 	parentId := "parent_uid" + replacementFieldPostfix
 
 	return config_api_client.GroupsPostResponse{
-		Uid:       uid,
-		Name:      "name" + nonReplacementFieldPostfix,
-		ParentUid: parentId,
-		Path:      parentId + "." + uid,
+		Id:     uid,
+		Name:   "name" + nonReplacementFieldPostfix,
+		Parent: *config_api_client.NewParent(parentId),
+		Path:   parentId + "." + uid,
 	}
 }
 
@@ -88,49 +80,35 @@ func GenerateServiceTestResponseModel(uid string, postfix string) resources.Serv
 
 func GenerateWiredNetworkResponse(uid string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
-		"uid":                   uid,
-		"alias":                 "alias" + postfix,
-		"datetime_created":      "2024-09-11T12:00:00.000Z",
-		"datetime_updated":      "2024-09-11T12:00:00.000Z",
-		"ip_version":            "ip_version" + postfix,
-		"security":              "security" + postfix,
-		"dns_lookup_domain":     "dns_lookup_domain" + postfix,
-		"disable_edns":          false,
-		"use_dns64":             false,
-		"external_connectivity": false,
-		"vlan_id":               123,
-	}
-}
-
-func GenerateWiredNetworkPaginatedResponse(wiredNetworks []map[string]interface{}) map[string]interface{} {
-	return map[string]interface{}{
-		"wired_networks": wiredNetworks,
-		"pagination":     mockPaginationResponse,
+		"id":                   uid,
+		"name":                 "alias" + postfix,
+		"createdAt":            "2024-09-11T12:00:00.000Z",
+		"updatedAt":            "2024-09-11T12:00:00.000Z",
+		"ipVersion":            "ip_version" + postfix,
+		"security":             "security" + postfix,
+		"dnsLookupDomain":      "dns_lookup_domain" + postfix,
+		"disableEdns":          false,
+		"useDns64":             false,
+		"externalConnectivity": false,
+		"vLanId":               123,
 	}
 }
 
 func GenerateWirelessNetworkResponse(uid string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
-		"uid":                   uid,
-		"ssid":                  "ssid" + postfix,
-		"datetime_created":      "2024-09-11T12:00:00.000Z",
-		"datetime_updated":      "2024-09-11T12:00:00.000Z",
-		"alias":                 "alias" + postfix,
-		"ip_version":            "ip_version" + postfix,
-		"security":              "security" + postfix,
-		"hidden":                false,
-		"band_locking":          "band_locking" + postfix,
-		"dns_lookup_domain":     "dns_lookup_domain" + postfix,
-		"disable_edns":          false,
-		"use_dns64":             false,
-		"external_connectivity": false,
-	}
-}
-
-func GenerateWirelessNetworkPaginatedResponse(wirelessNetworks []map[string]interface{}) map[string]interface{} {
-	return map[string]interface{}{
-		"wireless_networks": wirelessNetworks,
-		"pagination":        mockPaginationResponse,
+		"id":                   uid,
+		"ssid":                 "ssid" + postfix,
+		"createdAt":            "2024-09-11T12:00:00.000Z",
+		"updatedAt":            "2024-09-11T12:00:00.000Z",
+		"name":                 "alias" + postfix,
+		"ipVersion":            "ip_version" + postfix,
+		"security":             "security" + postfix,
+		"hidden":               false,
+		"bandLocking":          "band_locking" + postfix,
+		"dnsLookupDomain":      "dns_lookup_domain" + postfix,
+		"disableEdns":          false,
+		"useDns64":             false,
+		"externalConnectivity": false,
 	}
 }
 
@@ -144,16 +122,9 @@ func GenerateSensorGroupAssignmentPostResponse(uid string, postfix string) map[s
 
 func GenerateSensorGroupAssignmentGetResponse(uid string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
-		"uid":        uid,
-		"group_uid":  "group_uid" + postfix,
-		"sensor_uid": "sensor_uid" + postfix,
-	}
-}
-
-func GenerateSensorGroupAssignmentPaginatedResponse(sensorGroupAssignments []map[string]interface{}) map[string]interface{} {
-	return map[string]interface{}{
-		"sensor_group_assignments": sensorGroupAssignments,
-		"pagination":               mockPaginationResponse,
+		"id":     uid,
+		"group":  map[string]string{"id": "group_uid" + postfix},
+		"sensor": map[string]string{"id": "sensor_uid" + postfix},
 	}
 }
 
@@ -173,18 +144,11 @@ func GenerateNetworkGroupAssignmentResponse(uid string, postfix string) resource
 	}
 }
 
-func GenerateNetworkGroupAssignmentPaginatedResponse(networkGroupAssignments []map[string]interface{}) map[string]interface{} {
-	return map[string]interface{}{
-		"network_group_assignments": networkGroupAssignments,
-		"pagination":                mockPaginationResponse,
-	}
-}
-
 func GenerateNetworkGroupAssignmentGetResponse(uid string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
-		"uid":         uid,
-		"group_uid":   "group_uid" + postfix,
-		"network_uid": "network_uid" + postfix,
+		"id":      uid,
+		"group":   map[string]string{"id": "group_uid" + postfix},
+		"network": map[string]string{"id": "network_uid" + postfix},
 	}
 }
 

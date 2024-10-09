@@ -109,9 +109,9 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 
 	// Update the state to match the plan (replace with response from client)
-	plan.ID = types.StringValue(group.Uid)
+	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
-	plan.ParentGroupId = types.StringValue(group.ParentUid)
+	plan.ParentGroupId = types.StringValue(group.Parent.Id)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -178,7 +178,7 @@ func (r *groupResource) Update(ctx context.Context, req resource.UpdateRequest, 
 
 	// Update the state to match the plan (replace with response from client)
 	plan.Name = types.StringValue(group.Name)
-	plan.ParentGroupId = types.StringValue(group.ParentUid)
+	plan.ParentGroupId = types.StringValue(group.Parent.Id)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -210,9 +210,9 @@ var UpdateGroup = func(request GroupUpdateRequestModel) config_api_client.Groups
 	parent_uid := "mock_parent_uid"
 
 	return config_api_client.GroupsPostResponse{
-		Uid:       "mock_uid",
-		Name:      "mock_name",
-		ParentUid: parent_uid,
-		Path:      "mock_path",
+		Id:     "mock_uid",
+		Name:   "mock_name",
+		Parent: *config_api_client.NewParent(parent_uid),
+		Path:   "mock_path",
 	}
 }

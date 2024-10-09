@@ -74,7 +74,7 @@ func (d *networkGroupAssignmentDataSource) Read(ctx context.Context, req datasou
 		Uid(state.Filter.NetworkGroupAssignmentID)
 	networkGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
 
-	if err != nil || len(networkGroupAssignmentResponse.NetworkGroupAssignments) != 1 {
+	if err != nil || len(networkGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Network Group Assignment",
 			"Could not retrieve Network Group Assignment, unexpected error: "+err.Error(),
@@ -82,10 +82,10 @@ func (d *networkGroupAssignmentDataSource) Read(ctx context.Context, req datasou
 		return
 	}
 
-	networkGroupAssignment := networkGroupAssignmentResponse.NetworkGroupAssignments[0]
-	state.ID = types.StringValue(networkGroupAssignment.Uid)
-	state.NetworkID = types.StringValue(networkGroupAssignment.NetworkUid)
-	state.GroupID = types.StringValue(networkGroupAssignment.GroupUid)
+	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
+	state.ID = types.StringValue(networkGroupAssignment.Id)
+	state.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
+	state.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)

@@ -76,7 +76,7 @@ func (d *sensorGroupAssignmentDataSource) Read(ctx context.Context, req datasour
 		Uid(state.Filter.SensorGroupAssignmentID)
 	sensorGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
 
-	if err != nil || len(sensorGroupAssignmentResponse.SensorGroupAssignments) != 1 {
+	if err != nil || len(sensorGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Sensor Group Assignment",
 			"Could not retrieve Sensor Group Assignment, unexpected error: "+err.Error(),
@@ -84,10 +84,10 @@ func (d *sensorGroupAssignmentDataSource) Read(ctx context.Context, req datasour
 		return
 	}
 
-	sensorGroupAssignment := sensorGroupAssignmentResponse.SensorGroupAssignments[0]
-	state.ID = types.StringValue(sensorGroupAssignment.Uid)
-	state.SensorID = types.StringValue(sensorGroupAssignment.SensorUid)
-	state.GroupID = types.StringValue(sensorGroupAssignment.GroupUid)
+	sensorGroupAssignment := sensorGroupAssignmentResponse.Items[0]
+	state.ID = types.StringValue(sensorGroupAssignment.Id)
+	state.SensorID = types.StringValue(sensorGroupAssignment.Sensor.Id)
+	state.GroupID = types.StringValue(sensorGroupAssignment.Group.Id)
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)

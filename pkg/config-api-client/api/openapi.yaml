@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 1.15.0
+  version: 1.22.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -22,6 +22,7 @@ tags:
 - name: health
 - name: network-group-assignments
 - name: sensor-group-assignments
+- name: service-test-group-assignments
 - name: wired-networks
 - name: wireless-networks
 paths:
@@ -115,6 +116,88 @@ paths:
       tags:
       - configuration
       x-stability-level: alpha
+  /uxi/v1alpha1/groups/{group_uid}:
+    patch:
+      description: Update an existing group.
+      operationId: groups_patch_uxi_v1alpha1_groups__group_uid__patch
+      parameters:
+      - explode: false
+        in: path
+        name: group_uid
+        required: true
+        schema:
+          title: Group Uid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupsPatchRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupsPatchResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Groups Patch
+      tags:
+      - configuration
+  /uxi/v1alpha1/network-group-assignments/{id}:
+    delete:
+      description: Delete a network group assignment
+      operationId: delete_network_group_assignment_uxi_v1alpha1_network_group_assignments__id__delete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          title: Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Delete Network Group Assignment
+      tags:
+      - configuration
+      x-stability-level: alpha
   /uxi/v1alpha1/network-group-assignments:
     get:
       description: Get a list of network group assignments
@@ -150,7 +233,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NetworkGroupAssignmentsGetResponse'
+                $ref: '#/components/schemas/NetworkGroupAssignmentsResponse'
           description: Successful Response
         "4XX":
           content:
@@ -167,6 +250,40 @@ paths:
       security:
       - HTTPBearer: []
       summary: Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+    post:
+      description: Create a network group assignment
+      operationId: post_uxi_v1alpha1_network_group_assignments_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkGroupAssignmentsPostRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkGroupAssignmentsPostResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Post
       tags:
       - configuration
       x-stability-level: alpha
@@ -240,6 +357,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SensorGroupAssignmentResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Post
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /uxi/v1alpha1/sensor-group-assignments/{id}:
+    delete:
+      description: Delete a sensor group assignment
+      operationId: delete_sensor_group_assignment_uxi_v1alpha1_sensor_group_assignments__id__delete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          title: Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Delete Sensor Group Assignment
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /uxi/v1alpha1/service-test-group-assignments:
+    post:
+      description: Create a service-test group assignment
+      operationId: post_uxi_v1alpha1_service_test_group_assignments_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceTestGroupAssignmentsPostRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTestGroupAssignmentsPostResponse'
           description: Successful Response
         "4XX":
           content:
@@ -521,6 +712,48 @@ components:
       - next
       title: GroupsGetResponse
       type: object
+    GroupsPatchRequest:
+      example:
+        name: name
+      properties:
+        name:
+          title: Name
+          type: string
+      required:
+      - name
+      title: GroupsPatchRequest
+      type: object
+    GroupsPatchResponse:
+      example:
+        path: path
+        parent:
+          id: id
+        name: name
+        id: id
+        type: uxi/group
+      properties:
+        id:
+          title: Id
+          type: string
+        name:
+          title: Name
+          type: string
+        path:
+          title: Path
+          type: string
+        parent:
+          $ref: '#/components/schemas/Parent'
+        type:
+          default: uxi/group
+          title: Type
+          type: string
+      required:
+      - id
+      - name
+      - parent
+      - path
+      title: GroupsPatchResponse
+      type: object
     GroupsPostRequest:
       example:
         name: name
@@ -540,27 +773,32 @@ components:
     GroupsPostResponse:
       example:
         path: path
-        uid: uid
-        parent_uid: parent_uid
+        parent:
+          id: id
         name: name
+        id: id
+        type: uxi/group
       properties:
+        id:
+          title: Id
+          type: string
         name:
           title: Name
           type: string
         path:
           title: Path
           type: string
-        parent_uid:
-          title: Parent Uid
-          type: string
-        uid:
-          title: Uid
+        parent:
+          $ref: '#/components/schemas/Parent'
+        type:
+          default: uxi/group
+          title: Type
           type: string
       required:
+      - id
       - name
-      - parent_uid
+      - parent
       - path
-      - uid
       title: GroupsPostResponse
       type: object
     Issue:
@@ -590,85 +828,120 @@ components:
       - query.parameter
       title: IssueSubject
       type: string
-    NetworkGroupAssignmentsGetResponse:
+    Network:
       example:
-        pagination:
-          next: next
-          previous: previous
-          last: last
-          limit: 0
-          first: first
-        network_group_assignments:
-        - group_uid: group_uid
-          uid: uid
-          network_uid: network_uid
-        - group_uid: group_uid
-          uid: uid
-          network_uid: network_uid
+        id: id
       properties:
-        network_group_assignments:
-          items:
-            $ref: '#/components/schemas/NetworkGroupAssignmentsItem'
-          title: Network Group Assignments
-          type: array
-        pagination:
-          $ref: '#/components/schemas/PaginationDetails'
+        id:
+          title: Id
+          type: string
       required:
-      - network_group_assignments
-      - pagination
-      title: NetworkGroupAssignmentsGetResponse
+      - id
+      title: Network
       type: object
     NetworkGroupAssignmentsItem:
       example:
-        group_uid: group_uid
-        uid: uid
-        network_uid: network_uid
+        id: id
+        type: uxi/network-group-assignment
+        group:
+          id: id
+        network:
+          id: id
       properties:
-        uid:
-          title: Uid
+        id:
+          title: Id
           type: string
-        group_uid:
-          title: Group Uid
-          type: string
-        network_uid:
-          title: Network Uid
+        group:
+          $ref: '#/components/schemas/Group'
+        network:
+          $ref: '#/components/schemas/Network'
+        type:
+          default: uxi/network-group-assignment
+          title: Type
           type: string
       required:
-      - group_uid
-      - network_uid
-      - uid
+      - group
+      - id
+      - network
       title: NetworkGroupAssignmentsItem
       type: object
-    PaginationDetails:
+    NetworkGroupAssignmentsPostRequest:
+      example:
+        groupId: groupId
+        networkId: networkId
+      properties:
+        groupId:
+          title: Groupid
+          type: string
+        networkId:
+          title: Networkid
+          type: string
+      required:
+      - groupId
+      - networkId
+      title: NetworkGroupAssignmentsPostRequest
+      type: object
+    NetworkGroupAssignmentsPostResponse:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: uxi/network-group-assignment
+        group:
+          id: id
+        network:
+          id: id
+      properties:
+        id:
+          format: uuid
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        network:
+          $ref: '#/components/schemas/Network'
+        type:
+          default: uxi/network-group-assignment
+          title: Type
+          type: string
+      required:
+      - group
+      - id
+      - network
+      title: NetworkGroupAssignmentsPostResponse
+      type: object
+    NetworkGroupAssignmentsResponse:
       example:
         next: next
-        previous: previous
-        last: last
-        limit: 0
-        first: first
+        count: 0
+        items:
+        - id: id
+          type: uxi/network-group-assignment
+          group:
+            id: id
+          network:
+            id: id
+        - id: id
+          type: uxi/network-group-assignment
+          group:
+            id: id
+          network:
+            id: id
       properties:
-        limit:
-          title: Limit
+        items:
+          items:
+            $ref: '#/components/schemas/NetworkGroupAssignmentsItem'
+          title: Items
+          type: array
+        count:
+          title: Count
           type: integer
         next:
           nullable: true
           type: string
-        previous:
-          nullable: true
-          type: string
-        first:
-          nullable: true
-          type: string
-        last:
-          nullable: true
-          type: string
       required:
-      - first
-      - last
-      - limit
+      - count
+      - items
       - next
-      - previous
-      title: PaginationDetails
+      title: NetworkGroupAssignmentsResponse
       type: object
     Parent:
       example:
@@ -720,23 +993,28 @@ components:
       type: object
     SensorGroupAssignmentsItem:
       example:
-        group_uid: group_uid
-        uid: uid
-        sensor_uid: sensor_uid
+        sensor:
+          id: id
+        id: id
+        type: uxi/sensor-group-assignment
+        group:
+          id: id
       properties:
-        uid:
-          title: Uid
+        id:
+          title: Id
           type: string
-        group_uid:
-          title: Group Uid
-          type: string
-        sensor_uid:
-          title: Sensor Uid
+        group:
+          $ref: '#/components/schemas/Group'
+        sensor:
+          $ref: '#/components/schemas/Sensor'
+        type:
+          default: uxi/sensor-group-assignment
+          title: Type
           type: string
       required:
-      - group_uid
-      - sensor_uid
-      - uid
+      - group
+      - id
+      - sensor
       title: SensorGroupAssignmentsItem
       type: object
     SensorGroupAssignmentsPostRequest:
@@ -757,160 +1035,230 @@ components:
       type: object
     SensorGroupAssignmentsResponse:
       example:
-        sensor_group_assignments:
-        - group_uid: group_uid
-          uid: uid
-          sensor_uid: sensor_uid
-        - group_uid: group_uid
-          uid: uid
-          sensor_uid: sensor_uid
-        pagination:
-          next: next
-          previous: previous
-          last: last
-          limit: 0
-          first: first
+        next: next
+        count: 0
+        items:
+        - sensor:
+            id: id
+          id: id
+          type: uxi/sensor-group-assignment
+          group:
+            id: id
+        - sensor:
+            id: id
+          id: id
+          type: uxi/sensor-group-assignment
+          group:
+            id: id
       properties:
-        sensor_group_assignments:
+        items:
           items:
             $ref: '#/components/schemas/SensorGroupAssignmentsItem'
-          title: Sensor Group Assignments
+          title: Items
           type: array
-        pagination:
-          $ref: '#/components/schemas/PaginationDetails'
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
       required:
-      - pagination
-      - sensor_group_assignments
+      - count
+      - items
+      - next
       title: SensorGroupAssignmentsResponse
+      type: object
+    ServiceTest:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: ServiceTest
+      type: object
+    ServiceTestGroupAssignmentsPostRequest:
+      example:
+        groupId: groupId
+        serviceTestId: serviceTestId
+      properties:
+        groupId:
+          title: Groupid
+          type: string
+        serviceTestId:
+          title: Servicetestid
+          type: string
+      required:
+      - groupId
+      - serviceTestId
+      title: ServiceTestGroupAssignmentsPostRequest
+      type: object
+    ServiceTestGroupAssignmentsPostResponse:
+      example:
+        service_test:
+          id: id
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: uxi/service-test-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          format: uuid
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        service_test:
+          $ref: '#/components/schemas/ServiceTest'
+        type:
+          default: uxi/service-test-group-assignment
+          title: Type
+          type: string
+      required:
+      - group
+      - id
+      - service_test
+      title: ServiceTestGroupAssignmentsPostResponse
       type: object
     WiredNetworksItem:
       example:
-        uid: uid
-        datetime_updated: 2000-01-23T04:56:07.000+00:00
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        useDns64: true
         security: security
-        vlan_id: 0
-        ip_version: ip_version
-        alias: alias
-        datetime_created: 2000-01-23T04:56:07.000+00:00
-        external_connectivity: true
-        use_dns64: true
-        dns_lookup_domain: dns_lookup_domain
-        disable_edns: true
+        ipVersion: ipVersion
+        externalConnectivity: true
+        dnsLookupDomain: dnsLookupDomain
+        vLanId: 0
+        name: name
+        id: id
+        type: uxi/wired-network
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+        disableEdns: true
       properties:
-        uid:
-          title: Uid
+        id:
+          title: Id
           type: string
-        alias:
-          title: Alias
+        name:
+          title: Name
           type: string
-        ip_version:
-          title: Ip Version
+        ipVersion:
+          title: Ipversion
           type: string
-        datetime_updated:
+        createdAt:
           format: date-time
-          title: Datetime Updated
+          title: Createdat
           type: string
-        datetime_created:
+        updatedAt:
           format: date-time
-          title: Datetime Created
+          title: Updatedat
           type: string
         security:
           nullable: true
           type: string
-        dns_lookup_domain:
+        dnsLookupDomain:
           nullable: true
           type: string
-        disable_edns:
-          title: Disable Edns
+        disableEdns:
+          title: Disableedns
           type: boolean
-        use_dns64:
-          title: Use Dns64
+        useDns64:
+          title: Usedns64
           type: boolean
-        external_connectivity:
-          title: External Connectivity
+        externalConnectivity:
+          title: Externalconnectivity
           type: boolean
-        vlan_id:
+        vLanId:
           nullable: true
           type: integer
+        type:
+          default: uxi/wired-network
+          title: Type
+          type: string
       required:
-      - alias
-      - datetime_created
-      - datetime_updated
-      - disable_edns
-      - dns_lookup_domain
-      - external_connectivity
-      - ip_version
+      - createdAt
+      - disableEdns
+      - dnsLookupDomain
+      - externalConnectivity
+      - id
+      - ipVersion
+      - name
       - security
-      - uid
-      - use_dns64
-      - vlan_id
+      - updatedAt
+      - useDns64
+      - vLanId
       title: WiredNetworksItem
       type: object
     WiredNetworksResponse:
       example:
-        pagination:
-          next: next
-          previous: previous
-          last: last
-          limit: 0
-          first: first
-        wired_networks:
-        - uid: uid
-          datetime_updated: 2000-01-23T04:56:07.000+00:00
+        next: next
+        count: 6
+        items:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          useDns64: true
           security: security
-          vlan_id: 0
-          ip_version: ip_version
-          alias: alias
-          datetime_created: 2000-01-23T04:56:07.000+00:00
-          external_connectivity: true
-          use_dns64: true
-          dns_lookup_domain: dns_lookup_domain
-          disable_edns: true
-        - uid: uid
-          datetime_updated: 2000-01-23T04:56:07.000+00:00
+          ipVersion: ipVersion
+          externalConnectivity: true
+          dnsLookupDomain: dnsLookupDomain
+          vLanId: 0
+          name: name
+          id: id
+          type: uxi/wired-network
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+          disableEdns: true
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          useDns64: true
           security: security
-          vlan_id: 0
-          ip_version: ip_version
-          alias: alias
-          datetime_created: 2000-01-23T04:56:07.000+00:00
-          external_connectivity: true
-          use_dns64: true
-          dns_lookup_domain: dns_lookup_domain
-          disable_edns: true
+          ipVersion: ipVersion
+          externalConnectivity: true
+          dnsLookupDomain: dnsLookupDomain
+          vLanId: 0
+          name: name
+          id: id
+          type: uxi/wired-network
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+          disableEdns: true
       properties:
-        wired_networks:
+        items:
           items:
             $ref: '#/components/schemas/WiredNetworksItem'
-          title: Wired Networks
+          title: Items
           type: array
-        pagination:
-          $ref: '#/components/schemas/PaginationDetails'
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
       required:
-      - pagination
-      - wired_networks
+      - count
+      - items
+      - next
       title: WiredNetworksResponse
       type: object
     WirelessNetworksItem:
       example:
-        datetime_updated: 2000-01-23T04:56:07.000+00:00
+        useDns64: true
         hidden: true
-        external_connectivity: true
+        bandLocking: bandLocking
+        type: uxi/wireless-network
         ssid: ssid
-        dns_lookup_domain: dns_lookup_domain
-        disable_edns: true
-        uid: uid
+        disableEdns: true
+        createdAt: 2000-01-23T04:56:07.000+00:00
         security: security
-        ip_version: ip_version
-        alias: alias
-        datetime_created: 2000-01-23T04:56:07.000+00:00
-        use_dns64: true
-        band_locking: band_locking
+        ipVersion: ipVersion
+        externalConnectivity: true
+        dnsLookupDomain: dnsLookupDomain
+        name: name
+        id: id
+        updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
-        uid:
-          title: Uid
+        id:
+          title: Id
           type: string
-        alias:
-          title: Alias
+        name:
+          title: Name
           type: string
         ssid:
           title: Ssid
@@ -918,97 +1266,104 @@ components:
         security:
           nullable: true
           type: string
-        ip_version:
-          title: Ip Version
+        ipVersion:
+          title: Ipversion
           type: string
-        datetime_created:
+        createdAt:
           format: date-time
-          title: Datetime Created
+          title: Createdat
           type: string
-        datetime_updated:
+        updatedAt:
           format: date-time
-          title: Datetime Updated
+          title: Updatedat
           type: string
         hidden:
           title: Hidden
           type: boolean
-        band_locking:
-          title: Band Locking
+        bandLocking:
+          title: Bandlocking
           type: string
-        dns_lookup_domain:
+        dnsLookupDomain:
           nullable: true
           type: string
-        disable_edns:
-          title: Disable Edns
+        disableEdns:
+          title: Disableedns
           type: boolean
-        use_dns64:
-          title: Use Dns64
+        useDns64:
+          title: Usedns64
           type: boolean
-        external_connectivity:
-          title: External Connectivity
+        externalConnectivity:
+          title: Externalconnectivity
           type: boolean
+        type:
+          default: uxi/wireless-network
+          title: Type
+          type: string
       required:
-      - alias
-      - band_locking
-      - datetime_created
-      - datetime_updated
-      - disable_edns
-      - dns_lookup_domain
-      - external_connectivity
+      - bandLocking
+      - createdAt
+      - disableEdns
+      - dnsLookupDomain
+      - externalConnectivity
       - hidden
-      - ip_version
+      - id
+      - ipVersion
+      - name
       - security
       - ssid
-      - uid
-      - use_dns64
+      - updatedAt
+      - useDns64
       title: WirelessNetworksItem
       type: object
     WirelessNetworksResponse:
       example:
-        wireless_networks:
-        - datetime_updated: 2000-01-23T04:56:07.000+00:00
+        next: next
+        count: 0
+        items:
+        - useDns64: true
           hidden: true
-          external_connectivity: true
+          bandLocking: bandLocking
+          type: uxi/wireless-network
           ssid: ssid
-          dns_lookup_domain: dns_lookup_domain
-          disable_edns: true
-          uid: uid
+          disableEdns: true
+          createdAt: 2000-01-23T04:56:07.000+00:00
           security: security
-          ip_version: ip_version
-          alias: alias
-          datetime_created: 2000-01-23T04:56:07.000+00:00
-          use_dns64: true
-          band_locking: band_locking
-        - datetime_updated: 2000-01-23T04:56:07.000+00:00
+          ipVersion: ipVersion
+          externalConnectivity: true
+          dnsLookupDomain: dnsLookupDomain
+          name: name
+          id: id
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - useDns64: true
           hidden: true
-          external_connectivity: true
+          bandLocking: bandLocking
+          type: uxi/wireless-network
           ssid: ssid
-          dns_lookup_domain: dns_lookup_domain
-          disable_edns: true
-          uid: uid
+          disableEdns: true
+          createdAt: 2000-01-23T04:56:07.000+00:00
           security: security
-          ip_version: ip_version
-          alias: alias
-          datetime_created: 2000-01-23T04:56:07.000+00:00
-          use_dns64: true
-          band_locking: band_locking
-        pagination:
-          next: next
-          previous: previous
-          last: last
-          limit: 0
-          first: first
+          ipVersion: ipVersion
+          externalConnectivity: true
+          dnsLookupDomain: dnsLookupDomain
+          name: name
+          id: id
+          updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
-        wireless_networks:
+        items:
           items:
             $ref: '#/components/schemas/WirelessNetworksItem'
-          title: Wireless Networks
+          title: Items
           type: array
-        pagination:
-          $ref: '#/components/schemas/PaginationDetails'
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
       required:
-      - pagination
-      - wireless_networks
+      - count
+      - items
+      - next
       title: WirelessNetworksResponse
       type: object
   securitySchemes:

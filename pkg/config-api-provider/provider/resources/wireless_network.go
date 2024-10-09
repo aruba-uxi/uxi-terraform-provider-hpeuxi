@@ -94,7 +94,7 @@ func (r *wirelessNetworkResource) Read(ctx context.Context, req resource.ReadReq
 		Uid(state.ID.ValueString())
 	networkResponse, _, err := util.RetryFor429(request.Execute)
 
-	if err != nil || len(networkResponse.WirelessNetworks) != 1 {
+	if err != nil || len(networkResponse.Items) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Wireless Networks",
 			"Could not retrieve Wireless Network, unexpected error: "+err.Error(),
@@ -102,10 +102,10 @@ func (r *wirelessNetworkResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	network := networkResponse.WirelessNetworks[0]
+	network := networkResponse.Items[0]
 
 	// Update state from client response
-	state.Alias = types.StringValue(network.Alias)
+	state.Alias = types.StringValue(network.Name)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)

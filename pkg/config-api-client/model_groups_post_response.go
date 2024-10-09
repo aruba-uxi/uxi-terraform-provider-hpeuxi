@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.15.0
+API version: 1.22.0
 Contact: support@capenetworks.com
 */
 
@@ -22,10 +22,11 @@ var _ MappedNullable = &GroupsPostResponse{}
 
 // GroupsPostResponse struct for GroupsPostResponse
 type GroupsPostResponse struct {
-	Name      string `json:"name"`
-	Path      string `json:"path"`
-	ParentUid string `json:"parent_uid"`
-	Uid       string `json:"uid"`
+	Id     string  `json:"id"`
+	Name   string  `json:"name"`
+	Path   string  `json:"path"`
+	Parent Parent  `json:"parent"`
+	Type   *string `json:"type,omitempty"`
 }
 
 type _GroupsPostResponse GroupsPostResponse
@@ -34,12 +35,14 @@ type _GroupsPostResponse GroupsPostResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupsPostResponse(name string, path string, parentUid string, uid string) *GroupsPostResponse {
+func NewGroupsPostResponse(id string, name string, path string, parent Parent) *GroupsPostResponse {
 	this := GroupsPostResponse{}
+	this.Id = id
 	this.Name = name
 	this.Path = path
-	this.ParentUid = parentUid
-	this.Uid = uid
+	this.Parent = parent
+	var type_ string = "uxi/group"
+	this.Type = &type_
 	return &this
 }
 
@@ -48,7 +51,33 @@ func NewGroupsPostResponse(name string, path string, parentUid string, uid strin
 // but it doesn't guarantee that properties required by API are set
 func NewGroupsPostResponseWithDefaults() *GroupsPostResponse {
 	this := GroupsPostResponse{}
+	var type_ string = "uxi/group"
+	this.Type = &type_
 	return &this
+}
+
+// GetId returns the Id field value
+func (o *GroupsPostResponse) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *GroupsPostResponse) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *GroupsPostResponse) SetId(v string) {
+	o.Id = v
 }
 
 // GetName returns the Name field value
@@ -99,52 +128,60 @@ func (o *GroupsPostResponse) SetPath(v string) {
 	o.Path = v
 }
 
-// GetParentUid returns the ParentUid field value
-func (o *GroupsPostResponse) GetParentUid() string {
+// GetParent returns the Parent field value
+func (o *GroupsPostResponse) GetParent() Parent {
 	if o == nil {
-		var ret string
+		var ret Parent
 		return ret
 	}
 
-	return o.ParentUid
+	return o.Parent
 }
 
-// GetParentUidOk returns a tuple with the ParentUid field value
+// GetParentOk returns a tuple with the Parent field value
 // and a boolean to check if the value has been set.
-func (o *GroupsPostResponse) GetParentUidOk() (*string, bool) {
+func (o *GroupsPostResponse) GetParentOk() (*Parent, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.ParentUid, true
+	return &o.Parent, true
 }
 
-// SetParentUid sets field value
-func (o *GroupsPostResponse) SetParentUid(v string) {
-	o.ParentUid = v
+// SetParent sets field value
+func (o *GroupsPostResponse) SetParent(v Parent) {
+	o.Parent = v
 }
 
-// GetUid returns the Uid field value
-func (o *GroupsPostResponse) GetUid() string {
-	if o == nil {
+// GetType returns the Type field value if set, zero value otherwise.
+func (o *GroupsPostResponse) GetType() string {
+	if o == nil || IsNil(o.Type) {
 		var ret string
 		return ret
 	}
-
-	return o.Uid
+	return *o.Type
 }
 
-// GetUidOk returns a tuple with the Uid field value
+// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *GroupsPostResponse) GetUidOk() (*string, bool) {
-	if o == nil {
+func (o *GroupsPostResponse) GetTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.Type) {
 		return nil, false
 	}
-	return &o.Uid, true
+	return o.Type, true
 }
 
-// SetUid sets field value
-func (o *GroupsPostResponse) SetUid(v string) {
-	o.Uid = v
+// HasType returns a boolean if a field has been set.
+func (o *GroupsPostResponse) HasType() bool {
+	if o != nil && !IsNil(o.Type) {
+		return true
+	}
+
+	return false
+}
+
+// SetType gets a reference to the given string and assigns it to the Type field.
+func (o *GroupsPostResponse) SetType(v string) {
+	o.Type = &v
 }
 
 func (o GroupsPostResponse) MarshalJSON() ([]byte, error) {
@@ -157,10 +194,13 @@ func (o GroupsPostResponse) MarshalJSON() ([]byte, error) {
 
 func (o GroupsPostResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
 	toSerialize["name"] = o.Name
 	toSerialize["path"] = o.Path
-	toSerialize["parent_uid"] = o.ParentUid
-	toSerialize["uid"] = o.Uid
+	toSerialize["parent"] = o.Parent
+	if !IsNil(o.Type) {
+		toSerialize["type"] = o.Type
+	}
 	return toSerialize, nil
 }
 
@@ -169,10 +209,10 @@ func (o *GroupsPostResponse) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"id",
 		"name",
 		"path",
-		"parent_uid",
-		"uid",
+		"parent",
 	}
 
 	allProperties := make(map[string]interface{})

@@ -36,7 +36,7 @@ func TestWiredNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
 						2,
 					)
 				},
@@ -60,7 +60,7 @@ func TestWiredNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
 						1,
 					)
 				},
@@ -73,7 +73,7 @@ func TestWiredNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
 						1,
 					)
 				},
@@ -88,7 +88,7 @@ func TestWiredNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
 						2,
 					)
 				},

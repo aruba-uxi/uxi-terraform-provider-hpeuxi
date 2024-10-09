@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.15.0
+API version: 1.22.0
 Contact: support@capenetworks.com
 */
 
@@ -23,19 +23,20 @@ var _ MappedNullable = &WirelessNetworksItem{}
 
 // WirelessNetworksItem struct for WirelessNetworksItem
 type WirelessNetworksItem struct {
-	Uid                  string         `json:"uid"`
-	Alias                string         `json:"alias"`
+	Id                   string         `json:"id"`
+	Name                 string         `json:"name"`
 	Ssid                 string         `json:"ssid"`
 	Security             NullableString `json:"security"`
-	IpVersion            string         `json:"ip_version"`
-	DatetimeCreated      time.Time      `json:"datetime_created"`
-	DatetimeUpdated      time.Time      `json:"datetime_updated"`
+	IpVersion            string         `json:"ipVersion"`
+	CreatedAt            time.Time      `json:"createdAt"`
+	UpdatedAt            time.Time      `json:"updatedAt"`
 	Hidden               bool           `json:"hidden"`
-	BandLocking          string         `json:"band_locking"`
-	DnsLookupDomain      NullableString `json:"dns_lookup_domain"`
-	DisableEdns          bool           `json:"disable_edns"`
-	UseDns64             bool           `json:"use_dns64"`
-	ExternalConnectivity bool           `json:"external_connectivity"`
+	BandLocking          string         `json:"bandLocking"`
+	DnsLookupDomain      NullableString `json:"dnsLookupDomain"`
+	DisableEdns          bool           `json:"disableEdns"`
+	UseDns64             bool           `json:"useDns64"`
+	ExternalConnectivity bool           `json:"externalConnectivity"`
+	Type                 *string        `json:"type,omitempty"`
 }
 
 type _WirelessNetworksItem WirelessNetworksItem
@@ -44,21 +45,23 @@ type _WirelessNetworksItem WirelessNetworksItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWirelessNetworksItem(uid string, alias string, ssid string, security NullableString, ipVersion string, datetimeCreated time.Time, datetimeUpdated time.Time, hidden bool, bandLocking string, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool) *WirelessNetworksItem {
+func NewWirelessNetworksItem(id string, name string, ssid string, security NullableString, ipVersion string, createdAt time.Time, updatedAt time.Time, hidden bool, bandLocking string, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool) *WirelessNetworksItem {
 	this := WirelessNetworksItem{}
-	this.Uid = uid
-	this.Alias = alias
+	this.Id = id
+	this.Name = name
 	this.Ssid = ssid
 	this.Security = security
 	this.IpVersion = ipVersion
-	this.DatetimeCreated = datetimeCreated
-	this.DatetimeUpdated = datetimeUpdated
+	this.CreatedAt = createdAt
+	this.UpdatedAt = updatedAt
 	this.Hidden = hidden
 	this.BandLocking = bandLocking
 	this.DnsLookupDomain = dnsLookupDomain
 	this.DisableEdns = disableEdns
 	this.UseDns64 = useDns64
 	this.ExternalConnectivity = externalConnectivity
+	var type_ string = "uxi/wireless-network"
+	this.Type = &type_
 	return &this
 }
 
@@ -67,55 +70,57 @@ func NewWirelessNetworksItem(uid string, alias string, ssid string, security Nul
 // but it doesn't guarantee that properties required by API are set
 func NewWirelessNetworksItemWithDefaults() *WirelessNetworksItem {
 	this := WirelessNetworksItem{}
+	var type_ string = "uxi/wireless-network"
+	this.Type = &type_
 	return &this
 }
 
-// GetUid returns the Uid field value
-func (o *WirelessNetworksItem) GetUid() string {
+// GetId returns the Id field value
+func (o *WirelessNetworksItem) GetId() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Uid
+	return o.Id
 }
 
-// GetUidOk returns a tuple with the Uid field value
+// GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *WirelessNetworksItem) GetUidOk() (*string, bool) {
+func (o *WirelessNetworksItem) GetIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Uid, true
+	return &o.Id, true
 }
 
-// SetUid sets field value
-func (o *WirelessNetworksItem) SetUid(v string) {
-	o.Uid = v
+// SetId sets field value
+func (o *WirelessNetworksItem) SetId(v string) {
+	o.Id = v
 }
 
-// GetAlias returns the Alias field value
-func (o *WirelessNetworksItem) GetAlias() string {
+// GetName returns the Name field value
+func (o *WirelessNetworksItem) GetName() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Alias
+	return o.Name
 }
 
-// GetAliasOk returns a tuple with the Alias field value
+// GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *WirelessNetworksItem) GetAliasOk() (*string, bool) {
+func (o *WirelessNetworksItem) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Alias, true
+	return &o.Name, true
 }
 
-// SetAlias sets field value
-func (o *WirelessNetworksItem) SetAlias(v string) {
-	o.Alias = v
+// SetName sets field value
+func (o *WirelessNetworksItem) SetName(v string) {
+	o.Name = v
 }
 
 // GetSsid returns the Ssid field value
@@ -192,52 +197,52 @@ func (o *WirelessNetworksItem) SetIpVersion(v string) {
 	o.IpVersion = v
 }
 
-// GetDatetimeCreated returns the DatetimeCreated field value
-func (o *WirelessNetworksItem) GetDatetimeCreated() time.Time {
+// GetCreatedAt returns the CreatedAt field value
+func (o *WirelessNetworksItem) GetCreatedAt() time.Time {
 	if o == nil {
 		var ret time.Time
 		return ret
 	}
 
-	return o.DatetimeCreated
+	return o.CreatedAt
 }
 
-// GetDatetimeCreatedOk returns a tuple with the DatetimeCreated field value
+// GetCreatedAtOk returns a tuple with the CreatedAt field value
 // and a boolean to check if the value has been set.
-func (o *WirelessNetworksItem) GetDatetimeCreatedOk() (*time.Time, bool) {
+func (o *WirelessNetworksItem) GetCreatedAtOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.DatetimeCreated, true
+	return &o.CreatedAt, true
 }
 
-// SetDatetimeCreated sets field value
-func (o *WirelessNetworksItem) SetDatetimeCreated(v time.Time) {
-	o.DatetimeCreated = v
+// SetCreatedAt sets field value
+func (o *WirelessNetworksItem) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
 }
 
-// GetDatetimeUpdated returns the DatetimeUpdated field value
-func (o *WirelessNetworksItem) GetDatetimeUpdated() time.Time {
+// GetUpdatedAt returns the UpdatedAt field value
+func (o *WirelessNetworksItem) GetUpdatedAt() time.Time {
 	if o == nil {
 		var ret time.Time
 		return ret
 	}
 
-	return o.DatetimeUpdated
+	return o.UpdatedAt
 }
 
-// GetDatetimeUpdatedOk returns a tuple with the DatetimeUpdated field value
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value
 // and a boolean to check if the value has been set.
-func (o *WirelessNetworksItem) GetDatetimeUpdatedOk() (*time.Time, bool) {
+func (o *WirelessNetworksItem) GetUpdatedAtOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.DatetimeUpdated, true
+	return &o.UpdatedAt, true
 }
 
-// SetDatetimeUpdated sets field value
-func (o *WirelessNetworksItem) SetDatetimeUpdated(v time.Time) {
-	o.DatetimeUpdated = v
+// SetUpdatedAt sets field value
+func (o *WirelessNetworksItem) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt = v
 }
 
 // GetHidden returns the Hidden field value
@@ -386,6 +391,38 @@ func (o *WirelessNetworksItem) SetExternalConnectivity(v bool) {
 	o.ExternalConnectivity = v
 }
 
+// GetType returns the Type field value if set, zero value otherwise.
+func (o *WirelessNetworksItem) GetType() string {
+	if o == nil || IsNil(o.Type) {
+		var ret string
+		return ret
+	}
+	return *o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WirelessNetworksItem) GetTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.Type) {
+		return nil, false
+	}
+	return o.Type, true
+}
+
+// HasType returns a boolean if a field has been set.
+func (o *WirelessNetworksItem) HasType() bool {
+	if o != nil && !IsNil(o.Type) {
+		return true
+	}
+
+	return false
+}
+
+// SetType gets a reference to the given string and assigns it to the Type field.
+func (o *WirelessNetworksItem) SetType(v string) {
+	o.Type = &v
+}
+
 func (o WirelessNetworksItem) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -396,19 +433,22 @@ func (o WirelessNetworksItem) MarshalJSON() ([]byte, error) {
 
 func (o WirelessNetworksItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["uid"] = o.Uid
-	toSerialize["alias"] = o.Alias
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
 	toSerialize["ssid"] = o.Ssid
 	toSerialize["security"] = o.Security.Get()
-	toSerialize["ip_version"] = o.IpVersion
-	toSerialize["datetime_created"] = o.DatetimeCreated
-	toSerialize["datetime_updated"] = o.DatetimeUpdated
+	toSerialize["ipVersion"] = o.IpVersion
+	toSerialize["createdAt"] = o.CreatedAt
+	toSerialize["updatedAt"] = o.UpdatedAt
 	toSerialize["hidden"] = o.Hidden
-	toSerialize["band_locking"] = o.BandLocking
-	toSerialize["dns_lookup_domain"] = o.DnsLookupDomain.Get()
-	toSerialize["disable_edns"] = o.DisableEdns
-	toSerialize["use_dns64"] = o.UseDns64
-	toSerialize["external_connectivity"] = o.ExternalConnectivity
+	toSerialize["bandLocking"] = o.BandLocking
+	toSerialize["dnsLookupDomain"] = o.DnsLookupDomain.Get()
+	toSerialize["disableEdns"] = o.DisableEdns
+	toSerialize["useDns64"] = o.UseDns64
+	toSerialize["externalConnectivity"] = o.ExternalConnectivity
+	if !IsNil(o.Type) {
+		toSerialize["type"] = o.Type
+	}
 	return toSerialize, nil
 }
 
@@ -417,19 +457,19 @@ func (o *WirelessNetworksItem) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"uid",
-		"alias",
+		"id",
+		"name",
 		"ssid",
 		"security",
-		"ip_version",
-		"datetime_created",
-		"datetime_updated",
+		"ipVersion",
+		"createdAt",
+		"updatedAt",
 		"hidden",
-		"band_locking",
-		"dns_lookup_domain",
-		"disable_edns",
-		"use_dns64",
-		"external_connectivity",
+		"bandLocking",
+		"dnsLookupDomain",
+		"disableEdns",
+		"useDns64",
+		"externalConnectivity",
 	}
 
 	allProperties := make(map[string]interface{})

@@ -4,14 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**WirelessNetworks** | [**[]WirelessNetworksItem**](WirelessNetworksItem.md) |  | 
-**Pagination** | [**PaginationDetails**](PaginationDetails.md) |  | 
+**Items** | [**[]WirelessNetworksItem**](WirelessNetworksItem.md) |  | 
+**Count** | **int32** |  | 
+**Next** | **NullableString** |  | 
 
 ## Methods
 
 ### NewWirelessNetworksResponse
 
-`func NewWirelessNetworksResponse(wirelessNetworks []WirelessNetworksItem, pagination PaginationDetails, ) *WirelessNetworksResponse`
+`func NewWirelessNetworksResponse(items []WirelessNetworksItem, count int32, next NullableString, ) *WirelessNetworksResponse`
 
 NewWirelessNetworksResponse instantiates a new WirelessNetworksResponse object
 This constructor will assign default values to properties that have it defined,
@@ -26,46 +27,76 @@ NewWirelessNetworksResponseWithDefaults instantiates a new WirelessNetworksRespo
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetWirelessNetworks
+### GetItems
 
-`func (o *WirelessNetworksResponse) GetWirelessNetworks() []WirelessNetworksItem`
+`func (o *WirelessNetworksResponse) GetItems() []WirelessNetworksItem`
 
-GetWirelessNetworks returns the WirelessNetworks field if non-nil, zero value otherwise.
+GetItems returns the Items field if non-nil, zero value otherwise.
 
-### GetWirelessNetworksOk
+### GetItemsOk
 
-`func (o *WirelessNetworksResponse) GetWirelessNetworksOk() (*[]WirelessNetworksItem, bool)`
+`func (o *WirelessNetworksResponse) GetItemsOk() (*[]WirelessNetworksItem, bool)`
 
-GetWirelessNetworksOk returns a tuple with the WirelessNetworks field if it's non-nil, zero value otherwise
+GetItemsOk returns a tuple with the Items field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetWirelessNetworks
+### SetItems
 
-`func (o *WirelessNetworksResponse) SetWirelessNetworks(v []WirelessNetworksItem)`
+`func (o *WirelessNetworksResponse) SetItems(v []WirelessNetworksItem)`
 
-SetWirelessNetworks sets WirelessNetworks field to given value.
+SetItems sets Items field to given value.
 
 
-### GetPagination
+### GetCount
 
-`func (o *WirelessNetworksResponse) GetPagination() PaginationDetails`
+`func (o *WirelessNetworksResponse) GetCount() int32`
 
-GetPagination returns the Pagination field if non-nil, zero value otherwise.
+GetCount returns the Count field if non-nil, zero value otherwise.
 
-### GetPaginationOk
+### GetCountOk
 
-`func (o *WirelessNetworksResponse) GetPaginationOk() (*PaginationDetails, bool)`
+`func (o *WirelessNetworksResponse) GetCountOk() (*int32, bool)`
 
-GetPaginationOk returns a tuple with the Pagination field if it's non-nil, zero value otherwise
+GetCountOk returns a tuple with the Count field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetPagination
+### SetCount
 
-`func (o *WirelessNetworksResponse) SetPagination(v PaginationDetails)`
+`func (o *WirelessNetworksResponse) SetCount(v int32)`
 
-SetPagination sets Pagination field to given value.
+SetCount sets Count field to given value.
 
 
+### GetNext
+
+`func (o *WirelessNetworksResponse) GetNext() string`
+
+GetNext returns the Next field if non-nil, zero value otherwise.
+
+### GetNextOk
+
+`func (o *WirelessNetworksResponse) GetNextOk() (*string, bool)`
+
+GetNextOk returns a tuple with the Next field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNext
+
+`func (o *WirelessNetworksResponse) SetNext(v string)`
+
+SetNext sets Next field to given value.
+
+
+### SetNextNil
+
+`func (o *WirelessNetworksResponse) SetNextNil(b bool)`
+
+ SetNextNil sets the value for Next to be an explicit nil
+
+### UnsetNext
+`func (o *WirelessNetworksResponse) UnsetNext()`
+
+UnsetNext ensures that no value is present for Next, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
