@@ -36,7 +36,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						2,
 					)
 				},
@@ -60,7 +60,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},
@@ -73,7 +73,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},
@@ -88,7 +88,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},
@@ -100,7 +100,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						1,
 					)
 				},

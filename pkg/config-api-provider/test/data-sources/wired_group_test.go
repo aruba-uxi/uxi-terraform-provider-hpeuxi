@@ -24,7 +24,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
 						3,
 					)
 				},
@@ -74,7 +74,7 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 						})
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
 						3,
 					)
 				},

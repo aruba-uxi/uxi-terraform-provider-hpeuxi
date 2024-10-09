@@ -134,18 +134,18 @@ func (r *networkGroupAssignmentResource) Read(ctx context.Context, req resource.
 		Uid(state.ID.ValueString())
 
 	networkGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
-	if err != nil || len(networkGroupAssignmentResponse.NetworkGroupAssignments) != 1 {
+	if err != nil || len(networkGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Network Group Assignment",
 			"Could not retrieve Network Group Assignment, unexpected error: "+err.Error(),
 		)
 		return
 	}
-	networkGroupAssignment := networkGroupAssignmentResponse.NetworkGroupAssignments[0]
+	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
 
 	// Update state from client response
-	state.GroupID = types.StringValue(networkGroupAssignment.GroupUid)
-	state.NetworkID = types.StringValue(networkGroupAssignment.NetworkUid)
+	state.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
+	state.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)

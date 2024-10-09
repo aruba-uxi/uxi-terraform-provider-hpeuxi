@@ -23,7 +23,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_uid",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
 						2,
 					)
 
@@ -40,7 +40,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					}
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						1,
 					)
 				},
@@ -75,7 +75,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						1,
 					)
 				},
@@ -88,12 +88,12 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_uid_2",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid_2", "_2")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid_2", "_2")}),
 						2,
 					)
 					util.MockGetWiredNetwork(
 						"network_uid",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
 						2,
 					)
 					util.MockGetGroup(
@@ -116,12 +116,12 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					}
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid_2",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
 						2,
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						2,
 					)
 				},
@@ -172,12 +172,12 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_uid_2",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid_2", "_2")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid_2", "_2")}),
 						1,
 					)
 					util.MockGetWiredNetwork(
 						"network_uid",
-						util.GenerateWiredNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
 						1,
 					)
 					util.MockGetGroup("group_uid", util.GeneratePaginatedResponse(
@@ -190,12 +190,12 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid_2",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
 						1,
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						1,
 					)
 				},
@@ -237,7 +237,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					// required for network import
 					util.MockGetWirelessNetwork(
 						"network_uid",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid", "")}),
 						2,
 					)
 					// required for group create
@@ -254,7 +254,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					}
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						1,
 					)
 				},
@@ -289,7 +289,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						1,
 					)
 				},
@@ -302,12 +302,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"network_uid_2",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid_2", "_2")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid_2", "_2")}),
 						2,
 					)
 					util.MockGetWirelessNetwork(
 						"network_uid",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid", "")}),
 						2,
 					)
 
@@ -328,12 +328,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					// required for network group assignment create
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid_2",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
 						2,
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						2,
 					)
 					resources.CreateNetworkGroupAssignment = func(request resources.NetworkGroupAssignmentRequestModel) resources.NetworkGroupAssignmentResponseModel {
@@ -387,12 +387,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"network_uid_2",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid_2", "_2")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid_2", "_2")}),
 						1,
 					)
 					util.MockGetWirelessNetwork(
 						"network_uid",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("network_uid", "")}),
 						1,
 					)
 					util.MockGetGroup(
@@ -407,12 +407,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid_2",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid_2", "_2")}),
 						1,
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_uid",
-						util.GenerateNetworkGroupAssignmentPaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						1,
 					)
 				},

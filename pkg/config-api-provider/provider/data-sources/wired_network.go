@@ -101,7 +101,7 @@ func (d *wiredNetworkDataSource) Read(ctx context.Context, req datasource.ReadRe
 		Uid(state.Filter.WiredNetworkID)
 	networkResponse, _, err := util.RetryFor429(request.Execute)
 
-	if err != nil || len(networkResponse.WiredNetworks) != 1 {
+	if err != nil || len(networkResponse.Items) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Wired Network",
 			"Could not retrieve Wired Network, unexpected error: "+err.Error(),
@@ -109,16 +109,16 @@ func (d *wiredNetworkDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
-	network := networkResponse.WiredNetworks[0]
-	state.ID = types.StringValue(network.Uid)
-	state.Alias = types.StringValue(network.Alias)
+	network := networkResponse.Items[0]
+	state.ID = types.StringValue(network.Id)
+	state.Alias = types.StringValue(network.Name)
 	state.IpVersion = types.StringValue(network.IpVersion)
 	state.Security = types.StringValue(*network.Security.Get())
 	state.DnsLookupDomain = types.StringValue(*network.DnsLookupDomain.Get())
 	state.DisableEdns = types.BoolValue(network.DisableEdns)
 	state.UseDns64 = types.BoolValue(network.UseDns64)
 	state.ExternalConnectivity = types.BoolValue(network.ExternalConnectivity)
-	state.VlanId = types.Int64Value(int64(*network.VlanId.Get()))
+	state.VlanId = types.Int64Value(int64(*network.VLanId.Get()))
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)

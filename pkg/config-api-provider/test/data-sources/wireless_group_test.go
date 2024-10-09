@@ -24,7 +24,7 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						3,
 					)
 				},
@@ -76,7 +76,7 @@ func TestWirelessNetworkDataSource429Handling(t *testing.T) {
 						})
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GenerateWirelessNetworkPaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
 						3,
 					)
 				},

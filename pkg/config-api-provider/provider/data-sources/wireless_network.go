@@ -109,7 +109,7 @@ func (d *wirelessNetworkDataSource) Read(ctx context.Context, req datasource.Rea
 		Uid(state.Filter.WirelessNetworkID)
 	networkResponse, _, err := util.RetryFor429(request.Execute)
 
-	if err != nil || len(networkResponse.WirelessNetworks) != 1 {
+	if err != nil || len(networkResponse.Items) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Wireless Network",
 			"Could not retrieve Wireless Network, unexpected error: "+err.Error(),
@@ -117,10 +117,10 @@ func (d *wirelessNetworkDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	network := networkResponse.WirelessNetworks[0]
-	state.ID = types.StringValue(network.Uid)
+	network := networkResponse.Items[0]
+	state.ID = types.StringValue(network.Id)
 	state.Ssid = types.StringValue(network.Ssid)
-	state.Alias = types.StringValue(network.Alias)
+	state.Alias = types.StringValue(network.Name)
 	state.IpVersion = types.StringValue(network.IpVersion)
 	state.Security = types.StringValue(*network.Security.Get())
 	state.Hidden = types.BoolValue(network.Hidden)
