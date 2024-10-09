@@ -114,6 +114,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("group_uid_2", "_2", "_2")), 1)
 
 					// required for network group assignment create
+					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid", 1)
 					util.MockPostNetworkGroupAssignment(
 						"network_group_assignment_uid_2",
 						util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid_2", "_2"),
@@ -172,7 +173,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_network_group_assignment.my_network_group_assignment", "id", "network_group_assignment_uid_2"),
 				),
 			},
-			// Remove networks from state
+			// Delete network-group-assignments and remove networks from state
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
@@ -203,6 +204,9 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						1,
 					)
+
+					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid", 1)
+					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid_2", 1)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
@@ -221,7 +225,6 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						}
 					}`,
 			},
-			// Delete testing automatically occurs in TestCase
 		},
 	})
 
@@ -319,6 +322,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					)
 
 					// required for creating another group
+					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid", 1)
 					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("group_uid_2", "_2", "_2")), 1)
 					util.MockGetGroup(
 						"group_uid_2",
@@ -391,7 +395,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_network_group_assignment.my_network_group_assignment", "id", "network_group_assignment_uid_2"),
 				),
 			},
-			// Remove networks from state
+			// Delete network-group-assignments and remove networks from state
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
@@ -424,6 +428,9 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						1,
 					)
+
+					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid", 1)
+					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid_2", 1)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
@@ -442,7 +449,6 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						}
 					}`,
 			},
-			// Delete testing automatically occurs in TestCase
 		},
 	})
 
@@ -452,7 +458,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 func TestNetworkGroupAssignmentSource429Handling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var post429 *gock.Response
+	var mock429 *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -474,7 +480,7 @@ func TestNetworkGroupAssignmentSource429Handling(t *testing.T) {
 					)
 
 					// required for network group assignment create
-					post429 = gock.New("https://test.api.capenetworks.com").
+					mock429 = gock.New("https://test.api.capenetworks.com").
 						Post("/uxi/v1alpha1/network-group-assignments").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
@@ -512,12 +518,12 @@ func TestNetworkGroupAssignmentSource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_network_group_assignment.my_network_group_assignment", "network_id", "network_uid"),
 					func(s *terraform.State) error {
-						st.Assert(t, post429.Mock.Request().Counter, 0)
+						st.Assert(t, mock429.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
 			},
-			// Remove networks from state
+			// Delete network-group assignment and remove networks from state
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
@@ -534,6 +540,12 @@ func TestNetworkGroupAssignmentSource429Handling(t *testing.T) {
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("network_group_assignment_uid", "")}),
 						1,
 					)
+
+					mock429 = gock.New("https://test.api.capenetworks.com").
+						Delete("/uxi/v1alpha1/network-group-assignments/network_group_assignment_uid").
+						Reply(429).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid", 1)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
@@ -543,6 +555,12 @@ func TestNetworkGroupAssignmentSource429Handling(t *testing.T) {
 							destroy = false
 						}
 					}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					func(s *terraform.State) error {
+						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
 			},
 		},
 	})

@@ -179,7 +179,17 @@ func (r *networkGroupAssignmentResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	// Delete existing networkGroupAssignment using the plan_id
+	request := r.client.ConfigurationAPI.
+		DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
+	_, _, err := util.RetryFor429(request.Execute)
+
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error deleting Network Group Assignment",
+			"Could not delete Network Group Assignment, unexpected error: "+err.Error(),
+		)
+		return
+	}
 }
 
 func (r *networkGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
