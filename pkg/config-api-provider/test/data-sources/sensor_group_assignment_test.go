@@ -23,7 +23,7 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetSensorGroupAssignment(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentGetResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("uid", "")}),
 						3,
 					)
 				},
@@ -63,7 +63,7 @@ func TestSensorGroupAssignmentSource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensorGroupAssignment(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentGetResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("uid", "")}),
 						3,
 					)
 				},

@@ -37,17 +37,6 @@ func GenerateAgentResponseModel(uid string, postfix string) resources.AgentRespo
 	}
 }
 
-func GenerateGroupResponseGetModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) config_api_client.GroupsGetItem {
-	parentId := "parent_uid" + replacementFieldPostfix
-
-	return config_api_client.GroupsGetItem{
-		Id:     uid,
-		Name:   "name" + nonReplacementFieldPostfix,
-		Parent: *config_api_client.NewNullableParent(&config_api_client.Parent{Id: parentId}),
-		Path:   parentId + "." + uid,
-	}
-}
-
 func GenerateGroupResponseModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) map[string]interface{} {
 	parentId := "parent_uid" + replacementFieldPostfix
 
@@ -56,17 +45,7 @@ func GenerateGroupResponseModel(uid string, nonReplacementFieldPostfix string, r
 		"name":   "name" + nonReplacementFieldPostfix,
 		"parent": map[string]string{"id": parentId},
 		"path":   parentId + "." + uid,
-	}
-}
-
-func GenerateGroupResponsePostModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) config_api_client.GroupsPostResponse {
-	parentId := "parent_uid" + replacementFieldPostfix
-
-	return config_api_client.GroupsPostResponse{
-		Id:     uid,
-		Name:   "name" + nonReplacementFieldPostfix,
-		Parent: *config_api_client.NewParent(parentId),
-		Path:   parentId + "." + uid,
+		"type":   "uxi/group",
 	}
 }
 
@@ -102,6 +81,7 @@ func GenerateWiredNetworkResponse(uid string, postfix string) map[string]interfa
 		"useDns64":             false,
 		"externalConnectivity": false,
 		"vLanId":               123,
+		"type":                 "uxi/wired-network",
 	}
 }
 
@@ -120,22 +100,16 @@ func GenerateWirelessNetworkResponse(uid string, postfix string) map[string]inte
 		"disableEdns":          false,
 		"useDns64":             false,
 		"externalConnectivity": false,
+		"type":                 "uxi/wireless-network",
 	}
 }
 
-func GenerateSensorGroupAssignmentPostResponse(uid string, postfix string) map[string]interface{} {
+func GenerateSensorGroupAssignmentResponse(uid string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"id":     uid,
 		"group":  map[string]string{"id": "group_uid" + postfix},
 		"sensor": map[string]string{"id": "sensor_uid" + postfix},
-	}
-}
-
-func GenerateSensorGroupAssignmentGetResponse(uid string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"id":     uid,
-		"group":  map[string]string{"id": "group_uid" + postfix},
-		"sensor": map[string]string{"id": "sensor_uid" + postfix},
+		"type":   "uxi/sensor-group-assignment",
 	}
 }
 
@@ -152,14 +126,7 @@ func GenerateNetworkGroupAssignmentResponse(uid string, postfix string) map[stri
 		"id":      uid,
 		"group":   map[string]string{"id": "group_uid" + postfix},
 		"network": map[string]string{"id": "network_uid" + postfix},
-	}
-}
-
-func GenerateNetworkGroupAssignmentGetResponse(uid string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"id":      uid,
-		"group":   map[string]string{"id": "group_uid" + postfix},
-		"network": map[string]string{"id": "network_uid" + postfix},
+		"type":    "uxi/network-group-assignment",
 	}
 }
 

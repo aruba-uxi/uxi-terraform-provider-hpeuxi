@@ -27,9 +27,9 @@ func TestGroupResource(t *testing.T) {
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("uid", "", "")), 1)
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")), 1)
 					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
 						1,
 					)
 				},

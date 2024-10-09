@@ -25,7 +25,7 @@ func TestGroupDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
 						3,
 					)
 				},
@@ -87,7 +87,7 @@ func TestGroupDataSource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetGroup(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
 						3,
 					)
 				},

@@ -23,7 +23,7 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetNetworkGroupAssignment(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentResponse("uid", "")}),
 						3,
 					)
 				},
@@ -63,7 +63,7 @@ func TestNetworkGroupAssignmentSource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetNetworkGroupAssignment(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentGetResponse("uid", "")}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentResponse("uid", "")}),
 						3,
 					)
 				},
