@@ -48,6 +48,17 @@ func GenerateGroupResponseGetModel(uid string, nonReplacementFieldPostfix string
 	}
 }
 
+func GenerateGroupResponseModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) map[string]interface{} {
+	parentId := "parent_uid" + replacementFieldPostfix
+
+	return map[string]interface{}{
+		"id":     uid,
+		"name":   "name" + nonReplacementFieldPostfix,
+		"parent": map[string]string{"id": parentId},
+		"path":   parentId + "." + uid,
+	}
+}
+
 func GenerateGroupResponsePostModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) config_api_client.GroupsPostResponse {
 	parentId := "parent_uid" + replacementFieldPostfix
 
@@ -136,11 +147,11 @@ func GenerateAgentGroupAssignmentResponse(uid string, postfix string) resources.
 	}
 }
 
-func GenerateNetworkGroupAssignmentResponse(uid string, postfix string) resources.NetworkGroupAssignmentResponseModel {
-	return resources.NetworkGroupAssignmentResponseModel{
-		UID:        uid,
-		GroupUID:   "group_uid" + postfix,
-		NetworkUID: "network_uid" + postfix,
+func GenerateNetworkGroupAssignmentResponse(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"id":      uid,
+		"group":   map[string]string{"id": "group_uid" + postfix},
+		"network": map[string]string{"id": "network_uid" + postfix},
 	}
 }
 
@@ -204,6 +215,15 @@ func MockGetGroup(uid string, response map[string]interface{}, times int) {
 		JSON(response)
 }
 
+func MockUpdateGroup(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Patch("/uxi/v1alpha1/groups/"+uid).
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
 func MockGetWiredNetwork(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Get("/uxi/v1alpha1/wired-networks").
@@ -252,4 +272,20 @@ func MockGetNetworkGroupAssignment(uid string, response map[string]interface{}, 
 		Times(times).
 		Reply(200).
 		JSON(response)
+}
+
+func MockPostNetworkGroupAssignment(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Post("/uxi/v1alpha1/network-group-assignments").
+		MatchHeader("Content-Type", "application/json").
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+var RateLimitingHeaders = map[string]string{
+	"X-RateLimit-Limit":     "100",
+	"X-RateLimit-Remaining": "0",
+	"X-RateLimit-Reset":     "1",
 }

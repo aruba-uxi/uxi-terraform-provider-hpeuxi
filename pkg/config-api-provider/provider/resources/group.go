@@ -171,10 +171,19 @@ func (r *groupResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	// TODO: Call client updateGroup method
-	group := UpdateGroup(GroupUpdateRequestModel{
-		Name: plan.Name.ValueString(),
-	})
+	patchRequest := config_api_client.NewGroupsPatchRequest("new_name")
+	request := r.client.ConfigurationAPI.
+		GroupsPatchUxiV1alpha1GroupsGroupUidPatch(ctx, plan.ID.ValueString()).
+		GroupsPatchRequest(*patchRequest)
+	group, _, err := util.RetryFor429(request.Execute)
+
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error updating Group",
+			"Could not update Group, unexpected error: "+err.Error(),
+		)
+		return
+	}
 
 	// Update the state to match the plan (replace with response from client)
 	plan.Name = types.StringValue(group.Name)
@@ -202,17 +211,4 @@ func (r *groupResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 
 func (r *groupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-var UpdateGroup = func(request GroupUpdateRequestModel) config_api_client.GroupsPostResponse {
-	// TODO: Query the group using the client
-
-	parent_uid := "mock_parent_uid"
-
-	return config_api_client.GroupsPostResponse{
-		Id:     "mock_uid",
-		Name:   "mock_name",
-		Parent: *config_api_client.NewParent(parent_uid),
-		Path:   "mock_path",
-	}
 }
