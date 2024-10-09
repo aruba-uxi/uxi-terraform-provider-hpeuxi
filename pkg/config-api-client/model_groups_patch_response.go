@@ -17,47 +17,47 @@ import (
 	"fmt"
 )
 
-// checks if the GroupsGetItem type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &GroupsGetItem{}
+// checks if the GroupsPatchResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GroupsPatchResponse{}
 
-// GroupsGetItem struct for GroupsGetItem
-type GroupsGetItem struct {
-	Id     string         `json:"id"`
-	Name   string         `json:"name"`
-	Parent NullableParent `json:"parent"`
-	Path   string         `json:"path"`
-	Type   *string        `json:"type,omitempty"`
+// GroupsPatchResponse struct for GroupsPatchResponse
+type GroupsPatchResponse struct {
+	Id     string  `json:"id"`
+	Name   string  `json:"name"`
+	Path   string  `json:"path"`
+	Parent Parent  `json:"parent"`
+	Type   *string `json:"type,omitempty"`
 }
 
-type _GroupsGetItem GroupsGetItem
+type _GroupsPatchResponse GroupsPatchResponse
 
-// NewGroupsGetItem instantiates a new GroupsGetItem object
+// NewGroupsPatchResponse instantiates a new GroupsPatchResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupsGetItem(id string, name string, parent NullableParent, path string) *GroupsGetItem {
-	this := GroupsGetItem{}
+func NewGroupsPatchResponse(id string, name string, path string, parent Parent) *GroupsPatchResponse {
+	this := GroupsPatchResponse{}
 	this.Id = id
 	this.Name = name
-	this.Parent = parent
 	this.Path = path
+	this.Parent = parent
 	var type_ string = "uxi/group"
 	this.Type = &type_
 	return &this
 }
 
-// NewGroupsGetItemWithDefaults instantiates a new GroupsGetItem object
+// NewGroupsPatchResponseWithDefaults instantiates a new GroupsPatchResponse object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewGroupsGetItemWithDefaults() *GroupsGetItem {
-	this := GroupsGetItem{}
+func NewGroupsPatchResponseWithDefaults() *GroupsPatchResponse {
+	this := GroupsPatchResponse{}
 	var type_ string = "uxi/group"
 	this.Type = &type_
 	return &this
 }
 
 // GetId returns the Id field value
-func (o *GroupsGetItem) GetId() string {
+func (o *GroupsPatchResponse) GetId() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -68,7 +68,7 @@ func (o *GroupsGetItem) GetId() string {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *GroupsGetItem) GetIdOk() (*string, bool) {
+func (o *GroupsPatchResponse) GetIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -76,12 +76,12 @@ func (o *GroupsGetItem) GetIdOk() (*string, bool) {
 }
 
 // SetId sets field value
-func (o *GroupsGetItem) SetId(v string) {
+func (o *GroupsPatchResponse) SetId(v string) {
 	o.Id = v
 }
 
 // GetName returns the Name field value
-func (o *GroupsGetItem) GetName() string {
+func (o *GroupsPatchResponse) GetName() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -92,7 +92,7 @@ func (o *GroupsGetItem) GetName() string {
 
 // GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *GroupsGetItem) GetNameOk() (*string, bool) {
+func (o *GroupsPatchResponse) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -100,38 +100,12 @@ func (o *GroupsGetItem) GetNameOk() (*string, bool) {
 }
 
 // SetName sets field value
-func (o *GroupsGetItem) SetName(v string) {
+func (o *GroupsPatchResponse) SetName(v string) {
 	o.Name = v
 }
 
-// GetParent returns the Parent field value
-// If the value is explicit nil, the zero value for Parent will be returned
-func (o *GroupsGetItem) GetParent() Parent {
-	if o == nil || o.Parent.Get() == nil {
-		var ret Parent
-		return ret
-	}
-
-	return *o.Parent.Get()
-}
-
-// GetParentOk returns a tuple with the Parent field value
-// and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *GroupsGetItem) GetParentOk() (*Parent, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Parent.Get(), o.Parent.IsSet()
-}
-
-// SetParent sets field value
-func (o *GroupsGetItem) SetParent(v Parent) {
-	o.Parent.Set(&v)
-}
-
 // GetPath returns the Path field value
-func (o *GroupsGetItem) GetPath() string {
+func (o *GroupsPatchResponse) GetPath() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -142,7 +116,7 @@ func (o *GroupsGetItem) GetPath() string {
 
 // GetPathOk returns a tuple with the Path field value
 // and a boolean to check if the value has been set.
-func (o *GroupsGetItem) GetPathOk() (*string, bool) {
+func (o *GroupsPatchResponse) GetPathOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -150,12 +124,36 @@ func (o *GroupsGetItem) GetPathOk() (*string, bool) {
 }
 
 // SetPath sets field value
-func (o *GroupsGetItem) SetPath(v string) {
+func (o *GroupsPatchResponse) SetPath(v string) {
 	o.Path = v
 }
 
+// GetParent returns the Parent field value
+func (o *GroupsPatchResponse) GetParent() Parent {
+	if o == nil {
+		var ret Parent
+		return ret
+	}
+
+	return o.Parent
+}
+
+// GetParentOk returns a tuple with the Parent field value
+// and a boolean to check if the value has been set.
+func (o *GroupsPatchResponse) GetParentOk() (*Parent, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Parent, true
+}
+
+// SetParent sets field value
+func (o *GroupsPatchResponse) SetParent(v Parent) {
+	o.Parent = v
+}
+
 // GetType returns the Type field value if set, zero value otherwise.
-func (o *GroupsGetItem) GetType() string {
+func (o *GroupsPatchResponse) GetType() string {
 	if o == nil || IsNil(o.Type) {
 		var ret string
 		return ret
@@ -165,7 +163,7 @@ func (o *GroupsGetItem) GetType() string {
 
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *GroupsGetItem) GetTypeOk() (*string, bool) {
+func (o *GroupsPatchResponse) GetTypeOk() (*string, bool) {
 	if o == nil || IsNil(o.Type) {
 		return nil, false
 	}
@@ -173,7 +171,7 @@ func (o *GroupsGetItem) GetTypeOk() (*string, bool) {
 }
 
 // HasType returns a boolean if a field has been set.
-func (o *GroupsGetItem) HasType() bool {
+func (o *GroupsPatchResponse) HasType() bool {
 	if o != nil && !IsNil(o.Type) {
 		return true
 	}
@@ -182,11 +180,11 @@ func (o *GroupsGetItem) HasType() bool {
 }
 
 // SetType gets a reference to the given string and assigns it to the Type field.
-func (o *GroupsGetItem) SetType(v string) {
+func (o *GroupsPatchResponse) SetType(v string) {
 	o.Type = &v
 }
 
-func (o GroupsGetItem) MarshalJSON() ([]byte, error) {
+func (o GroupsPatchResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -194,27 +192,27 @@ func (o GroupsGetItem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o GroupsGetItem) ToMap() (map[string]interface{}, error) {
+func (o GroupsPatchResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["name"] = o.Name
-	toSerialize["parent"] = o.Parent.Get()
 	toSerialize["path"] = o.Path
+	toSerialize["parent"] = o.Parent
 	if !IsNil(o.Type) {
 		toSerialize["type"] = o.Type
 	}
 	return toSerialize, nil
 }
 
-func (o *GroupsGetItem) UnmarshalJSON(data []byte) (err error) {
+func (o *GroupsPatchResponse) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"id",
 		"name",
-		"parent",
 		"path",
+		"parent",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -231,53 +229,53 @@ func (o *GroupsGetItem) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varGroupsGetItem := _GroupsGetItem{}
+	varGroupsPatchResponse := _GroupsPatchResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGroupsGetItem)
+	err = decoder.Decode(&varGroupsPatchResponse)
 
 	if err != nil {
 		return err
 	}
 
-	*o = GroupsGetItem(varGroupsGetItem)
+	*o = GroupsPatchResponse(varGroupsPatchResponse)
 
 	return err
 }
 
-type NullableGroupsGetItem struct {
-	value *GroupsGetItem
+type NullableGroupsPatchResponse struct {
+	value *GroupsPatchResponse
 	isSet bool
 }
 
-func (v NullableGroupsGetItem) Get() *GroupsGetItem {
+func (v NullableGroupsPatchResponse) Get() *GroupsPatchResponse {
 	return v.value
 }
 
-func (v *NullableGroupsGetItem) Set(val *GroupsGetItem) {
+func (v *NullableGroupsPatchResponse) Set(val *GroupsPatchResponse) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableGroupsGetItem) IsSet() bool {
+func (v NullableGroupsPatchResponse) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableGroupsGetItem) Unset() {
+func (v *NullableGroupsPatchResponse) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableGroupsGetItem(val *GroupsGetItem) *NullableGroupsGetItem {
-	return &NullableGroupsGetItem{value: val, isSet: true}
+func NewNullableGroupsPatchResponse(val *GroupsPatchResponse) *NullableGroupsPatchResponse {
+	return &NullableGroupsPatchResponse{value: val, isSet: true}
 }
 
-func (v NullableGroupsGetItem) MarshalJSON() ([]byte, error) {
+func (v NullableGroupsPatchResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableGroupsGetItem) UnmarshalJSON(src []byte) error {
+func (v *NullableGroupsPatchResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

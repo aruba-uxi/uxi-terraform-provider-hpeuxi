@@ -4,25 +4,26 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Uid** | **string** |  | 
-**Alias** | **string** |  | 
+**Id** | **string** |  | 
+**Name** | **string** |  | 
 **Ssid** | **string** |  | 
 **Security** | **NullableString** |  | 
 **IpVersion** | **string** |  | 
-**DatetimeCreated** | **time.Time** |  | 
-**DatetimeUpdated** | **time.Time** |  | 
+**CreatedAt** | **time.Time** |  | 
+**UpdatedAt** | **time.Time** |  | 
 **Hidden** | **bool** |  | 
 **BandLocking** | **string** |  | 
 **DnsLookupDomain** | **NullableString** |  | 
 **DisableEdns** | **bool** |  | 
 **UseDns64** | **bool** |  | 
 **ExternalConnectivity** | **bool** |  | 
+**Type** | Pointer to **string** |  | [optional] [default to "uxi/wireless-network"]
 
 ## Methods
 
 ### NewWirelessNetworksItem
 
-`func NewWirelessNetworksItem(uid string, alias string, ssid string, security NullableString, ipVersion string, datetimeCreated time.Time, datetimeUpdated time.Time, hidden bool, bandLocking string, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, ) *WirelessNetworksItem`
+`func NewWirelessNetworksItem(id string, name string, ssid string, security NullableString, ipVersion string, createdAt time.Time, updatedAt time.Time, hidden bool, bandLocking string, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, ) *WirelessNetworksItem`
 
 NewWirelessNetworksItem instantiates a new WirelessNetworksItem object
 This constructor will assign default values to properties that have it defined,
@@ -37,44 +38,44 @@ NewWirelessNetworksItemWithDefaults instantiates a new WirelessNetworksItem obje
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetUid
+### GetId
 
-`func (o *WirelessNetworksItem) GetUid() string`
+`func (o *WirelessNetworksItem) GetId() string`
 
-GetUid returns the Uid field if non-nil, zero value otherwise.
+GetId returns the Id field if non-nil, zero value otherwise.
 
-### GetUidOk
+### GetIdOk
 
-`func (o *WirelessNetworksItem) GetUidOk() (*string, bool)`
+`func (o *WirelessNetworksItem) GetIdOk() (*string, bool)`
 
-GetUidOk returns a tuple with the Uid field if it's non-nil, zero value otherwise
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetUid
+### SetId
 
-`func (o *WirelessNetworksItem) SetUid(v string)`
+`func (o *WirelessNetworksItem) SetId(v string)`
 
-SetUid sets Uid field to given value.
+SetId sets Id field to given value.
 
 
-### GetAlias
+### GetName
 
-`func (o *WirelessNetworksItem) GetAlias() string`
+`func (o *WirelessNetworksItem) GetName() string`
 
-GetAlias returns the Alias field if non-nil, zero value otherwise.
+GetName returns the Name field if non-nil, zero value otherwise.
 
-### GetAliasOk
+### GetNameOk
 
-`func (o *WirelessNetworksItem) GetAliasOk() (*string, bool)`
+`func (o *WirelessNetworksItem) GetNameOk() (*string, bool)`
 
-GetAliasOk returns a tuple with the Alias field if it's non-nil, zero value otherwise
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetAlias
+### SetName
 
-`func (o *WirelessNetworksItem) SetAlias(v string)`
+`func (o *WirelessNetworksItem) SetName(v string)`
 
-SetAlias sets Alias field to given value.
+SetName sets Name field to given value.
 
 
 ### GetSsid
@@ -147,44 +148,44 @@ and a boolean to check if the value has been set.
 SetIpVersion sets IpVersion field to given value.
 
 
-### GetDatetimeCreated
+### GetCreatedAt
 
-`func (o *WirelessNetworksItem) GetDatetimeCreated() time.Time`
+`func (o *WirelessNetworksItem) GetCreatedAt() time.Time`
 
-GetDatetimeCreated returns the DatetimeCreated field if non-nil, zero value otherwise.
+GetCreatedAt returns the CreatedAt field if non-nil, zero value otherwise.
 
-### GetDatetimeCreatedOk
+### GetCreatedAtOk
 
-`func (o *WirelessNetworksItem) GetDatetimeCreatedOk() (*time.Time, bool)`
+`func (o *WirelessNetworksItem) GetCreatedAtOk() (*time.Time, bool)`
 
-GetDatetimeCreatedOk returns a tuple with the DatetimeCreated field if it's non-nil, zero value otherwise
+GetCreatedAtOk returns a tuple with the CreatedAt field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetDatetimeCreated
+### SetCreatedAt
 
-`func (o *WirelessNetworksItem) SetDatetimeCreated(v time.Time)`
+`func (o *WirelessNetworksItem) SetCreatedAt(v time.Time)`
 
-SetDatetimeCreated sets DatetimeCreated field to given value.
+SetCreatedAt sets CreatedAt field to given value.
 
 
-### GetDatetimeUpdated
+### GetUpdatedAt
 
-`func (o *WirelessNetworksItem) GetDatetimeUpdated() time.Time`
+`func (o *WirelessNetworksItem) GetUpdatedAt() time.Time`
 
-GetDatetimeUpdated returns the DatetimeUpdated field if non-nil, zero value otherwise.
+GetUpdatedAt returns the UpdatedAt field if non-nil, zero value otherwise.
 
-### GetDatetimeUpdatedOk
+### GetUpdatedAtOk
 
-`func (o *WirelessNetworksItem) GetDatetimeUpdatedOk() (*time.Time, bool)`
+`func (o *WirelessNetworksItem) GetUpdatedAtOk() (*time.Time, bool)`
 
-GetDatetimeUpdatedOk returns a tuple with the DatetimeUpdated field if it's non-nil, zero value otherwise
+GetUpdatedAtOk returns a tuple with the UpdatedAt field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetDatetimeUpdated
+### SetUpdatedAt
 
-`func (o *WirelessNetworksItem) SetDatetimeUpdated(v time.Time)`
+`func (o *WirelessNetworksItem) SetUpdatedAt(v time.Time)`
 
-SetDatetimeUpdated sets DatetimeUpdated field to given value.
+SetUpdatedAt sets UpdatedAt field to given value.
 
 
 ### GetHidden
@@ -316,6 +317,31 @@ and a boolean to check if the value has been set.
 
 SetExternalConnectivity sets ExternalConnectivity field to given value.
 
+
+### GetType
+
+`func (o *WirelessNetworksItem) GetType() string`
+
+GetType returns the Type field if non-nil, zero value otherwise.
+
+### GetTypeOk
+
+`func (o *WirelessNetworksItem) GetTypeOk() (*string, bool)`
+
+GetTypeOk returns a tuple with the Type field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetType
+
+`func (o *WirelessNetworksItem) SetType(v string)`
+
+SetType sets Type field to given value.
+
+### HasType
+
+`func (o *WirelessNetworksItem) HasType() bool`
+
+HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -63,13 +63,15 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 	t.Run("Test ConfigurationAPIService GroupsPostUxiV1alpha1GroupsPost", func(t *testing.T) {
 
-		gock.New(configuration.Scheme + "://" + configuration.Host).Post("/uxi/v1alpha1/groups").Reply(200).JSON(map[string]string{"parent_uid": "parent.uid", "name": "name", "uid": "node", "path": "parent.uid.node"})
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Post("/uxi/v1alpha1/groups").Reply(200).
+			JSON(map[string]interface{}{"id": "node", "name": "name", "parent": map[string]string{"id": "parent.uid"}, "path": "parent.uid.node"})
 		groupsPostRequest := openapiclient.NewGroupsPostRequest("parent_uid", "name")
 		resp, httpRes, err := apiClient.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(context.Background()).GroupsPostRequest(*groupsPostRequest).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
-		assert.Equal(t, resp, &openapiclient.GroupsPostResponse{ParentUid: "parent.uid", Name: "name", Uid: "node", Path: "parent.uid.node"})
+		assert.Equal(t, resp, &openapiclient.GroupsPostResponse{Id: "node", Name: "name", Parent: *openapiclient.NewParent("parent.uid"), Path: "parent.uid.node"})
 	})
 
 	t.Run("Test ConfigurationAPIService GetUxiV1alpha1SensorGroupAssignmentsGet", func(t *testing.T) {
@@ -79,20 +81,15 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
-				"sensor_group_assignments": []map[string]string{
+				"items": []map[string]interface{}{
 					{
-						"uid":        "uid",
-						"group_uid":  "group_uid",
-						"sensor_uid": "sensor_uid",
+						"id":     "uid",
+						"group":  map[string]string{"id": "group_uid"},
+						"sensor": map[string]string{"id": "sensor_uid"},
 					},
 				},
-				"pagination": map[string]interface{}{
-					"limit":    10,
-					"first":    nil,
-					"next":     nil,
-					"previous": nil,
-					"last":     nil,
-				},
+				"count": 1,
+				"next":  nil,
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GetUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).
@@ -104,20 +101,15 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
 		assert.Equal(t, resp, &openapiclient.SensorGroupAssignmentsResponse{
-			SensorGroupAssignments: []openapiclient.SensorGroupAssignmentsItem{
+			Items: []openapiclient.SensorGroupAssignmentsItem{
 				{
-					Uid:       "uid",
-					GroupUid:  "group_uid",
-					SensorUid: "sensor_uid",
+					Id:     "uid",
+					Group:  *openapiclient.NewGroup("group_uid"),
+					Sensor: *openapiclient.NewSensor("sensor_uid"),
 				},
 			},
-			Pagination: openapiclient.PaginationDetails{
-				Limit:    10,
-				Next:     *openapiclient.NewNullableString(nil),
-				Previous: *openapiclient.NewNullableString(nil),
-				First:    *openapiclient.NewNullableString(nil),
-				Last:     *openapiclient.NewNullableString(nil),
-			},
+			Count: 1,
+			Next:  *openapiclient.NewNullableString(nil),
 		})
 	})
 
@@ -157,28 +149,23 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
-				"wired_networks": []map[string]interface{}{
+				"items": []map[string]interface{}{
 					{
-						"uid":                   "uid",
-						"alias":                 "alias",
-						"datetime_created":      "2024-09-11T12:00:00.000Z",
-						"datetime_updated":      "2024-09-11T12:00:00.000Z",
-						"ip_version":            "ip_version",
-						"security":              "security",
-						"dns_lookup_domain":     "dns_lookup_domain",
-						"disable_edns":          true,
-						"use_dns64":             false,
-						"external_connectivity": true,
-						"vlan_id":               1,
+						"id":                   "uid",
+						"name":                 "alias",
+						"createdAt":            "2024-09-11T12:00:00.000Z",
+						"updatedAt":            "2024-09-11T12:00:00.000Z",
+						"ipVersion":            "ip_version",
+						"security":             "security",
+						"dnsLookupDomain":      "dns_lookup_domain",
+						"disableEdns":          true,
+						"useDns64":             false,
+						"externalConnectivity": true,
+						"vLanId":               1,
 					},
 				},
-				"pagination": map[string]interface{}{
-					"limit":    10,
-					"first":    nil,
-					"next":     nil,
-					"previous": nil,
-					"last":     nil,
-				},
+				"count": 1,
+				"next":  nil,
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GetUxiV1alpha1WiredNetworksGet(context.Background()).
@@ -194,28 +181,23 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
 		assert.Equal(t, resp, &openapiclient.WiredNetworksResponse{
-			WiredNetworks: []openapiclient.WiredNetworksItem{
+			Items: []openapiclient.WiredNetworksItem{
 				{
-					Uid:                  "uid",
-					Alias:                "alias",
+					Id:                   "uid",
+					Name:                 "alias",
 					IpVersion:            "ip_version",
-					DatetimeUpdated:      time.Date(2024, 9, 11, 12, 0, 0, 0, time.UTC),
-					DatetimeCreated:      time.Date(2024, 9, 11, 12, 0, 0, 0, time.UTC),
+					UpdatedAt:            time.Date(2024, 9, 11, 12, 0, 0, 0, time.UTC),
+					CreatedAt:            time.Date(2024, 9, 11, 12, 0, 0, 0, time.UTC),
 					Security:             *openapiclient.NewNullableString(&security),
 					DnsLookupDomain:      *openapiclient.NewNullableString(&dnsLookupDomain),
 					DisableEdns:          true,
 					UseDns64:             false,
 					ExternalConnectivity: true,
-					VlanId:               *openapiclient.NewNullableInt32(&vlanId),
+					VLanId:               *openapiclient.NewNullableInt32(&vlanId),
 				},
 			},
-			Pagination: openapiclient.PaginationDetails{
-				Limit:    10,
-				Next:     *openapiclient.NewNullableString(nil),
-				Previous: *openapiclient.NewNullableString(nil),
-				First:    *openapiclient.NewNullableString(nil),
-				Last:     *openapiclient.NewNullableString(nil),
-			},
+			Count: 1,
+			Next:  *openapiclient.NewNullableString(nil),
 		})
 	})
 
@@ -226,30 +208,25 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
-				"wireless_networks": []map[string]interface{}{
+				"items": []map[string]interface{}{
 					{
-						"uid":                   "uid",
-						"ssid":                  "ssid",
-						"alias":                 "alias",
-						"datetime_created":      "2024-09-11T12:00:00.000Z",
-						"datetime_updated":      "2024-09-11T12:00:00.000Z",
-						"ip_version":            "ip_version",
-						"security":              "security",
-						"hidden":                false,
-						"band_locking":          "band_locking",
-						"dns_lookup_domain":     "dns_lookup_domain",
-						"disable_edns":          true,
-						"use_dns64":             false,
-						"external_connectivity": true,
+						"id":                   "uid",
+						"ssid":                 "ssid",
+						"name":                 "alias",
+						"createdAt":            "2024-09-11T12:00:00.000Z",
+						"updatedAt":            "2024-09-11T12:00:00.000Z",
+						"ipVersion":            "ip_version",
+						"security":             "security",
+						"hidden":               false,
+						"bandLocking":          "band_locking",
+						"dnsLookupDomain":      "dns_lookup_domain",
+						"disableEdns":          true,
+						"useDns64":             false,
+						"externalConnectivity": true,
 					},
 				},
-				"pagination": map[string]interface{}{
-					"limit":    10,
-					"first":    nil,
-					"next":     nil,
-					"previous": nil,
-					"last":     nil,
-				},
+				"count": 1,
+				"next":  nil,
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GetUxiV1alpha1WirelessNetworksGet(context.Background()).
@@ -264,15 +241,15 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
 		assert.Equal(t, resp, &openapiclient.WirelessNetworksResponse{
-			WirelessNetworks: []openapiclient.WirelessNetworksItem{
+			Items: []openapiclient.WirelessNetworksItem{
 				{
-					Uid:                  "uid",
-					Alias:                "alias",
+					Id:                   "uid",
+					Name:                 "alias",
 					Ssid:                 "ssid",
 					Security:             *openapiclient.NewNullableString(&security),
 					IpVersion:            "ip_version",
-					DatetimeCreated:      time.Date(2024, 9, 11, 12, 0, 0, 0, time.UTC),
-					DatetimeUpdated:      time.Date(2024, 9, 11, 12, 0, 0, 0, time.UTC),
+					CreatedAt:            time.Date(2024, 9, 11, 12, 0, 0, 0, time.UTC),
+					UpdatedAt:            time.Date(2024, 9, 11, 12, 0, 0, 0, time.UTC),
 					Hidden:               false,
 					BandLocking:          "band_locking",
 					DnsLookupDomain:      *openapiclient.NewNullableString(&dnsLookupDomain),
@@ -281,13 +258,8 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 					ExternalConnectivity: true,
 				},
 			},
-			Pagination: openapiclient.PaginationDetails{
-				Limit:    10,
-				Next:     *openapiclient.NewNullableString(nil),
-				Previous: *openapiclient.NewNullableString(nil),
-				First:    *openapiclient.NewNullableString(nil),
-				Last:     *openapiclient.NewNullableString(nil),
-			},
+			Count: 1,
+			Next:  *openapiclient.NewNullableString(nil),
 		})
 	})
 
@@ -298,20 +270,15 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
-				"network_group_assignments": []map[string]interface{}{
+				"items": []map[string]interface{}{
 					{
-						"uid":         "uid",
-						"group_uid":   "group_uid",
-						"network_uid": "network_uid",
+						"id":      "uid",
+						"group":   map[string]string{"id": "group_uid"},
+						"network": map[string]string{"id": "network_uid"},
 					},
 				},
-				"pagination": map[string]interface{}{
-					"limit":    10,
-					"first":    nil,
-					"next":     nil,
-					"previous": nil,
-					"last":     nil,
-				},
+				"count": 1,
+				"next":  nil,
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GetUxiV1alpha1NetworkGroupAssignmentsGet(context.Background()).
@@ -322,21 +289,16 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
-		assert.Equal(t, resp, &openapiclient.NetworkGroupAssignmentsGetResponse{
-			NetworkGroupAssignments: []openapiclient.NetworkGroupAssignmentsItem{
+		assert.Equal(t, resp, &openapiclient.NetworkGroupAssignmentsResponse{
+			Items: []openapiclient.NetworkGroupAssignmentsItem{
 				{
-					Uid:        "uid",
-					GroupUid:   "group_uid",
-					NetworkUid: "network_uid",
+					Id:      "uid",
+					Group:   *openapiclient.NewGroup("group_uid"),
+					Network: *openapiclient.NewNetwork("network_uid"),
 				},
 			},
-			Pagination: openapiclient.PaginationDetails{
-				Limit:    10,
-				Next:     *openapiclient.NewNullableString(nil),
-				Previous: *openapiclient.NewNullableString(nil),
-				First:    *openapiclient.NewNullableString(nil),
-				Last:     *openapiclient.NewNullableString(nil),
-			},
+			Count: 1,
+			Next:  *openapiclient.NewNullableString(nil),
 		})
 	})
 

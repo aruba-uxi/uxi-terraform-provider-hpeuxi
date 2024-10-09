@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.15.0
+API version: 1.22.0
 Contact: support@capenetworks.com
 */
 
@@ -22,8 +22,9 @@ var _ MappedNullable = &WirelessNetworksResponse{}
 
 // WirelessNetworksResponse struct for WirelessNetworksResponse
 type WirelessNetworksResponse struct {
-	WirelessNetworks []WirelessNetworksItem `json:"wireless_networks"`
-	Pagination       PaginationDetails      `json:"pagination"`
+	Items []WirelessNetworksItem `json:"items"`
+	Count int32                  `json:"count"`
+	Next  NullableString         `json:"next"`
 }
 
 type _WirelessNetworksResponse WirelessNetworksResponse
@@ -32,10 +33,11 @@ type _WirelessNetworksResponse WirelessNetworksResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWirelessNetworksResponse(wirelessNetworks []WirelessNetworksItem, pagination PaginationDetails) *WirelessNetworksResponse {
+func NewWirelessNetworksResponse(items []WirelessNetworksItem, count int32, next NullableString) *WirelessNetworksResponse {
 	this := WirelessNetworksResponse{}
-	this.WirelessNetworks = wirelessNetworks
-	this.Pagination = pagination
+	this.Items = items
+	this.Count = count
+	this.Next = next
 	return &this
 }
 
@@ -47,52 +49,78 @@ func NewWirelessNetworksResponseWithDefaults() *WirelessNetworksResponse {
 	return &this
 }
 
-// GetWirelessNetworks returns the WirelessNetworks field value
-func (o *WirelessNetworksResponse) GetWirelessNetworks() []WirelessNetworksItem {
+// GetItems returns the Items field value
+func (o *WirelessNetworksResponse) GetItems() []WirelessNetworksItem {
 	if o == nil {
 		var ret []WirelessNetworksItem
 		return ret
 	}
 
-	return o.WirelessNetworks
+	return o.Items
 }
 
-// GetWirelessNetworksOk returns a tuple with the WirelessNetworks field value
+// GetItemsOk returns a tuple with the Items field value
 // and a boolean to check if the value has been set.
-func (o *WirelessNetworksResponse) GetWirelessNetworksOk() ([]WirelessNetworksItem, bool) {
+func (o *WirelessNetworksResponse) GetItemsOk() ([]WirelessNetworksItem, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.WirelessNetworks, true
+	return o.Items, true
 }
 
-// SetWirelessNetworks sets field value
-func (o *WirelessNetworksResponse) SetWirelessNetworks(v []WirelessNetworksItem) {
-	o.WirelessNetworks = v
+// SetItems sets field value
+func (o *WirelessNetworksResponse) SetItems(v []WirelessNetworksItem) {
+	o.Items = v
 }
 
-// GetPagination returns the Pagination field value
-func (o *WirelessNetworksResponse) GetPagination() PaginationDetails {
+// GetCount returns the Count field value
+func (o *WirelessNetworksResponse) GetCount() int32 {
 	if o == nil {
-		var ret PaginationDetails
+		var ret int32
 		return ret
 	}
 
-	return o.Pagination
+	return o.Count
 }
 
-// GetPaginationOk returns a tuple with the Pagination field value
+// GetCountOk returns a tuple with the Count field value
 // and a boolean to check if the value has been set.
-func (o *WirelessNetworksResponse) GetPaginationOk() (*PaginationDetails, bool) {
+func (o *WirelessNetworksResponse) GetCountOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Pagination, true
+	return &o.Count, true
 }
 
-// SetPagination sets field value
-func (o *WirelessNetworksResponse) SetPagination(v PaginationDetails) {
-	o.Pagination = v
+// SetCount sets field value
+func (o *WirelessNetworksResponse) SetCount(v int32) {
+	o.Count = v
+}
+
+// GetNext returns the Next field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *WirelessNetworksResponse) GetNext() string {
+	if o == nil || o.Next.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.Next.Get()
+}
+
+// GetNextOk returns a tuple with the Next field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *WirelessNetworksResponse) GetNextOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Next.Get(), o.Next.IsSet()
+}
+
+// SetNext sets field value
+func (o *WirelessNetworksResponse) SetNext(v string) {
+	o.Next.Set(&v)
 }
 
 func (o WirelessNetworksResponse) MarshalJSON() ([]byte, error) {
@@ -105,8 +133,9 @@ func (o WirelessNetworksResponse) MarshalJSON() ([]byte, error) {
 
 func (o WirelessNetworksResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["wireless_networks"] = o.WirelessNetworks
-	toSerialize["pagination"] = o.Pagination
+	toSerialize["items"] = o.Items
+	toSerialize["count"] = o.Count
+	toSerialize["next"] = o.Next.Get()
 	return toSerialize, nil
 }
 
@@ -115,8 +144,9 @@ func (o *WirelessNetworksResponse) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"wireless_networks",
-		"pagination",
+		"items",
+		"count",
+		"next",
 	}
 
 	allProperties := make(map[string]interface{})

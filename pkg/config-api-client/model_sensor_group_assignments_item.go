@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.15.0
+API version: 1.22.0
 Contact: support@capenetworks.com
 */
 
@@ -22,9 +22,10 @@ var _ MappedNullable = &SensorGroupAssignmentsItem{}
 
 // SensorGroupAssignmentsItem struct for SensorGroupAssignmentsItem
 type SensorGroupAssignmentsItem struct {
-	Uid       string `json:"uid"`
-	GroupUid  string `json:"group_uid"`
-	SensorUid string `json:"sensor_uid"`
+	Id     string  `json:"id"`
+	Group  Group   `json:"group"`
+	Sensor Sensor  `json:"sensor"`
+	Type   *string `json:"type,omitempty"`
 }
 
 type _SensorGroupAssignmentsItem SensorGroupAssignmentsItem
@@ -33,11 +34,13 @@ type _SensorGroupAssignmentsItem SensorGroupAssignmentsItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorGroupAssignmentsItem(uid string, groupUid string, sensorUid string) *SensorGroupAssignmentsItem {
+func NewSensorGroupAssignmentsItem(id string, group Group, sensor Sensor) *SensorGroupAssignmentsItem {
 	this := SensorGroupAssignmentsItem{}
-	this.Uid = uid
-	this.GroupUid = groupUid
-	this.SensorUid = sensorUid
+	this.Id = id
+	this.Group = group
+	this.Sensor = sensor
+	var type_ string = "uxi/sensor-group-assignment"
+	this.Type = &type_
 	return &this
 }
 
@@ -46,79 +49,113 @@ func NewSensorGroupAssignmentsItem(uid string, groupUid string, sensorUid string
 // but it doesn't guarantee that properties required by API are set
 func NewSensorGroupAssignmentsItemWithDefaults() *SensorGroupAssignmentsItem {
 	this := SensorGroupAssignmentsItem{}
+	var type_ string = "uxi/sensor-group-assignment"
+	this.Type = &type_
 	return &this
 }
 
-// GetUid returns the Uid field value
-func (o *SensorGroupAssignmentsItem) GetUid() string {
+// GetId returns the Id field value
+func (o *SensorGroupAssignmentsItem) GetId() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Uid
+	return o.Id
 }
 
-// GetUidOk returns a tuple with the Uid field value
+// GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *SensorGroupAssignmentsItem) GetUidOk() (*string, bool) {
+func (o *SensorGroupAssignmentsItem) GetIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Uid, true
+	return &o.Id, true
 }
 
-// SetUid sets field value
-func (o *SensorGroupAssignmentsItem) SetUid(v string) {
-	o.Uid = v
+// SetId sets field value
+func (o *SensorGroupAssignmentsItem) SetId(v string) {
+	o.Id = v
 }
 
-// GetGroupUid returns the GroupUid field value
-func (o *SensorGroupAssignmentsItem) GetGroupUid() string {
+// GetGroup returns the Group field value
+func (o *SensorGroupAssignmentsItem) GetGroup() Group {
 	if o == nil {
-		var ret string
+		var ret Group
 		return ret
 	}
 
-	return o.GroupUid
+	return o.Group
 }
 
-// GetGroupUidOk returns a tuple with the GroupUid field value
+// GetGroupOk returns a tuple with the Group field value
 // and a boolean to check if the value has been set.
-func (o *SensorGroupAssignmentsItem) GetGroupUidOk() (*string, bool) {
+func (o *SensorGroupAssignmentsItem) GetGroupOk() (*Group, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.GroupUid, true
+	return &o.Group, true
 }
 
-// SetGroupUid sets field value
-func (o *SensorGroupAssignmentsItem) SetGroupUid(v string) {
-	o.GroupUid = v
+// SetGroup sets field value
+func (o *SensorGroupAssignmentsItem) SetGroup(v Group) {
+	o.Group = v
 }
 
-// GetSensorUid returns the SensorUid field value
-func (o *SensorGroupAssignmentsItem) GetSensorUid() string {
+// GetSensor returns the Sensor field value
+func (o *SensorGroupAssignmentsItem) GetSensor() Sensor {
 	if o == nil {
-		var ret string
+		var ret Sensor
 		return ret
 	}
 
-	return o.SensorUid
+	return o.Sensor
 }
 
-// GetSensorUidOk returns a tuple with the SensorUid field value
+// GetSensorOk returns a tuple with the Sensor field value
 // and a boolean to check if the value has been set.
-func (o *SensorGroupAssignmentsItem) GetSensorUidOk() (*string, bool) {
+func (o *SensorGroupAssignmentsItem) GetSensorOk() (*Sensor, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.SensorUid, true
+	return &o.Sensor, true
 }
 
-// SetSensorUid sets field value
-func (o *SensorGroupAssignmentsItem) SetSensorUid(v string) {
-	o.SensorUid = v
+// SetSensor sets field value
+func (o *SensorGroupAssignmentsItem) SetSensor(v Sensor) {
+	o.Sensor = v
+}
+
+// GetType returns the Type field value if set, zero value otherwise.
+func (o *SensorGroupAssignmentsItem) GetType() string {
+	if o == nil || IsNil(o.Type) {
+		var ret string
+		return ret
+	}
+	return *o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SensorGroupAssignmentsItem) GetTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.Type) {
+		return nil, false
+	}
+	return o.Type, true
+}
+
+// HasType returns a boolean if a field has been set.
+func (o *SensorGroupAssignmentsItem) HasType() bool {
+	if o != nil && !IsNil(o.Type) {
+		return true
+	}
+
+	return false
+}
+
+// SetType gets a reference to the given string and assigns it to the Type field.
+func (o *SensorGroupAssignmentsItem) SetType(v string) {
+	o.Type = &v
 }
 
 func (o SensorGroupAssignmentsItem) MarshalJSON() ([]byte, error) {
@@ -131,9 +168,12 @@ func (o SensorGroupAssignmentsItem) MarshalJSON() ([]byte, error) {
 
 func (o SensorGroupAssignmentsItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["uid"] = o.Uid
-	toSerialize["group_uid"] = o.GroupUid
-	toSerialize["sensor_uid"] = o.SensorUid
+	toSerialize["id"] = o.Id
+	toSerialize["group"] = o.Group
+	toSerialize["sensor"] = o.Sensor
+	if !IsNil(o.Type) {
+		toSerialize["type"] = o.Type
+	}
 	return toSerialize, nil
 }
 
@@ -142,9 +182,9 @@ func (o *SensorGroupAssignmentsItem) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"uid",
-		"group_uid",
-		"sensor_uid",
+		"id",
+		"group",
+		"sensor",
 	}
 
 	allProperties := make(map[string]interface{})

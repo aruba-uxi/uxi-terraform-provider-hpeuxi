@@ -4,14 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**WiredNetworks** | [**[]WiredNetworksItem**](WiredNetworksItem.md) |  | 
-**Pagination** | [**PaginationDetails**](PaginationDetails.md) |  | 
+**Items** | [**[]WiredNetworksItem**](WiredNetworksItem.md) |  | 
+**Count** | **int32** |  | 
+**Next** | **NullableString** |  | 
 
 ## Methods
 
 ### NewWiredNetworksResponse
 
-`func NewWiredNetworksResponse(wiredNetworks []WiredNetworksItem, pagination PaginationDetails, ) *WiredNetworksResponse`
+`func NewWiredNetworksResponse(items []WiredNetworksItem, count int32, next NullableString, ) *WiredNetworksResponse`
 
 NewWiredNetworksResponse instantiates a new WiredNetworksResponse object
 This constructor will assign default values to properties that have it defined,
@@ -26,46 +27,76 @@ NewWiredNetworksResponseWithDefaults instantiates a new WiredNetworksResponse ob
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetWiredNetworks
+### GetItems
 
-`func (o *WiredNetworksResponse) GetWiredNetworks() []WiredNetworksItem`
+`func (o *WiredNetworksResponse) GetItems() []WiredNetworksItem`
 
-GetWiredNetworks returns the WiredNetworks field if non-nil, zero value otherwise.
+GetItems returns the Items field if non-nil, zero value otherwise.
 
-### GetWiredNetworksOk
+### GetItemsOk
 
-`func (o *WiredNetworksResponse) GetWiredNetworksOk() (*[]WiredNetworksItem, bool)`
+`func (o *WiredNetworksResponse) GetItemsOk() (*[]WiredNetworksItem, bool)`
 
-GetWiredNetworksOk returns a tuple with the WiredNetworks field if it's non-nil, zero value otherwise
+GetItemsOk returns a tuple with the Items field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetWiredNetworks
+### SetItems
 
-`func (o *WiredNetworksResponse) SetWiredNetworks(v []WiredNetworksItem)`
+`func (o *WiredNetworksResponse) SetItems(v []WiredNetworksItem)`
 
-SetWiredNetworks sets WiredNetworks field to given value.
+SetItems sets Items field to given value.
 
 
-### GetPagination
+### GetCount
 
-`func (o *WiredNetworksResponse) GetPagination() PaginationDetails`
+`func (o *WiredNetworksResponse) GetCount() int32`
 
-GetPagination returns the Pagination field if non-nil, zero value otherwise.
+GetCount returns the Count field if non-nil, zero value otherwise.
 
-### GetPaginationOk
+### GetCountOk
 
-`func (o *WiredNetworksResponse) GetPaginationOk() (*PaginationDetails, bool)`
+`func (o *WiredNetworksResponse) GetCountOk() (*int32, bool)`
 
-GetPaginationOk returns a tuple with the Pagination field if it's non-nil, zero value otherwise
+GetCountOk returns a tuple with the Count field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetPagination
+### SetCount
 
-`func (o *WiredNetworksResponse) SetPagination(v PaginationDetails)`
+`func (o *WiredNetworksResponse) SetCount(v int32)`
 
-SetPagination sets Pagination field to given value.
+SetCount sets Count field to given value.
 
 
+### GetNext
+
+`func (o *WiredNetworksResponse) GetNext() string`
+
+GetNext returns the Next field if non-nil, zero value otherwise.
+
+### GetNextOk
+
+`func (o *WiredNetworksResponse) GetNextOk() (*string, bool)`
+
+GetNextOk returns a tuple with the Next field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNext
+
+`func (o *WiredNetworksResponse) SetNext(v string)`
+
+SetNext sets Next field to given value.
+
+
+### SetNextNil
+
+`func (o *WiredNetworksResponse) SetNextNil(b bool)`
+
+ SetNextNil sets the value for Next to be an explicit nil
+
+### UnsetNext
+`func (o *WiredNetworksResponse) UnsetNext()`
+
+UnsetNext ensures that no value is present for Next, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

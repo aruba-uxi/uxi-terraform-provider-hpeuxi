@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.15.0
+API version: 1.22.0
 Contact: support@capenetworks.com
 */
 
@@ -22,8 +22,9 @@ var _ MappedNullable = &SensorGroupAssignmentsResponse{}
 
 // SensorGroupAssignmentsResponse struct for SensorGroupAssignmentsResponse
 type SensorGroupAssignmentsResponse struct {
-	SensorGroupAssignments []SensorGroupAssignmentsItem `json:"sensor_group_assignments"`
-	Pagination             PaginationDetails            `json:"pagination"`
+	Items []SensorGroupAssignmentsItem `json:"items"`
+	Count int32                        `json:"count"`
+	Next  NullableString               `json:"next"`
 }
 
 type _SensorGroupAssignmentsResponse SensorGroupAssignmentsResponse
@@ -32,10 +33,11 @@ type _SensorGroupAssignmentsResponse SensorGroupAssignmentsResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorGroupAssignmentsResponse(sensorGroupAssignments []SensorGroupAssignmentsItem, pagination PaginationDetails) *SensorGroupAssignmentsResponse {
+func NewSensorGroupAssignmentsResponse(items []SensorGroupAssignmentsItem, count int32, next NullableString) *SensorGroupAssignmentsResponse {
 	this := SensorGroupAssignmentsResponse{}
-	this.SensorGroupAssignments = sensorGroupAssignments
-	this.Pagination = pagination
+	this.Items = items
+	this.Count = count
+	this.Next = next
 	return &this
 }
 
@@ -47,52 +49,78 @@ func NewSensorGroupAssignmentsResponseWithDefaults() *SensorGroupAssignmentsResp
 	return &this
 }
 
-// GetSensorGroupAssignments returns the SensorGroupAssignments field value
-func (o *SensorGroupAssignmentsResponse) GetSensorGroupAssignments() []SensorGroupAssignmentsItem {
+// GetItems returns the Items field value
+func (o *SensorGroupAssignmentsResponse) GetItems() []SensorGroupAssignmentsItem {
 	if o == nil {
 		var ret []SensorGroupAssignmentsItem
 		return ret
 	}
 
-	return o.SensorGroupAssignments
+	return o.Items
 }
 
-// GetSensorGroupAssignmentsOk returns a tuple with the SensorGroupAssignments field value
+// GetItemsOk returns a tuple with the Items field value
 // and a boolean to check if the value has been set.
-func (o *SensorGroupAssignmentsResponse) GetSensorGroupAssignmentsOk() ([]SensorGroupAssignmentsItem, bool) {
+func (o *SensorGroupAssignmentsResponse) GetItemsOk() ([]SensorGroupAssignmentsItem, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.SensorGroupAssignments, true
+	return o.Items, true
 }
 
-// SetSensorGroupAssignments sets field value
-func (o *SensorGroupAssignmentsResponse) SetSensorGroupAssignments(v []SensorGroupAssignmentsItem) {
-	o.SensorGroupAssignments = v
+// SetItems sets field value
+func (o *SensorGroupAssignmentsResponse) SetItems(v []SensorGroupAssignmentsItem) {
+	o.Items = v
 }
 
-// GetPagination returns the Pagination field value
-func (o *SensorGroupAssignmentsResponse) GetPagination() PaginationDetails {
+// GetCount returns the Count field value
+func (o *SensorGroupAssignmentsResponse) GetCount() int32 {
 	if o == nil {
-		var ret PaginationDetails
+		var ret int32
 		return ret
 	}
 
-	return o.Pagination
+	return o.Count
 }
 
-// GetPaginationOk returns a tuple with the Pagination field value
+// GetCountOk returns a tuple with the Count field value
 // and a boolean to check if the value has been set.
-func (o *SensorGroupAssignmentsResponse) GetPaginationOk() (*PaginationDetails, bool) {
+func (o *SensorGroupAssignmentsResponse) GetCountOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Pagination, true
+	return &o.Count, true
 }
 
-// SetPagination sets field value
-func (o *SensorGroupAssignmentsResponse) SetPagination(v PaginationDetails) {
-	o.Pagination = v
+// SetCount sets field value
+func (o *SensorGroupAssignmentsResponse) SetCount(v int32) {
+	o.Count = v
+}
+
+// GetNext returns the Next field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *SensorGroupAssignmentsResponse) GetNext() string {
+	if o == nil || o.Next.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.Next.Get()
+}
+
+// GetNextOk returns a tuple with the Next field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *SensorGroupAssignmentsResponse) GetNextOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Next.Get(), o.Next.IsSet()
+}
+
+// SetNext sets field value
+func (o *SensorGroupAssignmentsResponse) SetNext(v string) {
+	o.Next.Set(&v)
 }
 
 func (o SensorGroupAssignmentsResponse) MarshalJSON() ([]byte, error) {
@@ -105,8 +133,9 @@ func (o SensorGroupAssignmentsResponse) MarshalJSON() ([]byte, error) {
 
 func (o SensorGroupAssignmentsResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["sensor_group_assignments"] = o.SensorGroupAssignments
-	toSerialize["pagination"] = o.Pagination
+	toSerialize["items"] = o.Items
+	toSerialize["count"] = o.Count
+	toSerialize["next"] = o.Next.Get()
 	return toSerialize, nil
 }
 
@@ -115,8 +144,9 @@ func (o *SensorGroupAssignmentsResponse) UnmarshalJSON(data []byte) (err error) 
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"sensor_group_assignments",
-		"pagination",
+		"items",
+		"count",
+		"next",
 	}
 
 	allProperties := make(map[string]interface{})

@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.14.0
+API version: 1.22.0
 Contact: support@capenetworks.com
 */
 
@@ -22,8 +22,9 @@ var _ MappedNullable = &NetworkGroupAssignmentsResponse{}
 
 // NetworkGroupAssignmentsResponse struct for NetworkGroupAssignmentsResponse
 type NetworkGroupAssignmentsResponse struct {
-	NetworkGroupAssignments []NetworkGroupAssignmentsItem `json:"network_group_assignments"`
-	Pagination              PaginationDetails             `json:"pagination"`
+	Items []NetworkGroupAssignmentsItem `json:"items"`
+	Count int32                         `json:"count"`
+	Next  NullableString                `json:"next"`
 }
 
 type _NetworkGroupAssignmentsResponse NetworkGroupAssignmentsResponse
@@ -32,10 +33,11 @@ type _NetworkGroupAssignmentsResponse NetworkGroupAssignmentsResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNetworkGroupAssignmentsResponse(networkGroupAssignments []NetworkGroupAssignmentsItem, pagination PaginationDetails) *NetworkGroupAssignmentsResponse {
+func NewNetworkGroupAssignmentsResponse(items []NetworkGroupAssignmentsItem, count int32, next NullableString) *NetworkGroupAssignmentsResponse {
 	this := NetworkGroupAssignmentsResponse{}
-	this.NetworkGroupAssignments = networkGroupAssignments
-	this.Pagination = pagination
+	this.Items = items
+	this.Count = count
+	this.Next = next
 	return &this
 }
 
@@ -47,52 +49,78 @@ func NewNetworkGroupAssignmentsResponseWithDefaults() *NetworkGroupAssignmentsRe
 	return &this
 }
 
-// GetNetworkGroupAssignments returns the NetworkGroupAssignments field value
-func (o *NetworkGroupAssignmentsResponse) GetNetworkGroupAssignments() []NetworkGroupAssignmentsItem {
+// GetItems returns the Items field value
+func (o *NetworkGroupAssignmentsResponse) GetItems() []NetworkGroupAssignmentsItem {
 	if o == nil {
 		var ret []NetworkGroupAssignmentsItem
 		return ret
 	}
 
-	return o.NetworkGroupAssignments
+	return o.Items
 }
 
-// GetNetworkGroupAssignmentsOk returns a tuple with the NetworkGroupAssignments field value
+// GetItemsOk returns a tuple with the Items field value
 // and a boolean to check if the value has been set.
-func (o *NetworkGroupAssignmentsResponse) GetNetworkGroupAssignmentsOk() ([]NetworkGroupAssignmentsItem, bool) {
+func (o *NetworkGroupAssignmentsResponse) GetItemsOk() ([]NetworkGroupAssignmentsItem, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.NetworkGroupAssignments, true
+	return o.Items, true
 }
 
-// SetNetworkGroupAssignments sets field value
-func (o *NetworkGroupAssignmentsResponse) SetNetworkGroupAssignments(v []NetworkGroupAssignmentsItem) {
-	o.NetworkGroupAssignments = v
+// SetItems sets field value
+func (o *NetworkGroupAssignmentsResponse) SetItems(v []NetworkGroupAssignmentsItem) {
+	o.Items = v
 }
 
-// GetPagination returns the Pagination field value
-func (o *NetworkGroupAssignmentsResponse) GetPagination() PaginationDetails {
+// GetCount returns the Count field value
+func (o *NetworkGroupAssignmentsResponse) GetCount() int32 {
 	if o == nil {
-		var ret PaginationDetails
+		var ret int32
 		return ret
 	}
 
-	return o.Pagination
+	return o.Count
 }
 
-// GetPaginationOk returns a tuple with the Pagination field value
+// GetCountOk returns a tuple with the Count field value
 // and a boolean to check if the value has been set.
-func (o *NetworkGroupAssignmentsResponse) GetPaginationOk() (*PaginationDetails, bool) {
+func (o *NetworkGroupAssignmentsResponse) GetCountOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Pagination, true
+	return &o.Count, true
 }
 
-// SetPagination sets field value
-func (o *NetworkGroupAssignmentsResponse) SetPagination(v PaginationDetails) {
-	o.Pagination = v
+// SetCount sets field value
+func (o *NetworkGroupAssignmentsResponse) SetCount(v int32) {
+	o.Count = v
+}
+
+// GetNext returns the Next field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *NetworkGroupAssignmentsResponse) GetNext() string {
+	if o == nil || o.Next.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.Next.Get()
+}
+
+// GetNextOk returns a tuple with the Next field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *NetworkGroupAssignmentsResponse) GetNextOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Next.Get(), o.Next.IsSet()
+}
+
+// SetNext sets field value
+func (o *NetworkGroupAssignmentsResponse) SetNext(v string) {
+	o.Next.Set(&v)
 }
 
 func (o NetworkGroupAssignmentsResponse) MarshalJSON() ([]byte, error) {
@@ -105,8 +133,9 @@ func (o NetworkGroupAssignmentsResponse) MarshalJSON() ([]byte, error) {
 
 func (o NetworkGroupAssignmentsResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["network_group_assignments"] = o.NetworkGroupAssignments
-	toSerialize["pagination"] = o.Pagination
+	toSerialize["items"] = o.Items
+	toSerialize["count"] = o.Count
+	toSerialize["next"] = o.Next.Get()
 	return toSerialize, nil
 }
 
@@ -115,8 +144,9 @@ func (o *NetworkGroupAssignmentsResponse) UnmarshalJSON(data []byte) (err error)
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"network_group_assignments",
-		"pagination",
+		"items",
+		"count",
+		"next",
 	}
 
 	allProperties := make(map[string]interface{})

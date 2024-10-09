@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.15.0
+API version: 1.22.0
 Contact: support@capenetworks.com
 */
 
@@ -23,17 +23,18 @@ var _ MappedNullable = &WiredNetworksItem{}
 
 // WiredNetworksItem struct for WiredNetworksItem
 type WiredNetworksItem struct {
-	Uid                  string         `json:"uid"`
-	Alias                string         `json:"alias"`
-	IpVersion            string         `json:"ip_version"`
-	DatetimeUpdated      time.Time      `json:"datetime_updated"`
-	DatetimeCreated      time.Time      `json:"datetime_created"`
+	Id                   string         `json:"id"`
+	Name                 string         `json:"name"`
+	IpVersion            string         `json:"ipVersion"`
+	CreatedAt            time.Time      `json:"createdAt"`
+	UpdatedAt            time.Time      `json:"updatedAt"`
 	Security             NullableString `json:"security"`
-	DnsLookupDomain      NullableString `json:"dns_lookup_domain"`
-	DisableEdns          bool           `json:"disable_edns"`
-	UseDns64             bool           `json:"use_dns64"`
-	ExternalConnectivity bool           `json:"external_connectivity"`
-	VlanId               NullableInt32  `json:"vlan_id"`
+	DnsLookupDomain      NullableString `json:"dnsLookupDomain"`
+	DisableEdns          bool           `json:"disableEdns"`
+	UseDns64             bool           `json:"useDns64"`
+	ExternalConnectivity bool           `json:"externalConnectivity"`
+	VLanId               NullableInt32  `json:"vLanId"`
+	Type                 *string        `json:"type,omitempty"`
 }
 
 type _WiredNetworksItem WiredNetworksItem
@@ -42,19 +43,21 @@ type _WiredNetworksItem WiredNetworksItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWiredNetworksItem(uid string, alias string, ipVersion string, datetimeUpdated time.Time, datetimeCreated time.Time, security NullableString, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, vlanId NullableInt32) *WiredNetworksItem {
+func NewWiredNetworksItem(id string, name string, ipVersion string, createdAt time.Time, updatedAt time.Time, security NullableString, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, vLanId NullableInt32) *WiredNetworksItem {
 	this := WiredNetworksItem{}
-	this.Uid = uid
-	this.Alias = alias
+	this.Id = id
+	this.Name = name
 	this.IpVersion = ipVersion
-	this.DatetimeUpdated = datetimeUpdated
-	this.DatetimeCreated = datetimeCreated
+	this.CreatedAt = createdAt
+	this.UpdatedAt = updatedAt
 	this.Security = security
 	this.DnsLookupDomain = dnsLookupDomain
 	this.DisableEdns = disableEdns
 	this.UseDns64 = useDns64
 	this.ExternalConnectivity = externalConnectivity
-	this.VlanId = vlanId
+	this.VLanId = vLanId
+	var type_ string = "uxi/wired-network"
+	this.Type = &type_
 	return &this
 }
 
@@ -63,55 +66,57 @@ func NewWiredNetworksItem(uid string, alias string, ipVersion string, datetimeUp
 // but it doesn't guarantee that properties required by API are set
 func NewWiredNetworksItemWithDefaults() *WiredNetworksItem {
 	this := WiredNetworksItem{}
+	var type_ string = "uxi/wired-network"
+	this.Type = &type_
 	return &this
 }
 
-// GetUid returns the Uid field value
-func (o *WiredNetworksItem) GetUid() string {
+// GetId returns the Id field value
+func (o *WiredNetworksItem) GetId() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Uid
+	return o.Id
 }
 
-// GetUidOk returns a tuple with the Uid field value
+// GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *WiredNetworksItem) GetUidOk() (*string, bool) {
+func (o *WiredNetworksItem) GetIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Uid, true
+	return &o.Id, true
 }
 
-// SetUid sets field value
-func (o *WiredNetworksItem) SetUid(v string) {
-	o.Uid = v
+// SetId sets field value
+func (o *WiredNetworksItem) SetId(v string) {
+	o.Id = v
 }
 
-// GetAlias returns the Alias field value
-func (o *WiredNetworksItem) GetAlias() string {
+// GetName returns the Name field value
+func (o *WiredNetworksItem) GetName() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Alias
+	return o.Name
 }
 
-// GetAliasOk returns a tuple with the Alias field value
+// GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *WiredNetworksItem) GetAliasOk() (*string, bool) {
+func (o *WiredNetworksItem) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Alias, true
+	return &o.Name, true
 }
 
-// SetAlias sets field value
-func (o *WiredNetworksItem) SetAlias(v string) {
-	o.Alias = v
+// SetName sets field value
+func (o *WiredNetworksItem) SetName(v string) {
+	o.Name = v
 }
 
 // GetIpVersion returns the IpVersion field value
@@ -138,52 +143,52 @@ func (o *WiredNetworksItem) SetIpVersion(v string) {
 	o.IpVersion = v
 }
 
-// GetDatetimeUpdated returns the DatetimeUpdated field value
-func (o *WiredNetworksItem) GetDatetimeUpdated() time.Time {
+// GetCreatedAt returns the CreatedAt field value
+func (o *WiredNetworksItem) GetCreatedAt() time.Time {
 	if o == nil {
 		var ret time.Time
 		return ret
 	}
 
-	return o.DatetimeUpdated
+	return o.CreatedAt
 }
 
-// GetDatetimeUpdatedOk returns a tuple with the DatetimeUpdated field value
+// GetCreatedAtOk returns a tuple with the CreatedAt field value
 // and a boolean to check if the value has been set.
-func (o *WiredNetworksItem) GetDatetimeUpdatedOk() (*time.Time, bool) {
+func (o *WiredNetworksItem) GetCreatedAtOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.DatetimeUpdated, true
+	return &o.CreatedAt, true
 }
 
-// SetDatetimeUpdated sets field value
-func (o *WiredNetworksItem) SetDatetimeUpdated(v time.Time) {
-	o.DatetimeUpdated = v
+// SetCreatedAt sets field value
+func (o *WiredNetworksItem) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
 }
 
-// GetDatetimeCreated returns the DatetimeCreated field value
-func (o *WiredNetworksItem) GetDatetimeCreated() time.Time {
+// GetUpdatedAt returns the UpdatedAt field value
+func (o *WiredNetworksItem) GetUpdatedAt() time.Time {
 	if o == nil {
 		var ret time.Time
 		return ret
 	}
 
-	return o.DatetimeCreated
+	return o.UpdatedAt
 }
 
-// GetDatetimeCreatedOk returns a tuple with the DatetimeCreated field value
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value
 // and a boolean to check if the value has been set.
-func (o *WiredNetworksItem) GetDatetimeCreatedOk() (*time.Time, bool) {
+func (o *WiredNetworksItem) GetUpdatedAtOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.DatetimeCreated, true
+	return &o.UpdatedAt, true
 }
 
-// SetDatetimeCreated sets field value
-func (o *WiredNetworksItem) SetDatetimeCreated(v time.Time) {
-	o.DatetimeCreated = v
+// SetUpdatedAt sets field value
+func (o *WiredNetworksItem) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt = v
 }
 
 // GetSecurity returns the Security field value
@@ -310,30 +315,62 @@ func (o *WiredNetworksItem) SetExternalConnectivity(v bool) {
 	o.ExternalConnectivity = v
 }
 
-// GetVlanId returns the VlanId field value
+// GetVLanId returns the VLanId field value
 // If the value is explicit nil, the zero value for int32 will be returned
-func (o *WiredNetworksItem) GetVlanId() int32 {
-	if o == nil || o.VlanId.Get() == nil {
+func (o *WiredNetworksItem) GetVLanId() int32 {
+	if o == nil || o.VLanId.Get() == nil {
 		var ret int32
 		return ret
 	}
 
-	return *o.VlanId.Get()
+	return *o.VLanId.Get()
 }
 
-// GetVlanIdOk returns a tuple with the VlanId field value
+// GetVLanIdOk returns a tuple with the VLanId field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *WiredNetworksItem) GetVlanIdOk() (*int32, bool) {
+func (o *WiredNetworksItem) GetVLanIdOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.VlanId.Get(), o.VlanId.IsSet()
+	return o.VLanId.Get(), o.VLanId.IsSet()
 }
 
-// SetVlanId sets field value
-func (o *WiredNetworksItem) SetVlanId(v int32) {
-	o.VlanId.Set(&v)
+// SetVLanId sets field value
+func (o *WiredNetworksItem) SetVLanId(v int32) {
+	o.VLanId.Set(&v)
+}
+
+// GetType returns the Type field value if set, zero value otherwise.
+func (o *WiredNetworksItem) GetType() string {
+	if o == nil || IsNil(o.Type) {
+		var ret string
+		return ret
+	}
+	return *o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WiredNetworksItem) GetTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.Type) {
+		return nil, false
+	}
+	return o.Type, true
+}
+
+// HasType returns a boolean if a field has been set.
+func (o *WiredNetworksItem) HasType() bool {
+	if o != nil && !IsNil(o.Type) {
+		return true
+	}
+
+	return false
+}
+
+// SetType gets a reference to the given string and assigns it to the Type field.
+func (o *WiredNetworksItem) SetType(v string) {
+	o.Type = &v
 }
 
 func (o WiredNetworksItem) MarshalJSON() ([]byte, error) {
@@ -346,17 +383,20 @@ func (o WiredNetworksItem) MarshalJSON() ([]byte, error) {
 
 func (o WiredNetworksItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["uid"] = o.Uid
-	toSerialize["alias"] = o.Alias
-	toSerialize["ip_version"] = o.IpVersion
-	toSerialize["datetime_updated"] = o.DatetimeUpdated
-	toSerialize["datetime_created"] = o.DatetimeCreated
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
+	toSerialize["ipVersion"] = o.IpVersion
+	toSerialize["createdAt"] = o.CreatedAt
+	toSerialize["updatedAt"] = o.UpdatedAt
 	toSerialize["security"] = o.Security.Get()
-	toSerialize["dns_lookup_domain"] = o.DnsLookupDomain.Get()
-	toSerialize["disable_edns"] = o.DisableEdns
-	toSerialize["use_dns64"] = o.UseDns64
-	toSerialize["external_connectivity"] = o.ExternalConnectivity
-	toSerialize["vlan_id"] = o.VlanId.Get()
+	toSerialize["dnsLookupDomain"] = o.DnsLookupDomain.Get()
+	toSerialize["disableEdns"] = o.DisableEdns
+	toSerialize["useDns64"] = o.UseDns64
+	toSerialize["externalConnectivity"] = o.ExternalConnectivity
+	toSerialize["vLanId"] = o.VLanId.Get()
+	if !IsNil(o.Type) {
+		toSerialize["type"] = o.Type
+	}
 	return toSerialize, nil
 }
 
@@ -365,17 +405,17 @@ func (o *WiredNetworksItem) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"uid",
-		"alias",
-		"ip_version",
-		"datetime_updated",
-		"datetime_created",
+		"id",
+		"name",
+		"ipVersion",
+		"createdAt",
+		"updatedAt",
 		"security",
-		"dns_lookup_domain",
-		"disable_edns",
-		"use_dns64",
-		"external_connectivity",
-		"vlan_id",
+		"dnsLookupDomain",
+		"disableEdns",
+		"useDns64",
+		"externalConnectivity",
+		"vLanId",
 	}
 
 	allProperties := make(map[string]interface{})
