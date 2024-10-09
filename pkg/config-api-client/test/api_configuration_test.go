@@ -33,6 +33,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 						"name":   "name",
 						"parent": map[string]string{"id": parent_uid},
 						"path":   "root_uid.parent_uid.uid",
+						"type":   "uxi/group",
 					},
 				},
 				"next":  nil,
@@ -45,6 +46,8 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			Cursor("some-cursor").
 			Execute()
 
+		resourceType := "uxi/group"
+
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
 		assert.Equal(t, resp, &openapiclient.GroupsGetResponse{
@@ -54,6 +57,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 					Name:   "name",
 					Parent: *openapiclient.NewNullableParent(openapiclient.NewParent("parent_uid")),
 					Path:   "root_uid.parent_uid.uid",
+					Type:   &resourceType,
 				},
 			},
 			Next:  *openapiclient.NewNullableString(nil),
@@ -64,14 +68,60 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 	t.Run("Test ConfigurationAPIService GroupsPostUxiV1alpha1GroupsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
-			Post("/uxi/v1alpha1/groups").Reply(200).
-			JSON(map[string]interface{}{"id": "node", "name": "name", "parent": map[string]string{"id": "parent.uid"}, "path": "parent.uid.node"})
-		groupsPostRequest := openapiclient.NewGroupsPostRequest("parent_uid", "name")
+			Post("/uxi/v1alpha1/groups").
+			MatchType("json").
+			BodyString(`{"parentId": "parent.uid", "name": "name"}`).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"id":     "node",
+				"name":   "name",
+				"parent": map[string]string{"id": "parent.uid"},
+				"path":   "parent.uid.node",
+				"type":   "uxi/group",
+			})
+		groupsPostRequest := openapiclient.NewGroupsPostRequest("parent.uid", "name")
 		resp, httpRes, err := apiClient.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(context.Background()).GroupsPostRequest(*groupsPostRequest).Execute()
+
+		resourceType := "uxi/group"
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
-		assert.Equal(t, resp, &openapiclient.GroupsPostResponse{Id: "node", Name: "name", Parent: *openapiclient.NewParent("parent.uid"), Path: "parent.uid.node"})
+		assert.Equal(t, resp, &openapiclient.GroupsPostResponse{
+			Id:     "node",
+			Name:   "name",
+			Parent: *openapiclient.NewParent("parent.uid"),
+			Path:   "parent.uid.node",
+			Type:   &resourceType,
+		})
+	})
+
+	t.Run("Test ConfigurationAPIService GroupsPatchUxiV1alpha1GroupsGroupUidPatch", func(t *testing.T) {
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Patch("/uxi/v1alpha1/groups/node").
+			MatchType("json").
+			BodyString(`{"name": "new_name"}`).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"id":     "node",
+				"name":   "new_name",
+				"parent": map[string]string{"id": "parent.uid"},
+				"path":   "parent.uid.node",
+				"type":   "uxi/group",
+			})
+		groupsPatchRequest := openapiclient.NewGroupsPatchRequest("new_name")
+		resp, httpRes, err := apiClient.ConfigurationAPI.GroupsPatchUxiV1alpha1GroupsGroupUidPatch(context.Background(), "node").GroupsPatchRequest(*groupsPatchRequest).Execute()
+
+		resourceType := "uxi/group"
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.GroupsPatchResponse{
+			Id:     "node",
+			Name:   "new_name",
+			Parent: *openapiclient.NewParent("parent.uid"),
+			Path:   "parent.uid.node",
+			Type:   &resourceType,
+		})
 	})
 
 	t.Run("Test ConfigurationAPIService GetUxiV1alpha1SensorGroupAssignmentsGet", func(t *testing.T) {
@@ -86,6 +136,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 						"id":     "uid",
 						"group":  map[string]string{"id": "group_uid"},
 						"sensor": map[string]string{"id": "sensor_uid"},
+						"type":   "uxi/sensor-group-assignment",
 					},
 				},
 				"count": 1,
@@ -100,12 +151,14 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
+		resourceType := "uxi/sensor-group-assignment"
 		assert.Equal(t, resp, &openapiclient.SensorGroupAssignmentsResponse{
 			Items: []openapiclient.SensorGroupAssignmentsItem{
 				{
 					Id:     "uid",
 					Group:  *openapiclient.NewGroup("group_uid"),
 					Sensor: *openapiclient.NewSensor("sensor_uid"),
+					Type:   &resourceType,
 				},
 			},
 			Count: 1,
@@ -117,12 +170,14 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/uxi/v1alpha1/sensor-group-assignments").
+			MatchType("json").
+			BodyString(`{"groupId": "group_uid", "sensorId": "sensor_uid"}`).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"id":     "uid",
 				"group":  map[string]string{"id": "group_uid"},
 				"sensor": map[string]string{"id": "sensor_uid"},
-				"type":   "uxi/sensor_group_assignment",
+				"type":   "uxi/sensor-group-assignment",
 			})
 
 		postRequest := openapiclient.NewSensorGroupAssignmentsPostRequest("group_uid", "sensor_uid")
@@ -133,13 +188,26 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
-		resourceType := "uxi/sensor_group_assignment"
+		resourceType := "uxi/sensor-group-assignment"
 		assert.Equal(t, resp, &openapiclient.SensorGroupAssignmentResponse{
 			Id:     "uid",
 			Group:  *openapiclient.NewGroup("group_uid"),
 			Sensor: *openapiclient.NewSensor("sensor_uid"),
 			Type:   &resourceType,
 		})
+	})
+
+	t.Run("Test ConfigurationAPIService DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete", func(t *testing.T) {
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Delete("/uxi/v1alpha1/sensor-group-assignments/uid").
+			Reply(204)
+
+		_, httpRes, err := apiClient.ConfigurationAPI.
+			DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete(context.Background(), "uid").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 204, httpRes.StatusCode)
 	})
 
 	t.Run("Test ConfigurationAPIService GetConfigurationAppV1WiredNetworksGet", func(t *testing.T) {
@@ -162,6 +230,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 						"useDns64":             false,
 						"externalConnectivity": true,
 						"vLanId":               1,
+						"type":                 "uxi/wired-network",
 					},
 				},
 				"count": 1,
@@ -177,6 +246,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		security := "security"
 		dnsLookupDomain := "dns_lookup_domain"
 		var vlanId int32 = 1
+		resourceType := "uxi/wired-network"
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
@@ -194,6 +264,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 					UseDns64:             false,
 					ExternalConnectivity: true,
 					VLanId:               *openapiclient.NewNullableInt32(&vlanId),
+					Type:                 &resourceType,
 				},
 			},
 			Count: 1,
@@ -201,7 +272,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPIService GetConfigurationAppV1WiredNetworksGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPIService GetUxiV1alpha1WirelessNetworksGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/wireless-networks").
@@ -223,6 +294,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 						"disableEdns":          true,
 						"useDns64":             false,
 						"externalConnectivity": true,
+						"type":                 "uxi/wireless-network",
 					},
 				},
 				"count": 1,
@@ -237,6 +309,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		security := "security"
 		dnsLookupDomain := "dns_lookup_domain"
+		resourceType := "uxi/wireless-network"
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
@@ -256,6 +329,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 					DisableEdns:          true,
 					UseDns64:             false,
 					ExternalConnectivity: true,
+					Type:                 &resourceType,
 				},
 			},
 			Count: 1,
@@ -275,6 +349,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 						"id":      "uid",
 						"group":   map[string]string{"id": "group_uid"},
 						"network": map[string]string{"id": "network_uid"},
+						"type":    "uxi/network-group-assignment",
 					},
 				},
 				"count": 1,
@@ -287,6 +362,8 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			Cursor("some-cursor").
 			Execute()
 
+		resourceType := "uxi/network-group-assignment"
+
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
 		assert.Equal(t, resp, &openapiclient.NetworkGroupAssignmentsResponse{
@@ -295,10 +372,88 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 					Id:      "uid",
 					Group:   *openapiclient.NewGroup("group_uid"),
 					Network: *openapiclient.NewNetwork("network_uid"),
+					Type:    &resourceType,
 				},
 			},
 			Count: 1,
 			Next:  *openapiclient.NewNullableString(nil),
+		})
+	})
+
+	t.Run("Test ConfigurationAPIService PostUxiV1alpha1NetworkGroupAssignmentsPost", func(t *testing.T) {
+
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Post("/uxi/v1alpha1/network-group-assignments").
+			MatchType("json").
+			BodyString(`{"groupId": "group_uid", "networkId": "network_uid"}`).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"id":      "uid",
+				"group":   map[string]string{"id": "group_uid"},
+				"network": map[string]string{"id": "network_uid"},
+				"type":    "uxi/network-group-assignment",
+			})
+
+		postRequest := openapiclient.NewNetworkGroupAssignmentsPostRequest("group_uid", "network_uid")
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			PostUxiV1alpha1NetworkGroupAssignmentsPost(context.Background()).
+			NetworkGroupAssignmentsPostRequest(*postRequest).
+			Execute()
+
+		resourceType := "uxi/network-group-assignment"
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.NetworkGroupAssignmentsPostResponse{
+			Id:      "uid",
+			Group:   *openapiclient.NewGroup("group_uid"),
+			Network: *openapiclient.NewNetwork("network_uid"),
+			Type:    &resourceType,
+		})
+	})
+
+	t.Run("Test ConfigurationAPIService DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete", func(t *testing.T) {
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Delete("/uxi/v1alpha1/network-group-assignments/uid").
+			Reply(204)
+
+		_, httpRes, err := apiClient.ConfigurationAPI.
+			DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete(context.Background(), "uid").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 204, httpRes.StatusCode)
+	})
+
+	t.Run("Test ConfigurationAPIService PostUxiV1alpha1ServiceTestGroupAssignmentsPost", func(t *testing.T) {
+
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Post("/uxi/v1alpha1/service-test-group-assignments").
+			MatchType("json").
+			BodyString(`{"groupId": "group_uid", "serviceTestId": "service_test_uid"}`).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"id":           "uid",
+				"group":        map[string]string{"id": "group_uid"},
+				"service_test": map[string]string{"id": "service_test_uid"},
+				"type":         "uxi/service-test-group-assignment",
+			})
+
+		postRequest := openapiclient.NewServiceTestGroupAssignmentsPostRequest("group_uid", "service_test_uid")
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			PostUxiV1alpha1ServiceTestGroupAssignmentsPost(context.Background()).
+			ServiceTestGroupAssignmentsPostRequest(*postRequest).
+			Execute()
+
+		resourceType := "uxi/service-test-group-assignment"
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.ServiceTestGroupAssignmentsPostResponse{
+			Id:          "uid",
+			Group:       *openapiclient.NewGroup("group_uid"),
+			ServiceTest: *openapiclient.NewServiceTest("service_test_uid"),
+			Type:        &resourceType,
 		})
 	})
 
