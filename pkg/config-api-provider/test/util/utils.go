@@ -264,6 +264,14 @@ func MockPostSensorGroupAssignment(uid string, response map[string]interface{}, 
 		JSON(response)
 }
 
+func MockDeleteSensorGroupAssignment(uid string, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Delete("/uxi/v1alpha1/sensor-group-assignments/"+uid).
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(204)
+}
+
 func MockGetNetworkGroupAssignment(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Get("/uxi/v1alpha1/network-group-assignments").
