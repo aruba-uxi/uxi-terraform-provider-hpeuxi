@@ -163,11 +163,13 @@ func GenerateNetworkGroupAssignmentGetResponse(uid string, postfix string) map[s
 	}
 }
 
-func GenerateServiceTestGroupAssignmentResponse(uid string, postfix string) resources.ServiceTestGroupAssignmentResponseModel {
-	return resources.ServiceTestGroupAssignmentResponseModel{
-		UID:            uid,
-		GroupUID:       "group_uid" + postfix,
-		ServiceTestUID: "service_test_uid" + postfix,
+func GenerateServiceTestGroupAssignmentResponse(uid string, postfix string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
+	resourceType := "uxi/service-test-group-assignment"
+	return config_api_client.ServiceTestGroupAssignmentsPostResponse{
+		Id:          uid,
+		Group:       *config_api_client.NewGroup("group_uid" + postfix),
+		ServiceTest: *config_api_client.NewServiceTest("service_test_uid" + postfix),
+		Type:        &resourceType,
 	}
 }
 
@@ -298,6 +300,16 @@ func MockDeleteNetworkGroupAssignment(uid string, times int) {
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
 		Reply(204)
+}
+
+func MockPostServiceTestGroupAssignment(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Post("/uxi/v1alpha1/service-test-group-assignments").
+		MatchHeader("Content-Type", "application/json").
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(200).
+		JSON(response)
 }
 
 var RateLimitingHeaders = map[string]string{
