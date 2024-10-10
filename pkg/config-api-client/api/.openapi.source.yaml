@@ -9,7 +9,7 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 1.22.0
+  version: 2.0.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
@@ -614,7 +614,6 @@ components:
         - errorCode
         - httpStatusCode
         - message
-        - errorDetails
       title: ErrorResponse
     Group:
       type: object
