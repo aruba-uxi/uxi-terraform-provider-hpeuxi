@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+
+	config_api_client "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
 )
 
 func GenerateErrorSummary(actionName string, entityName string) string {
@@ -19,12 +21,19 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 		switch e := err.(type) {
 		case *url.Error:
 			detail = handleURLError(e)
-		default:
+		case *config_api_client.GenericOpenAPIError:
 			if jsonDecodeErr := json.NewDecoder(response.Body).Decode(&data); jsonDecodeErr != nil {
 				detail = "Unexpected error: " + jsonDecodeErr.Error()
+			} else if message, ok := data["message"]; ok {
+				detail = message.(string)
+				if debugId, ok := data["debugId"]; ok {
+					detail += "\nDebugID: " + debugId.(string)
+				}
 			} else {
-				detail = data["message"].(string) + "\nDebugID: " + data["debugId"].(string)
+				detail = "Unexpected error: " + e.Error()
 			}
+		default:
+			detail = "Unexpected error: " + e.Error()
 		}
 
 		return true, detail
