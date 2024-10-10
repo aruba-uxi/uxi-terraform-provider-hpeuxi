@@ -27,7 +27,7 @@ type wirelessNetworkDataSource struct {
 type wirelessNetworkDataSourceModel struct {
 	ID                   types.String `tfsdk:"id"`
 	Ssid                 types.String `tfsdk:"ssid"`
-	Alias                types.String `tfsdk:"alias"`
+	Name                 types.String `tfsdk:"name"`
 	IpVersion            types.String `tfsdk:"ip_version"`
 	Security             types.String `tfsdk:"security"`
 	Hidden               types.Bool   `tfsdk:"hidden"`
@@ -55,7 +55,7 @@ func (d *wirelessNetworkDataSource) Schema(_ context.Context, _ datasource.Schem
 			"ssid": schema.StringAttribute{
 				Computed: true,
 			},
-			"alias": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				Computed: true,
 			},
 			"ip_version": schema.StringAttribute{
@@ -125,7 +125,7 @@ func (d *wirelessNetworkDataSource) Read(ctx context.Context, req datasource.Rea
 	network := networkResponse.Items[0]
 	state.ID = types.StringValue(network.Id)
 	state.Ssid = types.StringValue(network.Ssid)
-	state.Alias = types.StringValue(network.Name)
+	state.Name = types.StringValue(network.Name)
 	state.IpVersion = types.StringValue(network.IpVersion)
 	state.Security = types.StringValue(*network.Security.Get())
 	state.Hidden = types.BoolValue(network.Hidden)

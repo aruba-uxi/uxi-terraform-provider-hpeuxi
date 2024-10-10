@@ -27,7 +27,7 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_service_test" "my_service_test" {
-						title = "title"
+						name = "name"
 					}`,
 
 				ExpectError: regexp.MustCompile(`(?s)creating a service_test is not supported; service_tests can only be\s*imported`),
@@ -41,7 +41,7 @@ func TestServiceTestResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_service_test" "my_service_test" {
-						title = "title"
+						name = "name"
 					}
 
 					import {
@@ -50,7 +50,7 @@ func TestServiceTestResource(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_service_test.my_service_test", "title", "title"),
+					resource.TestCheckResourceAttr("uxi_service_test.my_service_test", "name", "name"),
 					resource.TestCheckResourceAttr("uxi_service_test.my_service_test", "id", "uid"),
 				),
 			},
@@ -64,7 +64,7 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 				resource "uxi_service_test" "my_service_test" {
-					title = "updated_title"
+					name = "updated_name"
 				}`,
 				ExpectError: regexp.MustCompile(`(?s)updating a service_test is not supported; service_tests can only be updated\s*through the dashboard`),
 			},

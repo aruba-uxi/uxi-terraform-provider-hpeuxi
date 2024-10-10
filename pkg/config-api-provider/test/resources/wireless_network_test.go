@@ -26,7 +26,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_wireless_network" "my_wireless_network" {
-						alias = "alias"
+						name = "name"
 					}`,
 
 				ExpectError: regexp.MustCompile(`(?s)creating a wireless_network is not supported; wireless_networks can only be\s*imported`),
@@ -42,7 +42,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_wireless_network" "my_wireless_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -51,7 +51,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_wireless_network.my_wireless_network", "alias", "alias"),
+					resource.TestCheckResourceAttr("uxi_wireless_network.my_wireless_network", "name", "name"),
 					resource.TestCheckResourceAttr("uxi_wireless_network.my_wireless_network", "id", "uid"),
 				),
 			},
@@ -79,7 +79,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_wireless_network" "my_wireless_network" {
-					alias = "updated_alias"
+					name = "updated_name"
 				}`,
 				ExpectError: regexp.MustCompile(`(?s)updating a wireless_network is not supported; wireless_networks can only be\s*updated through the dashboard`),
 			},
@@ -140,7 +140,7 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_wireless_network" "my_wireless_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -163,7 +163,7 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_wireless_network" "my_wireless_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {

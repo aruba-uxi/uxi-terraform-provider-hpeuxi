@@ -38,7 +38,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "id", "uid"),
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "alias", "alias"),
+					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "name", "name"),
 					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "ip_version", "ip_version"),
 					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "security", "security"),
 					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "dns_lookup_domain", "dns_lookup_domain"),

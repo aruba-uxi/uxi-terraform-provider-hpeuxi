@@ -19,15 +19,15 @@ var (
 )
 
 type serviceTestResourceModel struct {
-	ID    types.String `tfsdk:"id"`
-	Title types.String `tfsdk:"title"`
+	ID   types.String `tfsdk:"id"`
+	Name types.String `tfsdk:"name"`
 }
 
 // TODO: Switch this to use the Client Model when that becomes available
 type ServiceTestResponseModel struct {
 	Uid       string // <service_test_uid:str>,
 	Category  string // <category:str>,
-	Title     string // <title:str>,
+	Name      string // <name:str>,
 	Target    string // Nullable<<target:str>>,
 	Template  string // <template:str>,
 	IsEnabled bool   // <is_enabled:bool>
@@ -52,7 +52,7 @@ func (r *serviceTestResource) Schema(_ context.Context, _ resource.SchemaRequest
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"title": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				Required: true,
 			},
 		},
@@ -82,7 +82,7 @@ func (r *serviceTestResource) Read(ctx context.Context, req resource.ReadRequest
 	response := GetServiceTest(state.ID.ValueString())
 
 	// Update state from client response
-	state.Title = types.StringValue(response.Title)
+	state.Name = types.StringValue(response.Name)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -119,7 +119,7 @@ var GetServiceTest = func(uid string) ServiceTestResponseModel {
 	return ServiceTestResponseModel{
 		Uid:       uid,
 		Category:  "category",
-		Title:     "title",
+		Name:      "name",
 		Target:    "target",
 		Template:  "template",
 		IsEnabled: true,

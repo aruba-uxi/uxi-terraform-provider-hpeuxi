@@ -26,7 +26,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_wired_network" "my_wired_network" {
-						alias = "alias"
+						name = "name"
 					}`,
 
 				ExpectError: regexp.MustCompile(`(?s)creating a wired_network is not supported; wired_networks can only be\s*imported`),
@@ -42,7 +42,7 @@ func TestWiredNetworkResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_wired_network" "my_wired_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -51,7 +51,7 @@ func TestWiredNetworkResource(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_wired_network.my_wired_network", "alias", "alias"),
+					resource.TestCheckResourceAttr("uxi_wired_network.my_wired_network", "name", "name"),
 					resource.TestCheckResourceAttr("uxi_wired_network.my_wired_network", "id", "uid"),
 				),
 			},
@@ -79,7 +79,7 @@ func TestWiredNetworkResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_wired_network" "my_wired_network" {
-					alias = "updated_alias"
+					name = "updated_name"
 				}`,
 				ExpectError: regexp.MustCompile(`(?s)updating a wired_network is not supported; wired_networks can only be updated\s*through the dashboard`),
 			},
@@ -133,7 +133,7 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_wired_network" "my_wired_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -156,7 +156,7 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_wired_network" "my_wired_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {

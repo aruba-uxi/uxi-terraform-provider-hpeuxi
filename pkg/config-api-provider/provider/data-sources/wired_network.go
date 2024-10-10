@@ -26,7 +26,7 @@ type wiredNetworkDataSource struct {
 
 type wiredNetworkDataSourceModel struct {
 	ID                   types.String `tfsdk:"id"`
-	Alias                types.String `tfsdk:"alias"`
+	Name                 types.String `tfsdk:"name"`
 	IpVersion            types.String `tfsdk:"ip_version"`
 	Security             types.String `tfsdk:"security"`
 	DnsLookupDomain      types.String `tfsdk:"dns_lookup_domain"`
@@ -50,7 +50,7 @@ func (d *wiredNetworkDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
-			"alias": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				Computed: true,
 			},
 			"ip_version": schema.StringAttribute{
@@ -116,7 +116,7 @@ func (d *wiredNetworkDataSource) Read(ctx context.Context, req datasource.ReadRe
 
 	network := networkResponse.Items[0]
 	state.ID = types.StringValue(network.Id)
-	state.Alias = types.StringValue(network.Name)
+	state.Name = types.StringValue(network.Name)
 	state.IpVersion = types.StringValue(network.IpVersion)
 	state.Security = types.StringValue(*network.Security.Get())
 	state.DnsLookupDomain = types.StringValue(*network.DnsLookupDomain.Get())
