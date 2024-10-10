@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	config_api_client "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
-	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"github.com/h2non/gock"
@@ -28,9 +27,9 @@ func TestGroupResource(t *testing.T) {
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("uid", "", "")), 1)
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")), 1)
 					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
 						1,
 					)
 				},
@@ -49,7 +48,7 @@ func TestGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
 						1,
 					)
 				},
@@ -60,12 +59,18 @@ func TestGroupResource(t *testing.T) {
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					resources.UpdateGroup = func(request resources.GroupUpdateRequestModel) config_api_client.GroupsPostResponse {
-						return util.GenerateGroupResponsePostModel("uid", "_2", "")
-					}
+					// existing group
 					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "_2", ""))}),
-						2,
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
+						1,
+					)
+					// updated group
+					util.MockUpdateGroup("uid", util.GenerateGroupResponseModel("uid", "_2", ""),
+						1,
+					)
+					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "_2", "")}),
+						1,
 					)
 				},
 				Config: provider.ProviderConfig + `
@@ -78,20 +83,19 @@ func TestGroupResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_group_id", "parent_uid"),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
 				),
-				Destroy: false,
 			},
 			// Update that does trigger a recreate
 			{
 				PreConfig: func() {
 					// existing group
 					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
 						1,
 					)
 					// new group (replacement)
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("new_uid", "", "_2")), 1)
+					util.MockPostGroup(util.GenerateGroupResponseModel("new_uid", "", "_2"), 1)
 					util.MockGetGroup("new_uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("new_uid", "", "_2"))}),
+						[]map[string]interface{}{util.GenerateGroupResponseModel("new_uid", "", "_2")}),
 						1,
 					)
 				},
@@ -125,12 +129,14 @@ func TestRootGroupResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"my_root_group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(config_api_client.GroupsGetItem{
-							Id:     "my_root_group_uid",
-							Name:   "root",
-							Parent: *config_api_client.NewNullableParent(nil),
-							Path:   "my_root_group_uid",
-						})}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{
+							{
+								"id":     "my_root_group_uid",
+								"name":   "root",
+								"parent": *config_api_client.NewNullableParent(nil),
+								"path":   "my_root_group_uid",
+							},
+						}),
 						1,
 					)
 				},
@@ -154,7 +160,8 @@ func TestRootGroupResource(t *testing.T) {
 func TestGroupResource429Handling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var create429 *gock.Response
+	var request429 *gock.Response
+	var update429 *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -162,18 +169,14 @@ func TestGroupResource429Handling(t *testing.T) {
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					create429 = gock.New("https://test.api.capenetworks.com").
+					request429 = gock.New("https://test.api.capenetworks.com").
 						Post("/uxi/v1alpha1/groups").
 						Reply(429).
-						SetHeaders(map[string]string{
-							"X-RateLimit-Limit":     "100",
-							"X-RateLimit-Remaining": "0",
-							"X-RateLimit-Reset":     "1",
-						})
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponsePostModel("uid", "", "")), 1)
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockPostGroup(util.GenerateGroupResponseModel("uid", "", ""), 1)
 					util.MockGetGroup(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
 						1,
 					)
 				},
@@ -185,12 +188,45 @@ func TestGroupResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
 					func(s *terraform.State) error {
-						st.Assert(t, create429.Mock.Request().Counter, 0)
+						st.Assert(t, request429.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
 			},
-			// TODO: Test Updating 429s
+			// Update that does not trigger a recreate
+			{
+				PreConfig: func() {
+					// existing group
+					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
+						1,
+					)
+					// new group
+					update429 = gock.New("https://test.api.capenetworks.com").
+						Patch("/uxi/v1alpha1/groups/uid").
+						Reply(429).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockUpdateGroup("uid", util.GenerateGroupResponseModel("uid", "_2", ""),
+						1,
+					)
+					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "_2", "")}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name_2"
+						parent_group_id = "parent_uid"
+					}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
+					func(s *terraform.State) error {
+						st.Assert(t, update429.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
+			},
 			// TODO: Test Deleting 429s
 		},
 	})

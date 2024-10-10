@@ -182,6 +182,17 @@ func (r *sensorGroupAssignmentResource) Delete(ctx context.Context, req resource
 	}
 
 	// Delete existing sensorGroupAssignment using the plan_id
+	request := r.client.ConfigurationAPI.
+		DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
+	_, _, err := util.RetryFor429(request.Execute)
+
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error deleting Sensor Group Assignment",
+			"Could not deleting Sensor Group Assignment, unexpected error: "+err.Error(),
+		)
+		return
+	}
 }
 
 func (r *sensorGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

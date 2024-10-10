@@ -2,6 +2,8 @@ package resources
 
 import (
 	"context"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/util"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -23,22 +25,13 @@ type serviceTestGroupAssignmentResourceModel struct {
 	GroupID       types.String `tfsdk:"group_id"`
 }
 
-type ServiceTestGroupAssignmentResponseModel struct {
-	UID            string //  <assignment_uid>
-	GroupUID       string //  <group_uid:str>,
-	ServiceTestUID string //  <service_test_uid:str>
-}
-
-type ServiceTestGroupAssignmentRequestModel struct {
-	GroupUID       string //  <group_uid:str>,
-	ServiceTestUID string //  <service_test_uid:str>
-}
-
 func NewServiceTestGroupAssignmentResource() resource.Resource {
 	return &serviceTestGroupAssignmentResource{}
 }
 
-type serviceTestGroupAssignmentResource struct{}
+type serviceTestGroupAssignmentResource struct {
+	client *config_api_client.APIClient
+}
 
 func (r *serviceTestGroupAssignmentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_service_test_group_assignment"
@@ -70,6 +63,21 @@ func (r *serviceTestGroupAssignmentResource) Schema(_ context.Context, _ resourc
 }
 
 func (r *serviceTestGroupAssignmentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*config_api_client.APIClient)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Resource type: Service Test Group Assignment. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.client = client
 }
 
 func (r *serviceTestGroupAssignmentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -81,16 +89,27 @@ func (r *serviceTestGroupAssignmentResource) Create(ctx context.Context, req res
 		return
 	}
 
-	// TODO: Call client createServiceTestGroupAssignment method
-	serviceTestGroupAssignment := CreateServiceTestGroupAssignment(ServiceTestGroupAssignmentRequestModel{
-		GroupUID:       plan.GroupID.ValueString(),
-		ServiceTestUID: plan.ServiceTestID.ValueString(),
-	})
+	postRequest := config_api_client.NewServiceTestGroupAssignmentsPostRequest(
+		plan.GroupID.ValueString(),
+		plan.ServiceTestID.ValueString(),
+	)
+	request := r.client.ConfigurationAPI.
+		PostUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx).
+		ServiceTestGroupAssignmentsPostRequest(*postRequest)
+	serviceTestGroupAssignment, _, err := util.RetryFor429(request.Execute)
+
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating Service Test Group Assignment",
+			"Could not create Network Group Assignment, unexpected error: "+err.Error(),
+		)
+		return
+	}
 
 	// Update the state to match the plan
-	plan.ID = types.StringValue(serviceTestGroupAssignment.UID)
-	plan.GroupID = types.StringValue(serviceTestGroupAssignment.GroupUID)
-	plan.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTestUID)
+	plan.ID = types.StringValue(serviceTestGroupAssignment.Id)
+	plan.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
+	plan.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTest.Id)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -113,8 +132,8 @@ func (r *serviceTestGroupAssignmentResource) Read(ctx context.Context, req resou
 	serviceTestGroupAssignment := GetServiceTestGroupAssignment(state.ID.ValueString())
 
 	// Update state from client response
-	state.GroupID = types.StringValue(serviceTestGroupAssignment.GroupUID)
-	state.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTestUID)
+	state.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
+	state.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTest.Id)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -151,22 +170,13 @@ func (r *serviceTestGroupAssignmentResource) ImportState(ctx context.Context, re
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-var GetServiceTestGroupAssignment = func(uid string) ServiceTestGroupAssignmentResponseModel {
+var GetServiceTestGroupAssignment = func(uid string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
 	// TODO: Query the serviceTestGroupAssignment using the client
-
-	return ServiceTestGroupAssignmentResponseModel{
-		UID:            uid,
-		GroupUID:       "mock_group_uid",
-		ServiceTestUID: "mock_serviceTest_uid",
-	}
-}
-
-var CreateServiceTestGroupAssignment = func(request ServiceTestGroupAssignmentRequestModel) ServiceTestGroupAssignmentResponseModel {
-	// TODO: Query the serviceTestGroupAssignment using the client
-
-	return ServiceTestGroupAssignmentResponseModel{
-		UID:            "mock_uid",
-		GroupUID:       "mock_group_uid",
-		ServiceTestUID: "mock_serviceTest_uid",
+	resourceType := "uxi/service-test-group-assignment"
+	return config_api_client.ServiceTestGroupAssignmentsPostResponse{
+		Id:          uid,
+		Group:       *config_api_client.NewGroup("mock_group_uid"),
+		ServiceTest: *config_api_client.NewServiceTest("mock_serviceTest_uid"),
+		Type:        &resourceType,
 	}
 }

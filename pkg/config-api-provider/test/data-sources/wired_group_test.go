@@ -67,11 +67,7 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 					mock429 = gock.New("https://test.api.capenetworks.com").
 						Get("/uxi/v1alpha1/wired-networks").
 						Reply(429).
-						SetHeaders(map[string]string{
-							"X-RateLimit-Limit":     "100",
-							"X-RateLimit-Remaining": "0",
-							"X-RateLimit-Reset":     "1",
-						})
+						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetWiredNetwork(
 						"uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),

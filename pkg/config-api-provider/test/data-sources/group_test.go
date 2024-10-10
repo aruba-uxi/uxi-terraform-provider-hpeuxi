@@ -25,7 +25,7 @@ func TestGroupDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
 						3,
 					)
 				},
@@ -84,14 +84,10 @@ func TestGroupDataSource429Handling(t *testing.T) {
 					mock429 = gock.New("https://test.api.capenetworks.com").
 						Get("/uxi/v1alpha1/groups").
 						Reply(429).
-						SetHeaders(map[string]string{
-							"X-RateLimit-Limit":     "100",
-							"X-RateLimit-Remaining": "0",
-							"X-RateLimit-Reset":     "1",
-						})
+						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetGroup(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(util.GenerateGroupResponseGetModel("uid", "", ""))}),
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
 						3,
 					)
 				},

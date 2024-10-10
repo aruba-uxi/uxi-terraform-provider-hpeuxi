@@ -31,11 +31,6 @@ type NetworkGroupAssignmentResponseModel struct {
 	NetworkUID string //  <network_uid:str>
 }
 
-type NetworkGroupAssignmentRequestModel struct {
-	GroupUID   string //  <group_uid:str>,
-	NetworkUID string //  <network_uid:str>
-}
-
 func NewNetworkGroupAssignmentResource() resource.Resource {
 	return &networkGroupAssignmentResource{}
 }
@@ -100,16 +95,26 @@ func (r *networkGroupAssignmentResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	// TODO: Call client createNetworkGroupAssignment method
-	networkGroupAssignment := CreateNetworkGroupAssignment(NetworkGroupAssignmentRequestModel{
-		GroupUID:   plan.GroupID.ValueString(),
-		NetworkUID: plan.NetworkID.ValueString(),
-	})
+	postRequest := config_api_client.NewNetworkGroupAssignmentsPostRequest(
+		plan.GroupID.ValueString(),
+		plan.NetworkID.ValueString(),
+	)
+	request := r.client.ConfigurationAPI.
+		PostUxiV1alpha1NetworkGroupAssignmentsPost(ctx).
+		NetworkGroupAssignmentsPostRequest(*postRequest)
+	networkGroupAssignment, _, err := util.RetryFor429(request.Execute)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error updating Network Group Assignment",
+			"Could not update Network Group Assignment, unexpected error: "+err.Error(),
+		)
+		return
+	}
 
 	// Update the state to match the plan
-	plan.ID = types.StringValue(networkGroupAssignment.UID)
-	plan.GroupID = types.StringValue(networkGroupAssignment.GroupUID)
-	plan.NetworkID = types.StringValue(networkGroupAssignment.NetworkUID)
+	plan.ID = types.StringValue(networkGroupAssignment.Id)
+	plan.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
+	plan.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -128,12 +133,11 @@ func (r *networkGroupAssignmentResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	// TODO: Call client getNetworkGroupAssignment method
 	request := r.client.ConfigurationAPI.
 		GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).
 		Uid(state.ID.ValueString())
-
 	networkGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
+
 	if err != nil || len(networkGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(
 			"Error reading Network Group Assignment",
@@ -175,19 +179,19 @@ func (r *networkGroupAssignmentResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	// Delete existing networkGroupAssignment using the plan_id
+	request := r.client.ConfigurationAPI.
+		DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
+	_, _, err := util.RetryFor429(request.Execute)
+
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error deleting Network Group Assignment",
+			"Could not delete Network Group Assignment, unexpected error: "+err.Error(),
+		)
+		return
+	}
 }
 
 func (r *networkGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-var CreateNetworkGroupAssignment = func(request NetworkGroupAssignmentRequestModel) NetworkGroupAssignmentResponseModel {
-	// TODO: Query the networkGroupAssignment using the client
-
-	return NetworkGroupAssignmentResponseModel{
-		UID:        "mock_uid",
-		GroupUID:   "mock_group_uid",
-		NetworkUID: "mock_network_uid",
-	}
 }
