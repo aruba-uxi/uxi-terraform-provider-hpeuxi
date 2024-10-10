@@ -241,6 +241,55 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
+			// read 5xx error
+			{
+				PreConfig: func() {
+					gock.New("https://test.api.capenetworks.com").
+						Get("/uxi/v1alpha1/groups").
+						Reply(500).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 500,
+							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
+							"message":        "Current request cannot be processed due to unknown issue",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name"
+						parent_group_id = "parent_uid"
+					}
+
+					import {
+						to = uxi_group.my_group
+						id = "uid"
+					}
+				`,
+				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+			},
+			// Read not found
+			{
+				PreConfig: func() {
+					util.MockGetGroup(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name"
+						parent_group_id = "parent_uid"
+					}
+
+					import {
+						to = uxi_group.my_group
+						id = "uid"
+					}
+				`,
+
+				ExpectError: regexp.MustCompile(`Could not find specified resource`),
+			},
 			// Create 4xx
 			{
 				PreConfig: func() {

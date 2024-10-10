@@ -83,7 +83,7 @@ func (d *networkGroupAssignmentDataSource) Read(ctx context.Context, req datasou
 	}
 
 	if len(networkGroupAssignmentResponse.Items) != 1 {
-		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		return
 	}
 

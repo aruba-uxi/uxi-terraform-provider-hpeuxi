@@ -404,6 +404,117 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}`,
 				ExpectError: regexp.MustCompile(`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`),
 			},
+			// read not found error
+			{
+				PreConfig: func() {
+					// required for sensor import
+					resources.GetSensor = func(uid string) resources.SensorResponseModel {
+						return util.GenerateSensorResponseModel(uid, "")
+					}
+
+					// required for group create
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
+					util.MockGetGroup(
+						"group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						1,
+					)
+
+					// sensor group assignment create
+					util.MockGetSensorGroupAssignment(
+						"sensor_group_assignment_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name"
+						parent_group_id = "parent_uid"
+					}
+
+					resource "uxi_sensor" "my_sensor" {
+						name 			= "name"
+						address_note 	= "address_note"
+						notes 			= "notes"
+						pcap_mode 		= "light"
+					}
+
+					import {
+						to = uxi_sensor.my_sensor
+						id = "sensor_uid"
+					}
+
+					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id       = uxi_sensor.my_sensor.id
+						group_id 		= uxi_group.my_group.id
+					}
+
+					import {
+						to = uxi_sensor_group_assignment.my_sensor_group_assignment
+						id = "sensor_group_assignment_uid"
+					}
+				`,
+				ExpectError: regexp.MustCompile(`Could not find specified resource`),
+			},
+			// Read 5xx error
+			{
+				PreConfig: func() {
+					// required for sensor import
+					resources.GetSensor = func(uid string) resources.SensorResponseModel {
+						return util.GenerateSensorResponseModel(uid, "")
+					}
+
+					// required for group create
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
+					util.MockGetGroup(
+						"group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						1,
+					)
+
+					// required for sensor group assignment read
+					gock.New("https://test.api.capenetworks.com").
+						Get("/uxi/v1alpha1/sensor-group-assignments").
+						Reply(500).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 500,
+							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
+							"message":        "Current request cannot be processed due to unknown issue",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name"
+						parent_group_id = "parent_uid"
+					}
+
+					resource "uxi_sensor" "my_sensor" {
+						name 			= "name"
+						address_note 	= "address_note"
+						notes 			= "notes"
+						pcap_mode 		= "light"
+					}
+
+					import {
+						to = uxi_sensor.my_sensor
+						id = "sensor_uid"
+					}
+
+					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id       = uxi_sensor.my_sensor.id
+						group_id 		= uxi_group.my_group.id
+					}
+
+					import {
+						to = uxi_sensor_group_assignment.my_sensor_group_assignment
+						id = "sensor_group_assignment_uid"
+					}
+				`,
+
+				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+			},
 			// Actually Creating a sensor group assignment - needed for next step
 			{
 				PreConfig: func() {

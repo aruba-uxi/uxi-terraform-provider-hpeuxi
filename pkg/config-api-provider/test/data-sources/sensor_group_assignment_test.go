@@ -115,6 +115,23 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				`,
 				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
 			},
+			{
+				PreConfig: func() {
+					util.MockGetSensorGroupAssignment(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						filter = {
+							sensor_group_assignment_id = "uid"
+						}
+					}
+				`,
+				ExpectError: regexp.MustCompile(`Could not find specified data source`),
+			},
 		},
 	})
 

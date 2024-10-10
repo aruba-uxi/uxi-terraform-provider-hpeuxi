@@ -118,6 +118,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
+			// 5xx error
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
@@ -138,6 +139,24 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 					}
 				`,
 				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+			},
+			// Not found error
+			{
+				PreConfig: func() {
+					util.MockGetGroup(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					data "uxi_group" "my_group" {
+						filter = {
+							group_id = "uid"
+						}
+					}
+				`,
+				ExpectError: regexp.MustCompile(`Could not find specified data source`),
 			},
 		},
 	})

@@ -123,6 +123,23 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				`,
 				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
 			},
+			{
+				PreConfig: func() {
+					util.MockGetWiredNetwork(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					data "uxi_wired_network" "my_wired_network" {
+						filter = {
+							wired_network_id = "uid"
+						}
+					}
+				`,
+				ExpectError: regexp.MustCompile(`Could not find specified data source`),
+			},
 		},
 	})
 

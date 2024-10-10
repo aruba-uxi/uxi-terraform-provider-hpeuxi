@@ -85,7 +85,7 @@ func (d *sensorGroupAssignmentDataSource) Read(ctx context.Context, req datasour
 	}
 
 	if len(sensorGroupAssignmentResponse.Items) != 1 {
-		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		return
 	}
 

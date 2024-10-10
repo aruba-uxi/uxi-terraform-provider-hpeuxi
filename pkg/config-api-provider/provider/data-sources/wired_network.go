@@ -110,7 +110,7 @@ func (d *wiredNetworkDataSource) Read(ctx context.Context, req datasource.ReadRe
 	}
 
 	if len(networkResponse.Items) != 1 {
-		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		return
 	}
 
