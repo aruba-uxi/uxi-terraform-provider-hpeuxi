@@ -11,22 +11,17 @@ func GenerateErrorSummary(actionName string, entityName string) string {
 	return fmt.Sprintf("Error performing %s on %s", actionName, entityName)
 }
 
-type ResponseStatusCheck struct {
-	Response *http.Response
-	Err      error
-}
-
-func (r ResponseStatusCheck) RaiseForStatus() (bool, string) {
-	if r.Err != nil {
+func RaiseForStatus(response *http.Response, err error) (bool, string) {
+	if err != nil {
 		var detail string
 		var data map[string]interface{}
 
-		switch e := r.Err.(type) {
+		switch e := err.(type) {
 		case *url.Error:
-			detail = r.handleURLError(e)
+			detail = handleURLError(e)
 		default:
-			if err := json.NewDecoder(r.Response.Body).Decode(&data); err != nil {
-				detail = "Unexpected error: " + r.Err.Error()
+			if jsonDecodeErr := json.NewDecoder(response.Body).Decode(&data); jsonDecodeErr != nil {
+				detail = "Unexpected error: " + jsonDecodeErr.Error()
 			} else {
 				detail = data["message"].(string) + "\nDebugID: " + data["debugId"].(string)
 			}
@@ -37,7 +32,7 @@ func (r ResponseStatusCheck) RaiseForStatus() (bool, string) {
 	return false, ""
 }
 
-func (r ResponseStatusCheck) handleURLError(uErr *url.Error) string {
+func handleURLError(uErr *url.Error) string {
 	if uErr.Timeout() {
 		return "Error: Request timed out. Please check your network."
 	} else if uErr.Temporary() {

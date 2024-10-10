@@ -74,13 +74,18 @@ func (d *sensorGroupAssignmentDataSource) Read(ctx context.Context, req datasour
 	request := d.client.ConfigurationAPI.
 		GetUxiV1alpha1SensorGroupAssignmentsGet(ctx).
 		Uid(state.Filter.SensorGroupAssignmentID)
-	sensorGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
+	sensorGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	if err != nil || len(sensorGroupAssignmentResponse.Items) != 1 {
-		resp.Diagnostics.AddError(
-			"Error reading Sensor Group Assignment",
-			"Could not retrieve Sensor Group Assignment, unexpected error: "+err.Error(),
-		)
+	errorSummary := util.GenerateErrorSummary("create", "uxi_sensor_group_assignment")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(sensorGroupAssignmentResponse.Items) != 1 {
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
 		return
 	}
 

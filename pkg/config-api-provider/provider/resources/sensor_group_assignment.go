@@ -100,10 +100,7 @@ func (r *sensorGroupAssignmentResource) Create(ctx context.Context, req resource
 	postRequest := config_api_client.NewSensorGroupAssignmentsPostRequest(plan.GroupID.ValueString(), plan.SensorID.ValueString())
 	request := r.client.ConfigurationAPI.PostUxiV1alpha1SensorGroupAssignmentsPost(ctx).SensorGroupAssignmentsPostRequest(*postRequest)
 	sensorGroupAssignment, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_sensor_group_assignment"), errorDetail)
@@ -134,10 +131,7 @@ func (r *sensorGroupAssignmentResource) Read(ctx context.Context, req resource.R
 		GetUxiV1alpha1SensorGroupAssignmentsGet(ctx).
 		Uid(state.ID.ValueString())
 	sensorGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("create", "uxi_sensor_group_assignment")
 
@@ -189,10 +183,7 @@ func (r *sensorGroupAssignmentResource) Delete(ctx context.Context, req resource
 	request := r.client.ConfigurationAPI.
 		DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_sensor_group_assignment"), errorDetail)

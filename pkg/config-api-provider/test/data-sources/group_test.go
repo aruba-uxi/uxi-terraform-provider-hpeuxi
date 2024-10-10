@@ -61,7 +61,7 @@ func TestGroupDataSource(t *testing.T) {
 						}
 					}
 				`,
-				ExpectError: regexp.MustCompile(`the root group cannot be used as a data source`),
+				ExpectError: regexp.MustCompile(`The root group cannot be used as a data source`),
 			},
 		},
 	})

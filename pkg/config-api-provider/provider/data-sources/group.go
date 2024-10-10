@@ -78,19 +78,24 @@ func (d *groupDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 		GroupsGetUxiV1alpha1GroupsGet(ctx).
 		Uid(*state.Filter.GroupID)
 
-	groupResponse, _, err := util.RetryFor429(request.Execute)
+	groupResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	if err != nil || len(groupResponse.Items) != 1 {
-		resp.Diagnostics.AddError(
-			"Error reading Group",
-			"Could not retrieve Group, unexpected error: "+err.Error(),
-		)
+	errorSummary := util.GenerateErrorSummary("read", "uxi_group")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(groupResponse.Items) != 1 {
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
 		return
 	}
 
 	group := groupResponse.Items[0]
 	if util.IsRoot(group) {
-		resp.Diagnostics.AddError("operation not supported", "the root group cannot be used as a data source")
+		resp.Diagnostics.AddError(errorSummary, "The root group cannot be used as a data source")
 		return
 	}
 

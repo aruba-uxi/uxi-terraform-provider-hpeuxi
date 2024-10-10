@@ -93,10 +93,7 @@ func (r *wirelessNetworkResource) Read(ctx context.Context, req resource.ReadReq
 		GetUxiV1alpha1WirelessNetworksGet(ctx).
 		Uid(state.ID.ValueString())
 	networkResponse, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_wireless_network")
 

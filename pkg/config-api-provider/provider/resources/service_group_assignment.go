@@ -97,10 +97,7 @@ func (r *serviceTestGroupAssignmentResource) Create(ctx context.Context, req res
 		PostUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx).
 		ServiceTestGroupAssignmentsPostRequest(*postRequest)
 	serviceTestGroupAssignment, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"), errorDetail)

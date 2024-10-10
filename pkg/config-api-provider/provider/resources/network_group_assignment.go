@@ -97,10 +97,7 @@ func (r *networkGroupAssignmentResource) Create(ctx context.Context, req resourc
 		PostUxiV1alpha1NetworkGroupAssignmentsPost(ctx).
 		NetworkGroupAssignmentsPostRequest(*postRequest)
 	networkGroupAssignment, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_network_group_assignment"), errorDetail)
@@ -133,10 +130,7 @@ func (r *networkGroupAssignmentResource) Read(ctx context.Context, req resource.
 		GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).
 		Uid(state.ID.ValueString())
 	networkGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
 
@@ -186,10 +180,7 @@ func (r *networkGroupAssignmentResource) Delete(ctx context.Context, req resourc
 	request := r.client.ConfigurationAPI.
 		DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_network_group_assignment"), errorDetail)

@@ -93,10 +93,7 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 	groups_post_request := config_api_client.NewGroupsPostRequest(plan.ParentGroupId.ValueString(), plan.Name.ValueString())
 	request := r.client.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(ctx).GroupsPostRequest(*groups_post_request)
 	group, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_group"), errorDetail)
@@ -129,10 +126,7 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		GroupsGetUxiV1alpha1GroupsGet(ctx).
 		Uid(state.ID.ValueString())
 	groupResponse, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_group")
 
@@ -179,10 +173,7 @@ func (r *groupResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		GroupsPatchRequest(*patchRequest)
 	group, response, err := util.RetryFor429(request.Execute)
 
-	errorPresent, errorDetail := util.ResponseStatusCheck{
-		Response: response,
-		Err:      err,
-	}.RaiseForStatus()
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_group"), errorDetail)
