@@ -25,12 +25,6 @@ type networkGroupAssignmentResourceModel struct {
 	GroupID   types.String `tfsdk:"group_id"`
 }
 
-type NetworkGroupAssignmentResponseModel struct {
-	UID        string //  <assignment_uid>
-	GroupUID   string //  <group_uid:str>,
-	NetworkUID string //  <network_uid:str>
-}
-
 func NewNetworkGroupAssignmentResource() resource.Resource {
 	return &networkGroupAssignmentResource{}
 }
@@ -102,12 +96,14 @@ func (r *networkGroupAssignmentResource) Create(ctx context.Context, req resourc
 	request := r.client.ConfigurationAPI.
 		PostUxiV1alpha1NetworkGroupAssignmentsPost(ctx).
 		NetworkGroupAssignmentsPostRequest(*postRequest)
-	networkGroupAssignment, _, err := util.RetryFor429(request.Execute)
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error updating Network Group Assignment",
-			"Could not update Network Group Assignment, unexpected error: "+err.Error(),
-		)
+	networkGroupAssignment, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.ResponseStatusCheck{
+		Response: response,
+		Err:      err,
+	}.RaiseForStatus()
+
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_network_group_assignment"), errorDetail)
 		return
 	}
 
@@ -136,13 +132,21 @@ func (r *networkGroupAssignmentResource) Read(ctx context.Context, req resource.
 	request := r.client.ConfigurationAPI.
 		GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).
 		Uid(state.ID.ValueString())
-	networkGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
+	networkGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.ResponseStatusCheck{
+		Response: response,
+		Err:      err,
+	}.RaiseForStatus()
 
-	if err != nil || len(networkGroupAssignmentResponse.Items) != 1 {
-		resp.Diagnostics.AddError(
-			"Error reading Network Group Assignment",
-			"Could not retrieve Network Group Assignment, unexpected error: "+err.Error(),
-		)
+	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(networkGroupAssignmentResponse.Items) != 1 {
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
 		return
 	}
 	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
@@ -181,13 +185,14 @@ func (r *networkGroupAssignmentResource) Delete(ctx context.Context, req resourc
 
 	request := r.client.ConfigurationAPI.
 		DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
-	_, _, err := util.RetryFor429(request.Execute)
+	_, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.ResponseStatusCheck{
+		Response: response,
+		Err:      err,
+	}.RaiseForStatus()
 
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error deleting Network Group Assignment",
-			"Could not delete Network Group Assignment, unexpected error: "+err.Error(),
-		)
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_network_group_assignment"), errorDetail)
 		return
 	}
 }

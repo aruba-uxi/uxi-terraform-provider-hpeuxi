@@ -149,7 +149,7 @@ func TestRootGroupResource(t *testing.T) {
 					to = uxi_group.my_root_group
 					id = "my_root_group_uid"
 				}`,
-				ExpectError: regexp.MustCompile(`the root group cannot be used as a resource`),
+				ExpectError: regexp.MustCompile(`The root group cannot be used as a resource`),
 			},
 		},
 	})

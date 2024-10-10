@@ -92,13 +92,21 @@ func (r *wirelessNetworkResource) Read(ctx context.Context, req resource.ReadReq
 	request := r.client.ConfigurationAPI.
 		GetUxiV1alpha1WirelessNetworksGet(ctx).
 		Uid(state.ID.ValueString())
-	networkResponse, _, err := util.RetryFor429(request.Execute)
+	networkResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.ResponseStatusCheck{
+		Response: response,
+		Err:      err,
+	}.RaiseForStatus()
 
-	if err != nil || len(networkResponse.Items) != 1 {
-		resp.Diagnostics.AddError(
-			"Error reading Wireless Networks",
-			"Could not retrieve Wireless Network, unexpected error: "+err.Error(),
-		)
+	errorSummary := util.GenerateErrorSummary("read", "uxi_wireless_network")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(networkResponse.Items) != 1 {
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
 		return
 	}
 
