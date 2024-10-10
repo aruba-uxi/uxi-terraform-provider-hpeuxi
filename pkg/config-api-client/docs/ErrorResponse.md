@@ -8,13 +8,13 @@ Name | Type | Description | Notes
 **ErrorCode** | **string** |  | 
 **HttpStatusCode** | **int32** |  | 
 **Message** | **string** |  | 
-**ErrorDetails** | [**[]ErrorDetail**](ErrorDetail.md) |  | 
+**ErrorDetails** | Pointer to [**[]ErrorDetail**](ErrorDetail.md) |  | [optional] 
 
 ## Methods
 
 ### NewErrorResponse
 
-`func NewErrorResponse(debugId string, errorCode string, httpStatusCode int32, message string, errorDetails []ErrorDetail, ) *ErrorResponse`
+`func NewErrorResponse(debugId string, errorCode string, httpStatusCode int32, message string, ) *ErrorResponse`
 
 NewErrorResponse instantiates a new ErrorResponse object
 This constructor will assign default values to properties that have it defined,
@@ -128,6 +128,11 @@ and a boolean to check if the value has been set.
 
 SetErrorDetails sets ErrorDetails field to given value.
 
+### HasErrorDetails
+
+`func (o *ErrorResponse) HasErrorDetails() bool`
+
+HasErrorDetails returns a boolean if a field has been set.
 
 ### SetErrorDetailsNil
 

@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 1.22.0
+  version: 2.0.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -630,7 +630,6 @@ components:
       required:
       - debugId
       - errorCode
-      - errorDetails
       - httpStatusCode
       - message
       title: ErrorResponse

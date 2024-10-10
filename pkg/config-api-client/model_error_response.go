@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 1.22.0
+API version: 2.0.0
 Contact: support@capenetworks.com
 */
 
@@ -26,7 +26,7 @@ type ErrorResponse struct {
 	ErrorCode      string        `json:"errorCode"`
 	HttpStatusCode int32         `json:"httpStatusCode"`
 	Message        string        `json:"message"`
-	ErrorDetails   []ErrorDetail `json:"errorDetails"`
+	ErrorDetails   []ErrorDetail `json:"errorDetails,omitempty"`
 }
 
 type _ErrorResponse ErrorResponse
@@ -35,13 +35,12 @@ type _ErrorResponse ErrorResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewErrorResponse(debugId string, errorCode string, httpStatusCode int32, message string, errorDetails []ErrorDetail) *ErrorResponse {
+func NewErrorResponse(debugId string, errorCode string, httpStatusCode int32, message string) *ErrorResponse {
 	this := ErrorResponse{}
 	this.DebugId = debugId
 	this.ErrorCode = errorCode
 	this.HttpStatusCode = httpStatusCode
 	this.Message = message
-	this.ErrorDetails = errorDetails
 	return &this
 }
 
@@ -149,18 +148,16 @@ func (o *ErrorResponse) SetMessage(v string) {
 	o.Message = v
 }
 
-// GetErrorDetails returns the ErrorDetails field value
-// If the value is explicit nil, the zero value for []ErrorDetail will be returned
+// GetErrorDetails returns the ErrorDetails field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ErrorResponse) GetErrorDetails() []ErrorDetail {
 	if o == nil {
 		var ret []ErrorDetail
 		return ret
 	}
-
 	return o.ErrorDetails
 }
 
-// GetErrorDetailsOk returns a tuple with the ErrorDetails field value
+// GetErrorDetailsOk returns a tuple with the ErrorDetails field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ErrorResponse) GetErrorDetailsOk() ([]ErrorDetail, bool) {
@@ -170,7 +167,16 @@ func (o *ErrorResponse) GetErrorDetailsOk() ([]ErrorDetail, bool) {
 	return o.ErrorDetails, true
 }
 
-// SetErrorDetails sets field value
+// HasErrorDetails returns a boolean if a field has been set.
+func (o *ErrorResponse) HasErrorDetails() bool {
+	if o != nil && !IsNil(o.ErrorDetails) {
+		return true
+	}
+
+	return false
+}
+
+// SetErrorDetails gets a reference to the given []ErrorDetail and assigns it to the ErrorDetails field.
 func (o *ErrorResponse) SetErrorDetails(v []ErrorDetail) {
 	o.ErrorDetails = v
 }
@@ -204,7 +210,6 @@ func (o *ErrorResponse) UnmarshalJSON(data []byte) (err error) {
 		"errorCode",
 		"httpStatusCode",
 		"message",
-		"errorDetails",
 	}
 
 	allProperties := make(map[string]interface{})
