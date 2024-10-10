@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
@@ -455,7 +456,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestNetworkGroupAssignmentSource429Handling(t *testing.T) {
+func TestNetworkGroupAssignmentResource429Handling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mock429 *gock.Response
@@ -561,6 +562,188 @@ func TestNetworkGroupAssignmentSource429Handling(t *testing.T) {
 						return nil
 					},
 				),
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+
+func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Creating a network group assignment - errors
+			{
+				PreConfig: func() {
+					util.MockGetWiredNetwork(
+						"network_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
+						2,
+					)
+
+					// required for group create
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
+					util.MockGetGroup("group_uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						2,
+					)
+
+					// network group assignment create
+					gock.New("https://test.api.capenetworks.com").
+						Post("/uxi/v1alpha1/network-group-assignments").
+						Reply(400).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 400,
+							"errorCode":      "HPE_GL_ERROR_BAD_REQUEST",
+							"message":        "Validation error - bad request",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name"
+						parent_group_id = "parent_uid"
+					}
+
+					resource "uxi_wired_network" "my_network" {
+						alias = "alias"
+					}
+
+					import {
+						to = uxi_wired_network.my_network
+						id = "network_uid"
+					}
+
+					resource "uxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = uxi_wired_network.my_network.id
+						group_id   = uxi_group.my_group.id
+					}`,
+				ExpectError: regexp.MustCompile(`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`),
+			},
+			// Actually creating a network group assignment - for next step
+			{
+				PreConfig: func() {
+					util.MockGetWiredNetwork(
+						"network_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
+						2,
+					)
+
+					// required for group create
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
+					util.MockGetGroup("group_uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						2,
+					)
+
+					// required for network group assignment create
+					util.MockPostNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", ""),
+						1,
+					)
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")}),
+						1,
+					)
+				},
+
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name"
+						parent_group_id = "parent_uid"
+					}
+
+					resource "uxi_wired_network" "my_network" {
+						alias = "alias"
+					}
+
+					import {
+						to = uxi_wired_network.my_network
+						id = "network_uid"
+					}
+
+					resource "uxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = uxi_wired_network.my_network.id
+						group_id   = uxi_group.my_group.id
+					}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_network_group_assignment.my_network_group_assignment", "network_id", "network_uid"),
+				),
+			},
+			// Delete network-group assignment and remove networks from state - errors
+			{
+				PreConfig: func() {
+					util.MockGetWiredNetwork(
+						"network_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
+						1,
+					)
+					util.MockGetGroup("group_uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						1,
+					)
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")}),
+						1,
+					)
+
+					// network group assignment create
+					gock.New("https://test.api.capenetworks.com").
+						Delete("/uxi/v1alpha1/network-group-assignments").
+						Reply(403).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 403,
+							"errorCode":      "HPE_GL_ERROR_FORBIDDEN",
+							"message":        "Forbidden - user has insufficient permissions to complete the request",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+
+				},
+				Config: provider.ProviderConfig + `
+					removed {
+						from = uxi_wired_network.my_network
+
+						lifecycle {
+							destroy = false
+						}
+					}`,
+				ExpectError: regexp.MustCompile(`(?s)Forbidden - user has insufficient permissions to complete the request\s*DebugID: 12312-123123-123123-1231212`),
+			},
+			// Actually delete network-group assignment and remove networks from state
+			{
+				PreConfig: func() {
+					util.MockGetWiredNetwork(
+						"network_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("network_uid", "")}),
+						1,
+					)
+					util.MockGetGroup("group_uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						1,
+					)
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")}),
+						1,
+					)
+					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid", 1)
+				},
+				Config: provider.ProviderConfig + `
+					removed {
+						from = uxi_wired_network.my_network
+
+						lifecycle {
+							destroy = false
+						}
+					}`,
 			},
 		},
 	})

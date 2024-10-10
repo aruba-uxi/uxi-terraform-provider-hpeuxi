@@ -111,3 +111,36 @@ func TestGroupDataSource429Handling(t *testing.T) {
 
 	mockOAuth.Mock.Disable()
 }
+
+func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				PreConfig: func() {
+					gock.New("https://test.api.capenetworks.com").
+						Get("/uxi/v1alpha1/groups").
+						Reply(500).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 500,
+							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
+							"message":        "Current request cannot be processed due to unknown issue",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+				Config: provider.ProviderConfig + `
+					data "uxi_group" "my_group" {
+						filter = {
+							group_id = "uid"
+						}
+					}
+				`,
+				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
