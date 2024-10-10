@@ -25,8 +25,7 @@ func (r ResponseStatusCheck) RaiseForStatus() (bool, string) {
 		case *url.Error:
 			detail = r.handleURLError(e)
 		default:
-			err := json.NewDecoder(r.Response.Body).Decode(&data)
-			if err != nil {
+			if err := json.NewDecoder(r.Response.Body).Decode(&data); err != nil {
 				detail = "Unexpected error: " + r.Err.Error()
 			} else {
 				detail = data["message"].(string) + "\nDebugID: " + data["debugId"].(string)
