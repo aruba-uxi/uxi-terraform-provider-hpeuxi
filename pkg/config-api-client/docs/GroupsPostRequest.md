@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ParentId** | **string** |  | 
+**ParentId** | Pointer to **NullableString** |  | [optional] 
 **Name** | **string** |  | 
 
 ## Methods
 
 ### NewGroupsPostRequest
 
-`func NewGroupsPostRequest(parentId string, name string, ) *GroupsPostRequest`
+`func NewGroupsPostRequest(name string, ) *GroupsPostRequest`
 
 NewGroupsPostRequest instantiates a new GroupsPostRequest object
 This constructor will assign default values to properties that have it defined,
@@ -45,7 +45,22 @@ and a boolean to check if the value has been set.
 
 SetParentId sets ParentId field to given value.
 
+### HasParentId
 
+`func (o *GroupsPostRequest) HasParentId() bool`
+
+HasParentId returns a boolean if a field has been set.
+
+### SetParentIdNil
+
+`func (o *GroupsPostRequest) SetParentIdNil(b bool)`
+
+ SetParentIdNil sets the value for ParentId to be an explicit nil
+
+### UnsetParentId
+`func (o *GroupsPostRequest) UnsetParentId()`
+
+UnsetParentId ensures that no value is present for ParentId, not even an explicit nil
 ### GetName
 
 `func (o *GroupsPostRequest) GetName() string`
