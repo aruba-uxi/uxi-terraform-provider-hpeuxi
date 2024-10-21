@@ -107,13 +107,18 @@ func (d *wirelessNetworkDataSource) Read(ctx context.Context, req datasource.Rea
 	request := d.client.ConfigurationAPI.
 		GetUxiV1alpha1WirelessNetworksGet(ctx).
 		Uid(state.Filter.WirelessNetworkID)
-	networkResponse, _, err := util.RetryFor429(request.Execute)
+	networkResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	if err != nil || len(networkResponse.Items) != 1 {
-		resp.Diagnostics.AddError(
-			"Error reading Wireless Network",
-			"Could not retrieve Wireless Network, unexpected error: "+err.Error(),
-		)
+	errorSummary := util.GenerateErrorSummary("read", "uxi_wireless_network")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(networkResponse.Items) != 1 {
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		return
 	}
 

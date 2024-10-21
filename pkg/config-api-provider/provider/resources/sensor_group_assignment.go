@@ -25,12 +25,6 @@ type sensorGroupAssignmentResourceModel struct {
 	GroupID  types.String `tfsdk:"group_id"`
 }
 
-type SensorGroupAssignmentResponseModel struct {
-	UID       string `json:"uid"`
-	GroupUID  string `json:"group_uid"`
-	SensorUID string `json:"sensor_uid"`
-}
-
 type SensorGroupAssignmentRequestModel struct {
 	GroupUID  string //  <group_uid:str>,
 	SensorUID string //  <sensor_uid:str>
@@ -105,12 +99,11 @@ func (r *sensorGroupAssignmentResource) Create(ctx context.Context, req resource
 
 	postRequest := config_api_client.NewSensorGroupAssignmentsPostRequest(plan.GroupID.ValueString(), plan.SensorID.ValueString())
 	request := r.client.ConfigurationAPI.PostUxiV1alpha1SensorGroupAssignmentsPost(ctx).SensorGroupAssignmentsPostRequest(*postRequest)
-	sensorGroupAssignment, _, err := util.RetryFor429(request.Execute)
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error creating sensor group assignment",
-			"Could not create sensor group assignment, unexpected error: "+err.Error(),
-		)
+	sensorGroupAssignment, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_sensor_group_assignment"), errorDetail)
 		return
 	}
 
@@ -137,13 +130,18 @@ func (r *sensorGroupAssignmentResource) Read(ctx context.Context, req resource.R
 	request := r.client.ConfigurationAPI.
 		GetUxiV1alpha1SensorGroupAssignmentsGet(ctx).
 		Uid(state.ID.ValueString())
-	sensorGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
+	sensorGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	if err != nil || len(sensorGroupAssignmentResponse.Items) != 1 {
-		resp.Diagnostics.AddError(
-			"Error reading Sensor Group Assignment",
-			"Could not retrieve Sensor Group Assignment, unexpected error: "+err.Error(),
-		)
+	errorSummary := util.GenerateErrorSummary("create", "uxi_sensor_group_assignment")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(sensorGroupAssignmentResponse.Items) != 1 {
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
 		return
 	}
 
@@ -184,27 +182,15 @@ func (r *sensorGroupAssignmentResource) Delete(ctx context.Context, req resource
 	// Delete existing sensorGroupAssignment using the plan_id
 	request := r.client.ConfigurationAPI.
 		DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
-	_, _, err := util.RetryFor429(request.Execute)
+	_, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error deleting Sensor Group Assignment",
-			"Could not deleting Sensor Group Assignment, unexpected error: "+err.Error(),
-		)
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_sensor_group_assignment"), errorDetail)
 		return
 	}
 }
 
 func (r *sensorGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-var CreateSensorGroupAssignment = func(request SensorGroupAssignmentRequestModel) SensorGroupAssignmentResponseModel {
-	// TODO: Query the sensorGroupAssignment using the client
-
-	return SensorGroupAssignmentResponseModel{
-		UID:       "mock_uid",
-		GroupUID:  "mock_group_uid",
-		SensorUID: "mock_sensor_uid",
-	}
 }

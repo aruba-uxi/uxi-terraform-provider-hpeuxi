@@ -96,13 +96,11 @@ func (r *serviceTestGroupAssignmentResource) Create(ctx context.Context, req res
 	request := r.client.ConfigurationAPI.
 		PostUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx).
 		ServiceTestGroupAssignmentsPostRequest(*postRequest)
-	serviceTestGroupAssignment, _, err := util.RetryFor429(request.Execute)
+	serviceTestGroupAssignment, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error creating Service Test Group Assignment",
-			"Could not create Network Group Assignment, unexpected error: "+err.Error(),
-		)
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"), errorDetail)
 		return
 	}
 

@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"regexp"
 	"testing"
 
 	config_api_client "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
@@ -282,7 +283,86 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 						}
 					}`,
 			},
-			// Delete testing automatically occurs in TestCase
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+
+func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Creating a serviceTest group assignment - errors
+			{
+				PreConfig: func() {
+					// required for serviceTest import
+					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
+						return util.GenerateServiceTestResponseModel(uid, "")
+					}
+
+					// required for group create
+					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
+					util.MockGetGroup(
+						"group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						1,
+					)
+
+					// required for serviceTest group assignment create
+					gock.New("https://test.api.capenetworks.com").
+						Post("/uxi/v1alpha1/service-test-group-assignments").
+						Reply(400).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 400,
+							"errorCode":      "HPE_GL_ERROR_BAD_REQUEST",
+							"message":        "Validation error - bad request",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name"
+						parent_group_id = "parent_uid"
+					}
+
+					resource "uxi_service_test" "my_service_test" {
+						title = "title"
+					}
+
+					import {
+						to = uxi_service_test.my_service_test
+						id = "service_test_uid"
+					}
+
+					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = uxi_service_test.my_service_test.id
+						group_id 		= uxi_group.my_group.id
+					}`,
+				ExpectError: regexp.MustCompile(`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`),
+			},
+			// Remove serviceTests from state
+			{
+				PreConfig: func() {
+					util.MockGetGroup(
+						"group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					removed {
+						from = uxi_service_test.my_service_test
+
+						lifecycle {
+							destroy = false
+						}
+					}`,
+			},
 		},
 	})
 

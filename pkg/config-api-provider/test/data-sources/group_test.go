@@ -61,7 +61,7 @@ func TestGroupDataSource(t *testing.T) {
 						}
 					}
 				`,
-				ExpectError: regexp.MustCompile(`the root group cannot be used as a data source`),
+				ExpectError: regexp.MustCompile(`The root group cannot be used as a data source`),
 			},
 		},
 	})
@@ -105,6 +105,58 @@ func TestGroupDataSource429Handling(t *testing.T) {
 						return nil
 					},
 				),
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+
+func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// 5xx error
+			{
+				PreConfig: func() {
+					gock.New("https://test.api.capenetworks.com").
+						Get("/uxi/v1alpha1/groups").
+						Reply(500).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 500,
+							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
+							"message":        "Current request cannot be processed due to unknown issue",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+				Config: provider.ProviderConfig + `
+					data "uxi_group" "my_group" {
+						filter = {
+							group_id = "uid"
+						}
+					}
+				`,
+				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+			},
+			// Not found error
+			{
+				PreConfig: func() {
+					util.MockGetGroup(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					data "uxi_group" "my_group" {
+						filter = {
+							group_id = "uid"
+						}
+					}
+				`,
+				ExpectError: regexp.MustCompile(`Could not find specified data source`),
 			},
 		},
 	})

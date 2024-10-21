@@ -92,13 +92,18 @@ func (r *wiredNetworkResource) Read(ctx context.Context, req resource.ReadReques
 	request := r.client.ConfigurationAPI.
 		GetUxiV1alpha1WiredNetworksGet(ctx).
 		Uid(state.ID.ValueString())
-	networkResponse, _, err := util.RetryFor429(request.Execute)
+	networkResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	if err != nil || len(networkResponse.Items) != 1 {
-		resp.Diagnostics.AddError(
-			"Error reading Wired Network",
-			"Could not retrieve Wired Network, unexpected error: "+err.Error(),
-		)
+	errorSummary := util.GenerateErrorSummary("read", "uxi_wired_network")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(networkResponse.Items) != 1 {
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
 		return
 	}
 

@@ -72,13 +72,18 @@ func (d *networkGroupAssignmentDataSource) Read(ctx context.Context, req datasou
 	request := d.client.ConfigurationAPI.
 		GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).
 		Uid(state.Filter.NetworkGroupAssignmentID)
-	networkGroupAssignmentResponse, _, err := util.RetryFor429(request.Execute)
+	networkGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	if err != nil || len(networkGroupAssignmentResponse.Items) != 1 {
-		resp.Diagnostics.AddError(
-			"Error reading Network Group Assignment",
-			"Could not retrieve Network Group Assignment, unexpected error: "+err.Error(),
-		)
+	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(networkGroupAssignmentResponse.Items) != 1 {
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		return
 	}
 

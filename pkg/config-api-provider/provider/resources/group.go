@@ -26,13 +26,6 @@ type groupResourceModel struct {
 	ParentGroupId types.String `tfsdk:"parent_group_id"`
 }
 
-// TODO: Remove this once we rely fully on client for groups
-
-// TODO: Remove this once we rely fully on client for groups
-type GroupUpdateRequestModel struct {
-	Name string
-}
-
 func NewGroupResource() resource.Resource {
 	return &groupResource{}
 }
@@ -102,12 +95,11 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 		groups_post_request.SetParentId(plan.ParentGroupId.ValueString())
 	}
 	request := r.client.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(ctx).GroupsPostRequest(*groups_post_request)
-	group, _, err := util.RetryFor429(request.Execute)
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error creating group",
-			"Could not create group, unexpected error: "+err.Error(),
-		)
+	group, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_group"), errorDetail)
 		return
 	}
 
@@ -136,20 +128,24 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	request := r.client.ConfigurationAPI.
 		GroupsGetUxiV1alpha1GroupsGet(ctx).
 		Uid(state.ID.ValueString())
+	groupResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	groupResponse, _, err := util.RetryFor429(request.Execute)
+	errorSummary := util.GenerateErrorSummary("read", "uxi_group")
 
-	if err != nil || len(groupResponse.Items) != 1 {
-		resp.Diagnostics.AddError(
-			"Error reading Group",
-			"Could not retrieve Group, unexpected error: "+err.Error(),
-		)
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(groupResponse.Items) != 1 {
+		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
 		return
 	}
 	group := groupResponse.Items[0]
 
 	if util.IsRoot(group) {
-		resp.Diagnostics.AddError("operation not supported", "the root group cannot be used as a resource")
+		resp.Diagnostics.AddError(errorSummary, "The root group cannot be used as a resource")
 		return
 	}
 
@@ -178,13 +174,12 @@ func (r *groupResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	request := r.client.ConfigurationAPI.
 		GroupsPatchUxiV1alpha1GroupsGroupUidPatch(ctx, plan.ID.ValueString()).
 		GroupsPatchRequest(*patchRequest)
-	group, _, err := util.RetryFor429(request.Execute)
+	group, response, err := util.RetryFor429(request.Execute)
 
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error updating Group",
-			"Could not update Group, unexpected error: "+err.Error(),
-		)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_group"), errorDetail)
 		return
 	}
 

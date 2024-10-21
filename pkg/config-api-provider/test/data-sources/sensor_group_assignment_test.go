@@ -1,6 +1,7 @@
 package data_source_test
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
@@ -46,7 +47,7 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestSensorGroupAssignmentSource429Handling(t *testing.T) {
+func TestSensorGroupAssignmentDataSource429Handling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mock429 *gock.Response
@@ -81,6 +82,55 @@ func TestSensorGroupAssignmentSource429Handling(t *testing.T) {
 						return nil
 					},
 				),
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				PreConfig: func() {
+					gock.New("https://test.api.capenetworks.com").
+						Get("/uxi/v1alpha1/sensor-group-assignments").
+						Reply(500).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 500,
+							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
+							"message":        "Current request cannot be processed due to unknown issue",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+				Config: provider.ProviderConfig + `
+					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						filter = {
+							sensor_group_assignment_id = "uid"
+						}
+					}
+				`,
+				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+			},
+			{
+				PreConfig: func() {
+					util.MockGetSensorGroupAssignment(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						filter = {
+							sensor_group_assignment_id = "uid"
+						}
+					}
+				`,
+				ExpectError: regexp.MustCompile(`Could not find specified data source`),
 			},
 		},
 	})
