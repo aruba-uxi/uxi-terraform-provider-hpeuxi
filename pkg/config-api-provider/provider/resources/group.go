@@ -127,7 +127,7 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 	request := r.client.ConfigurationAPI.
 		GroupsGetUxiV1alpha1GroupsGet(ctx).
-		Uid(state.ID.ValueString())
+		Id(state.ID.ValueString())
 	groupResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 

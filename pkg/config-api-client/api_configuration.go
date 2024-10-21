@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 2.1.0
+API version: 2.6.0
 Contact: support@capenetworks.com
 */
 
@@ -276,13 +276,13 @@ func (a *ConfigurationAPIService) DeleteSensorGroupAssignmentUxiV1alpha1SensorGr
 type ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
-	uid        *string
+	id         *string
 	cursor     *string
 	limit      *int32
 }
 
-func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Uid(uid string) ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest {
-	r.uid = &uid
+func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Id(id string) ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest {
+	r.id = &id
 	return r
 }
 
@@ -337,8 +337,8 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGetExecut
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.uid != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "form", "")
+	if r.id != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "form", "")
 	}
 	if r.cursor != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
@@ -427,13 +427,13 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGetExecut
 type ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
-	uid        *string
+	id         *string
 	cursor     *string
 	limit      *int32
 }
 
-func (r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) Uid(uid string) ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest {
-	r.uid = &uid
+func (r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) Id(id string) ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest {
+	r.id = &id
 	return r
 }
 
@@ -488,8 +488,159 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1SensorGroupAssignmentsGetExecute
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.uid != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "form", "")
+	if r.id != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "form", "")
+	}
+	if r.cursor != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
+	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
+	} else {
+		var defaultValue int32 = 50
+		r.limit = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode >= 400 && localVarHTTPResponse.StatusCode < 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode >= 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetUxiV1alpha1SensorsGetRequest struct {
+	ctx        context.Context
+	ApiService *ConfigurationAPIService
+	id         *string
+	cursor     *string
+	limit      *int32
+}
+
+func (r ApiGetUxiV1alpha1SensorsGetRequest) Id(id string) ApiGetUxiV1alpha1SensorsGetRequest {
+	r.id = &id
+	return r
+}
+
+func (r ApiGetUxiV1alpha1SensorsGetRequest) Cursor(cursor string) ApiGetUxiV1alpha1SensorsGetRequest {
+	r.cursor = &cursor
+	return r
+}
+
+func (r ApiGetUxiV1alpha1SensorsGetRequest) Limit(limit int32) ApiGetUxiV1alpha1SensorsGetRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r ApiGetUxiV1alpha1SensorsGetRequest) Execute() (*SensorsResponse, *http.Response, error) {
+	return r.ApiService.GetUxiV1alpha1SensorsGetExecute(r)
+}
+
+/*
+GetUxiV1alpha1SensorsGet Get
+
+Get a list of sensors
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetUxiV1alpha1SensorsGetRequest
+*/
+func (a *ConfigurationAPIService) GetUxiV1alpha1SensorsGet(ctx context.Context) ApiGetUxiV1alpha1SensorsGetRequest {
+	return ApiGetUxiV1alpha1SensorsGetRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return SensorsResponse
+func (a *ConfigurationAPIService) GetUxiV1alpha1SensorsGetExecute(r ApiGetUxiV1alpha1SensorsGetRequest) (*SensorsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SensorsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1SensorsGet")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/uxi/v1alpha1/sensors"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.id != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "form", "")
 	}
 	if r.cursor != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
@@ -578,13 +729,13 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1SensorGroupAssignmentsGetExecute
 type ApiGetUxiV1alpha1WiredNetworksGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
-	uid        *string
+	id         *string
 	cursor     *string
 	limit      *int32
 }
 
-func (r ApiGetUxiV1alpha1WiredNetworksGetRequest) Uid(uid string) ApiGetUxiV1alpha1WiredNetworksGetRequest {
-	r.uid = &uid
+func (r ApiGetUxiV1alpha1WiredNetworksGetRequest) Id(id string) ApiGetUxiV1alpha1WiredNetworksGetRequest {
+	r.id = &id
 	return r
 }
 
@@ -639,8 +790,8 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1WiredNetworksGetExecute(r ApiGet
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.uid != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "form", "")
+	if r.id != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "form", "")
 	}
 	if r.cursor != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
@@ -729,13 +880,13 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1WiredNetworksGetExecute(r ApiGet
 type ApiGetUxiV1alpha1WirelessNetworksGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
-	uid        *string
+	id         *string
 	cursor     *string
 	limit      *int32
 }
 
-func (r ApiGetUxiV1alpha1WirelessNetworksGetRequest) Uid(uid string) ApiGetUxiV1alpha1WirelessNetworksGetRequest {
-	r.uid = &uid
+func (r ApiGetUxiV1alpha1WirelessNetworksGetRequest) Id(id string) ApiGetUxiV1alpha1WirelessNetworksGetRequest {
+	r.id = &id
 	return r
 }
 
@@ -790,8 +941,8 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1WirelessNetworksGetExecute(r Api
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.uid != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "form", "")
+	if r.id != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "form", "")
 	}
 	if r.cursor != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
@@ -877,16 +1028,141 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1WirelessNetworksGetExecute(r Api
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest struct {
+	ctx        context.Context
+	ApiService *ConfigurationAPIService
+	groupUid   string
+}
+
+func (r ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest) Execute() (interface{}, *http.Response, error) {
+	return r.ApiService.GroupsDeleteUxiV1alpha1GroupsGroupUidDeleteExecute(r)
+}
+
+/*
+GroupsDeleteUxiV1alpha1GroupsGroupUidDelete Groups Delete
+
+Delete an existing group.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param groupUid
+	@return ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest
+*/
+func (a *ConfigurationAPIService) GroupsDeleteUxiV1alpha1GroupsGroupUidDelete(ctx context.Context, groupUid string) ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest {
+	return ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest{
+		ApiService: a,
+		ctx:        ctx,
+		groupUid:   groupUid,
+	}
+}
+
+// Execute executes the request
+//
+//	@return interface{}
+func (a *ConfigurationAPIService) GroupsDeleteUxiV1alpha1GroupsGroupUidDeleteExecute(r ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest) (interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodDelete
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsDeleteUxiV1alpha1GroupsGroupUidDelete")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/uxi/v1alpha1/groups/{group_uid}"
+	localVarPath = strings.Replace(localVarPath, "{"+"group_uid"+"}", url.PathEscape(parameterValueToString(r.groupUid, "groupUid")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode >= 400 && localVarHTTPResponse.StatusCode < 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode >= 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGroupsGetUxiV1alpha1GroupsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
-	uid        *string
+	id         *string
 	cursor     *string
 	limit      *int32
 }
 
-func (r ApiGroupsGetUxiV1alpha1GroupsGetRequest) Uid(uid string) ApiGroupsGetUxiV1alpha1GroupsGetRequest {
-	r.uid = &uid
+func (r ApiGroupsGetUxiV1alpha1GroupsGetRequest) Id(id string) ApiGroupsGetUxiV1alpha1GroupsGetRequest {
+	r.id = &id
 	return r
 }
 
@@ -941,8 +1217,8 @@ func (a *ConfigurationAPIService) GroupsGetUxiV1alpha1GroupsGetExecute(r ApiGrou
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.uid != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "uid", r.uid, "form", "")
+	if r.id != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "form", "")
 	}
 	if r.cursor != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")

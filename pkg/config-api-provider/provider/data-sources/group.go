@@ -76,7 +76,7 @@ func (d *groupDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 
 	request := d.client.ConfigurationAPI.
 		GroupsGetUxiV1alpha1GroupsGet(ctx).
-		Uid(*state.Filter.GroupID)
+		Id(*state.Filter.GroupID)
 
 	groupResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

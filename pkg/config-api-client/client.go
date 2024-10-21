@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 2.1.0
+API version: 2.6.0
 Contact: support@capenetworks.com
 */
 
@@ -41,7 +41,7 @@ var (
 	queryDescape    = strings.NewReplacer("%5B", "[", "%5D", "]")
 )
 
-// APIClient manages communication with the Configuration Api API v2.1.0
+// APIClient manages communication with the Configuration Api API v2.6.0
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration

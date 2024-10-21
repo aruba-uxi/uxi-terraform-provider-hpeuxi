@@ -178,7 +178,7 @@ func MockGetGroup(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Get("/uxi/v1alpha1/groups").
 		MatchHeader("Authorization", "mock_token").
-		MatchParam("uid", uid).
+		MatchParam("id", uid).
 		Times(times).
 		Reply(200).
 		JSON(response)
@@ -197,7 +197,7 @@ func MockGetWiredNetwork(uid string, response map[string]interface{}, times int)
 	gock.New("https://test.api.capenetworks.com").
 		Get("/uxi/v1alpha1/wired-networks").
 		MatchHeader("Authorization", "mock_token").
-		MatchParam("uid", uid).
+		MatchParam("id", uid).
 		Times(times).
 		Reply(200).
 		JSON(response)
@@ -207,7 +207,7 @@ func MockGetWirelessNetwork(uid string, response map[string]interface{}, times i
 	gock.New("https://test.api.capenetworks.com").
 		Get("/uxi/v1alpha1/wireless-networks").
 		MatchHeader("Authorization", "mock_token").
-		MatchParam("uid", uid).
+		MatchParam("id", uid).
 		Times(times).
 		Reply(200).
 		JSON(response)
@@ -217,7 +217,7 @@ func MockGetSensorGroupAssignment(uid string, response map[string]interface{}, t
 	gock.New("https://test.api.capenetworks.com").
 		Get("/uxi/v1alpha1/sensor-group-assignments").
 		MatchHeader("Authorization", "mock_token").
-		MatchParam("uid", uid).
+		MatchParam("id", uid).
 		Times(times).
 		Reply(200).
 		JSON(response)
@@ -245,7 +245,7 @@ func MockGetNetworkGroupAssignment(uid string, response map[string]interface{}, 
 	gock.New("https://test.api.capenetworks.com").
 		Get("/uxi/v1alpha1/network-group-assignments").
 		MatchHeader("Authorization", "mock_token").
-		MatchParam("uid", uid).
+		MatchParam("id", uid).
 		Times(times).
 		Reply(200).
 		JSON(response)
