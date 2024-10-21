@@ -11,7 +11,11 @@ retrieve-config-api-openapi-spec:
   cp {{ TMP_DIR }}/oas/openapi.yaml {{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }}
   rm -rf {{ TMP_DIR }}
 
+cleanup-old-files:
+  cd {{ CONFIG_API_CLIENT_DIR }} && cat .openapi-generator/FILES | xargs -n 1 rm -f
+
 generate-config-api-client: retrieve-config-api-openapi-spec
+  just cleanup-old-files
   docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
   --input-spec /local/{{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }} \
   --generator-name go \
@@ -20,7 +24,7 @@ generate-config-api-client: retrieve-config-api-openapi-spec
   --git-user-id aruba-uxi \
   --git-repo-id configuration-api-terraform-provider/{{ CONFIG_API_CLIENT_DIR }} \
   --openapi-normalizer SET_TAGS_FOR_ALL_OPERATIONS=configuration
-  cd {{ CONFIG_API_CLIENT_DIR }} && go mod tidy
+  just tidy-client
   just fmt-client
 
 setup-dev:
