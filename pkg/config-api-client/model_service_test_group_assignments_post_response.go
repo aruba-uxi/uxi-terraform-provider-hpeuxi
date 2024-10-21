@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 2.1.0
+API version: 2.6.0
 Contact: support@capenetworks.com
 */
 
@@ -24,7 +24,7 @@ var _ MappedNullable = &ServiceTestGroupAssignmentsPostResponse{}
 type ServiceTestGroupAssignmentsPostResponse struct {
 	Id          string      `json:"id"`
 	Group       Group       `json:"group"`
-	ServiceTest ServiceTest `json:"service_test"`
+	ServiceTest ServiceTest `json:"serviceTest"`
 	Type        *string     `json:"type,omitempty"`
 }
 
@@ -170,7 +170,7 @@ func (o ServiceTestGroupAssignmentsPostResponse) ToMap() (map[string]interface{}
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["group"] = o.Group
-	toSerialize["service_test"] = o.ServiceTest
+	toSerialize["serviceTest"] = o.ServiceTest
 	if !IsNil(o.Type) {
 		toSerialize["type"] = o.Type
 	}
@@ -184,7 +184,7 @@ func (o *ServiceTestGroupAssignmentsPostResponse) UnmarshalJSON(data []byte) (er
 	requiredProperties := []string{
 		"id",
 		"group",
-		"service_test",
+		"serviceTest",
 	}
 
 	allProperties := make(map[string]interface{})

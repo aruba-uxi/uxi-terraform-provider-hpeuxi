@@ -91,7 +91,7 @@ func (r *wirelessNetworkResource) Read(ctx context.Context, req resource.ReadReq
 
 	request := r.client.ConfigurationAPI.
 		GetUxiV1alpha1WirelessNetworksGet(ctx).
-		Uid(state.ID.ValueString())
+		Id(state.ID.ValueString())
 	networkResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 

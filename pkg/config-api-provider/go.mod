@@ -7,7 +7,7 @@ toolchain go1.22.5
 require (
 	github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client v0.0.0-00010101000000-000000000000
 	github.com/h2non/gock v1.2.0
-	github.com/hashicorp/terraform-plugin-framework v1.9.0
+	github.com/hashicorp/terraform-plugin-framework v1.10.0
 	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-testing v1.10.0
 	github.com/nbio/st v0.0.0-20140626010706-e9e8d9816f32

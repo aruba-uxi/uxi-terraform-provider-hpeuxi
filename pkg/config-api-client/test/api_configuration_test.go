@@ -24,7 +24,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		parent_uid := "parent_uid"
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/groups").
-			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -41,7 +41,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GroupsGetUxiV1alpha1GroupsGet(context.Background()).
-			Uid("uid").
+			Id("uid").
 			Limit(10).
 			Cursor("some-cursor").
 			Execute()
@@ -129,7 +129,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/sensor-group-assignments").
-			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -145,7 +145,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GetUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).
-			Uid("uid").
+			Id("uid").
 			Limit(10).
 			Cursor("some-cursor").
 			Execute()
@@ -215,7 +215,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/wired-networks").
-			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -239,7 +239,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GetUxiV1alpha1WiredNetworksGet(context.Background()).
-			Uid("uid").
+			Id("uid").
 			Limit(10).
 			Cursor("some-cursor").
 			Execute()
@@ -277,7 +277,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/wireless-networks").
-			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -303,7 +303,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GetUxiV1alpha1WirelessNetworksGet(context.Background()).
-			Uid("uid").
+			Id("uid").
 			Limit(10).
 			Cursor("some-cursor").
 			Execute()
@@ -342,7 +342,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/network-group-assignments").
-			MatchParams(map[string]string{"uid": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -358,7 +358,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GetUxiV1alpha1NetworkGroupAssignmentsGet(context.Background()).
-			Uid("uid").
+			Id("uid").
 			Limit(10).
 			Cursor("some-cursor").
 			Execute()
@@ -434,10 +434,10 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			BodyString(`{"groupId": "group_uid", "serviceTestId": "service_test_uid"}`).
 			Reply(200).
 			JSON(map[string]interface{}{
-				"id":           "uid",
-				"group":        map[string]string{"id": "group_uid"},
-				"service_test": map[string]string{"id": "service_test_uid"},
-				"type":         "uxi/service-test-group-assignment",
+				"id":          "uid",
+				"group":       map[string]string{"id": "group_uid"},
+				"serviceTest": map[string]string{"id": "service_test_uid"},
+				"type":        "uxi/service-test-group-assignment",
 			})
 
 		postRequest := openapiclient.NewServiceTestGroupAssignmentsPostRequest("group_uid", "service_test_uid")
@@ -457,5 +457,4 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			Type:        &resourceType,
 		})
 	})
-
 }

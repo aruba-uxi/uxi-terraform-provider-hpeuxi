@@ -8,8 +8,10 @@ Method | HTTP request | Description
 [**DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete**](ConfigurationAPI.md#DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete) | **Delete** /uxi/v1alpha1/sensor-group-assignments/{id} | Delete Sensor Group Assignment
 [**GetUxiV1alpha1NetworkGroupAssignmentsGet**](ConfigurationAPI.md#GetUxiV1alpha1NetworkGroupAssignmentsGet) | **Get** /uxi/v1alpha1/network-group-assignments | Get
 [**GetUxiV1alpha1SensorGroupAssignmentsGet**](ConfigurationAPI.md#GetUxiV1alpha1SensorGroupAssignmentsGet) | **Get** /uxi/v1alpha1/sensor-group-assignments | Get
+[**GetUxiV1alpha1SensorsGet**](ConfigurationAPI.md#GetUxiV1alpha1SensorsGet) | **Get** /uxi/v1alpha1/sensors | Get
 [**GetUxiV1alpha1WiredNetworksGet**](ConfigurationAPI.md#GetUxiV1alpha1WiredNetworksGet) | **Get** /uxi/v1alpha1/wired-networks | Get
 [**GetUxiV1alpha1WirelessNetworksGet**](ConfigurationAPI.md#GetUxiV1alpha1WirelessNetworksGet) | **Get** /uxi/v1alpha1/wireless-networks | Get
+[**GroupsDeleteUxiV1alpha1GroupsGroupUidDelete**](ConfigurationAPI.md#GroupsDeleteUxiV1alpha1GroupsGroupUidDelete) | **Delete** /uxi/v1alpha1/groups/{group_uid} | Groups Delete
 [**GroupsGetUxiV1alpha1GroupsGet**](ConfigurationAPI.md#GroupsGetUxiV1alpha1GroupsGet) | **Get** /uxi/v1alpha1/groups | Groups Get
 [**GroupsPatchUxiV1alpha1GroupsGroupUidPatch**](ConfigurationAPI.md#GroupsPatchUxiV1alpha1GroupsGroupUidPatch) | **Patch** /uxi/v1alpha1/groups/{group_uid} | Groups Patch
 [**GroupsPostUxiV1alpha1GroupsPost**](ConfigurationAPI.md#GroupsPostUxiV1alpha1GroupsPost) | **Post** /uxi/v1alpha1/groups | Groups Post
@@ -161,7 +163,7 @@ Name | Type | Description  | Notes
 
 ## GetUxiV1alpha1NetworkGroupAssignmentsGet
 
-> NetworkGroupAssignmentsResponse GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+> NetworkGroupAssignmentsResponse GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).Id(id).Cursor(cursor).Limit(limit).Execute()
 
 Get
 
@@ -180,13 +182,13 @@ import (
 )
 
 func main() {
-	uid := "uid_example" // string |  (optional)
+	id := "id_example" // string |  (optional)
 	cursor := "cursor_example" // string |  (optional)
 	limit := int32(56) // int32 |  (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1NetworkGroupAssignmentsGet(context.Background()).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1NetworkGroupAssignmentsGet(context.Background()).Id(id).Cursor(cursor).Limit(limit).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1NetworkGroupAssignmentsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -207,7 +209,7 @@ Other parameters are passed through a pointer to a apiGetUxiV1alpha1NetworkGroup
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **uid** | **string** |  | 
+ **id** | **string** |  | 
  **cursor** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
@@ -231,7 +233,7 @@ Name | Type | Description  | Notes
 
 ## GetUxiV1alpha1SensorGroupAssignmentsGet
 
-> SensorGroupAssignmentsResponse GetUxiV1alpha1SensorGroupAssignmentsGet(ctx).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+> SensorGroupAssignmentsResponse GetUxiV1alpha1SensorGroupAssignmentsGet(ctx).Id(id).Cursor(cursor).Limit(limit).Execute()
 
 Get
 
@@ -250,13 +252,13 @@ import (
 )
 
 func main() {
-	uid := "uid_example" // string |  (optional)
+	id := "id_example" // string |  (optional)
 	cursor := "cursor_example" // string |  (optional)
 	limit := int32(56) // int32 |  (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).Id(id).Cursor(cursor).Limit(limit).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1SensorGroupAssignmentsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -277,7 +279,7 @@ Other parameters are passed through a pointer to a apiGetUxiV1alpha1SensorGroupA
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **uid** | **string** |  | 
+ **id** | **string** |  | 
  **cursor** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
@@ -299,9 +301,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetUxiV1alpha1WiredNetworksGet
+## GetUxiV1alpha1SensorsGet
 
-> WiredNetworksResponse GetUxiV1alpha1WiredNetworksGet(ctx).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+> SensorsResponse GetUxiV1alpha1SensorsGet(ctx).Id(id).Cursor(cursor).Limit(limit).Execute()
 
 Get
 
@@ -320,13 +322,83 @@ import (
 )
 
 func main() {
-	uid := "uid_example" // string |  (optional)
+	id := "id_example" // string |  (optional)
 	cursor := "cursor_example" // string |  (optional)
 	limit := int32(56) // int32 |  (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1WiredNetworksGet(context.Background()).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1SensorsGet(context.Background()).Id(id).Cursor(cursor).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1SensorsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetUxiV1alpha1SensorsGet`: SensorsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetUxiV1alpha1SensorsGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetUxiV1alpha1SensorsGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **string** |  | 
+ **cursor** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**SensorsResponse**](SensorsResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetUxiV1alpha1WiredNetworksGet
+
+> WiredNetworksResponse GetUxiV1alpha1WiredNetworksGet(ctx).Id(id).Cursor(cursor).Limit(limit).Execute()
+
+Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string |  (optional)
+	cursor := "cursor_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1WiredNetworksGet(context.Background()).Id(id).Cursor(cursor).Limit(limit).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1WiredNetworksGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -347,7 +419,7 @@ Other parameters are passed through a pointer to a apiGetUxiV1alpha1WiredNetwork
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **uid** | **string** |  | 
+ **id** | **string** |  | 
  **cursor** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
@@ -371,7 +443,7 @@ Name | Type | Description  | Notes
 
 ## GetUxiV1alpha1WirelessNetworksGet
 
-> WirelessNetworksResponse GetUxiV1alpha1WirelessNetworksGet(ctx).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+> WirelessNetworksResponse GetUxiV1alpha1WirelessNetworksGet(ctx).Id(id).Cursor(cursor).Limit(limit).Execute()
 
 Get
 
@@ -390,13 +462,13 @@ import (
 )
 
 func main() {
-	uid := "uid_example" // string |  (optional)
+	id := "id_example" // string |  (optional)
 	cursor := "cursor_example" // string |  (optional)
 	limit := int32(56) // int32 |  (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1WirelessNetworksGet(context.Background()).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1WirelessNetworksGet(context.Background()).Id(id).Cursor(cursor).Limit(limit).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1WirelessNetworksGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -417,7 +489,7 @@ Other parameters are passed through a pointer to a apiGetUxiV1alpha1WirelessNetw
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **uid** | **string** |  | 
+ **id** | **string** |  | 
  **cursor** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
@@ -439,9 +511,79 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GroupsDeleteUxiV1alpha1GroupsGroupUidDelete
+
+> interface{} GroupsDeleteUxiV1alpha1GroupsGroupUidDelete(ctx, groupUid).Execute()
+
+Groups Delete
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	groupUid := "groupUid_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.GroupsDeleteUxiV1alpha1GroupsGroupUidDelete(context.Background(), groupUid).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsDeleteUxiV1alpha1GroupsGroupUidDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GroupsDeleteUxiV1alpha1GroupsGroupUidDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsDeleteUxiV1alpha1GroupsGroupUidDelete`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**groupUid** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+**interface{}**
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GroupsGetUxiV1alpha1GroupsGet
 
-> GroupsGetResponse GroupsGetUxiV1alpha1GroupsGet(ctx).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+> GroupsGetResponse GroupsGetUxiV1alpha1GroupsGet(ctx).Id(id).Cursor(cursor).Limit(limit).Execute()
 
 Groups Get
 
@@ -460,13 +602,13 @@ import (
 )
 
 func main() {
-	uid := "uid_example" // string |  (optional)
+	id := "id_example" // string |  (optional)
 	cursor := "cursor_example" // string |  (optional)
 	limit := int32(56) // int32 |  (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupsGetUxiV1alpha1GroupsGet(context.Background()).Uid(uid).Cursor(cursor).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GroupsGetUxiV1alpha1GroupsGet(context.Background()).Id(id).Cursor(cursor).Limit(limit).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsGetUxiV1alpha1GroupsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -487,7 +629,7 @@ Other parameters are passed through a pointer to a apiGroupsGetUxiV1alpha1Groups
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **uid** | **string** |  | 
+ **id** | **string** |  | 
  **cursor** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 

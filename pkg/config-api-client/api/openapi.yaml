@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 2.1.0
+  version: 2.6.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -21,11 +21,92 @@ tags:
 - name: groups
 - name: health
 - name: network-group-assignments
+- name: sensors
 - name: sensor-group-assignments
 - name: service-test-group-assignments
 - name: wired-networks
 - name: wireless-networks
 paths:
+  /uxi/v1alpha1/groups/{group_uid}:
+    delete:
+      description: Delete an existing group.
+      operationId: groups_delete_uxi_v1alpha1_groups__group_uid__delete
+      parameters:
+      - explode: false
+        in: path
+        name: group_uid
+        required: true
+        schema:
+          title: Group Uid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Groups Delete
+      tags:
+      - configuration
+    patch:
+      description: Update an existing group.
+      operationId: groups_patch_uxi_v1alpha1_groups__group_uid__patch
+      parameters:
+      - explode: false
+        in: path
+        name: group_uid
+        required: true
+        schema:
+          title: Group Uid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupsPatchRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupsPatchResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Groups Patch
+      tags:
+      - configuration
   /uxi/v1alpha1/groups:
     get:
       description: Lists groups matching provided criteria
@@ -33,7 +114,7 @@ paths:
       parameters:
       - explode: true
         in: query
-        name: uid
+        name: id
         required: false
         schema:
           nullable: true
@@ -53,6 +134,8 @@ paths:
         required: false
         schema:
           default: 50
+          maximum: 100
+          minimum: 0
           title: Limit
           type: integer
         style: form
@@ -116,49 +199,6 @@ paths:
       tags:
       - configuration
       x-stability-level: alpha
-  /uxi/v1alpha1/groups/{group_uid}:
-    patch:
-      description: Update an existing group.
-      operationId: groups_patch_uxi_v1alpha1_groups__group_uid__patch
-      parameters:
-      - explode: false
-        in: path
-        name: group_uid
-        required: true
-        schema:
-          title: Group Uid
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GroupsPatchRequest'
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GroupsPatchResponse'
-          description: Successful Response
-        "4XX":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
-      security:
-      - HTTPBearer: []
-      summary: Groups Patch
-      tags:
-      - configuration
   /uxi/v1alpha1/network-group-assignments/{id}:
     delete:
       description: Delete a network group assignment
@@ -205,7 +245,7 @@ paths:
       parameters:
       - explode: true
         in: query
-        name: uid
+        name: id
         required: false
         schema:
           nullable: true
@@ -294,7 +334,7 @@ paths:
       parameters:
       - explode: true
         in: query
-        name: uid
+        name: id
         required: false
         schema:
           nullable: true
@@ -415,6 +455,63 @@ paths:
       tags:
       - configuration
       x-stability-level: alpha
+  /uxi/v1alpha1/sensors:
+    get:
+      description: Get a list of sensors
+      operationId: get_uxi_v1alpha1_sensors_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Get
+      tags:
+      - configuration
+      x-stability-level: alpha
   /uxi/v1alpha1/service-test-group-assignments:
     post:
       description: Create a service-test group assignment
@@ -457,7 +554,7 @@ paths:
       parameters:
       - explode: true
         in: query
-        name: uid
+        name: id
         required: false
         schema:
           nullable: true
@@ -512,7 +609,7 @@ paths:
       parameters:
       - explode: true
         in: query
-        name: uid
+        name: id
         required: false
         schema:
           nullable: true
@@ -591,7 +688,7 @@ components:
         errorCode: errorCode
         debugId: debugId
         message: message
-        httpStatusCode: 6
+        httpStatusCode: 0
         errorDetails:
         - type: type
           issues:
@@ -1066,6 +1163,119 @@ components:
       - next
       title: SensorGroupAssignmentsResponse
       type: object
+    SensorItem:
+      example:
+        addressNote: addressNote
+        notes: notes
+        pcapMode: pcapMode
+        serial: serial
+        ethernetMacAddress: ethernetMacAddress
+        latitude: 6.027456183070403
+        name: name
+        modelNumber: modelNumber
+        id: id
+        type: uxi/sensor
+        wifiMacAddress: wifiMacAddress
+        longitude: 0.8008281904610115
+      properties:
+        id:
+          title: Id
+          type: string
+        serial:
+          title: Serial
+          type: string
+        name:
+          title: Name
+          type: string
+        modelNumber:
+          nullable: true
+          type: string
+        wifiMacAddress:
+          nullable: true
+          type: string
+        ethernetMacAddress:
+          nullable: true
+          type: string
+        addressNote:
+          nullable: true
+          type: string
+        longitude:
+          nullable: true
+          type: number
+        latitude:
+          nullable: true
+          type: number
+        notes:
+          nullable: true
+          type: string
+        pcapMode:
+          nullable: true
+          type: string
+        type:
+          default: uxi/sensor
+          title: Type
+          type: string
+      required:
+      - addressNote
+      - ethernetMacAddress
+      - id
+      - latitude
+      - longitude
+      - modelNumber
+      - name
+      - notes
+      - pcapMode
+      - serial
+      - wifiMacAddress
+      title: SensorItem
+      type: object
+    SensorsResponse:
+      example:
+        next: next
+        count: 1
+        items:
+        - addressNote: addressNote
+          notes: notes
+          pcapMode: pcapMode
+          serial: serial
+          ethernetMacAddress: ethernetMacAddress
+          latitude: 6.027456183070403
+          name: name
+          modelNumber: modelNumber
+          id: id
+          type: uxi/sensor
+          wifiMacAddress: wifiMacAddress
+          longitude: 0.8008281904610115
+        - addressNote: addressNote
+          notes: notes
+          pcapMode: pcapMode
+          serial: serial
+          ethernetMacAddress: ethernetMacAddress
+          latitude: 6.027456183070403
+          name: name
+          modelNumber: modelNumber
+          id: id
+          type: uxi/sensor
+          wifiMacAddress: wifiMacAddress
+          longitude: 0.8008281904610115
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/SensorItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: SensorsResponse
+      type: object
     ServiceTest:
       example:
         id: id
@@ -1095,7 +1305,7 @@ components:
       type: object
     ServiceTestGroupAssignmentsPostResponse:
       example:
-        service_test:
+        serviceTest:
           id: id
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         type: uxi/service-test-group-assignment
@@ -1108,7 +1318,7 @@ components:
           type: string
         group:
           $ref: '#/components/schemas/Group'
-        service_test:
+        serviceTest:
           $ref: '#/components/schemas/ServiceTest'
         type:
           default: uxi/service-test-group-assignment
@@ -1117,7 +1327,7 @@ components:
       required:
       - group
       - id
-      - service_test
+      - serviceTest
       title: ServiceTestGroupAssignmentsPostResponse
       type: object
     WiredNetworksItem:

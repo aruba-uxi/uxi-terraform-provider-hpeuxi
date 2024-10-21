@@ -26,6 +26,8 @@ docs/SensorGroupAssignmentResponse.md
 docs/SensorGroupAssignmentsItem.md
 docs/SensorGroupAssignmentsPostRequest.md
 docs/SensorGroupAssignmentsResponse.md
+docs/SensorItem.md
+docs/SensorsResponse.md
 docs/ServiceTest.md
 docs/ServiceTestGroupAssignmentsPostRequest.md
 docs/ServiceTestGroupAssignmentsPostResponse.md
@@ -57,6 +59,8 @@ model_sensor_group_assignment_response.go
 model_sensor_group_assignments_item.go
 model_sensor_group_assignments_post_request.go
 model_sensor_group_assignments_response.go
+model_sensor_item.go
+model_sensors_response.go
 model_service_test_.go
 model_service_test_group_assignments_post_request.go
 model_service_test_group_assignments_post_response.go

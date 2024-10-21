@@ -128,7 +128,7 @@ func (r *networkGroupAssignmentResource) Read(ctx context.Context, req resource.
 
 	request := r.client.ConfigurationAPI.
 		GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).
-		Uid(state.ID.ValueString())
+		Id(state.ID.ValueString())
 	networkGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 

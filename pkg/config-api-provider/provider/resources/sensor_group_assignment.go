@@ -129,7 +129,7 @@ func (r *sensorGroupAssignmentResource) Read(ctx context.Context, req resource.R
 
 	request := r.client.ConfigurationAPI.
 		GetUxiV1alpha1SensorGroupAssignmentsGet(ctx).
-		Uid(state.ID.ValueString())
+		Id(state.ID.ValueString())
 	sensorGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
