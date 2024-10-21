@@ -20,8 +20,8 @@ var (
 )
 
 type wiredNetworkResourceModel struct {
-	ID    types.String `tfsdk:"id"`
-	Alias types.String `tfsdk:"alias"`
+	ID   types.String `tfsdk:"id"`
+	Name types.String `tfsdk:"name"`
 }
 
 func NewWiredNetworkResource() resource.Resource {
@@ -45,7 +45,7 @@ func (r *wiredNetworkResource) Schema(_ context.Context, _ resource.SchemaReques
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"alias": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				Required: true,
 			},
 		},
@@ -110,7 +110,7 @@ func (r *wiredNetworkResource) Read(ctx context.Context, req resource.ReadReques
 	network := networkResponse.Items[0]
 
 	// Update state from client response
-	state.Alias = types.StringValue(network.Name)
+	state.Name = types.StringValue(network.Name)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)

@@ -56,7 +56,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					}
 
 					resource "uxi_service_test" "my_service_test" {
-						title = "title"
+						name = "name"
 					}
 
 					import {
@@ -126,7 +126,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					}
 
 					resource "uxi_service_test" "my_service_test" {
-						title = "title"
+						name = "name"
 					}
 
 					import {
@@ -141,7 +141,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					}
 
 					resource "uxi_service_test" "my_service_test_2" {
-						title = "title_2"
+						name = "name_2"
 					}
 
 					import {
@@ -245,7 +245,7 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 					}
 
 					resource "uxi_service_test" "my_service_test" {
-						title = "title"
+						name = "name"
 					}
 
 					import {
@@ -331,7 +331,7 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					resource "uxi_service_test" "my_service_test" {
-						title = "title"
+						name = "name"
 					}
 
 					import {

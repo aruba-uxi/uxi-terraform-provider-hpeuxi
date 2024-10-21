@@ -82,7 +82,7 @@ removed {
 }
 */
 resource "uxi_wireless_network" "my_wireless_network" {
-    alias = "alias"
+    name = "name"
 }
 
 import {
@@ -102,7 +102,7 @@ removed {
 }
 */
 resource "uxi_wired_network" "my_wired_network" {
-    alias = "alias"
+    name = "name"
 }
 
 import {
@@ -121,7 +121,7 @@ removed {
 }
 */
 resource "uxi_service_test" "my_service_test" {
-    title = "title"
+    name = "name"
 }
 
 import {

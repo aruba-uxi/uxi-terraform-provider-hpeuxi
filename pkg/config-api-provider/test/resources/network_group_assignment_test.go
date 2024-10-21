@@ -56,7 +56,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					}
 
 					resource "uxi_wired_network" "my_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -140,7 +140,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					}
 
 					resource "uxi_wired_network" "my_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -155,7 +155,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					}
 
 					resource "uxi_wired_network" "my_network_2" {
-						alias = "alias_2"
+						name = "name_2"
 					}
 
 					import {
@@ -277,7 +277,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					}
 
 					resource "uxi_wireless_network" "my_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -362,7 +362,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					}
 
 					resource "uxi_wireless_network" "my_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -377,7 +377,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					}
 
 					resource "uxi_wireless_network" "my_network_2" {
-						alias = "alias_2"
+						name = "name_2"
 					}
 
 					import {
@@ -504,7 +504,7 @@ func TestNetworkGroupAssignmentResource429Handling(t *testing.T) {
 					}
 
 					resource "uxi_wired_network" "my_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -611,7 +611,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					resource "uxi_wired_network" "my_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -655,7 +655,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					resource "uxi_wired_network" "my_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -709,7 +709,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					resource "uxi_wired_network" "my_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {
@@ -766,7 +766,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					resource "uxi_wired_network" "my_network" {
-						alias = "alias"
+						name = "name"
 					}
 
 					import {

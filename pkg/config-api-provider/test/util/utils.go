@@ -61,7 +61,7 @@ func GenerateServiceTestResponseModel(uid string, postfix string) resources.Serv
 	return resources.ServiceTestResponseModel{
 		Uid:       uid,
 		Category:  "external" + postfix,
-		Title:     "title" + postfix,
+		Name:      "name" + postfix,
 		Target:    "target" + postfix,
 		Template:  "template" + postfix,
 		IsEnabled: true,
@@ -71,7 +71,7 @@ func GenerateServiceTestResponseModel(uid string, postfix string) resources.Serv
 func GenerateWiredNetworkResponse(uid string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"id":                   uid,
-		"name":                 "alias" + postfix,
+		"name":                 "name" + postfix,
 		"createdAt":            "2024-09-11T12:00:00.000Z",
 		"updatedAt":            "2024-09-11T12:00:00.000Z",
 		"ipVersion":            "ip_version" + postfix,
@@ -91,7 +91,7 @@ func GenerateWirelessNetworkResponse(uid string, postfix string) map[string]inte
 		"ssid":                 "ssid" + postfix,
 		"createdAt":            "2024-09-11T12:00:00.000Z",
 		"updatedAt":            "2024-09-11T12:00:00.000Z",
-		"name":                 "alias" + postfix,
+		"name":                 "name" + postfix,
 		"ipVersion":            "ip_version" + postfix,
 		"security":             "security" + postfix,
 		"hidden":               false,
@@ -140,7 +140,7 @@ func GenerateServiceTestGroupAssignmentResponse(uid string, postfix string) conf
 	}
 }
 
-// Converts a struct to a map while maintaining the json alias as keys
+// Converts a struct to a map while maintaining the json name as keys
 func StructToMap(obj interface{}) map[string]interface{} {
 	data, _ := json.Marshal(obj) // Convert to a json string
 

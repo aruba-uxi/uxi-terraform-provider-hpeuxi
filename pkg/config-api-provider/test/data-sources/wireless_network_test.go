@@ -39,7 +39,7 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "id", "uid"),
 					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "ssid", "ssid"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "alias", "alias"),
+					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "name", "name"),
 					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "ip_version", "ip_version"),
 					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "security", "security"),
 					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "hidden", "false"),
