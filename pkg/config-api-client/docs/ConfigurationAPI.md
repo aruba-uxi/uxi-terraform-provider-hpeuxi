@@ -602,7 +602,7 @@ import (
 )
 
 func main() {
-	groupsPostRequest := *openapiclient.NewGroupsPostRequest("ParentId_example", "Name_example") // GroupsPostRequest | 
+	groupsPostRequest := *openapiclient.NewGroupsPostRequest("Name_example") // GroupsPostRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

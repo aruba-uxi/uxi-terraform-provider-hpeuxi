@@ -90,7 +90,10 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
-	groups_post_request := config_api_client.NewGroupsPostRequest(plan.ParentGroupId.ValueString(), plan.Name.ValueString())
+	groups_post_request := config_api_client.NewGroupsPostRequest(plan.Name.ValueString())
+	if !plan.ParentGroupId.IsUnknown() {
+		groups_post_request.SetParentId(plan.ParentGroupId.ValueString())
+	}
 	request := r.client.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(ctx).GroupsPostRequest(*groups_post_request)
 	group, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
