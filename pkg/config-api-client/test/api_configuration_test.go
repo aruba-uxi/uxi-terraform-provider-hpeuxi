@@ -125,6 +125,86 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		})
 	})
 
+	t.Run("Test ConfigurationAPIService GroupsDeleteUxiV1alpha1GroupsGroupUidDelete", func(t *testing.T) {
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Delete("/uxi/v1alpha1/groups/uid").
+			Reply(204)
+
+		_, httpRes, err := apiClient.ConfigurationAPI.
+			GroupsDeleteUxiV1alpha1GroupsGroupUidDelete(context.Background(), "uid").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 204, httpRes.StatusCode)
+	})
+
+	t.Run("Test ConfigurationAPIService GetUxiV1alpha1SensorsGet", func(t *testing.T) {
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Get("/uxi/v1alpha1/sensors").
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"items": []map[string]interface{}{
+					{
+						"id":                 "uid",
+						"serial":             "serial",
+						"name":               "name",
+						"modelNumber":        "model_number",
+						"wifiMacAddress":     "wifi_mac_address",
+						"ethernetMacAddress": "ethernet_mac_address",
+						"addressNote":        "address_note",
+						"longitude":          0.0,
+						"latitude":           0.0,
+						"notes":              "notes",
+						"pcapMode":           "pcap_mode",
+						"type":               "uxi/sensor",
+					},
+				},
+				"count": 1,
+				"next":  nil,
+			})
+
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			GetUxiV1alpha1SensorsGet(context.Background()).
+			Id("uid").
+			Limit(10).
+			Cursor("some-cursor").
+			Execute()
+
+		resourceType := "uxi/sensor"
+		ModelNumber := "model_number"
+		WifiMacAddress := "wifi_mac_address"
+		EthernetMacAddress := "ethernet_mac_address"
+		AddressNote := "address_note"
+		var Longitude float32 = 0.0
+		var Latitude float32 = 0.0
+		Notes := "notes"
+		PcapMode := "pcap_mode"
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.SensorsResponse{
+			Items: []openapiclient.SensorItem{
+				{
+					Id:                 "uid",
+					Serial:             "serial",
+					Name:               "name",
+					ModelNumber:        *openapiclient.NewNullableString(&ModelNumber),
+					WifiMacAddress:     *openapiclient.NewNullableString(&WifiMacAddress),
+					EthernetMacAddress: *openapiclient.NewNullableString(&EthernetMacAddress),
+					AddressNote:        *openapiclient.NewNullableString(&AddressNote),
+					Longitude:          *openapiclient.NewNullableFloat32(&Longitude),
+					Latitude:           *openapiclient.NewNullableFloat32(&Latitude),
+					Notes:              *openapiclient.NewNullableString(&Notes),
+					PcapMode:           *openapiclient.NewNullableString(&PcapMode),
+					Type:               &resourceType,
+				},
+			},
+			Next:  *openapiclient.NewNullableString(nil),
+			Count: 1,
+		})
+	})
+
 	t.Run("Test ConfigurationAPIService GetUxiV1alpha1SensorGroupAssignmentsGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
