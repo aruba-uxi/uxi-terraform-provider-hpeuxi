@@ -79,7 +79,8 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 				"path":   "parent.uid.node",
 				"type":   "uxi/group",
 			})
-		groupsPostRequest := openapiclient.NewGroupsPostRequest("parent.uid", "name")
+		groupsPostRequest := openapiclient.NewGroupsPostRequest("name")
+		groupsPostRequest.SetParentId("parent.uid")
 		resp, httpRes, err := apiClient.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(context.Background()).GroupsPostRequest(*groupsPostRequest).Execute()
 
 		resourceType := "uxi/group"

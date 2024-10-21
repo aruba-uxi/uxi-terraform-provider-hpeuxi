@@ -9,7 +9,7 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 2.0.0
+  version: 2.1.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
@@ -74,7 +74,8 @@ paths:
       operationId: groups_post_uxi_v1alpha1_groups_post
       summary: Groups Post
       description: >-
-        Create a new group with the group identified in `parent_uid` as its parent
+        Create a new group with the group identified in `parent_uid` as its
+        parent
       requestBody:
         required: true
         content:
@@ -708,13 +709,14 @@ components:
       type: object
       properties:
         parentId:
-          type: string
+          anyOf:
+            - type: string
+          nullable: true
           title: Parentid
         name:
           type: string
           title: Name
       required:
-        - parentId
         - name
       title: GroupsPostRequest
     GroupsPostResponse:
