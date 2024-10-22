@@ -6,10 +6,11 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
+	"github.com/nbio/st"
 )
 
 func TestSensorResource(t *testing.T) {
@@ -38,9 +39,10 @@ func TestSensorResource(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					resources.GetSensor = func(uid string) resources.SensorResponseModel {
-						return util.GenerateSensorResponseModel(uid, "")
-					}
+					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+						2,
+					)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_sensor" "my_sensor" {
@@ -65,6 +67,12 @@ func TestSensorResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
+				PreConfig: func() {
+					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+						1,
+					)
+				},
 				ResourceName:      "uxi_sensor.my_sensor",
 				ImportState:       true,
 				ImportStateVerify: true,
@@ -72,9 +80,16 @@ func TestSensorResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					resources.GetSensor = func(uid string) resources.SensorResponseModel {
-						return util.GenerateSensorResponseModel(uid, "_2")
-					}
+					// existing sensor
+					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+						1,
+					)
+					// updated sensor
+					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "_2")}),
+						1,
+					)
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_sensor" "my_sensor" {
@@ -93,6 +108,12 @@ func TestSensorResource(t *testing.T) {
 			},
 			// Deleting a sensor is not allowed
 			{
+				PreConfig: func() {
+					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "_2")}),
+						1,
+					)
+				},
 				Config:      provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(`deleting a sensor is not supported; sensors can only removed from state`),
 			},
@@ -106,6 +127,137 @@ func TestSensorResource(t *testing.T) {
 							destroy = false
 						}
 					}`,
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+
+func TestSensorResource429Handling(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+	var request429 *gock.Response
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// we required terraform 1.7.0 and above for the `removed` block
+			tfversion.RequireAbove(tfversion.Version1_7_0),
+		},
+		Steps: []resource.TestStep{
+			// Importing a sensor
+			{
+				PreConfig: func() {
+					request429 = gock.New("https://test.api.capenetworks.com").
+						Get("/uxi/v1alpha1/sensors").
+						Reply(429).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+						2,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_sensor" "my_sensor" {
+						name = "name"
+						address_note = "address_note"
+						notes = "notes"
+						pcap_mode = "light"
+					}
+
+					import {
+						to = uxi_sensor.my_sensor
+						id = "uid"
+					}`,
+
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
+					func(s *terraform.State) error {
+						st.Assert(t, request429.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
+			},
+			// Remove sensor from state
+			{
+				Config: provider.ProviderConfig + `
+					removed {
+						from = uxi_sensor.my_sensor
+
+						lifecycle {
+							destroy = false
+						}
+					}`,
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+
+}
+func TestSensorResourceHttpErrorHandling(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// we required terraform 1.7.0 and above for the `removed` block
+			tfversion.RequireAbove(tfversion.Version1_7_0),
+		},
+		Steps: []resource.TestStep{
+			// Read 5xx error
+			{
+				PreConfig: func() {
+					gock.New("https://test.api.capenetworks.com").
+						Get("/uxi/v1alpha1/sensors").
+						Reply(500).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 500,
+							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
+							"message":        "Current request cannot be processed due to unknown issue",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_sensor" "my_sensor" {
+						name = "name"
+						address_note = "address_note"
+						notes = "notes"
+						pcap_mode = "light"
+					}
+
+					import {
+						to = uxi_sensor.my_sensor
+						id = "uid"
+					}`,
+
+				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+			},
+			// Read not found
+			{
+				PreConfig: func() {
+					util.MockGetSensor(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_sensor" "my_sensor" {
+						name = "name"
+						address_note = "address_note"
+						notes = "notes"
+						pcap_mode = "light"
+					}
+
+					import {
+						to = uxi_sensor.my_sensor
+						id = "uid"
+					}`,
+
+				ExpectError: regexp.MustCompile(`Could not find specified resource`),
 			},
 		},
 	})

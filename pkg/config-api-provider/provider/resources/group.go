@@ -205,6 +205,16 @@ func (r *groupResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 	}
 
 	// Delete existing group using the plan_id
+	request := r.client.ConfigurationAPI.
+		GroupsDeleteUxiV1alpha1GroupsGroupUidDelete(ctx, state.ID.ValueString())
+
+	_, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_group"), errorDetail)
+		return
+	}
 }
 
 func (r *groupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
