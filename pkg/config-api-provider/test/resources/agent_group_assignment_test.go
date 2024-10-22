@@ -159,6 +159,23 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 				),
 			},
 			// Delete testing automatically occurs in TestCase
+			{
+				PreConfig: func() {
+					util.MockGetGroup(
+						"group_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						2,
+					)
+					util.MockGetGroup(
+						"group_uid_2",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")}),
+						1,
+					)
+					util.MockDeleteGroup("group_uid", 1)
+					util.MockDeleteGroup("group_uid_2", 1)
+				},
+				Config: provider.ProviderConfig,
+			},
 		},
 	})
 

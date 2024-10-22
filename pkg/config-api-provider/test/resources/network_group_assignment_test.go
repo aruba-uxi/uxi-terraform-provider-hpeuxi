@@ -206,6 +206,8 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						1,
 					)
 
+					util.MockDeleteGroup("group_uid", 1)
+					util.MockDeleteGroup("group_uid_2", 1)
 					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid", 1)
 					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid_2", 1)
 				},
@@ -430,6 +432,8 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						1,
 					)
 
+					util.MockDeleteGroup("group_uid", 1)
+					util.MockDeleteGroup("group_uid_2", 1)
 					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid", 1)
 					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid_2", 1)
 				},
@@ -542,6 +546,7 @@ func TestNetworkGroupAssignmentResource429Handling(t *testing.T) {
 						1,
 					)
 
+					util.MockDeleteGroup("group_uid", 1)
 					mock429 = gock.New("https://test.api.capenetworks.com").
 						Delete("/uxi/v1alpha1/network-group-assignments/network_group_assignment_uid").
 						Reply(429).
@@ -839,6 +844,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentResponse("network_group_assignment_uid", "")}),
 						1,
 					)
+					util.MockDeleteGroup("group_uid", 1)
 					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid", 1)
 				},
 				Config: provider.ProviderConfig + `

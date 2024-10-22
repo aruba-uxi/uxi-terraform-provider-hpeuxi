@@ -173,6 +173,9 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")}),
 						1,
 					)
+
+					util.MockDeleteGroup("group_uid", 1)
+					util.MockDeleteGroup("group_uid_2", 1)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
@@ -273,6 +276,8 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
 						1,
 					)
+
+					util.MockDeleteGroup("group_uid", 1)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
@@ -353,6 +358,8 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
 						1,
 					)
+
+					util.MockDeleteGroup("group_uid", 1)
 				},
 				Config: provider.ProviderConfig + `
 					removed {

@@ -98,6 +98,8 @@ func TestGroupResource(t *testing.T) {
 						[]map[string]interface{}{util.GenerateGroupResponseModel("new_uid", "", "_2")}),
 						1,
 					)
+					// delete old group (being replaced)
+					util.MockDeleteGroup("uid", 1)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
@@ -110,7 +112,17 @@ func TestGroupResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "new_uid"),
 				),
 			},
-			// Delete testing automatically occurs in TestCase
+			// Delete testing
+			{
+				PreConfig: func() {
+					util.MockGetGroup("new_uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("new_uid", "", "_2")}),
+						1,
+					)
+					util.MockDeleteGroup("new_uid", 1)
+				},
+				Config: provider.ProviderConfig,
+			},
 		},
 	})
 
@@ -227,7 +239,17 @@ func TestGroupResource429Handling(t *testing.T) {
 					},
 				),
 			},
-			// TODO: Test Deleting 429s
+			// Delete testing
+			{
+				PreConfig: func() {
+					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
+						1,
+					)
+					util.MockDeleteGroup("uid", 1)
+				},
+				Config: provider.ProviderConfig,
+			},
 		},
 	})
 
@@ -355,7 +377,41 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					}`,
 				ExpectError: regexp.MustCompile(`(?s)Unable to create group - a sibling group already has the specified name\s*DebugID: 12312-123123-123123-1231212`),
 			},
-			// TODO: Test Deleting Error Handling
+			// Delete 4xx
+			{
+				PreConfig: func() {
+					// existing group
+					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
+						1,
+					)
+					// delete group - with error
+					gock.New("https://test.api.capenetworks.com").
+						Delete("/uxi/v1alpha1/groups/uid").
+						Reply(422).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 422,
+							"errorCode":      "HPE_GL_UXI_GROUP_CANNOT_BE_DELETED",
+							"message":        "Unable to delete group",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+				Config:      provider.ProviderConfig,
+				ExpectError: regexp.MustCompile(`(?s)Unable to delete group\s*DebugID: 12312-123123-123123-1231212`),
+			},
+			// Actually delete group for cleanup reasons
+			{
+				PreConfig: func() {
+					// existing group
+					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
+						1,
+					)
+					// delete group
+					util.MockDeleteGroup("uid", 1)
+				},
+				Config: provider.ProviderConfig,
+			},
 		},
 	})
 

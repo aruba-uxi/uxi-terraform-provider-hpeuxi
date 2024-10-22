@@ -8,19 +8,20 @@ import (
 	"github.com/h2non/gock"
 )
 
-func GenerateSensorResponseModel(uid string, postfix string) resources.SensorResponseModel {
-	return resources.SensorResponseModel{
-		UID:                uid,
-		Serial:             "serial" + postfix,
-		Name:               "name" + postfix,
-		ModelNumber:        "model_number" + postfix,
-		WifiMacAddress:     "wifi_mac_address" + postfix,
-		EthernetMacAddress: "ethernet_mac_address" + postfix,
-		AddressNote:        "address_note" + postfix,
-		Longitude:          "longitude" + postfix,
-		Latitude:           "latitude" + postfix,
-		Notes:              "notes" + postfix,
-		PCapMode:           "light" + postfix,
+func GenerateSensorResponseModel(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"id":                 uid,
+		"serial":             "serial" + postfix,
+		"name":               "name" + postfix,
+		"modelNumber":        "model_number" + postfix,
+		"wifiMacAddress":     "wifi_mac_address" + postfix,
+		"ethernetMacAddress": "ethernet_mac_address" + postfix,
+		"addressNote":        "address_note" + postfix,
+		"longitude":          0.0,
+		"latitude":           0.0,
+		"notes":              "notes" + postfix,
+		"pcapMode":           "light" + postfix,
+		"type":               "uxi/sensor",
 	}
 }
 
@@ -188,6 +189,24 @@ func MockUpdateGroup(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Patch("/uxi/v1alpha1/groups/"+uid).
 		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+func MockDeleteGroup(uid string, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Delete("/uxi/v1alpha1/groups/"+uid).
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(204)
+}
+
+func MockGetSensor(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Get("/uxi/v1alpha1/sensors").
+		MatchHeader("Authorization", "mock_token").
+		MatchParam("id", uid).
 		Times(times).
 		Reply(200).
 		JSON(response)
