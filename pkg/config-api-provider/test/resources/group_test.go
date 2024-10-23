@@ -310,7 +310,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					}
 				`,
 
-				ExpectError: regexp.MustCompile(`Could not find specified resource`),
+				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
 			// Create 4xx
 			{

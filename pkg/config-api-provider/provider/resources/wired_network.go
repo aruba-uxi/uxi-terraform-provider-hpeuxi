@@ -103,7 +103,7 @@ func (r *wiredNetworkResource) Read(ctx context.Context, req resource.ReadReques
 	}
 
 	if len(networkResponse.Items) != 1 {
-		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 

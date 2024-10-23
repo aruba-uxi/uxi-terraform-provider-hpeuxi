@@ -138,7 +138,7 @@ func (r *sensorResource) Read(ctx context.Context, req resource.ReadRequest, res
 	}
 
 	if len(sensorResponse.Items) != 1 {
-		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 	sensor := sensorResponse.Items[0]
