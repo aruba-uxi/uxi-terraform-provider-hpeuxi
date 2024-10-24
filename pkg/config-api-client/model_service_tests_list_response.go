@@ -17,42 +17,42 @@ import (
 	"fmt"
 )
 
-// checks if the SensorsResponse type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &SensorsResponse{}
+// checks if the ServiceTestsListResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ServiceTestsListResponse{}
 
-// SensorsResponse struct for SensorsResponse
-type SensorsResponse struct {
-	Items []SensorItem   `json:"items"`
-	Count int32          `json:"count"`
-	Next  NullableString `json:"next"`
+// ServiceTestsListResponse struct for ServiceTestsListResponse
+type ServiceTestsListResponse struct {
+	Items []ServiceTestsListItem `json:"items"`
+	Count int32                  `json:"count"`
+	Next  NullableString         `json:"next"`
 }
 
-type _SensorsResponse SensorsResponse
+type _ServiceTestsListResponse ServiceTestsListResponse
 
-// NewSensorsResponse instantiates a new SensorsResponse object
+// NewServiceTestsListResponse instantiates a new ServiceTestsListResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorsResponse(items []SensorItem, count int32, next NullableString) *SensorsResponse {
-	this := SensorsResponse{}
+func NewServiceTestsListResponse(items []ServiceTestsListItem, count int32, next NullableString) *ServiceTestsListResponse {
+	this := ServiceTestsListResponse{}
 	this.Items = items
 	this.Count = count
 	this.Next = next
 	return &this
 }
 
-// NewSensorsResponseWithDefaults instantiates a new SensorsResponse object
+// NewServiceTestsListResponseWithDefaults instantiates a new ServiceTestsListResponse object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewSensorsResponseWithDefaults() *SensorsResponse {
-	this := SensorsResponse{}
+func NewServiceTestsListResponseWithDefaults() *ServiceTestsListResponse {
+	this := ServiceTestsListResponse{}
 	return &this
 }
 
 // GetItems returns the Items field value
-func (o *SensorsResponse) GetItems() []SensorItem {
+func (o *ServiceTestsListResponse) GetItems() []ServiceTestsListItem {
 	if o == nil {
-		var ret []SensorItem
+		var ret []ServiceTestsListItem
 		return ret
 	}
 
@@ -61,7 +61,7 @@ func (o *SensorsResponse) GetItems() []SensorItem {
 
 // GetItemsOk returns a tuple with the Items field value
 // and a boolean to check if the value has been set.
-func (o *SensorsResponse) GetItemsOk() ([]SensorItem, bool) {
+func (o *ServiceTestsListResponse) GetItemsOk() ([]ServiceTestsListItem, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -69,12 +69,12 @@ func (o *SensorsResponse) GetItemsOk() ([]SensorItem, bool) {
 }
 
 // SetItems sets field value
-func (o *SensorsResponse) SetItems(v []SensorItem) {
+func (o *ServiceTestsListResponse) SetItems(v []ServiceTestsListItem) {
 	o.Items = v
 }
 
 // GetCount returns the Count field value
-func (o *SensorsResponse) GetCount() int32 {
+func (o *ServiceTestsListResponse) GetCount() int32 {
 	if o == nil {
 		var ret int32
 		return ret
@@ -85,7 +85,7 @@ func (o *SensorsResponse) GetCount() int32 {
 
 // GetCountOk returns a tuple with the Count field value
 // and a boolean to check if the value has been set.
-func (o *SensorsResponse) GetCountOk() (*int32, bool) {
+func (o *ServiceTestsListResponse) GetCountOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -93,13 +93,13 @@ func (o *SensorsResponse) GetCountOk() (*int32, bool) {
 }
 
 // SetCount sets field value
-func (o *SensorsResponse) SetCount(v int32) {
+func (o *ServiceTestsListResponse) SetCount(v int32) {
 	o.Count = v
 }
 
 // GetNext returns the Next field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *SensorsResponse) GetNext() string {
+func (o *ServiceTestsListResponse) GetNext() string {
 	if o == nil || o.Next.Get() == nil {
 		var ret string
 		return ret
@@ -111,7 +111,7 @@ func (o *SensorsResponse) GetNext() string {
 // GetNextOk returns a tuple with the Next field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SensorsResponse) GetNextOk() (*string, bool) {
+func (o *ServiceTestsListResponse) GetNextOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -119,11 +119,11 @@ func (o *SensorsResponse) GetNextOk() (*string, bool) {
 }
 
 // SetNext sets field value
-func (o *SensorsResponse) SetNext(v string) {
+func (o *ServiceTestsListResponse) SetNext(v string) {
 	o.Next.Set(&v)
 }
 
-func (o SensorsResponse) MarshalJSON() ([]byte, error) {
+func (o ServiceTestsListResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -131,7 +131,7 @@ func (o SensorsResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o SensorsResponse) ToMap() (map[string]interface{}, error) {
+func (o ServiceTestsListResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["items"] = o.Items
 	toSerialize["count"] = o.Count
@@ -139,7 +139,7 @@ func (o SensorsResponse) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *SensorsResponse) UnmarshalJSON(data []byte) (err error) {
+func (o *ServiceTestsListResponse) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -163,53 +163,53 @@ func (o *SensorsResponse) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varSensorsResponse := _SensorsResponse{}
+	varServiceTestsListResponse := _ServiceTestsListResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSensorsResponse)
+	err = decoder.Decode(&varServiceTestsListResponse)
 
 	if err != nil {
 		return err
 	}
 
-	*o = SensorsResponse(varSensorsResponse)
+	*o = ServiceTestsListResponse(varServiceTestsListResponse)
 
 	return err
 }
 
-type NullableSensorsResponse struct {
-	value *SensorsResponse
+type NullableServiceTestsListResponse struct {
+	value *ServiceTestsListResponse
 	isSet bool
 }
 
-func (v NullableSensorsResponse) Get() *SensorsResponse {
+func (v NullableServiceTestsListResponse) Get() *ServiceTestsListResponse {
 	return v.value
 }
 
-func (v *NullableSensorsResponse) Set(val *SensorsResponse) {
+func (v *NullableServiceTestsListResponse) Set(val *ServiceTestsListResponse) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableSensorsResponse) IsSet() bool {
+func (v NullableServiceTestsListResponse) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableSensorsResponse) Unset() {
+func (v *NullableServiceTestsListResponse) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableSensorsResponse(val *SensorsResponse) *NullableSensorsResponse {
-	return &NullableSensorsResponse{value: val, isSet: true}
+func NewNullableServiceTestsListResponse(val *ServiceTestsListResponse) *NullableServiceTestsListResponse {
+	return &NullableServiceTestsListResponse{value: val, isSet: true}
 }
 
-func (v NullableSensorsResponse) MarshalJSON() ([]byte, error) {
+func (v NullableServiceTestsListResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableSensorsResponse) UnmarshalJSON(src []byte) error {
+func (v *NullableServiceTestsListResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

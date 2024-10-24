@@ -31,6 +31,8 @@ docs/SensorsResponse.md
 docs/ServiceTest.md
 docs/ServiceTestGroupAssignmentsPostRequest.md
 docs/ServiceTestGroupAssignmentsPostResponse.md
+docs/ServiceTestsListItem.md
+docs/ServiceTestsListResponse.md
 docs/WiredNetworksItem.md
 docs/WiredNetworksResponse.md
 docs/WirelessNetworksItem.md
@@ -64,6 +66,8 @@ model_sensors_response.go
 model_service_test_.go
 model_service_test_group_assignments_post_request.go
 model_service_test_group_assignments_post_response.go
+model_service_tests_list_item.go
+model_service_tests_list_response.go
 model_wired_networks_item.go
 model_wired_networks_response.go
 model_wireless_networks_item.go

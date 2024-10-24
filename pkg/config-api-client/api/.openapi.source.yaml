@@ -9,7 +9,7 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 2.6.0
+  version: 2.9.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
@@ -110,14 +110,14 @@ paths:
               - type: string
             nullable: true
             title: Id
-        - name: cursor
+        - name: next
           in: query
           required: false
           schema:
             anyOf:
               - type: string
             nullable: true
-            title: Cursor
+            title: Next
         - name: limit
           in: query
           required: false
@@ -248,14 +248,14 @@ paths:
               - type: string
             nullable: true
             title: Id
-        - name: cursor
+        - name: next
           in: query
           required: false
           schema:
             anyOf:
               - type: string
             nullable: true
-            title: Cursor
+            title: Next
         - name: limit
           in: query
           required: false
@@ -341,14 +341,14 @@ paths:
               - type: string
             nullable: true
             title: Id
-        - name: cursor
+        - name: next
           in: query
           required: false
           schema:
             anyOf:
               - type: string
             nullable: true
-            title: Cursor
+            title: Next
         - name: limit
           in: query
           required: false
@@ -475,14 +475,14 @@ paths:
               - type: string
             nullable: true
             title: Id
-        - name: cursor
+        - name: next
           in: query
           required: false
           schema:
             anyOf:
               - type: string
             nullable: true
-            title: Cursor
+            title: Next
         - name: limit
           in: query
           required: false
@@ -518,6 +518,47 @@ paths:
         - configuration
         - v1alpha1
         - sensors
+      x-stability-level: alpha
+  /uxi/v1alpha1/service-test-group-assignments/{id}:
+    delete:
+      operationId: >-
+        delete_service_test_group_assignment_uxi_v1alpha1_service_test_group_assignments__id__delete
+      summary: Delete Service Test Group Assignment
+      description: Delete a service test group assignment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '204':
+          description: No Content
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - service-test-group-assignments
       x-stability-level: alpha
   /uxi/v1alpha1/service-test-group-assignments:
     post:
@@ -557,6 +598,64 @@ paths:
         - v1alpha1
         - service-test-group-assignments
       x-stability-level: alpha
+  /uxi/v1alpha1/service-tests:
+    get:
+      operationId: service_tests_get_uxi_v1alpha1_service_tests_get
+      summary: Service Tests Get
+      description: Lists service-tests matching provided criteria
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Id
+        - name: next
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Next
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+            minimum: 0
+            title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTestsListResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - service-tests
+      x-stability-level: alpha
   /uxi/v1alpha1/wired-networks:
     get:
       operationId: get_uxi_v1alpha1_wired_networks_get
@@ -571,14 +670,14 @@ paths:
               - type: string
             nullable: true
             title: Id
-        - name: cursor
+        - name: next
           in: query
           required: false
           schema:
             anyOf:
               - type: string
             nullable: true
-            title: Cursor
+            title: Next
         - name: limit
           in: query
           required: false
@@ -627,14 +726,14 @@ paths:
               - type: string
             nullable: true
             title: Id
-        - name: cursor
+        - name: next
           in: query
           required: false
           schema:
             anyOf:
               - type: string
             nullable: true
-            title: Cursor
+            title: Next
         - name: limit
           in: query
           required: false
@@ -1168,6 +1267,62 @@ components:
         - group
         - serviceTest
       title: ServiceTestGroupAssignmentsPostResponse
+    ServiceTestsListItem:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        category:
+          type: string
+          title: Category
+        name:
+          type: string
+          title: Name
+        target:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Target
+        template:
+          type: string
+          title: Template
+        isEnabled:
+          type: boolean
+          title: Isenabled
+        type:
+          type: string
+          default: uxi/service-test
+          title: Type
+      required:
+        - id
+        - category
+        - name
+        - target
+        - template
+        - isEnabled
+      title: ServiceTestsListItem
+    ServiceTestsListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceTestsListItem'
+          title: Items
+        count:
+          type: integer
+          title: Count
+        next:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Next
+      required:
+        - items
+        - count
+        - next
+      title: ServiceTestsListResponse
     WiredNetworksItem:
       type: object
       properties:
@@ -1352,6 +1507,7 @@ tags:
   - name: network-group-assignments
   - name: sensors
   - name: sensor-group-assignments
+  - name: service-tests
   - name: service-test-group-assignments
   - name: wired-networks
   - name: wireless-networks
