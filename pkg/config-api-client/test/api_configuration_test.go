@@ -24,7 +24,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 		parent_uid := "parent_uid"
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/groups").
-			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -43,7 +43,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			GroupsGetUxiV1alpha1GroupsGet(context.Background()).
 			Id("uid").
 			Limit(10).
-			Cursor("some-cursor").
+			Next("some-cursor").
 			Execute()
 
 		resourceType := "uxi/group"
@@ -141,7 +141,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 	t.Run("Test ConfigurationAPIService GetUxiV1alpha1SensorsGet", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/sensors").
-			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -168,7 +168,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			GetUxiV1alpha1SensorsGet(context.Background()).
 			Id("uid").
 			Limit(10).
-			Cursor("some-cursor").
+			Next("some-cursor").
 			Execute()
 
 		resourceType := "uxi/sensor"
@@ -209,7 +209,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/sensor-group-assignments").
-			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -227,7 +227,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			GetUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).
 			Id("uid").
 			Limit(10).
-			Cursor("some-cursor").
+			Next("some-cursor").
 			Execute()
 
 		require.Nil(t, err)
@@ -295,7 +295,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/wired-networks").
-			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -321,7 +321,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			GetUxiV1alpha1WiredNetworksGet(context.Background()).
 			Id("uid").
 			Limit(10).
-			Cursor("some-cursor").
+			Next("some-cursor").
 			Execute()
 
 		security := "security"
@@ -357,7 +357,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/wireless-networks").
-			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -385,7 +385,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			GetUxiV1alpha1WirelessNetworksGet(context.Background()).
 			Id("uid").
 			Limit(10).
-			Cursor("some-cursor").
+			Next("some-cursor").
 			Execute()
 
 		security := "security"
@@ -422,7 +422,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/uxi/v1alpha1/network-group-assignments").
-			MatchParams(map[string]string{"id": "uid", "limit": "10", "cursor": "some-cursor"}).
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"items": []map[string]interface{}{
@@ -440,7 +440,7 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			GetUxiV1alpha1NetworkGroupAssignmentsGet(context.Background()).
 			Id("uid").
 			Limit(10).
-			Cursor("some-cursor").
+			Next("some-cursor").
 			Execute()
 
 		resourceType := "uxi/network-group-assignment"
@@ -536,5 +536,19 @@ func Test_config_api_client_ConfigurationAPIService(t *testing.T) {
 			ServiceTest: *openapiclient.NewServiceTest("service_test_uid"),
 			Type:        &resourceType,
 		})
+	})
+
+	t.Run("Test ConfigurationAPIService DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete", func(t *testing.T) {
+
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Delete("/uxi/v1alpha1/service-test-group-assignments/uid").
+			Reply(204)
+
+		_, httpRes, err := apiClient.ConfigurationAPI.
+			DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(context.Background(), "uid").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 204, httpRes.StatusCode)
 	})
 }
