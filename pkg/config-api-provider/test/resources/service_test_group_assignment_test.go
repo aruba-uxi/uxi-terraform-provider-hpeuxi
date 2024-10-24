@@ -101,6 +101,9 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						3,
 					)
 
+					// required for deleting existing group
+					util.MockDeleteServiceTestGroupAssignment("service_test_group_assignment", 1)
+
 					// required for creating another group
 					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
 
@@ -176,8 +179,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 
 					util.MockDeleteGroup("group_uid", 1)
 					util.MockDeleteGroup("group_uid_2", 1)
-					util.MockDeleteServiceTestGroupAssignment("service_test_group_assignment", 1)
-					util.MockDeleteServiceTestGroupAssignment("service_test_group_assignment_2", 1)
+					util.MockDeleteServiceTestGroupAssignment("service_test_group_assignment_uid_2", 1)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
@@ -279,6 +281,7 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 					)
 
 					util.MockDeleteGroup("group_uid", 1)
+					util.MockDeleteServiceTestGroupAssignment("service_test_group_assignment", 1)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
