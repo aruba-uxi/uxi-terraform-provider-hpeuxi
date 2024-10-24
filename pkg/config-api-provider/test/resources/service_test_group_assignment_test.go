@@ -31,7 +31,11 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					}
 
 					// required for group create
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
+					util.MockPostGroup(
+						util.GenerateGroupRequestModel("group_uid", "", ""),
+						util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+						1,
+					)
 					util.MockGetGroup(
 						"group_uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
@@ -40,7 +44,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 
 					// required for serviceTest group assignment create
 					util.MockPostServiceTestGroupAssignment(
-						"service_test_group_assignment_uid",
+						util.GenerateServiceTestGroupAssignmentRequest("service_test_group_assignment_uid", ""),
 						util.StructToMap(util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")),
 						1,
 					)
@@ -105,7 +109,11 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					util.MockDeleteServiceTestGroupAssignment("service_test_group_assignment", 1)
 
 					// required for creating another group
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")), 1)
+					util.MockPostGroup(
+						util.GenerateGroupRequestModel("group_uid_2", "_2", "_2"),
+						util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						1,
+					)
 
 					// required for serviceTest group assignment create
 					resources.GetServiceTestGroupAssignment = func(uid string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
@@ -116,7 +124,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						}
 					}
 					util.MockPostServiceTestGroupAssignment(
-						"service_test_group_assignment_uid_2",
+						util.GenerateServiceTestGroupAssignmentRequest("service_test_group_assignment_uid_2", "_2"),
 						util.StructToMap(util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid_2", "_2")),
 						1,
 					)
@@ -221,7 +229,11 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 					}
 
 					// required for group create
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
+					util.MockPostGroup(
+						util.GenerateGroupRequestModel("group_uid", "", ""),
+						util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+						1,
+					)
 					util.MockGetGroup(
 						"group_uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
@@ -235,7 +247,7 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 
 					util.MockPostServiceTestGroupAssignment(
-						"service_test_group_assignment_uid",
+						util.GenerateServiceTestGroupAssignmentRequest("service_test_group_assignment_uid", ""),
 						util.StructToMap(util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")),
 						1,
 					)
@@ -314,7 +326,11 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					// required for group create
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")), 1)
+					util.MockPostGroup(
+						util.GenerateGroupRequestModel("group_uid", "", ""),
+						util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+						1,
+					)
 					util.MockGetGroup(
 						"group_uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),

@@ -171,7 +171,7 @@ func (r *groupResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	patchRequest := config_api_client.NewGroupsPatchRequest("new_name")
+	patchRequest := config_api_client.NewGroupsPatchRequest(plan.Name.ValueString())
 	request := r.client.ConfigurationAPI.
 		GroupsPatchUxiV1alpha1GroupsGroupUidPatch(ctx, plan.ID.ValueString()).
 		GroupsPatchRequest(*patchRequest)

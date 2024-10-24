@@ -27,7 +27,11 @@ func TestGroupResource(t *testing.T) {
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					util.MockPostGroup(util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")), 1)
+					util.MockPostGroup(
+						util.GenerateGroupRequestModel("uid", "", ""),
+						util.StructToMap(util.GenerateGroupResponseModel("uid", "", "")),
+						1,
+					)
 					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
 						1,
@@ -65,7 +69,10 @@ func TestGroupResource(t *testing.T) {
 						1,
 					)
 					// updated group
-					util.MockUpdateGroup("uid", util.GenerateGroupResponseModel("uid", "_2", ""),
+					util.MockUpdateGroup(
+						"uid",
+						map[string]interface{}{"name": "name_2"},
+						util.GenerateGroupResponseModel("uid", "_2", ""),
 						1,
 					)
 					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
@@ -93,7 +100,11 @@ func TestGroupResource(t *testing.T) {
 						1,
 					)
 					// new group (replacement)
-					util.MockPostGroup(util.GenerateGroupResponseModel("new_uid", "", "_2"), 1)
+					util.MockPostGroup(
+						util.GenerateGroupRequestModel("new_uid", "", "_2"),
+						util.GenerateGroupResponseModel("new_uid", "", "_2"),
+						1,
+					)
 					util.MockGetGroup("new_uid", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{util.GenerateGroupResponseModel("new_uid", "", "_2")}),
 						1,
@@ -185,7 +196,11 @@ func TestGroupResource429Handling(t *testing.T) {
 						Post("/uxi/v1alpha1/groups").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockPostGroup(util.GenerateGroupResponseModel("uid", "", ""), 1)
+					util.MockPostGroup(
+						util.GenerateGroupRequestModel("uid", "", ""),
+						util.GenerateGroupResponseModel("uid", "", ""),
+						1,
+					)
 					util.MockGetGroup(
 						"uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
@@ -218,7 +233,10 @@ func TestGroupResource429Handling(t *testing.T) {
 						Patch("/uxi/v1alpha1/groups/uid").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockUpdateGroup("uid", util.GenerateGroupResponseModel("uid", "_2", ""),
+					util.MockUpdateGroup(
+						"uid",
+						map[string]interface{}{"name": "name_2"},
+						util.GenerateGroupResponseModel("uid", "_2", ""),
 						1,
 					)
 					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
@@ -335,7 +353,11 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			// Create group in prep for next step
 			{
 				PreConfig: func() {
-					util.MockPostGroup(util.GenerateGroupResponseModel("uid", "", ""), 1)
+					util.MockPostGroup(
+						util.GenerateGroupRequestModel("uid", "", ""),
+						util.GenerateGroupResponseModel("uid", "", ""),
+						1,
+					)
 					util.MockGetGroup(
 						"uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
