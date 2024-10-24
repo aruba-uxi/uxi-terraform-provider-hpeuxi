@@ -161,7 +161,9 @@ func (r *serviceTestGroupAssignmentResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	// Delete existing serviceTestGroupAssignment using the plan_id
+	r.client.ConfigurationAPI.
+		DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(ctx, state.ID.ValueString()).
+		Execute()
 }
 
 func (r *serviceTestGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

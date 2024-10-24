@@ -176,6 +176,8 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 
 					util.MockDeleteGroup("group_uid", 1)
 					util.MockDeleteGroup("group_uid_2", 1)
+					util.MockDeleteServiceTestGroupAssignment("service_test_group_assignment", 1)
+					util.MockDeleteServiceTestGroupAssignment("service_test_group_assignment_2", 1)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
@@ -194,7 +196,6 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						}
 					}`,
 			},
-			// Delete testing automatically occurs in TestCase
 		},
 	})
 
