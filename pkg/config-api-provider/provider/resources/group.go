@@ -56,6 +56,7 @@ func (r *groupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 					// UXI business logic does not permit moving of groups
 					stringplanmodifier.RequiresReplace(),
 				},
+				Computed: true,
 			},
 		},
 	}
@@ -91,7 +92,7 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 
 	groups_post_request := config_api_client.NewGroupsPostRequest(plan.Name.ValueString())
-	if !plan.ParentGroupId.IsUnknown() {
+	if !plan.ParentGroupId.IsUnknown() && !plan.ParentGroupId.IsNull() {
 		groups_post_request.SetParentId(plan.ParentGroupId.ValueString())
 	}
 	request := r.client.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(ctx).GroupsPostRequest(*groups_post_request)
@@ -139,7 +140,7 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	}
 
 	if len(groupResponse.Items) != 1 {
-		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 	group := groupResponse.Items[0]

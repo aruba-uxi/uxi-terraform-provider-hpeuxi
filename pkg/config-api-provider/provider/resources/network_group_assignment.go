@@ -140,7 +140,7 @@ func (r *networkGroupAssignmentResource) Read(ctx context.Context, req resource.
 	}
 
 	if len(networkGroupAssignmentResponse.Items) != 1 {
-		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]

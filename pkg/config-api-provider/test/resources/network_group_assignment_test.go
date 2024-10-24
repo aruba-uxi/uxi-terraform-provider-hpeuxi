@@ -678,7 +678,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						id = "network_group_assignment_uid"
 					}
 				`,
-				ExpectError: regexp.MustCompile(`Could not find specified resource`),
+				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
 			// Read 5xx error
 			{

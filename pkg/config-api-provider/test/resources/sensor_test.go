@@ -257,7 +257,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 						id = "uid"
 					}`,
 
-				ExpectError: regexp.MustCompile(`Could not find specified resource`),
+				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
 		},
 	})

@@ -140,7 +140,7 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 						to = uxi_wired_network.my_wired_network
 						id = "uid"
 					}`,
-				ExpectError: regexp.MustCompile(`Could not find specified resource`),
+				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
 			{
 				PreConfig: func() {
