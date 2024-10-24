@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 2.6.0
+  version: 2.9.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -23,6 +23,7 @@ tags:
 - name: network-group-assignments
 - name: sensors
 - name: sensor-group-assignments
+- name: service-tests
 - name: service-test-group-assignments
 - name: wired-networks
 - name: wireless-networks
@@ -122,7 +123,7 @@ paths:
         style: form
       - explode: true
         in: query
-        name: cursor
+        name: next
         required: false
         schema:
           nullable: true
@@ -253,7 +254,7 @@ paths:
         style: form
       - explode: true
         in: query
-        name: cursor
+        name: next
         required: false
         schema:
           nullable: true
@@ -342,7 +343,7 @@ paths:
         style: form
       - explode: true
         in: query
-        name: cursor
+        name: next
         required: false
         schema:
           nullable: true
@@ -470,7 +471,7 @@ paths:
         style: form
       - explode: true
         in: query
-        name: cursor
+        name: next
         required: false
         schema:
           nullable: true
@@ -512,6 +513,45 @@ paths:
       tags:
       - configuration
       x-stability-level: alpha
+  /uxi/v1alpha1/service-test-group-assignments/{id}:
+    delete:
+      description: Delete a service test group assignment
+      operationId: delete_service_test_group_assignment_uxi_v1alpha1_service_test_group_assignments__id__delete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          title: Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Delete Service Test Group Assignment
+      tags:
+      - configuration
+      x-stability-level: alpha
   /uxi/v1alpha1/service-test-group-assignments:
     post:
       description: Create a service-test group assignment
@@ -547,6 +587,63 @@ paths:
       tags:
       - configuration
       x-stability-level: alpha
+  /uxi/v1alpha1/service-tests:
+    get:
+      description: Lists service-tests matching provided criteria
+      operationId: service_tests_get_uxi_v1alpha1_service_tests_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTestsListResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Service Tests Get
+      tags:
+      - configuration
+      x-stability-level: alpha
   /uxi/v1alpha1/wired-networks:
     get:
       description: Get a list of wired networks
@@ -562,7 +659,7 @@ paths:
         style: form
       - explode: true
         in: query
-        name: cursor
+        name: next
         required: false
         schema:
           nullable: true
@@ -617,7 +714,7 @@ paths:
         style: form
       - explode: true
         in: query
-        name: cursor
+        name: next
         required: false
         schema:
           nullable: true
@@ -1329,6 +1426,84 @@ components:
       - id
       - serviceTest
       title: ServiceTestGroupAssignmentsPostResponse
+      type: object
+    ServiceTestsListItem:
+      example:
+        template: template
+        isEnabled: true
+        name: name
+        id: id
+        category: category
+        type: uxi/service-test
+        target: target
+      properties:
+        id:
+          title: Id
+          type: string
+        category:
+          title: Category
+          type: string
+        name:
+          title: Name
+          type: string
+        target:
+          nullable: true
+          type: string
+        template:
+          title: Template
+          type: string
+        isEnabled:
+          title: Isenabled
+          type: boolean
+        type:
+          default: uxi/service-test
+          title: Type
+          type: string
+      required:
+      - category
+      - id
+      - isEnabled
+      - name
+      - target
+      - template
+      title: ServiceTestsListItem
+      type: object
+    ServiceTestsListResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - template: template
+          isEnabled: true
+          name: name
+          id: id
+          category: category
+          type: uxi/service-test
+          target: target
+        - template: template
+          isEnabled: true
+          name: name
+          id: id
+          category: category
+          type: uxi/service-test
+          target: target
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ServiceTestsListItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: ServiceTestsListResponse
       type: object
     WiredNetworksItem:
       example:
