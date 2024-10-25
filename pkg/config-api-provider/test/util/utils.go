@@ -50,6 +50,13 @@ func GenerateGroupResponseModel(uid string, nonReplacementFieldPostfix string, r
 	}
 }
 
+func GenerateGroupRequestModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"name":     "name" + nonReplacementFieldPostfix,
+		"parentId": "parent_uid" + replacementFieldPostfix,
+	}
+}
+
 func GeneratePaginatedResponse(items []map[string]interface{}) map[string]interface{} {
 	return map[string]interface{}{
 		"items": items,
@@ -114,6 +121,13 @@ func GenerateSensorGroupAssignmentResponse(uid string, postfix string) map[strin
 	}
 }
 
+func GenerateSensorGroupAssignmentRequest(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"groupId":  "group_uid" + postfix,
+		"sensorId": "sensor_uid" + postfix,
+	}
+}
+
 func GenerateAgentGroupAssignmentResponse(uid string, postfix string) resources.AgentGroupAssignmentResponseModel {
 	return resources.AgentGroupAssignmentResponseModel{
 		UID:      uid,
@@ -131,12 +145,26 @@ func GenerateNetworkGroupAssignmentResponse(uid string, postfix string) map[stri
 	}
 }
 
+func GenerateNetworkGroupAssignmentRequest(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"groupId":   "group_uid" + postfix,
+		"networkId": "network_uid" + postfix,
+	}
+}
+
 func GenerateServiceTestGroupAssignmentResponse(uid string, postfix string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
 	return config_api_client.ServiceTestGroupAssignmentsPostResponse{
 		Id:          uid,
 		Group:       *config_api_client.NewGroup("group_uid" + postfix),
 		ServiceTest: *config_api_client.NewServiceTest("service_test_uid" + postfix),
 		Type:        "networking-uxi/service-test-group-assignment",
+	}
+}
+
+func GenerateServiceTestGroupAssignmentRequest(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"groupId":       "group_uid" + postfix,
+		"serviceTestId": "service_test_uid" + postfix,
 	}
 }
 
@@ -164,12 +192,13 @@ func MockOAuth() *gock.Response {
 
 }
 
-func MockPostGroup(response map[string]interface{}, times int) {
+func MockPostGroup(request map[string]interface{}, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Post("/networking-uxi/v1alpha1/groups").
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
+		JSON(request).
 		Reply(200).
 		JSON(response)
 }
@@ -184,11 +213,12 @@ func MockGetGroup(uid string, response map[string]interface{}, times int) {
 		JSON(response)
 }
 
-func MockUpdateGroup(uid string, response map[string]interface{}, times int) {
+func MockUpdateGroup(uid string, request map[string]interface{}, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Patch("/networking-uxi/v1alpha1/groups/"+uid).
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
+		JSON(request).
 		Reply(200).
 		JSON(response)
 }
@@ -241,12 +271,13 @@ func MockGetSensorGroupAssignment(uid string, response map[string]interface{}, t
 		JSON(response)
 }
 
-func MockPostSensorGroupAssignment(uid string, response map[string]interface{}, times int) {
+func MockPostSensorGroupAssignment(request map[string]interface{}, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Post("/networking-uxi/v1alpha1/sensor-group-assignments").
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
+		JSON(request).
 		Reply(200).
 		JSON(response)
 }
@@ -269,12 +300,13 @@ func MockGetNetworkGroupAssignment(uid string, response map[string]interface{}, 
 		JSON(response)
 }
 
-func MockPostNetworkGroupAssignment(uid string, response map[string]interface{}, times int) {
+func MockPostNetworkGroupAssignment(request map[string]interface{}, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Post("/networking-uxi/v1alpha1/network-group-assignments").
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
+		JSON(request).
 		Reply(200).
 		JSON(response)
 }
@@ -287,14 +319,23 @@ func MockDeleteNetworkGroupAssignment(uid string, times int) {
 		Reply(204)
 }
 
-func MockPostServiceTestGroupAssignment(uid string, response map[string]interface{}, times int) {
+func MockPostServiceTestGroupAssignment(request map[string]interface{}, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Post("/networking-uxi/v1alpha1/service-test-group-assignments").
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
+		JSON(request).
 		Reply(200).
 		JSON(response)
+}
+
+func MockDeleteServiceTestGroupAssignment(uid string, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Delete("/uxi/v1alpha1/service-test-group-assignments/"+uid).
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(204)
 }
 
 var RateLimitingHeaders = map[string]string{
