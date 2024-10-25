@@ -59,7 +59,7 @@ func TestNetworkGroupAssignmentDataSource429Handling(t *testing.T) {
 			{
 				PreConfig: func() {
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/network-group-assignments").
+						Get("/networking-uxi/v1alpha1/network-group-assignments").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetNetworkGroupAssignment(
@@ -98,7 +98,7 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/network-group-assignments").
+						Get("/networking-uxi/v1alpha1/network-group-assignments").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,

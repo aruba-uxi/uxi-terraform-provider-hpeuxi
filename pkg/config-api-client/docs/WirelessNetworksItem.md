@@ -17,13 +17,13 @@ Name | Type | Description | Notes
 **DisableEdns** | **bool** |  | 
 **UseDns64** | **bool** |  | 
 **ExternalConnectivity** | **bool** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "uxi/wireless-network"]
+**Type** | **string** |  | 
 
 ## Methods
 
 ### NewWirelessNetworksItem
 
-`func NewWirelessNetworksItem(id string, name string, ssid string, security NullableString, ipVersion string, createdAt time.Time, updatedAt time.Time, hidden bool, bandLocking string, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, ) *WirelessNetworksItem`
+`func NewWirelessNetworksItem(id string, name string, ssid string, security NullableString, ipVersion string, createdAt time.Time, updatedAt time.Time, hidden bool, bandLocking string, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, type_ string, ) *WirelessNetworksItem`
 
 NewWirelessNetworksItem instantiates a new WirelessNetworksItem object
 This constructor will assign default values to properties that have it defined,
@@ -337,11 +337,6 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *WirelessNetworksItem) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

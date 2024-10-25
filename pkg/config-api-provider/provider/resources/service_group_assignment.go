@@ -94,7 +94,7 @@ func (r *serviceTestGroupAssignmentResource) Create(ctx context.Context, req res
 		plan.ServiceTestID.ValueString(),
 	)
 	request := r.client.ConfigurationAPI.
-		PostUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx).
+		PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx).
 		ServiceTestGroupAssignmentsPostRequest(*postRequest)
 	serviceTestGroupAssignment, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
@@ -170,11 +170,10 @@ func (r *serviceTestGroupAssignmentResource) ImportState(ctx context.Context, re
 
 var GetServiceTestGroupAssignment = func(uid string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
 	// TODO: Query the serviceTestGroupAssignment using the client
-	resourceType := "uxi/service-test-group-assignment"
 	return config_api_client.ServiceTestGroupAssignmentsPostResponse{
 		Id:          uid,
 		Group:       *config_api_client.NewGroup("mock_group_uid"),
 		ServiceTest: *config_api_client.NewServiceTest("mock_serviceTest_uid"),
-		Type:        &resourceType,
+		Type:        "networking-uxi/service-test-group-assignment",
 	}
 }

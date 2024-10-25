@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 2.9.0
+API version: 3.0.0
 Contact: support@capenetworks.com
 */
 
@@ -28,7 +28,7 @@ type ServiceTestsListItem struct {
 	Target    NullableString `json:"target"`
 	Template  string         `json:"template"`
 	IsEnabled bool           `json:"isEnabled"`
-	Type      *string        `json:"type,omitempty"`
+	Type      string         `json:"type"`
 }
 
 type _ServiceTestsListItem ServiceTestsListItem
@@ -37,7 +37,7 @@ type _ServiceTestsListItem ServiceTestsListItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewServiceTestsListItem(id string, category string, name string, target NullableString, template string, isEnabled bool) *ServiceTestsListItem {
+func NewServiceTestsListItem(id string, category string, name string, target NullableString, template string, isEnabled bool, type_ string) *ServiceTestsListItem {
 	this := ServiceTestsListItem{}
 	this.Id = id
 	this.Category = category
@@ -45,8 +45,7 @@ func NewServiceTestsListItem(id string, category string, name string, target Nul
 	this.Target = target
 	this.Template = template
 	this.IsEnabled = isEnabled
-	var type_ string = "uxi/service-test"
-	this.Type = &type_
+	this.Type = type_
 	return &this
 }
 
@@ -55,8 +54,6 @@ func NewServiceTestsListItem(id string, category string, name string, target Nul
 // but it doesn't guarantee that properties required by API are set
 func NewServiceTestsListItemWithDefaults() *ServiceTestsListItem {
 	this := ServiceTestsListItem{}
-	var type_ string = "uxi/service-test"
-	this.Type = &type_
 	return &this
 }
 
@@ -206,36 +203,28 @@ func (o *ServiceTestsListItem) SetIsEnabled(v bool) {
 	o.IsEnabled = v
 }
 
-// GetType returns the Type field value if set, zero value otherwise.
+// GetType returns the Type field value
 func (o *ServiceTestsListItem) GetType() string {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Type
+
+	return o.Type
 }
 
-// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
 func (o *ServiceTestsListItem) GetTypeOk() (*string, bool) {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Type, true
+	return &o.Type, true
 }
 
-// HasType returns a boolean if a field has been set.
-func (o *ServiceTestsListItem) HasType() bool {
-	if o != nil && !IsNil(o.Type) {
-		return true
-	}
-
-	return false
-}
-
-// SetType gets a reference to the given string and assigns it to the Type field.
+// SetType sets field value
 func (o *ServiceTestsListItem) SetType(v string) {
-	o.Type = &v
+	o.Type = v
 }
 
 func (o ServiceTestsListItem) MarshalJSON() ([]byte, error) {
@@ -254,9 +243,7 @@ func (o ServiceTestsListItem) ToMap() (map[string]interface{}, error) {
 	toSerialize["target"] = o.Target.Get()
 	toSerialize["template"] = o.Template
 	toSerialize["isEnabled"] = o.IsEnabled
-	if !IsNil(o.Type) {
-		toSerialize["type"] = o.Type
-	}
+	toSerialize["type"] = o.Type
 	return toSerialize, nil
 }
 
@@ -271,6 +258,7 @@ func (o *ServiceTestsListItem) UnmarshalJSON(data []byte) (err error) {
 		"target",
 		"template",
 		"isEnabled",
+		"type",
 	}
 
 	allProperties := make(map[string]interface{})

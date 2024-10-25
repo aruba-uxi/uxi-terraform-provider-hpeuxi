@@ -125,7 +125,7 @@ func (r *sensorResource) Read(ctx context.Context, req resource.ReadRequest, res
 	}
 
 	request := r.client.ConfigurationAPI.
-		GetUxiV1alpha1SensorsGet(ctx).
+		GetNetworkingUxiV1alpha1SensorsGet(ctx).
 		Id(state.ID.ValueString())
 	sensorResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

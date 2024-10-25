@@ -82,7 +82,7 @@ func TestGroupDataSource429Handling(t *testing.T) {
 			{
 				PreConfig: func() {
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/groups").
+						Get("/networking-uxi/v1alpha1/groups").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetGroup(
@@ -122,7 +122,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/groups").
+						Get("/networking-uxi/v1alpha1/groups").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,

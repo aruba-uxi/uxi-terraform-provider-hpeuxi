@@ -7,13 +7,13 @@ Name | Type | Description | Notes
 **Id** | **string** |  | 
 **Group** | [**Group**](Group.md) |  | 
 **ServiceTest** | [**ServiceTest**](ServiceTest.md) |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "uxi/service-test-group-assignment"]
+**Type** | **string** |  | 
 
 ## Methods
 
 ### NewServiceTestGroupAssignmentsPostResponse
 
-`func NewServiceTestGroupAssignmentsPostResponse(id string, group Group, serviceTest ServiceTest, ) *ServiceTestGroupAssignmentsPostResponse`
+`func NewServiceTestGroupAssignmentsPostResponse(id string, group Group, serviceTest ServiceTest, type_ string, ) *ServiceTestGroupAssignmentsPostResponse`
 
 NewServiceTestGroupAssignmentsPostResponse instantiates a new ServiceTestGroupAssignmentsPostResponse object
 This constructor will assign default values to properties that have it defined,
@@ -107,11 +107,6 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *ServiceTestGroupAssignmentsPostResponse) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -145,7 +145,7 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/wired-networks").
+						Get("/networking-uxi/v1alpha1/wired-networks").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,

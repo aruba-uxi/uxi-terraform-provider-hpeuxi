@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 2.9.0
+API version: 3.0.0
 Contact: support@capenetworks.com
 */
 
@@ -22,11 +22,11 @@ var _ MappedNullable = &GroupsPatchResponse{}
 
 // GroupsPatchResponse struct for GroupsPatchResponse
 type GroupsPatchResponse struct {
-	Id     string  `json:"id"`
-	Name   string  `json:"name"`
-	Path   string  `json:"path"`
-	Parent Parent  `json:"parent"`
-	Type   *string `json:"type,omitempty"`
+	Id     string `json:"id"`
+	Name   string `json:"name"`
+	Path   string `json:"path"`
+	Parent Parent `json:"parent"`
+	Type   string `json:"type"`
 }
 
 type _GroupsPatchResponse GroupsPatchResponse
@@ -35,14 +35,13 @@ type _GroupsPatchResponse GroupsPatchResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupsPatchResponse(id string, name string, path string, parent Parent) *GroupsPatchResponse {
+func NewGroupsPatchResponse(id string, name string, path string, parent Parent, type_ string) *GroupsPatchResponse {
 	this := GroupsPatchResponse{}
 	this.Id = id
 	this.Name = name
 	this.Path = path
 	this.Parent = parent
-	var type_ string = "uxi/group"
-	this.Type = &type_
+	this.Type = type_
 	return &this
 }
 
@@ -51,8 +50,6 @@ func NewGroupsPatchResponse(id string, name string, path string, parent Parent) 
 // but it doesn't guarantee that properties required by API are set
 func NewGroupsPatchResponseWithDefaults() *GroupsPatchResponse {
 	this := GroupsPatchResponse{}
-	var type_ string = "uxi/group"
-	this.Type = &type_
 	return &this
 }
 
@@ -152,36 +149,28 @@ func (o *GroupsPatchResponse) SetParent(v Parent) {
 	o.Parent = v
 }
 
-// GetType returns the Type field value if set, zero value otherwise.
+// GetType returns the Type field value
 func (o *GroupsPatchResponse) GetType() string {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Type
+
+	return o.Type
 }
 
-// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
 func (o *GroupsPatchResponse) GetTypeOk() (*string, bool) {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Type, true
+	return &o.Type, true
 }
 
-// HasType returns a boolean if a field has been set.
-func (o *GroupsPatchResponse) HasType() bool {
-	if o != nil && !IsNil(o.Type) {
-		return true
-	}
-
-	return false
-}
-
-// SetType gets a reference to the given string and assigns it to the Type field.
+// SetType sets field value
 func (o *GroupsPatchResponse) SetType(v string) {
-	o.Type = &v
+	o.Type = v
 }
 
 func (o GroupsPatchResponse) MarshalJSON() ([]byte, error) {
@@ -198,9 +187,7 @@ func (o GroupsPatchResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["name"] = o.Name
 	toSerialize["path"] = o.Path
 	toSerialize["parent"] = o.Parent
-	if !IsNil(o.Type) {
-		toSerialize["type"] = o.Type
-	}
+	toSerialize["type"] = o.Type
 	return toSerialize, nil
 }
 
@@ -213,6 +200,7 @@ func (o *GroupsPatchResponse) UnmarshalJSON(data []byte) (err error) {
 		"name",
 		"path",
 		"parent",
+		"type",
 	}
 
 	allProperties := make(map[string]interface{})

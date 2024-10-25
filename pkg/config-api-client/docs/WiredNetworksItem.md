@@ -15,13 +15,13 @@ Name | Type | Description | Notes
 **UseDns64** | **bool** |  | 
 **ExternalConnectivity** | **bool** |  | 
 **VLanId** | **NullableInt32** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "uxi/wired-network"]
+**Type** | **string** |  | 
 
 ## Methods
 
 ### NewWiredNetworksItem
 
-`func NewWiredNetworksItem(id string, name string, ipVersion string, createdAt time.Time, updatedAt time.Time, security NullableString, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, vLanId NullableInt32, ) *WiredNetworksItem`
+`func NewWiredNetworksItem(id string, name string, ipVersion string, createdAt time.Time, updatedAt time.Time, security NullableString, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, vLanId NullableInt32, type_ string, ) *WiredNetworksItem`
 
 NewWiredNetworksItem instantiates a new WiredNetworksItem object
 This constructor will assign default values to properties that have it defined,
@@ -305,11 +305,6 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *WiredNetworksItem) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

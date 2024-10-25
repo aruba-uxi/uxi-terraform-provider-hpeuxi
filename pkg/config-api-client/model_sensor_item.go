@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 2.9.0
+API version: 3.0.0
 Contact: support@capenetworks.com
 */
 
@@ -33,7 +33,7 @@ type SensorItem struct {
 	Latitude           NullableFloat32 `json:"latitude"`
 	Notes              NullableString  `json:"notes"`
 	PcapMode           NullableString  `json:"pcapMode"`
-	Type               *string         `json:"type,omitempty"`
+	Type               string          `json:"type"`
 }
 
 type _SensorItem SensorItem
@@ -42,7 +42,7 @@ type _SensorItem SensorItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorItem(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString) *SensorItem {
+func NewSensorItem(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, type_ string) *SensorItem {
 	this := SensorItem{}
 	this.Id = id
 	this.Serial = serial
@@ -55,8 +55,7 @@ func NewSensorItem(id string, serial string, name string, modelNumber NullableSt
 	this.Latitude = latitude
 	this.Notes = notes
 	this.PcapMode = pcapMode
-	var type_ string = "uxi/sensor"
-	this.Type = &type_
+	this.Type = type_
 	return &this
 }
 
@@ -65,8 +64,6 @@ func NewSensorItem(id string, serial string, name string, modelNumber NullableSt
 // but it doesn't guarantee that properties required by API are set
 func NewSensorItemWithDefaults() *SensorItem {
 	this := SensorItem{}
-	var type_ string = "uxi/sensor"
-	this.Type = &type_
 	return &this
 }
 
@@ -350,36 +347,28 @@ func (o *SensorItem) SetPcapMode(v string) {
 	o.PcapMode.Set(&v)
 }
 
-// GetType returns the Type field value if set, zero value otherwise.
+// GetType returns the Type field value
 func (o *SensorItem) GetType() string {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Type
+
+	return o.Type
 }
 
-// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
 func (o *SensorItem) GetTypeOk() (*string, bool) {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Type, true
+	return &o.Type, true
 }
 
-// HasType returns a boolean if a field has been set.
-func (o *SensorItem) HasType() bool {
-	if o != nil && !IsNil(o.Type) {
-		return true
-	}
-
-	return false
-}
-
-// SetType gets a reference to the given string and assigns it to the Type field.
+// SetType sets field value
 func (o *SensorItem) SetType(v string) {
-	o.Type = &v
+	o.Type = v
 }
 
 func (o SensorItem) MarshalJSON() ([]byte, error) {
@@ -403,9 +392,7 @@ func (o SensorItem) ToMap() (map[string]interface{}, error) {
 	toSerialize["latitude"] = o.Latitude.Get()
 	toSerialize["notes"] = o.Notes.Get()
 	toSerialize["pcapMode"] = o.PcapMode.Get()
-	if !IsNil(o.Type) {
-		toSerialize["type"] = o.Type
-	}
+	toSerialize["type"] = o.Type
 	return toSerialize, nil
 }
 
@@ -425,6 +412,7 @@ func (o *SensorItem) UnmarshalJSON(data []byte) (err error) {
 		"latitude",
 		"notes",
 		"pcapMode",
+		"type",
 	}
 
 	allProperties := make(map[string]interface{})

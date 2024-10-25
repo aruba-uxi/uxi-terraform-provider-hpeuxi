@@ -95,7 +95,9 @@ func (r *groupResource) Create(ctx context.Context, req resource.CreateRequest, 
 	if !plan.ParentGroupId.IsUnknown() && !plan.ParentGroupId.IsNull() {
 		groups_post_request.SetParentId(plan.ParentGroupId.ValueString())
 	}
-	request := r.client.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(ctx).GroupsPostRequest(*groups_post_request)
+	request := r.client.ConfigurationAPI.
+		GroupsPostNetworkingUxiV1alpha1GroupsPost(ctx).
+		GroupsPostRequest(*groups_post_request)
 	group, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -127,7 +129,7 @@ func (r *groupResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	}
 
 	request := r.client.ConfigurationAPI.
-		GroupsGetUxiV1alpha1GroupsGet(ctx).
+		GroupsGetNetworkingUxiV1alpha1GroupsGet(ctx).
 		Id(state.ID.ValueString())
 	groupResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
@@ -173,7 +175,7 @@ func (r *groupResource) Update(ctx context.Context, req resource.UpdateRequest, 
 
 	patchRequest := config_api_client.NewGroupsPatchRequest("new_name")
 	request := r.client.ConfigurationAPI.
-		GroupsPatchUxiV1alpha1GroupsGroupUidPatch(ctx, plan.ID.ValueString()).
+		GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch(ctx, plan.ID.ValueString()).
 		GroupsPatchRequest(*patchRequest)
 	group, response, err := util.RetryFor429(request.Execute)
 
@@ -207,7 +209,7 @@ func (r *groupResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 
 	// Delete existing group using the plan_id
 	request := r.client.ConfigurationAPI.
-		GroupsDeleteUxiV1alpha1GroupsGroupUidDelete(ctx, state.ID.ValueString())
+		GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

@@ -7,13 +7,13 @@ Name | Type | Description | Notes
 **Id** | **string** |  | 
 **Group** | [**Group**](Group.md) |  | 
 **Sensor** | [**Sensor**](Sensor.md) |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "uxi/sensor-group-assignment"]
+**Type** | **string** |  | 
 
 ## Methods
 
 ### NewSensorGroupAssignmentsItem
 
-`func NewSensorGroupAssignmentsItem(id string, group Group, sensor Sensor, ) *SensorGroupAssignmentsItem`
+`func NewSensorGroupAssignmentsItem(id string, group Group, sensor Sensor, type_ string, ) *SensorGroupAssignmentsItem`
 
 NewSensorGroupAssignmentsItem instantiates a new SensorGroupAssignmentsItem object
 This constructor will assign default values to properties that have it defined,
@@ -107,11 +107,6 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *SensorGroupAssignmentsItem) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

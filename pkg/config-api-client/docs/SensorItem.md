@@ -15,13 +15,13 @@ Name | Type | Description | Notes
 **Latitude** | **NullableFloat32** |  | 
 **Notes** | **NullableString** |  | 
 **PcapMode** | **NullableString** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "uxi/sensor"]
+**Type** | **string** |  | 
 
 ## Methods
 
 ### NewSensorItem
 
-`func NewSensorItem(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, ) *SensorItem`
+`func NewSensorItem(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, type_ string, ) *SensorItem`
 
 NewSensorItem instantiates a new SensorItem object
 This constructor will assign default values to properties that have it defined,
@@ -355,11 +355,6 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *SensorItem) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

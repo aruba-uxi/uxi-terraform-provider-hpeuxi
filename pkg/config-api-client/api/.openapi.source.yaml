@@ -9,14 +9,14 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 2.9.0
+  version: 3.0.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
 paths:
-  /uxi/v1alpha1/groups/{group_uid}:
+  /networking-uxi/v1alpha1/groups/{group_uid}:
     delete:
-      operationId: groups_delete_uxi_v1alpha1_groups__group_uid__delete
+      operationId: groups_delete_networking_uxi_v1alpha1_groups__group_uid__delete
       summary: Groups Delete
       description: Delete an existing group.
       parameters:
@@ -54,7 +54,7 @@ paths:
         - v1
         - groups
     patch:
-      operationId: groups_patch_uxi_v1alpha1_groups__group_uid__patch
+      operationId: groups_patch_networking_uxi_v1alpha1_groups__group_uid__patch
       summary: Groups Patch
       description: Update an existing group.
       parameters:
@@ -96,9 +96,9 @@ paths:
         - configuration
         - v1
         - groups
-  /uxi/v1alpha1/groups:
+  /networking-uxi/v1alpha1/groups:
     get:
-      operationId: groups_get_uxi_v1alpha1_groups_get
+      operationId: groups_get_networking_uxi_v1alpha1_groups_get
       summary: Groups Get
       description: Lists groups matching provided criteria
       parameters:
@@ -155,11 +155,10 @@ paths:
         - groups
       x-stability-level: alpha
     post:
-      operationId: groups_post_uxi_v1alpha1_groups_post
+      operationId: groups_post_networking_uxi_v1alpha1_groups_post
       summary: Groups Post
       description: >-
-        Create a new group with the group identified in `parent_uid` as its
-        parent
+        Create a new group with the group identified in `parent_uid` as its parent
       requestBody:
         required: true
         content:
@@ -193,10 +192,10 @@ paths:
         - v1alpha1
         - groups
       x-stability-level: alpha
-  /uxi/v1alpha1/network-group-assignments/{id}:
+  /networking-uxi/v1alpha1/network-group-assignments/{id}:
     delete:
       operationId: >-
-        delete_network_group_assignment_uxi_v1alpha1_network_group_assignments__id__delete
+        delete_network_group_assignment_networking_uxi_v1alpha1_network_group_assignments__id__delete
       summary: Delete Network Group Assignment
       description: Delete a network group assignment
       parameters:
@@ -234,9 +233,9 @@ paths:
         - v1alpha1
         - network-group-assignments
       x-stability-level: alpha
-  /uxi/v1alpha1/network-group-assignments:
+  /networking-uxi/v1alpha1/network-group-assignments:
     get:
-      operationId: get_uxi_v1alpha1_network_group_assignments_get
+      operationId: get_networking_uxi_v1alpha1_network_group_assignments_get
       summary: Get
       description: Get a list of network group assignments
       parameters:
@@ -291,7 +290,7 @@ paths:
         - network-group-assignments
       x-stability-level: alpha
     post:
-      operationId: post_uxi_v1alpha1_network_group_assignments_post
+      operationId: post_networking_uxi_v1alpha1_network_group_assignments_post
       summary: Post
       description: Create a network group assignment
       requestBody:
@@ -327,9 +326,9 @@ paths:
         - v1alpha1
         - network-group-assignments
       x-stability-level: alpha
-  /uxi/v1alpha1/sensor-group-assignments:
+  /networking-uxi/v1alpha1/sensor-group-assignments:
     get:
-      operationId: get_uxi_v1alpha1_sensor_group_assignments_get
+      operationId: get_networking_uxi_v1alpha1_sensor_group_assignments_get
       summary: Get
       description: Get a list of sensor group assignments
       parameters:
@@ -384,7 +383,7 @@ paths:
         - sensor-group-assignments
       x-stability-level: alpha
     post:
-      operationId: post_uxi_v1alpha1_sensor_group_assignments_post
+      operationId: post_networking_uxi_v1alpha1_sensor_group_assignments_post
       summary: Post
       description: Create sensor group assignment
       requestBody:
@@ -420,10 +419,10 @@ paths:
         - v1alpha1
         - sensor-group-assignments
       x-stability-level: alpha
-  /uxi/v1alpha1/sensor-group-assignments/{id}:
+  /networking-uxi/v1alpha1/sensor-group-assignments/{id}:
     delete:
       operationId: >-
-        delete_sensor_group_assignment_uxi_v1alpha1_sensor_group_assignments__id__delete
+        delete_sensor_group_assignment_networking_uxi_v1alpha1_sensor_group_assignments__id__delete
       summary: Delete Sensor Group Assignment
       description: Delete a sensor group assignment
       parameters:
@@ -461,9 +460,9 @@ paths:
         - v1alpha1
         - sensor-group-assignments
       x-stability-level: alpha
-  /uxi/v1alpha1/sensors:
+  /networking-uxi/v1alpha1/sensors:
     get:
-      operationId: get_uxi_v1alpha1_sensors_get
+      operationId: get_networking_uxi_v1alpha1_sensors_get
       summary: Get
       description: Get a list of sensors
       parameters:
@@ -519,10 +518,10 @@ paths:
         - v1alpha1
         - sensors
       x-stability-level: alpha
-  /uxi/v1alpha1/service-test-group-assignments/{id}:
+  /networking-uxi/v1alpha1/service-test-group-assignments/{id}:
     delete:
       operationId: >-
-        delete_service_test_group_assignment_uxi_v1alpha1_service_test_group_assignments__id__delete
+        delete_service_test_group_assignment_networking_uxi_v1alpha1_service_test_group_assignments__id__delete
       summary: Delete Service Test Group Assignment
       description: Delete a service test group assignment
       parameters:
@@ -560,9 +559,9 @@ paths:
         - v1alpha1
         - service-test-group-assignments
       x-stability-level: alpha
-  /uxi/v1alpha1/service-test-group-assignments:
+  /networking-uxi/v1alpha1/service-test-group-assignments:
     post:
-      operationId: post_uxi_v1alpha1_service_test_group_assignments_post
+      operationId: post_networking_uxi_v1alpha1_service_test_group_assignments_post
       summary: Post
       description: Create a service-test group assignment
       requestBody:
@@ -598,9 +597,9 @@ paths:
         - v1alpha1
         - service-test-group-assignments
       x-stability-level: alpha
-  /uxi/v1alpha1/service-tests:
+  /networking-uxi/v1alpha1/service-tests:
     get:
-      operationId: service_tests_get_uxi_v1alpha1_service_tests_get
+      operationId: service_tests_get_networking_uxi_v1alpha1_service_tests_get
       summary: Service Tests Get
       description: Lists service-tests matching provided criteria
       parameters:
@@ -656,9 +655,9 @@ paths:
         - v1alpha1
         - service-tests
       x-stability-level: alpha
-  /uxi/v1alpha1/wired-networks:
+  /networking-uxi/v1alpha1/wired-networks:
     get:
-      operationId: get_uxi_v1alpha1_wired_networks_get
+      operationId: get_networking_uxi_v1alpha1_wired_networks_get
       summary: Get
       description: Get a list of wired networks
       parameters:
@@ -712,9 +711,9 @@ paths:
         - v1alpha1
         - wired-networks
       x-stability-level: alpha
-  /uxi/v1alpha1/wireless-networks:
+  /networking-uxi/v1alpha1/wireless-networks:
     get:
-      operationId: get_uxi_v1alpha1_wireless_networks_get
+      operationId: get_networking_uxi_v1alpha1_wireless_networks_get
       summary: Get
       description: Get a list of wireless networks
       parameters:
@@ -840,13 +839,15 @@ components:
           title: Path
         type:
           type: string
-          default: uxi/group
+          enum:
+            - networking-uxi/group
           title: Type
       required:
         - id
         - name
         - parent
         - path
+        - type
       title: GroupsGetItem
     GroupsGetResponse:
       type: object
@@ -894,13 +895,15 @@ components:
           $ref: '#/components/schemas/Parent'
         type:
           type: string
-          default: uxi/group
+          enum:
+            - networking-uxi/group
           title: Type
       required:
         - id
         - name
         - path
         - parent
+        - type
       title: GroupsPatchResponse
     GroupsPostRequest:
       type: object
@@ -932,13 +935,15 @@ components:
           $ref: '#/components/schemas/Parent'
         type:
           type: string
-          default: uxi/group
+          enum:
+            - networking-uxi/group
           title: Type
       required:
         - id
         - name
         - path
         - parent
+        - type
       title: GroupsPostResponse
     Issue:
       type: object
@@ -984,12 +989,14 @@ components:
           $ref: '#/components/schemas/Network'
         type:
           type: string
-          default: uxi/network-group-assignment
+          enum:
+            - networking-uxi/network-group-assignment
           title: Type
       required:
         - id
         - group
         - network
+        - type
       title: NetworkGroupAssignmentsItem
     NetworkGroupAssignmentsPostRequest:
       type: object
@@ -1017,12 +1024,14 @@ components:
           $ref: '#/components/schemas/Network'
         type:
           type: string
-          default: uxi/network-group-assignment
+          enum:
+            - networking-uxi/network-group-assignment
           title: Type
       required:
         - id
         - group
         - network
+        - type
       title: NetworkGroupAssignmentsPostResponse
     NetworkGroupAssignmentsResponse:
       type: object
@@ -1075,12 +1084,14 @@ components:
           $ref: '#/components/schemas/Sensor'
         type:
           type: string
-          default: uxi/sensor-group-assignment
+          enum:
+            - networking-uxi/sensor-group-assignment
           title: Type
       required:
         - id
         - group
         - sensor
+        - type
       title: SensorGroupAssignmentResponse
     SensorGroupAssignmentsItem:
       type: object
@@ -1094,12 +1105,14 @@ components:
           $ref: '#/components/schemas/Sensor'
         type:
           type: string
-          default: uxi/sensor-group-assignment
+          enum:
+            - networking-uxi/sensor-group-assignment
           title: Type
       required:
         - id
         - group
         - sensor
+        - type
       title: SensorGroupAssignmentsItem
     SensorGroupAssignmentsPostRequest:
       type: object
@@ -1189,7 +1202,8 @@ components:
           title: Pcapmode
         type:
           type: string
-          default: uxi/sensor
+          enum:
+            - networking-uxi/sensor
           title: Type
       required:
         - id
@@ -1203,6 +1217,7 @@ components:
         - latitude
         - notes
         - pcapMode
+        - type
       title: SensorItem
     SensorsResponse:
       type: object
@@ -1260,12 +1275,14 @@ components:
           $ref: '#/components/schemas/ServiceTest'
         type:
           type: string
-          default: uxi/service-test-group-assignment
+          enum:
+            - networking-uxi/service-test-group-assignment
           title: Type
       required:
         - id
         - group
         - serviceTest
+        - type
       title: ServiceTestGroupAssignmentsPostResponse
     ServiceTestsListItem:
       type: object
@@ -1292,7 +1309,8 @@ components:
           title: Isenabled
         type:
           type: string
-          default: uxi/service-test
+          enum:
+            - networking-uxi/service-test
           title: Type
       required:
         - id
@@ -1301,6 +1319,7 @@ components:
         - target
         - template
         - isEnabled
+        - type
       title: ServiceTestsListItem
     ServiceTestsListResponse:
       type: object
@@ -1369,7 +1388,8 @@ components:
           title: Vlanid
         type:
           type: string
-          default: uxi/wired-network
+          enum:
+            - networking-uxi/wired-network
           title: Type
       required:
         - id
@@ -1383,6 +1403,7 @@ components:
         - useDns64
         - externalConnectivity
         - vLanId
+        - type
       title: WiredNetworksItem
     WiredNetworksResponse:
       type: object
@@ -1455,7 +1476,8 @@ components:
           title: Externalconnectivity
         type:
           type: string
-          default: uxi/wireless-network
+          enum:
+            - networking-uxi/wireless-network
           title: Type
       required:
         - id
@@ -1471,6 +1493,7 @@ components:
         - disableEdns
         - useDns64
         - externalConnectivity
+        - type
       title: WirelessNetworksItem
     WirelessNetworksResponse:
       type: object

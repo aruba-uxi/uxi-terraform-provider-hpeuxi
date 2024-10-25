@@ -152,7 +152,7 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/wireless-networks").
+						Get("/networking-uxi/v1alpha1/wireless-networks").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,

@@ -8,13 +8,13 @@ Name | Type | Description | Notes
 **Name** | **string** |  | 
 **Parent** | [**NullableParent**](Parent.md) |  | 
 **Path** | **string** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "uxi/group"]
+**Type** | **string** |  | 
 
 ## Methods
 
 ### NewGroupsGetItem
 
-`func NewGroupsGetItem(id string, name string, parent NullableParent, path string, ) *GroupsGetItem`
+`func NewGroupsGetItem(id string, name string, parent NullableParent, path string, type_ string, ) *GroupsGetItem`
 
 NewGroupsGetItem instantiates a new GroupsGetItem object
 This constructor will assign default values to properties that have it defined,
@@ -138,11 +138,6 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *GroupsGetItem) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
