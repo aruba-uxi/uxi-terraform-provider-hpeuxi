@@ -161,7 +161,15 @@ func (r *serviceTestGroupAssignmentResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	// Delete existing serviceTestGroupAssignment using the plan_id
+	request := r.client.ConfigurationAPI.DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
+
+	_, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"), errorDetail)
+		return
+	}
 }
 
 func (r *serviceTestGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
