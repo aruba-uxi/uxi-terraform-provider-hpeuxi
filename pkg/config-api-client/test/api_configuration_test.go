@@ -69,6 +69,10 @@ func TestConfigurationAPI(t *testing.T) {
 			Post("/networking-uxi/v1alpha1/groups").
 			MatchType("json").
 			BodyString(`{"parentId": "parent.uid", "name": "name"}`).
+			JSON(map[string]interface{}{
+				"name":     "name",
+				"parentId": "parent.uid",
+			}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"id":     "node",
@@ -99,6 +103,9 @@ func TestConfigurationAPI(t *testing.T) {
 			Patch("/networking-uxi/v1alpha1/groups/node").
 			MatchType("json").
 			BodyString(`{"name": "new_name"}`).
+			JSON(map[string]interface{}{
+				"name": "new_name",
+			}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"id":     "node",
@@ -249,6 +256,10 @@ func TestConfigurationAPI(t *testing.T) {
 			Post("/networking-uxi/v1alpha1/sensor-group-assignments").
 			MatchType("json").
 			BodyString(`{"groupId": "group_uid", "sensorId": "sensor_uid"}`).
+			JSON(map[string]interface{}{
+				"groupId":  "group_uid",
+				"sensorId": "sensor_uid",
+			}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"id":     "uid",
@@ -458,6 +469,10 @@ func TestConfigurationAPI(t *testing.T) {
 			Post("/networking-uxi/v1alpha1/network-group-assignments").
 			MatchType("json").
 			BodyString(`{"groupId": "group_uid", "networkId": "network_uid"}`).
+			JSON(map[string]interface{}{
+				"groupId":   "group_uid",
+				"networkId": "network_uid",
+			}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"id":      "uid",
@@ -501,6 +516,10 @@ func TestConfigurationAPI(t *testing.T) {
 			Post("/networking-uxi/v1alpha1/service-test-group-assignments").
 			MatchType("json").
 			BodyString(`{"groupId": "group_uid", "serviceTestId": "service_test_uid"}`).
+			JSON(map[string]interface{}{
+				"groupId":       "group_uid",
+				"serviceTestId": "service_test_uid",
+			}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"id":          "uid",
