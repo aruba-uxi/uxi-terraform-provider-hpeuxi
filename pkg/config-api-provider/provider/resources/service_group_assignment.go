@@ -161,7 +161,8 @@ func (r *serviceTestGroupAssignmentResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request := r.client.ConfigurationAPI.DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
+	request := r.client.ConfigurationAPI.
+		DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
