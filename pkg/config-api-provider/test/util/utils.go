@@ -331,6 +331,14 @@ func MockPostServiceTestGroupAssignment(request map[string]interface{}, response
 		JSON(response)
 }
 
+func MockDeleteServiceTestGroupAssignment(uid string, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Delete("/uxi/v1alpha1/service-test-group-assignments/"+uid).
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(204)
+}
+
 var RateLimitingHeaders = map[string]string{
 	"X-RateLimit-Limit":     "100",
 	"X-RateLimit-Remaining": "0",
