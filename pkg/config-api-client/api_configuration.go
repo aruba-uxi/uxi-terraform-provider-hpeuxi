@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 2.9.0
+API version: 3.0.0
 Contact: support@capenetworks.com
 */
 
@@ -23,27 +23,27 @@ import (
 // ConfigurationAPIService ConfigurationAPI service
 type ConfigurationAPIService service
 
-type ApiDeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest struct {
+type ApiDeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	id         string
 }
 
-func (r ApiDeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest) Execute() (interface{}, *http.Response, error) {
-	return r.ApiService.DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDeleteExecute(r)
+func (r ApiDeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest) Execute() (interface{}, *http.Response, error) {
+	return r.ApiService.DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDeleteExecute(r)
 }
 
 /*
-DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete Delete Network Group Assignment
+DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete Delete Network Group Assignment
 
 Delete a network group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiDeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest
+	@return ApiDeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest
 */
-func (a *ConfigurationAPIService) DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete(ctx context.Context, id string) ApiDeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest {
-	return ApiDeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest{
+func (a *ConfigurationAPIService) DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete(ctx context.Context, id string) ApiDeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest {
+	return ApiDeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -53,7 +53,7 @@ func (a *ConfigurationAPIService) DeleteNetworkGroupAssignmentUxiV1alpha1Network
 // Execute executes the request
 //
 //	@return interface{}
-func (a *ConfigurationAPIService) DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDeleteExecute(r ApiDeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest) (interface{}, *http.Response, error) {
+func (a *ConfigurationAPIService) DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDeleteExecute(r ApiDeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest) (interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -61,12 +61,12 @@ func (a *ConfigurationAPIService) DeleteNetworkGroupAssignmentUxiV1alpha1Network
 		localVarReturnValue interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/network-group-assignments/{id}"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/network-group-assignments/{id}"
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -148,27 +148,27 @@ func (a *ConfigurationAPIService) DeleteNetworkGroupAssignmentUxiV1alpha1Network
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest struct {
+type ApiDeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	id         string
 }
 
-func (r ApiDeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest) Execute() (interface{}, *http.Response, error) {
-	return r.ApiService.DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDeleteExecute(r)
+func (r ApiDeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest) Execute() (interface{}, *http.Response, error) {
+	return r.ApiService.DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDeleteExecute(r)
 }
 
 /*
-DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete Delete Sensor Group Assignment
+DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete Delete Sensor Group Assignment
 
 Delete a sensor group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiDeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest
+	@return ApiDeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest
 */
-func (a *ConfigurationAPIService) DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete(ctx context.Context, id string) ApiDeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest {
-	return ApiDeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest{
+func (a *ConfigurationAPIService) DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete(ctx context.Context, id string) ApiDeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest {
+	return ApiDeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -178,7 +178,7 @@ func (a *ConfigurationAPIService) DeleteSensorGroupAssignmentUxiV1alpha1SensorGr
 // Execute executes the request
 //
 //	@return interface{}
-func (a *ConfigurationAPIService) DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDeleteExecute(r ApiDeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest) (interface{}, *http.Response, error) {
+func (a *ConfigurationAPIService) DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDeleteExecute(r ApiDeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest) (interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -186,12 +186,12 @@ func (a *ConfigurationAPIService) DeleteSensorGroupAssignmentUxiV1alpha1SensorGr
 		localVarReturnValue interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/sensor-group-assignments/{id}"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/sensor-group-assignments/{id}"
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -273,27 +273,27 @@ func (a *ConfigurationAPIService) DeleteSensorGroupAssignmentUxiV1alpha1SensorGr
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest struct {
+type ApiDeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	id         string
 }
 
-func (r ApiDeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest) Execute() (interface{}, *http.Response, error) {
-	return r.ApiService.DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteExecute(r)
+func (r ApiDeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest) Execute() (interface{}, *http.Response, error) {
+	return r.ApiService.DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteExecute(r)
 }
 
 /*
-DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete Delete Service Test Group Assignment
+DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete Delete Service Test Group Assignment
 
 Delete a service test group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
-	@return ApiDeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest
+	@return ApiDeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest
 */
-func (a *ConfigurationAPIService) DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(ctx context.Context, id string) ApiDeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest {
-	return ApiDeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest{
+func (a *ConfigurationAPIService) DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(ctx context.Context, id string) ApiDeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest {
+	return ApiDeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
 		id:         id,
@@ -303,7 +303,7 @@ func (a *ConfigurationAPIService) DeleteServiceTestGroupAssignmentUxiV1alpha1Ser
 // Execute executes the request
 //
 //	@return interface{}
-func (a *ConfigurationAPIService) DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteExecute(r ApiDeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest) (interface{}, *http.Response, error) {
+func (a *ConfigurationAPIService) DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteExecute(r ApiDeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest) (interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -311,12 +311,12 @@ func (a *ConfigurationAPIService) DeleteServiceTestGroupAssignmentUxiV1alpha1Ser
 		localVarReturnValue interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/service-test-group-assignments/{id}"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/service-test-group-assignments/{id}"
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -398,7 +398,7 @@ func (a *ConfigurationAPIService) DeleteServiceTestGroupAssignmentUxiV1alpha1Ser
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest struct {
+type ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	id         *string
@@ -406,35 +406,35 @@ type ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Id(id string) ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest) Id(id string) ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest {
 	r.id = &id
 	return r
 }
 
-func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Next(next string) ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest) Next(next string) ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest {
 	r.next = &next
 	return r
 }
 
-func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Limit(limit int32) ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest) Limit(limit int32) ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) Execute() (*NetworkGroupAssignmentsResponse, *http.Response, error) {
-	return r.ApiService.GetUxiV1alpha1NetworkGroupAssignmentsGetExecute(r)
+func (r ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest) Execute() (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+	return r.ApiService.GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetExecute(r)
 }
 
 /*
-GetUxiV1alpha1NetworkGroupAssignmentsGet Get
+GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet Get
 
 Get a list of network group assignments
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest
+	@return ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest
 */
-func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx context.Context) ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest {
-	return ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest{
+func (a *ConfigurationAPIService) GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet(ctx context.Context) ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest {
+	return ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -443,7 +443,7 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx c
 // Execute executes the request
 //
 //	@return NetworkGroupAssignmentsResponse
-func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGetExecute(r ApiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest) (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetExecute(r ApiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest) (*NetworkGroupAssignmentsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -451,12 +451,12 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGetExecut
 		localVarReturnValue *NetworkGroupAssignmentsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1NetworkGroupAssignmentsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/network-group-assignments"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/network-group-assignments"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -549,7 +549,7 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1NetworkGroupAssignmentsGetExecut
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest struct {
+type ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	id         *string
@@ -557,35 +557,35 @@ type ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) Id(id string) ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest) Id(id string) ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest {
 	r.id = &id
 	return r
 }
 
-func (r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) Next(next string) ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest) Next(next string) ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest {
 	r.next = &next
 	return r
 }
 
-func (r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) Limit(limit int32) ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest) Limit(limit int32) ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) Execute() (*SensorGroupAssignmentsResponse, *http.Response, error) {
-	return r.ApiService.GetUxiV1alpha1SensorGroupAssignmentsGetExecute(r)
+func (r ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest) Execute() (*SensorGroupAssignmentsResponse, *http.Response, error) {
+	return r.ApiService.GetNetworkingUxiV1alpha1SensorGroupAssignmentsGetExecute(r)
 }
 
 /*
-GetUxiV1alpha1SensorGroupAssignmentsGet Get
+GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet Get
 
 Get a list of sensor group assignments
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest
+	@return ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest
 */
-func (a *ConfigurationAPIService) GetUxiV1alpha1SensorGroupAssignmentsGet(ctx context.Context) ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest {
-	return ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest{
+func (a *ConfigurationAPIService) GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet(ctx context.Context) ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest {
+	return ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -594,7 +594,7 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1SensorGroupAssignmentsGet(ctx co
 // Execute executes the request
 //
 //	@return SensorGroupAssignmentsResponse
-func (a *ConfigurationAPIService) GetUxiV1alpha1SensorGroupAssignmentsGetExecute(r ApiGetUxiV1alpha1SensorGroupAssignmentsGetRequest) (*SensorGroupAssignmentsResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GetNetworkingUxiV1alpha1SensorGroupAssignmentsGetExecute(r ApiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest) (*SensorGroupAssignmentsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -602,12 +602,12 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1SensorGroupAssignmentsGetExecute
 		localVarReturnValue *SensorGroupAssignmentsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1SensorGroupAssignmentsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/sensor-group-assignments"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/sensor-group-assignments"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -700,7 +700,7 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1SensorGroupAssignmentsGetExecute
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUxiV1alpha1SensorsGetRequest struct {
+type ApiGetNetworkingUxiV1alpha1SensorsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	id         *string
@@ -708,35 +708,35 @@ type ApiGetUxiV1alpha1SensorsGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGetUxiV1alpha1SensorsGetRequest) Id(id string) ApiGetUxiV1alpha1SensorsGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1SensorsGetRequest) Id(id string) ApiGetNetworkingUxiV1alpha1SensorsGetRequest {
 	r.id = &id
 	return r
 }
 
-func (r ApiGetUxiV1alpha1SensorsGetRequest) Next(next string) ApiGetUxiV1alpha1SensorsGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1SensorsGetRequest) Next(next string) ApiGetNetworkingUxiV1alpha1SensorsGetRequest {
 	r.next = &next
 	return r
 }
 
-func (r ApiGetUxiV1alpha1SensorsGetRequest) Limit(limit int32) ApiGetUxiV1alpha1SensorsGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1SensorsGetRequest) Limit(limit int32) ApiGetNetworkingUxiV1alpha1SensorsGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGetUxiV1alpha1SensorsGetRequest) Execute() (*SensorsResponse, *http.Response, error) {
-	return r.ApiService.GetUxiV1alpha1SensorsGetExecute(r)
+func (r ApiGetNetworkingUxiV1alpha1SensorsGetRequest) Execute() (*SensorsResponse, *http.Response, error) {
+	return r.ApiService.GetNetworkingUxiV1alpha1SensorsGetExecute(r)
 }
 
 /*
-GetUxiV1alpha1SensorsGet Get
+GetNetworkingUxiV1alpha1SensorsGet Get
 
 Get a list of sensors
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUxiV1alpha1SensorsGetRequest
+	@return ApiGetNetworkingUxiV1alpha1SensorsGetRequest
 */
-func (a *ConfigurationAPIService) GetUxiV1alpha1SensorsGet(ctx context.Context) ApiGetUxiV1alpha1SensorsGetRequest {
-	return ApiGetUxiV1alpha1SensorsGetRequest{
+func (a *ConfigurationAPIService) GetNetworkingUxiV1alpha1SensorsGet(ctx context.Context) ApiGetNetworkingUxiV1alpha1SensorsGetRequest {
+	return ApiGetNetworkingUxiV1alpha1SensorsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -745,7 +745,7 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1SensorsGet(ctx context.Context) 
 // Execute executes the request
 //
 //	@return SensorsResponse
-func (a *ConfigurationAPIService) GetUxiV1alpha1SensorsGetExecute(r ApiGetUxiV1alpha1SensorsGetRequest) (*SensorsResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GetNetworkingUxiV1alpha1SensorsGetExecute(r ApiGetNetworkingUxiV1alpha1SensorsGetRequest) (*SensorsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -753,12 +753,12 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1SensorsGetExecute(r ApiGetUxiV1a
 		localVarReturnValue *SensorsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1SensorsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetNetworkingUxiV1alpha1SensorsGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/sensors"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/sensors"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -851,7 +851,7 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1SensorsGetExecute(r ApiGetUxiV1a
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUxiV1alpha1WiredNetworksGetRequest struct {
+type ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	id         *string
@@ -859,35 +859,35 @@ type ApiGetUxiV1alpha1WiredNetworksGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGetUxiV1alpha1WiredNetworksGetRequest) Id(id string) ApiGetUxiV1alpha1WiredNetworksGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest) Id(id string) ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest {
 	r.id = &id
 	return r
 }
 
-func (r ApiGetUxiV1alpha1WiredNetworksGetRequest) Next(next string) ApiGetUxiV1alpha1WiredNetworksGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest) Next(next string) ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest {
 	r.next = &next
 	return r
 }
 
-func (r ApiGetUxiV1alpha1WiredNetworksGetRequest) Limit(limit int32) ApiGetUxiV1alpha1WiredNetworksGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest) Limit(limit int32) ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGetUxiV1alpha1WiredNetworksGetRequest) Execute() (*WiredNetworksResponse, *http.Response, error) {
-	return r.ApiService.GetUxiV1alpha1WiredNetworksGetExecute(r)
+func (r ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest) Execute() (*WiredNetworksResponse, *http.Response, error) {
+	return r.ApiService.GetNetworkingUxiV1alpha1WiredNetworksGetExecute(r)
 }
 
 /*
-GetUxiV1alpha1WiredNetworksGet Get
+GetNetworkingUxiV1alpha1WiredNetworksGet Get
 
 Get a list of wired networks
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUxiV1alpha1WiredNetworksGetRequest
+	@return ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest
 */
-func (a *ConfigurationAPIService) GetUxiV1alpha1WiredNetworksGet(ctx context.Context) ApiGetUxiV1alpha1WiredNetworksGetRequest {
-	return ApiGetUxiV1alpha1WiredNetworksGetRequest{
+func (a *ConfigurationAPIService) GetNetworkingUxiV1alpha1WiredNetworksGet(ctx context.Context) ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest {
+	return ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -896,7 +896,7 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1WiredNetworksGet(ctx context.Con
 // Execute executes the request
 //
 //	@return WiredNetworksResponse
-func (a *ConfigurationAPIService) GetUxiV1alpha1WiredNetworksGetExecute(r ApiGetUxiV1alpha1WiredNetworksGetRequest) (*WiredNetworksResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GetNetworkingUxiV1alpha1WiredNetworksGetExecute(r ApiGetNetworkingUxiV1alpha1WiredNetworksGetRequest) (*WiredNetworksResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -904,12 +904,12 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1WiredNetworksGetExecute(r ApiGet
 		localVarReturnValue *WiredNetworksResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1WiredNetworksGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetNetworkingUxiV1alpha1WiredNetworksGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/wired-networks"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/wired-networks"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1002,7 +1002,7 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1WiredNetworksGetExecute(r ApiGet
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUxiV1alpha1WirelessNetworksGetRequest struct {
+type ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	id         *string
@@ -1010,35 +1010,35 @@ type ApiGetUxiV1alpha1WirelessNetworksGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGetUxiV1alpha1WirelessNetworksGetRequest) Id(id string) ApiGetUxiV1alpha1WirelessNetworksGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest) Id(id string) ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest {
 	r.id = &id
 	return r
 }
 
-func (r ApiGetUxiV1alpha1WirelessNetworksGetRequest) Next(next string) ApiGetUxiV1alpha1WirelessNetworksGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest) Next(next string) ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest {
 	r.next = &next
 	return r
 }
 
-func (r ApiGetUxiV1alpha1WirelessNetworksGetRequest) Limit(limit int32) ApiGetUxiV1alpha1WirelessNetworksGetRequest {
+func (r ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest) Limit(limit int32) ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGetUxiV1alpha1WirelessNetworksGetRequest) Execute() (*WirelessNetworksResponse, *http.Response, error) {
-	return r.ApiService.GetUxiV1alpha1WirelessNetworksGetExecute(r)
+func (r ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest) Execute() (*WirelessNetworksResponse, *http.Response, error) {
+	return r.ApiService.GetNetworkingUxiV1alpha1WirelessNetworksGetExecute(r)
 }
 
 /*
-GetUxiV1alpha1WirelessNetworksGet Get
+GetNetworkingUxiV1alpha1WirelessNetworksGet Get
 
 Get a list of wireless networks
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetUxiV1alpha1WirelessNetworksGetRequest
+	@return ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest
 */
-func (a *ConfigurationAPIService) GetUxiV1alpha1WirelessNetworksGet(ctx context.Context) ApiGetUxiV1alpha1WirelessNetworksGetRequest {
-	return ApiGetUxiV1alpha1WirelessNetworksGetRequest{
+func (a *ConfigurationAPIService) GetNetworkingUxiV1alpha1WirelessNetworksGet(ctx context.Context) ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest {
+	return ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -1047,7 +1047,7 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1WirelessNetworksGet(ctx context.
 // Execute executes the request
 //
 //	@return WirelessNetworksResponse
-func (a *ConfigurationAPIService) GetUxiV1alpha1WirelessNetworksGetExecute(r ApiGetUxiV1alpha1WirelessNetworksGetRequest) (*WirelessNetworksResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GetNetworkingUxiV1alpha1WirelessNetworksGetExecute(r ApiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest) (*WirelessNetworksResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -1055,12 +1055,12 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1WirelessNetworksGetExecute(r Api
 		localVarReturnValue *WirelessNetworksResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetUxiV1alpha1WirelessNetworksGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GetNetworkingUxiV1alpha1WirelessNetworksGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/wireless-networks"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/wireless-networks"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1153,27 +1153,27 @@ func (a *ConfigurationAPIService) GetUxiV1alpha1WirelessNetworksGetExecute(r Api
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest struct {
+type ApiGroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDeleteRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	groupUid   string
 }
 
-func (r ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest) Execute() (interface{}, *http.Response, error) {
-	return r.ApiService.GroupsDeleteUxiV1alpha1GroupsGroupUidDeleteExecute(r)
+func (r ApiGroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDeleteRequest) Execute() (interface{}, *http.Response, error) {
+	return r.ApiService.GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDeleteExecute(r)
 }
 
 /*
-GroupsDeleteUxiV1alpha1GroupsGroupUidDelete Groups Delete
+GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete Groups Delete
 
 Delete an existing group.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param groupUid
-	@return ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest
+	@return ApiGroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDeleteRequest
 */
-func (a *ConfigurationAPIService) GroupsDeleteUxiV1alpha1GroupsGroupUidDelete(ctx context.Context, groupUid string) ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest {
-	return ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest{
+func (a *ConfigurationAPIService) GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete(ctx context.Context, groupUid string) ApiGroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDeleteRequest {
+	return ApiGroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
 		groupUid:   groupUid,
@@ -1183,7 +1183,7 @@ func (a *ConfigurationAPIService) GroupsDeleteUxiV1alpha1GroupsGroupUidDelete(ct
 // Execute executes the request
 //
 //	@return interface{}
-func (a *ConfigurationAPIService) GroupsDeleteUxiV1alpha1GroupsGroupUidDeleteExecute(r ApiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest) (interface{}, *http.Response, error) {
+func (a *ConfigurationAPIService) GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDeleteExecute(r ApiGroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDeleteRequest) (interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -1191,12 +1191,12 @@ func (a *ConfigurationAPIService) GroupsDeleteUxiV1alpha1GroupsGroupUidDeleteExe
 		localVarReturnValue interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsDeleteUxiV1alpha1GroupsGroupUidDelete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/groups/{group_uid}"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/groups/{group_uid}"
 	localVarPath = strings.Replace(localVarPath, "{"+"group_uid"+"}", url.PathEscape(parameterValueToString(r.groupUid, "groupUid")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -1278,7 +1278,7 @@ func (a *ConfigurationAPIService) GroupsDeleteUxiV1alpha1GroupsGroupUidDeleteExe
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGroupsGetUxiV1alpha1GroupsGetRequest struct {
+type ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	id         *string
@@ -1286,35 +1286,35 @@ type ApiGroupsGetUxiV1alpha1GroupsGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiGroupsGetUxiV1alpha1GroupsGetRequest) Id(id string) ApiGroupsGetUxiV1alpha1GroupsGetRequest {
+func (r ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest) Id(id string) ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest {
 	r.id = &id
 	return r
 }
 
-func (r ApiGroupsGetUxiV1alpha1GroupsGetRequest) Next(next string) ApiGroupsGetUxiV1alpha1GroupsGetRequest {
+func (r ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest) Next(next string) ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest {
 	r.next = &next
 	return r
 }
 
-func (r ApiGroupsGetUxiV1alpha1GroupsGetRequest) Limit(limit int32) ApiGroupsGetUxiV1alpha1GroupsGetRequest {
+func (r ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest) Limit(limit int32) ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGroupsGetUxiV1alpha1GroupsGetRequest) Execute() (*GroupsGetResponse, *http.Response, error) {
-	return r.ApiService.GroupsGetUxiV1alpha1GroupsGetExecute(r)
+func (r ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest) Execute() (*GroupsGetResponse, *http.Response, error) {
+	return r.ApiService.GroupsGetNetworkingUxiV1alpha1GroupsGetExecute(r)
 }
 
 /*
-GroupsGetUxiV1alpha1GroupsGet Groups Get
+GroupsGetNetworkingUxiV1alpha1GroupsGet Groups Get
 
 Lists groups matching provided criteria
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGroupsGetUxiV1alpha1GroupsGetRequest
+	@return ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest
 */
-func (a *ConfigurationAPIService) GroupsGetUxiV1alpha1GroupsGet(ctx context.Context) ApiGroupsGetUxiV1alpha1GroupsGetRequest {
-	return ApiGroupsGetUxiV1alpha1GroupsGetRequest{
+func (a *ConfigurationAPIService) GroupsGetNetworkingUxiV1alpha1GroupsGet(ctx context.Context) ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest {
+	return ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -1323,7 +1323,7 @@ func (a *ConfigurationAPIService) GroupsGetUxiV1alpha1GroupsGet(ctx context.Cont
 // Execute executes the request
 //
 //	@return GroupsGetResponse
-func (a *ConfigurationAPIService) GroupsGetUxiV1alpha1GroupsGetExecute(r ApiGroupsGetUxiV1alpha1GroupsGetRequest) (*GroupsGetResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GroupsGetNetworkingUxiV1alpha1GroupsGetExecute(r ApiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest) (*GroupsGetResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -1331,12 +1331,12 @@ func (a *ConfigurationAPIService) GroupsGetUxiV1alpha1GroupsGetExecute(r ApiGrou
 		localVarReturnValue *GroupsGetResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsGetUxiV1alpha1GroupsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsGetNetworkingUxiV1alpha1GroupsGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/groups"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/groups"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1429,33 +1429,33 @@ func (a *ConfigurationAPIService) GroupsGetUxiV1alpha1GroupsGetExecute(r ApiGrou
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGroupsPatchUxiV1alpha1GroupsGroupUidPatchRequest struct {
+type ApiGroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchRequest struct {
 	ctx                context.Context
 	ApiService         *ConfigurationAPIService
 	groupUid           string
 	groupsPatchRequest *GroupsPatchRequest
 }
 
-func (r ApiGroupsPatchUxiV1alpha1GroupsGroupUidPatchRequest) GroupsPatchRequest(groupsPatchRequest GroupsPatchRequest) ApiGroupsPatchUxiV1alpha1GroupsGroupUidPatchRequest {
+func (r ApiGroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchRequest) GroupsPatchRequest(groupsPatchRequest GroupsPatchRequest) ApiGroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchRequest {
 	r.groupsPatchRequest = &groupsPatchRequest
 	return r
 }
 
-func (r ApiGroupsPatchUxiV1alpha1GroupsGroupUidPatchRequest) Execute() (*GroupsPatchResponse, *http.Response, error) {
-	return r.ApiService.GroupsPatchUxiV1alpha1GroupsGroupUidPatchExecute(r)
+func (r ApiGroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchRequest) Execute() (*GroupsPatchResponse, *http.Response, error) {
+	return r.ApiService.GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchExecute(r)
 }
 
 /*
-GroupsPatchUxiV1alpha1GroupsGroupUidPatch Groups Patch
+GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch Groups Patch
 
 Update an existing group.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param groupUid
-	@return ApiGroupsPatchUxiV1alpha1GroupsGroupUidPatchRequest
+	@return ApiGroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchRequest
 */
-func (a *ConfigurationAPIService) GroupsPatchUxiV1alpha1GroupsGroupUidPatch(ctx context.Context, groupUid string) ApiGroupsPatchUxiV1alpha1GroupsGroupUidPatchRequest {
-	return ApiGroupsPatchUxiV1alpha1GroupsGroupUidPatchRequest{
+func (a *ConfigurationAPIService) GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch(ctx context.Context, groupUid string) ApiGroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchRequest {
+	return ApiGroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchRequest{
 		ApiService: a,
 		ctx:        ctx,
 		groupUid:   groupUid,
@@ -1465,7 +1465,7 @@ func (a *ConfigurationAPIService) GroupsPatchUxiV1alpha1GroupsGroupUidPatch(ctx 
 // Execute executes the request
 //
 //	@return GroupsPatchResponse
-func (a *ConfigurationAPIService) GroupsPatchUxiV1alpha1GroupsGroupUidPatchExecute(r ApiGroupsPatchUxiV1alpha1GroupsGroupUidPatchRequest) (*GroupsPatchResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchExecute(r ApiGroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchRequest) (*GroupsPatchResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPatch
 		localVarPostBody    interface{}
@@ -1473,12 +1473,12 @@ func (a *ConfigurationAPIService) GroupsPatchUxiV1alpha1GroupsGroupUidPatchExecu
 		localVarReturnValue *GroupsPatchResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsPatchUxiV1alpha1GroupsGroupUidPatch")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/groups/{group_uid}"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/groups/{group_uid}"
 	localVarPath = strings.Replace(localVarPath, "{"+"group_uid"+"}", url.PathEscape(parameterValueToString(r.groupUid, "groupUid")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -1565,31 +1565,31 @@ func (a *ConfigurationAPIService) GroupsPatchUxiV1alpha1GroupsGroupUidPatchExecu
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGroupsPostUxiV1alpha1GroupsPostRequest struct {
+type ApiGroupsPostNetworkingUxiV1alpha1GroupsPostRequest struct {
 	ctx               context.Context
 	ApiService        *ConfigurationAPIService
 	groupsPostRequest *GroupsPostRequest
 }
 
-func (r ApiGroupsPostUxiV1alpha1GroupsPostRequest) GroupsPostRequest(groupsPostRequest GroupsPostRequest) ApiGroupsPostUxiV1alpha1GroupsPostRequest {
+func (r ApiGroupsPostNetworkingUxiV1alpha1GroupsPostRequest) GroupsPostRequest(groupsPostRequest GroupsPostRequest) ApiGroupsPostNetworkingUxiV1alpha1GroupsPostRequest {
 	r.groupsPostRequest = &groupsPostRequest
 	return r
 }
 
-func (r ApiGroupsPostUxiV1alpha1GroupsPostRequest) Execute() (*GroupsPostResponse, *http.Response, error) {
-	return r.ApiService.GroupsPostUxiV1alpha1GroupsPostExecute(r)
+func (r ApiGroupsPostNetworkingUxiV1alpha1GroupsPostRequest) Execute() (*GroupsPostResponse, *http.Response, error) {
+	return r.ApiService.GroupsPostNetworkingUxiV1alpha1GroupsPostExecute(r)
 }
 
 /*
-GroupsPostUxiV1alpha1GroupsPost Groups Post
+GroupsPostNetworkingUxiV1alpha1GroupsPost Groups Post
 
 Create a new group with the group identified in `parent_uid` as its parent
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGroupsPostUxiV1alpha1GroupsPostRequest
+	@return ApiGroupsPostNetworkingUxiV1alpha1GroupsPostRequest
 */
-func (a *ConfigurationAPIService) GroupsPostUxiV1alpha1GroupsPost(ctx context.Context) ApiGroupsPostUxiV1alpha1GroupsPostRequest {
-	return ApiGroupsPostUxiV1alpha1GroupsPostRequest{
+func (a *ConfigurationAPIService) GroupsPostNetworkingUxiV1alpha1GroupsPost(ctx context.Context) ApiGroupsPostNetworkingUxiV1alpha1GroupsPostRequest {
+	return ApiGroupsPostNetworkingUxiV1alpha1GroupsPostRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -1598,7 +1598,7 @@ func (a *ConfigurationAPIService) GroupsPostUxiV1alpha1GroupsPost(ctx context.Co
 // Execute executes the request
 //
 //	@return GroupsPostResponse
-func (a *ConfigurationAPIService) GroupsPostUxiV1alpha1GroupsPostExecute(r ApiGroupsPostUxiV1alpha1GroupsPostRequest) (*GroupsPostResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GroupsPostNetworkingUxiV1alpha1GroupsPostExecute(r ApiGroupsPostNetworkingUxiV1alpha1GroupsPostRequest) (*GroupsPostResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -1606,12 +1606,12 @@ func (a *ConfigurationAPIService) GroupsPostUxiV1alpha1GroupsPostExecute(r ApiGr
 		localVarReturnValue *GroupsPostResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsPostUxiV1alpha1GroupsPost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsPostNetworkingUxiV1alpha1GroupsPost")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/groups"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/groups"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1697,31 +1697,31 @@ func (a *ConfigurationAPIService) GroupsPostUxiV1alpha1GroupsPostExecute(r ApiGr
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPostUxiV1alpha1NetworkGroupAssignmentsPostRequest struct {
+type ApiPostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostRequest struct {
 	ctx                                context.Context
 	ApiService                         *ConfigurationAPIService
 	networkGroupAssignmentsPostRequest *NetworkGroupAssignmentsPostRequest
 }
 
-func (r ApiPostUxiV1alpha1NetworkGroupAssignmentsPostRequest) NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest NetworkGroupAssignmentsPostRequest) ApiPostUxiV1alpha1NetworkGroupAssignmentsPostRequest {
+func (r ApiPostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostRequest) NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest NetworkGroupAssignmentsPostRequest) ApiPostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostRequest {
 	r.networkGroupAssignmentsPostRequest = &networkGroupAssignmentsPostRequest
 	return r
 }
 
-func (r ApiPostUxiV1alpha1NetworkGroupAssignmentsPostRequest) Execute() (*NetworkGroupAssignmentsPostResponse, *http.Response, error) {
-	return r.ApiService.PostUxiV1alpha1NetworkGroupAssignmentsPostExecute(r)
+func (r ApiPostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostRequest) Execute() (*NetworkGroupAssignmentsPostResponse, *http.Response, error) {
+	return r.ApiService.PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostExecute(r)
 }
 
 /*
-PostUxiV1alpha1NetworkGroupAssignmentsPost Post
+PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost Post
 
 Create a network group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPostUxiV1alpha1NetworkGroupAssignmentsPostRequest
+	@return ApiPostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostRequest
 */
-func (a *ConfigurationAPIService) PostUxiV1alpha1NetworkGroupAssignmentsPost(ctx context.Context) ApiPostUxiV1alpha1NetworkGroupAssignmentsPostRequest {
-	return ApiPostUxiV1alpha1NetworkGroupAssignmentsPostRequest{
+func (a *ConfigurationAPIService) PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost(ctx context.Context) ApiPostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostRequest {
+	return ApiPostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -1730,7 +1730,7 @@ func (a *ConfigurationAPIService) PostUxiV1alpha1NetworkGroupAssignmentsPost(ctx
 // Execute executes the request
 //
 //	@return NetworkGroupAssignmentsPostResponse
-func (a *ConfigurationAPIService) PostUxiV1alpha1NetworkGroupAssignmentsPostExecute(r ApiPostUxiV1alpha1NetworkGroupAssignmentsPostRequest) (*NetworkGroupAssignmentsPostResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostExecute(r ApiPostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostRequest) (*NetworkGroupAssignmentsPostResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -1738,12 +1738,12 @@ func (a *ConfigurationAPIService) PostUxiV1alpha1NetworkGroupAssignmentsPostExec
 		localVarReturnValue *NetworkGroupAssignmentsPostResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.PostUxiV1alpha1NetworkGroupAssignmentsPost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/network-group-assignments"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/network-group-assignments"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1829,31 +1829,31 @@ func (a *ConfigurationAPIService) PostUxiV1alpha1NetworkGroupAssignmentsPostExec
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest struct {
+type ApiPostNetworkingUxiV1alpha1SensorGroupAssignmentsPostRequest struct {
 	ctx                               context.Context
 	ApiService                        *ConfigurationAPIService
 	sensorGroupAssignmentsPostRequest *SensorGroupAssignmentsPostRequest
 }
 
-func (r ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest) SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest SensorGroupAssignmentsPostRequest) ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest {
+func (r ApiPostNetworkingUxiV1alpha1SensorGroupAssignmentsPostRequest) SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest SensorGroupAssignmentsPostRequest) ApiPostNetworkingUxiV1alpha1SensorGroupAssignmentsPostRequest {
 	r.sensorGroupAssignmentsPostRequest = &sensorGroupAssignmentsPostRequest
 	return r
 }
 
-func (r ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest) Execute() (*SensorGroupAssignmentResponse, *http.Response, error) {
-	return r.ApiService.PostUxiV1alpha1SensorGroupAssignmentsPostExecute(r)
+func (r ApiPostNetworkingUxiV1alpha1SensorGroupAssignmentsPostRequest) Execute() (*SensorGroupAssignmentResponse, *http.Response, error) {
+	return r.ApiService.PostNetworkingUxiV1alpha1SensorGroupAssignmentsPostExecute(r)
 }
 
 /*
-PostUxiV1alpha1SensorGroupAssignmentsPost Post
+PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost Post
 
 Create sensor group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest
+	@return ApiPostNetworkingUxiV1alpha1SensorGroupAssignmentsPostRequest
 */
-func (a *ConfigurationAPIService) PostUxiV1alpha1SensorGroupAssignmentsPost(ctx context.Context) ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest {
-	return ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest{
+func (a *ConfigurationAPIService) PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost(ctx context.Context) ApiPostNetworkingUxiV1alpha1SensorGroupAssignmentsPostRequest {
+	return ApiPostNetworkingUxiV1alpha1SensorGroupAssignmentsPostRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -1862,7 +1862,7 @@ func (a *ConfigurationAPIService) PostUxiV1alpha1SensorGroupAssignmentsPost(ctx 
 // Execute executes the request
 //
 //	@return SensorGroupAssignmentResponse
-func (a *ConfigurationAPIService) PostUxiV1alpha1SensorGroupAssignmentsPostExecute(r ApiPostUxiV1alpha1SensorGroupAssignmentsPostRequest) (*SensorGroupAssignmentResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) PostNetworkingUxiV1alpha1SensorGroupAssignmentsPostExecute(r ApiPostNetworkingUxiV1alpha1SensorGroupAssignmentsPostRequest) (*SensorGroupAssignmentResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -1870,12 +1870,12 @@ func (a *ConfigurationAPIService) PostUxiV1alpha1SensorGroupAssignmentsPostExecu
 		localVarReturnValue *SensorGroupAssignmentResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.PostUxiV1alpha1SensorGroupAssignmentsPost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/sensor-group-assignments"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/sensor-group-assignments"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1961,31 +1961,31 @@ func (a *ConfigurationAPIService) PostUxiV1alpha1SensorGroupAssignmentsPostExecu
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPostUxiV1alpha1ServiceTestGroupAssignmentsPostRequest struct {
+type ApiPostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostRequest struct {
 	ctx                                    context.Context
 	ApiService                             *ConfigurationAPIService
 	serviceTestGroupAssignmentsPostRequest *ServiceTestGroupAssignmentsPostRequest
 }
 
-func (r ApiPostUxiV1alpha1ServiceTestGroupAssignmentsPostRequest) ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest ServiceTestGroupAssignmentsPostRequest) ApiPostUxiV1alpha1ServiceTestGroupAssignmentsPostRequest {
+func (r ApiPostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostRequest) ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest ServiceTestGroupAssignmentsPostRequest) ApiPostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostRequest {
 	r.serviceTestGroupAssignmentsPostRequest = &serviceTestGroupAssignmentsPostRequest
 	return r
 }
 
-func (r ApiPostUxiV1alpha1ServiceTestGroupAssignmentsPostRequest) Execute() (*ServiceTestGroupAssignmentsPostResponse, *http.Response, error) {
-	return r.ApiService.PostUxiV1alpha1ServiceTestGroupAssignmentsPostExecute(r)
+func (r ApiPostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostRequest) Execute() (*ServiceTestGroupAssignmentsPostResponse, *http.Response, error) {
+	return r.ApiService.PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostExecute(r)
 }
 
 /*
-PostUxiV1alpha1ServiceTestGroupAssignmentsPost Post
+PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost Post
 
 Create a service-test group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPostUxiV1alpha1ServiceTestGroupAssignmentsPostRequest
+	@return ApiPostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostRequest
 */
-func (a *ConfigurationAPIService) PostUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx context.Context) ApiPostUxiV1alpha1ServiceTestGroupAssignmentsPostRequest {
-	return ApiPostUxiV1alpha1ServiceTestGroupAssignmentsPostRequest{
+func (a *ConfigurationAPIService) PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx context.Context) ApiPostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostRequest {
+	return ApiPostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -1994,7 +1994,7 @@ func (a *ConfigurationAPIService) PostUxiV1alpha1ServiceTestGroupAssignmentsPost
 // Execute executes the request
 //
 //	@return ServiceTestGroupAssignmentsPostResponse
-func (a *ConfigurationAPIService) PostUxiV1alpha1ServiceTestGroupAssignmentsPostExecute(r ApiPostUxiV1alpha1ServiceTestGroupAssignmentsPostRequest) (*ServiceTestGroupAssignmentsPostResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostExecute(r ApiPostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostRequest) (*ServiceTestGroupAssignmentsPostResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -2002,12 +2002,12 @@ func (a *ConfigurationAPIService) PostUxiV1alpha1ServiceTestGroupAssignmentsPost
 		localVarReturnValue *ServiceTestGroupAssignmentsPostResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.PostUxiV1alpha1ServiceTestGroupAssignmentsPost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/service-test-group-assignments"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/service-test-group-assignments"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -2093,7 +2093,7 @@ func (a *ConfigurationAPIService) PostUxiV1alpha1ServiceTestGroupAssignmentsPost
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest struct {
+type ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest struct {
 	ctx        context.Context
 	ApiService *ConfigurationAPIService
 	id         *string
@@ -2101,35 +2101,35 @@ type ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest struct {
 	limit      *int32
 }
 
-func (r ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest) Id(id string) ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest {
+func (r ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest) Id(id string) ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest {
 	r.id = &id
 	return r
 }
 
-func (r ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest) Next(next string) ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest {
+func (r ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest) Next(next string) ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest {
 	r.next = &next
 	return r
 }
 
-func (r ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest) Limit(limit int32) ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest {
+func (r ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest) Limit(limit int32) ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest) Execute() (*ServiceTestsListResponse, *http.Response, error) {
-	return r.ApiService.ServiceTestsGetUxiV1alpha1ServiceTestsGetExecute(r)
+func (r ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest) Execute() (*ServiceTestsListResponse, *http.Response, error) {
+	return r.ApiService.ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetExecute(r)
 }
 
 /*
-ServiceTestsGetUxiV1alpha1ServiceTestsGet Service Tests Get
+ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet Service Tests Get
 
 Lists service-tests matching provided criteria
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest
+	@return ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest
 */
-func (a *ConfigurationAPIService) ServiceTestsGetUxiV1alpha1ServiceTestsGet(ctx context.Context) ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest {
-	return ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest{
+func (a *ConfigurationAPIService) ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet(ctx context.Context) ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest {
+	return ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -2138,7 +2138,7 @@ func (a *ConfigurationAPIService) ServiceTestsGetUxiV1alpha1ServiceTestsGet(ctx 
 // Execute executes the request
 //
 //	@return ServiceTestsListResponse
-func (a *ConfigurationAPIService) ServiceTestsGetUxiV1alpha1ServiceTestsGetExecute(r ApiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest) (*ServiceTestsListResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetExecute(r ApiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest) (*ServiceTestsListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -2146,12 +2146,12 @@ func (a *ConfigurationAPIService) ServiceTestsGetUxiV1alpha1ServiceTestsGetExecu
 		localVarReturnValue *ServiceTestsListResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.ServiceTestsGetUxiV1alpha1ServiceTestsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/uxi/v1alpha1/service-tests"
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/service-tests"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

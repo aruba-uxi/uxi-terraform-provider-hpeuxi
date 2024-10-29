@@ -7,13 +7,13 @@ Name | Type | Description | Notes
 **Id** | **string** |  | 
 **Group** | [**Group**](Group.md) |  | 
 **Network** | [**Network**](Network.md) |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "uxi/network-group-assignment"]
+**Type** | **string** |  | 
 
 ## Methods
 
 ### NewNetworkGroupAssignmentsPostResponse
 
-`func NewNetworkGroupAssignmentsPostResponse(id string, group Group, network Network, ) *NetworkGroupAssignmentsPostResponse`
+`func NewNetworkGroupAssignmentsPostResponse(id string, group Group, network Network, type_ string, ) *NetworkGroupAssignmentsPostResponse`
 
 NewNetworkGroupAssignmentsPostResponse instantiates a new NetworkGroupAssignmentsPostResponse object
 This constructor will assign default values to properties that have it defined,
@@ -107,11 +107,6 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *NetworkGroupAssignmentsPostResponse) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -70,7 +70,7 @@ func (d *networkGroupAssignmentDataSource) Read(ctx context.Context, req datasou
 	}
 
 	request := d.client.ConfigurationAPI.
-		GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).
+		GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet(ctx).
 		Id(state.Filter.NetworkGroupAssignmentID)
 	networkGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

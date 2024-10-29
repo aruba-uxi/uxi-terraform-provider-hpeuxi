@@ -97,7 +97,7 @@ func (d *wiredNetworkDataSource) Read(ctx context.Context, req datasource.ReadRe
 	}
 
 	request := d.client.ConfigurationAPI.
-		GetUxiV1alpha1WiredNetworksGet(ctx).
+		GetNetworkingUxiV1alpha1WiredNetworksGet(ctx).
 		Id(state.Filter.WiredNetworkID)
 	networkResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

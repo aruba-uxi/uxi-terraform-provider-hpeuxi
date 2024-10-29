@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 2.9.0
+API version: 3.0.0
 Contact: support@capenetworks.com
 */
 
@@ -22,10 +22,10 @@ var _ MappedNullable = &SensorGroupAssignmentResponse{}
 
 // SensorGroupAssignmentResponse struct for SensorGroupAssignmentResponse
 type SensorGroupAssignmentResponse struct {
-	Id     string  `json:"id"`
-	Group  Group   `json:"group"`
-	Sensor Sensor  `json:"sensor"`
-	Type   *string `json:"type,omitempty"`
+	Id     string `json:"id"`
+	Group  Group  `json:"group"`
+	Sensor Sensor `json:"sensor"`
+	Type   string `json:"type"`
 }
 
 type _SensorGroupAssignmentResponse SensorGroupAssignmentResponse
@@ -34,13 +34,12 @@ type _SensorGroupAssignmentResponse SensorGroupAssignmentResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorGroupAssignmentResponse(id string, group Group, sensor Sensor) *SensorGroupAssignmentResponse {
+func NewSensorGroupAssignmentResponse(id string, group Group, sensor Sensor, type_ string) *SensorGroupAssignmentResponse {
 	this := SensorGroupAssignmentResponse{}
 	this.Id = id
 	this.Group = group
 	this.Sensor = sensor
-	var type_ string = "uxi/sensor-group-assignment"
-	this.Type = &type_
+	this.Type = type_
 	return &this
 }
 
@@ -49,8 +48,6 @@ func NewSensorGroupAssignmentResponse(id string, group Group, sensor Sensor) *Se
 // but it doesn't guarantee that properties required by API are set
 func NewSensorGroupAssignmentResponseWithDefaults() *SensorGroupAssignmentResponse {
 	this := SensorGroupAssignmentResponse{}
-	var type_ string = "uxi/sensor-group-assignment"
-	this.Type = &type_
 	return &this
 }
 
@@ -126,36 +123,28 @@ func (o *SensorGroupAssignmentResponse) SetSensor(v Sensor) {
 	o.Sensor = v
 }
 
-// GetType returns the Type field value if set, zero value otherwise.
+// GetType returns the Type field value
 func (o *SensorGroupAssignmentResponse) GetType() string {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Type
+
+	return o.Type
 }
 
-// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
 func (o *SensorGroupAssignmentResponse) GetTypeOk() (*string, bool) {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Type, true
+	return &o.Type, true
 }
 
-// HasType returns a boolean if a field has been set.
-func (o *SensorGroupAssignmentResponse) HasType() bool {
-	if o != nil && !IsNil(o.Type) {
-		return true
-	}
-
-	return false
-}
-
-// SetType gets a reference to the given string and assigns it to the Type field.
+// SetType sets field value
 func (o *SensorGroupAssignmentResponse) SetType(v string) {
-	o.Type = &v
+	o.Type = v
 }
 
 func (o SensorGroupAssignmentResponse) MarshalJSON() ([]byte, error) {
@@ -171,9 +160,7 @@ func (o SensorGroupAssignmentResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["group"] = o.Group
 	toSerialize["sensor"] = o.Sensor
-	if !IsNil(o.Type) {
-		toSerialize["type"] = o.Type
-	}
+	toSerialize["type"] = o.Type
 	return toSerialize, nil
 }
 
@@ -185,6 +172,7 @@ func (o *SensorGroupAssignmentResponse) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"group",
 		"sensor",
+		"type",
 	}
 
 	allProperties := make(map[string]interface{})

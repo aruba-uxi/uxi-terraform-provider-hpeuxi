@@ -268,7 +268,7 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 
 					// required for sensor group assignment create
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Post("/uxi/v1alpha1/sensor-group-assignments").
+						Post("/networking-uxi/v1alpha1/sensor-group-assignments").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostSensorGroupAssignment(
@@ -329,7 +329,7 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 
 					util.MockDeleteGroup("group_uid", 1)
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Delete("/uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_uid").
+						Delete("/networking-uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_uid").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockDeleteSensorGroupAssignment("sensor_group_assignment_uid", 1)
@@ -393,7 +393,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for sensor group assignment create
 					gock.New("https://test.api.capenetworks.com").
-						Post("/uxi/v1alpha1/sensor-group-assignments").
+						Post("/networking-uxi/v1alpha1/sensor-group-assignments").
 						Reply(400).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 400,
@@ -508,7 +508,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for sensor group assignment read
 					gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/sensor-group-assignments").
+						Get("/networking-uxi/v1alpha1/sensor-group-assignments").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,
@@ -623,7 +623,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					gock.New("https://test.api.capenetworks.com").
-						Delete("/uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_uid").
+						Delete("/networking-uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_uid").
 						Reply(400).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 400,

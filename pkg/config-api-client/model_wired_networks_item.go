@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 2.9.0
+API version: 3.0.0
 Contact: support@capenetworks.com
 */
 
@@ -34,7 +34,7 @@ type WiredNetworksItem struct {
 	UseDns64             bool           `json:"useDns64"`
 	ExternalConnectivity bool           `json:"externalConnectivity"`
 	VLanId               NullableInt32  `json:"vLanId"`
-	Type                 *string        `json:"type,omitempty"`
+	Type                 string         `json:"type"`
 }
 
 type _WiredNetworksItem WiredNetworksItem
@@ -43,7 +43,7 @@ type _WiredNetworksItem WiredNetworksItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWiredNetworksItem(id string, name string, ipVersion string, createdAt time.Time, updatedAt time.Time, security NullableString, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, vLanId NullableInt32) *WiredNetworksItem {
+func NewWiredNetworksItem(id string, name string, ipVersion string, createdAt time.Time, updatedAt time.Time, security NullableString, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, vLanId NullableInt32, type_ string) *WiredNetworksItem {
 	this := WiredNetworksItem{}
 	this.Id = id
 	this.Name = name
@@ -56,8 +56,7 @@ func NewWiredNetworksItem(id string, name string, ipVersion string, createdAt ti
 	this.UseDns64 = useDns64
 	this.ExternalConnectivity = externalConnectivity
 	this.VLanId = vLanId
-	var type_ string = "uxi/wired-network"
-	this.Type = &type_
+	this.Type = type_
 	return &this
 }
 
@@ -66,8 +65,6 @@ func NewWiredNetworksItem(id string, name string, ipVersion string, createdAt ti
 // but it doesn't guarantee that properties required by API are set
 func NewWiredNetworksItemWithDefaults() *WiredNetworksItem {
 	this := WiredNetworksItem{}
-	var type_ string = "uxi/wired-network"
-	this.Type = &type_
 	return &this
 }
 
@@ -341,36 +338,28 @@ func (o *WiredNetworksItem) SetVLanId(v int32) {
 	o.VLanId.Set(&v)
 }
 
-// GetType returns the Type field value if set, zero value otherwise.
+// GetType returns the Type field value
 func (o *WiredNetworksItem) GetType() string {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Type
+
+	return o.Type
 }
 
-// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
 func (o *WiredNetworksItem) GetTypeOk() (*string, bool) {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Type, true
+	return &o.Type, true
 }
 
-// HasType returns a boolean if a field has been set.
-func (o *WiredNetworksItem) HasType() bool {
-	if o != nil && !IsNil(o.Type) {
-		return true
-	}
-
-	return false
-}
-
-// SetType gets a reference to the given string and assigns it to the Type field.
+// SetType sets field value
 func (o *WiredNetworksItem) SetType(v string) {
-	o.Type = &v
+	o.Type = v
 }
 
 func (o WiredNetworksItem) MarshalJSON() ([]byte, error) {
@@ -394,9 +383,7 @@ func (o WiredNetworksItem) ToMap() (map[string]interface{}, error) {
 	toSerialize["useDns64"] = o.UseDns64
 	toSerialize["externalConnectivity"] = o.ExternalConnectivity
 	toSerialize["vLanId"] = o.VLanId.Get()
-	if !IsNil(o.Type) {
-		toSerialize["type"] = o.Type
-	}
+	toSerialize["type"] = o.Type
 	return toSerialize, nil
 }
 
@@ -416,6 +403,7 @@ func (o *WiredNetworksItem) UnmarshalJSON(data []byte) (err error) {
 		"useDns64",
 		"externalConnectivity",
 		"vLanId",
+		"type",
 	}
 
 	allProperties := make(map[string]interface{})

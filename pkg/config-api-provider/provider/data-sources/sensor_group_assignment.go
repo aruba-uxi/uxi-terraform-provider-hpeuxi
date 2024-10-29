@@ -72,7 +72,7 @@ func (d *sensorGroupAssignmentDataSource) Read(ctx context.Context, req datasour
 	}
 
 	request := d.client.ConfigurationAPI.
-		GetUxiV1alpha1SensorGroupAssignmentsGet(ctx).
+		GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet(ctx).
 		Id(state.Filter.SensorGroupAssignmentID)
 	sensorGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

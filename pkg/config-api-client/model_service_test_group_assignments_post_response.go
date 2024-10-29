@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 2.9.0
+API version: 3.0.0
 Contact: support@capenetworks.com
 */
 
@@ -25,7 +25,7 @@ type ServiceTestGroupAssignmentsPostResponse struct {
 	Id          string      `json:"id"`
 	Group       Group       `json:"group"`
 	ServiceTest ServiceTest `json:"serviceTest"`
-	Type        *string     `json:"type,omitempty"`
+	Type        string      `json:"type"`
 }
 
 type _ServiceTestGroupAssignmentsPostResponse ServiceTestGroupAssignmentsPostResponse
@@ -34,13 +34,12 @@ type _ServiceTestGroupAssignmentsPostResponse ServiceTestGroupAssignmentsPostRes
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewServiceTestGroupAssignmentsPostResponse(id string, group Group, serviceTest ServiceTest) *ServiceTestGroupAssignmentsPostResponse {
+func NewServiceTestGroupAssignmentsPostResponse(id string, group Group, serviceTest ServiceTest, type_ string) *ServiceTestGroupAssignmentsPostResponse {
 	this := ServiceTestGroupAssignmentsPostResponse{}
 	this.Id = id
 	this.Group = group
 	this.ServiceTest = serviceTest
-	var type_ string = "uxi/service-test-group-assignment"
-	this.Type = &type_
+	this.Type = type_
 	return &this
 }
 
@@ -49,8 +48,6 @@ func NewServiceTestGroupAssignmentsPostResponse(id string, group Group, serviceT
 // but it doesn't guarantee that properties required by API are set
 func NewServiceTestGroupAssignmentsPostResponseWithDefaults() *ServiceTestGroupAssignmentsPostResponse {
 	this := ServiceTestGroupAssignmentsPostResponse{}
-	var type_ string = "uxi/service-test-group-assignment"
-	this.Type = &type_
 	return &this
 }
 
@@ -126,36 +123,28 @@ func (o *ServiceTestGroupAssignmentsPostResponse) SetServiceTest(v ServiceTest) 
 	o.ServiceTest = v
 }
 
-// GetType returns the Type field value if set, zero value otherwise.
+// GetType returns the Type field value
 func (o *ServiceTestGroupAssignmentsPostResponse) GetType() string {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Type
+
+	return o.Type
 }
 
-// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
 func (o *ServiceTestGroupAssignmentsPostResponse) GetTypeOk() (*string, bool) {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Type, true
+	return &o.Type, true
 }
 
-// HasType returns a boolean if a field has been set.
-func (o *ServiceTestGroupAssignmentsPostResponse) HasType() bool {
-	if o != nil && !IsNil(o.Type) {
-		return true
-	}
-
-	return false
-}
-
-// SetType gets a reference to the given string and assigns it to the Type field.
+// SetType sets field value
 func (o *ServiceTestGroupAssignmentsPostResponse) SetType(v string) {
-	o.Type = &v
+	o.Type = v
 }
 
 func (o ServiceTestGroupAssignmentsPostResponse) MarshalJSON() ([]byte, error) {
@@ -171,9 +160,7 @@ func (o ServiceTestGroupAssignmentsPostResponse) ToMap() (map[string]interface{}
 	toSerialize["id"] = o.Id
 	toSerialize["group"] = o.Group
 	toSerialize["serviceTest"] = o.ServiceTest
-	if !IsNil(o.Type) {
-		toSerialize["type"] = o.Type
-	}
+	toSerialize["type"] = o.Type
 	return toSerialize, nil
 }
 
@@ -185,6 +172,7 @@ func (o *ServiceTestGroupAssignmentsPostResponse) UnmarshalJSON(data []byte) (er
 		"id",
 		"group",
 		"serviceTest",
+		"type",
 	}
 
 	allProperties := make(map[string]interface{})

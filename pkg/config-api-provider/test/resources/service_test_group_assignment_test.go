@@ -242,7 +242,7 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 
 					// required for serviceTest group assignment create
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Post("/uxi/v1alpha1/service-test-group-assignments").
+						Post("/networking-uxi/v1alpha1/service-test-group-assignments").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 
@@ -339,7 +339,7 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for serviceTest group assignment create
 					gock.New("https://test.api.capenetworks.com").
-						Post("/uxi/v1alpha1/service-test-group-assignments").
+						Post("/networking-uxi/v1alpha1/service-test-group-assignments").
 						Reply(400).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 400,

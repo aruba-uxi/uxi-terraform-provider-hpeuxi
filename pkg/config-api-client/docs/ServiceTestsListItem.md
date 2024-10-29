@@ -10,13 +10,13 @@ Name | Type | Description | Notes
 **Target** | **NullableString** |  | 
 **Template** | **string** |  | 
 **IsEnabled** | **bool** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "uxi/service-test"]
+**Type** | **string** |  | 
 
 ## Methods
 
 ### NewServiceTestsListItem
 
-`func NewServiceTestsListItem(id string, category string, name string, target NullableString, template string, isEnabled bool, ) *ServiceTestsListItem`
+`func NewServiceTestsListItem(id string, category string, name string, target NullableString, template string, isEnabled bool, type_ string, ) *ServiceTestsListItem`
 
 NewServiceTestsListItem instantiates a new ServiceTestsListItem object
 This constructor will assign default values to properties that have it defined,
@@ -180,11 +180,6 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *ServiceTestsListItem) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

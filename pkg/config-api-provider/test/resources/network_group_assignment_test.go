@@ -506,7 +506,7 @@ func TestNetworkGroupAssignmentResource429Handling(t *testing.T) {
 
 					// required for network group assignment create
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Post("/uxi/v1alpha1/network-group-assignments").
+						Post("/networking-uxi/v1alpha1/network-group-assignments").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostNetworkGroupAssignment(
@@ -568,7 +568,7 @@ func TestNetworkGroupAssignmentResource429Handling(t *testing.T) {
 
 					util.MockDeleteGroup("group_uid", 1)
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Delete("/uxi/v1alpha1/network-group-assignments/network_group_assignment_uid").
+						Delete("/networking-uxi/v1alpha1/network-group-assignments/network_group_assignment_uid").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockDeleteNetworkGroupAssignment("network_group_assignment_uid", 1)
@@ -623,7 +623,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// network group assignment create
 					gock.New("https://test.api.capenetworks.com").
-						Post("/uxi/v1alpha1/network-group-assignments").
+						Post("/networking-uxi/v1alpha1/network-group-assignments").
 						Reply(400).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 400,
@@ -730,7 +730,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// network group assignment read
 					gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/network-group-assignments").
+						Get("/networking-uxi/v1alpha1/network-group-assignments").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,
@@ -843,7 +843,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// network group assignment create
 					gock.New("https://test.api.capenetworks.com").
-						Delete("/uxi/v1alpha1/network-group-assignments").
+						Delete("/networking-uxi/v1alpha1/network-group-assignments").
 						Reply(403).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 403,

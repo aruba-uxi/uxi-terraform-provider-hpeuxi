@@ -8,13 +8,13 @@ Name | Type | Description | Notes
 **Name** | **string** |  | 
 **Path** | **string** |  | 
 **Parent** | [**Parent**](Parent.md) |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "uxi/group"]
+**Type** | **string** |  | 
 
 ## Methods
 
 ### NewGroupsPatchResponse
 
-`func NewGroupsPatchResponse(id string, name string, path string, parent Parent, ) *GroupsPatchResponse`
+`func NewGroupsPatchResponse(id string, name string, path string, parent Parent, type_ string, ) *GroupsPatchResponse`
 
 NewGroupsPatchResponse instantiates a new GroupsPatchResponse object
 This constructor will assign default values to properties that have it defined,
@@ -128,11 +128,6 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *GroupsPatchResponse) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

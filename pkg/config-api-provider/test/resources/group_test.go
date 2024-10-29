@@ -158,6 +158,7 @@ func TestRootGroupResource(t *testing.T) {
 								"name":   "root",
 								"parent": *config_api_client.NewNullableParent(nil),
 								"path":   "my_root_group_uid",
+								"type":   "networking-uxi/group",
 							},
 						}),
 						1,
@@ -193,7 +194,7 @@ func TestGroupResource429Handling(t *testing.T) {
 			{
 				PreConfig: func() {
 					request429 = gock.New("https://test.api.capenetworks.com").
-						Post("/uxi/v1alpha1/groups").
+						Post("/networking-uxi/v1alpha1/groups").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostGroup(
@@ -230,7 +231,7 @@ func TestGroupResource429Handling(t *testing.T) {
 					)
 					// new group
 					update429 = gock.New("https://test.api.capenetworks.com").
-						Patch("/uxi/v1alpha1/groups/uid").
+						Patch("/networking-uxi/v1alpha1/groups/uid").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateGroup(
@@ -285,7 +286,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/groups").
+						Get("/networking-uxi/v1alpha1/groups").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,
@@ -334,7 +335,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Post("/uxi/v1alpha1/groups").
+						Post("/networking-uxi/v1alpha1/groups").
 						Reply(400).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 400,
@@ -383,7 +384,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					)
 					// new group - with error
 					gock.New("https://test.api.capenetworks.com").
-						Patch("/uxi/v1alpha1/groups/uid").
+						Patch("/networking-uxi/v1alpha1/groups/uid").
 						Reply(422).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 422,
@@ -409,7 +410,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					)
 					// delete group - with error
 					gock.New("https://test.api.capenetworks.com").
-						Delete("/uxi/v1alpha1/groups/uid").
+						Delete("/networking-uxi/v1alpha1/groups/uid").
 						Reply(422).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 422,

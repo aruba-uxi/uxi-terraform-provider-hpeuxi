@@ -4,28 +4,28 @@ All URIs are relative to *https://api.capenetworks.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete**](ConfigurationAPI.md#DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete) | **Delete** /uxi/v1alpha1/network-group-assignments/{id} | Delete Network Group Assignment
-[**DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete**](ConfigurationAPI.md#DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete) | **Delete** /uxi/v1alpha1/sensor-group-assignments/{id} | Delete Sensor Group Assignment
-[**DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete**](ConfigurationAPI.md#DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete) | **Delete** /uxi/v1alpha1/service-test-group-assignments/{id} | Delete Service Test Group Assignment
-[**GetUxiV1alpha1NetworkGroupAssignmentsGet**](ConfigurationAPI.md#GetUxiV1alpha1NetworkGroupAssignmentsGet) | **Get** /uxi/v1alpha1/network-group-assignments | Get
-[**GetUxiV1alpha1SensorGroupAssignmentsGet**](ConfigurationAPI.md#GetUxiV1alpha1SensorGroupAssignmentsGet) | **Get** /uxi/v1alpha1/sensor-group-assignments | Get
-[**GetUxiV1alpha1SensorsGet**](ConfigurationAPI.md#GetUxiV1alpha1SensorsGet) | **Get** /uxi/v1alpha1/sensors | Get
-[**GetUxiV1alpha1WiredNetworksGet**](ConfigurationAPI.md#GetUxiV1alpha1WiredNetworksGet) | **Get** /uxi/v1alpha1/wired-networks | Get
-[**GetUxiV1alpha1WirelessNetworksGet**](ConfigurationAPI.md#GetUxiV1alpha1WirelessNetworksGet) | **Get** /uxi/v1alpha1/wireless-networks | Get
-[**GroupsDeleteUxiV1alpha1GroupsGroupUidDelete**](ConfigurationAPI.md#GroupsDeleteUxiV1alpha1GroupsGroupUidDelete) | **Delete** /uxi/v1alpha1/groups/{group_uid} | Groups Delete
-[**GroupsGetUxiV1alpha1GroupsGet**](ConfigurationAPI.md#GroupsGetUxiV1alpha1GroupsGet) | **Get** /uxi/v1alpha1/groups | Groups Get
-[**GroupsPatchUxiV1alpha1GroupsGroupUidPatch**](ConfigurationAPI.md#GroupsPatchUxiV1alpha1GroupsGroupUidPatch) | **Patch** /uxi/v1alpha1/groups/{group_uid} | Groups Patch
-[**GroupsPostUxiV1alpha1GroupsPost**](ConfigurationAPI.md#GroupsPostUxiV1alpha1GroupsPost) | **Post** /uxi/v1alpha1/groups | Groups Post
-[**PostUxiV1alpha1NetworkGroupAssignmentsPost**](ConfigurationAPI.md#PostUxiV1alpha1NetworkGroupAssignmentsPost) | **Post** /uxi/v1alpha1/network-group-assignments | Post
-[**PostUxiV1alpha1SensorGroupAssignmentsPost**](ConfigurationAPI.md#PostUxiV1alpha1SensorGroupAssignmentsPost) | **Post** /uxi/v1alpha1/sensor-group-assignments | Post
-[**PostUxiV1alpha1ServiceTestGroupAssignmentsPost**](ConfigurationAPI.md#PostUxiV1alpha1ServiceTestGroupAssignmentsPost) | **Post** /uxi/v1alpha1/service-test-group-assignments | Post
-[**ServiceTestsGetUxiV1alpha1ServiceTestsGet**](ConfigurationAPI.md#ServiceTestsGetUxiV1alpha1ServiceTestsGet) | **Get** /uxi/v1alpha1/service-tests | Service Tests Get
+[**DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete**](ConfigurationAPI.md#DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete) | **Delete** /networking-uxi/v1alpha1/network-group-assignments/{id} | Delete Network Group Assignment
+[**DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete**](ConfigurationAPI.md#DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete) | **Delete** /networking-uxi/v1alpha1/sensor-group-assignments/{id} | Delete Sensor Group Assignment
+[**DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete**](ConfigurationAPI.md#DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete) | **Delete** /networking-uxi/v1alpha1/service-test-group-assignments/{id} | Delete Service Test Group Assignment
+[**GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet**](ConfigurationAPI.md#GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/network-group-assignments | Get
+[**GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet**](ConfigurationAPI.md#GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/sensor-group-assignments | Get
+[**GetNetworkingUxiV1alpha1SensorsGet**](ConfigurationAPI.md#GetNetworkingUxiV1alpha1SensorsGet) | **Get** /networking-uxi/v1alpha1/sensors | Get
+[**GetNetworkingUxiV1alpha1WiredNetworksGet**](ConfigurationAPI.md#GetNetworkingUxiV1alpha1WiredNetworksGet) | **Get** /networking-uxi/v1alpha1/wired-networks | Get
+[**GetNetworkingUxiV1alpha1WirelessNetworksGet**](ConfigurationAPI.md#GetNetworkingUxiV1alpha1WirelessNetworksGet) | **Get** /networking-uxi/v1alpha1/wireless-networks | Get
+[**GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete**](ConfigurationAPI.md#GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete) | **Delete** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Delete
+[**GroupsGetNetworkingUxiV1alpha1GroupsGet**](ConfigurationAPI.md#GroupsGetNetworkingUxiV1alpha1GroupsGet) | **Get** /networking-uxi/v1alpha1/groups | Groups Get
+[**GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch**](ConfigurationAPI.md#GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch) | **Patch** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Patch
+[**GroupsPostNetworkingUxiV1alpha1GroupsPost**](ConfigurationAPI.md#GroupsPostNetworkingUxiV1alpha1GroupsPost) | **Post** /networking-uxi/v1alpha1/groups | Groups Post
+[**PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost**](ConfigurationAPI.md#PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/network-group-assignments | Post
+[**PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost**](ConfigurationAPI.md#PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/sensor-group-assignments | Post
+[**PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost**](ConfigurationAPI.md#PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/service-test-group-assignments | Post
+[**ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet**](ConfigurationAPI.md#ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet) | **Get** /networking-uxi/v1alpha1/service-tests | Service Tests Get
 
 
 
-## DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete
+## DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete
 
-> interface{} DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete(ctx, id).Execute()
+> interface{} DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete(ctx, id).Execute()
 
 Delete Network Group Assignment
 
@@ -48,13 +48,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete(context.Background(), id).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete(context.Background(), id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.DeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDelete`: %v\n", resp)
+	// response from `DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete`: %v\n", resp)
 }
 ```
 
@@ -68,7 +68,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteNetworkGroupAssignmentUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -93,9 +93,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete
+## DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete
 
-> interface{} DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete(ctx, id).Execute()
+> interface{} DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete(ctx, id).Execute()
 
 Delete Sensor Group Assignment
 
@@ -118,13 +118,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete(context.Background(), id).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete(context.Background(), id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.DeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDelete`: %v\n", resp)
+	// response from `DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete`: %v\n", resp)
 }
 ```
 
@@ -138,7 +138,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteSensorGroupAssignmentUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -163,9 +163,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete
+## DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete
 
-> interface{} DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(ctx, id).Execute()
+> interface{} DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(ctx, id).Execute()
 
 Delete Service Test Group Assignment
 
@@ -188,13 +188,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(context.Background(), id).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(context.Background(), id).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.DeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDelete`: %v\n", resp)
+	// response from `DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete`: %v\n", resp)
 }
 ```
 
@@ -208,7 +208,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiDeleteServiceTestGroupAssignmentUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiDeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -233,9 +233,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetUxiV1alpha1NetworkGroupAssignmentsGet
+## GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet
 
-> NetworkGroupAssignmentsResponse GetUxiV1alpha1NetworkGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+> NetworkGroupAssignmentsResponse GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
 
 Get
 
@@ -260,13 +260,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1NetworkGroupAssignmentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1NetworkGroupAssignmentsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetUxiV1alpha1NetworkGroupAssignmentsGet`: NetworkGroupAssignmentsResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetUxiV1alpha1NetworkGroupAssignmentsGet`: %v\n", resp)
+	// response from `GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet`: NetworkGroupAssignmentsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet`: %v\n", resp)
 }
 ```
 
@@ -276,7 +276,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetUxiV1alpha1NetworkGroupAssignmentsGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -303,9 +303,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetUxiV1alpha1SensorGroupAssignmentsGet
+## GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet
 
-> SensorGroupAssignmentsResponse GetUxiV1alpha1SensorGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+> SensorGroupAssignmentsResponse GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
 
 Get
 
@@ -330,13 +330,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1SensorGroupAssignmentsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetUxiV1alpha1SensorGroupAssignmentsGet`: SensorGroupAssignmentsResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetUxiV1alpha1SensorGroupAssignmentsGet`: %v\n", resp)
+	// response from `GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet`: SensorGroupAssignmentsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet`: %v\n", resp)
 }
 ```
 
@@ -346,7 +346,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetUxiV1alpha1SensorGroupAssignmentsGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -373,9 +373,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetUxiV1alpha1SensorsGet
+## GetNetworkingUxiV1alpha1SensorsGet
 
-> SensorsResponse GetUxiV1alpha1SensorsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+> SensorsResponse GetNetworkingUxiV1alpha1SensorsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
 
 Get
 
@@ -400,13 +400,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1SensorsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetNetworkingUxiV1alpha1SensorsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1SensorsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetNetworkingUxiV1alpha1SensorsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetUxiV1alpha1SensorsGet`: SensorsResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetUxiV1alpha1SensorsGet`: %v\n", resp)
+	// response from `GetNetworkingUxiV1alpha1SensorsGet`: SensorsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetNetworkingUxiV1alpha1SensorsGet`: %v\n", resp)
 }
 ```
 
@@ -416,7 +416,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetUxiV1alpha1SensorsGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetNetworkingUxiV1alpha1SensorsGetRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -443,9 +443,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetUxiV1alpha1WiredNetworksGet
+## GetNetworkingUxiV1alpha1WiredNetworksGet
 
-> WiredNetworksResponse GetUxiV1alpha1WiredNetworksGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+> WiredNetworksResponse GetNetworkingUxiV1alpha1WiredNetworksGet(ctx).Id(id).Next(next).Limit(limit).Execute()
 
 Get
 
@@ -470,13 +470,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1WiredNetworksGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetNetworkingUxiV1alpha1WiredNetworksGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1WiredNetworksGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetNetworkingUxiV1alpha1WiredNetworksGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetUxiV1alpha1WiredNetworksGet`: WiredNetworksResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetUxiV1alpha1WiredNetworksGet`: %v\n", resp)
+	// response from `GetNetworkingUxiV1alpha1WiredNetworksGet`: WiredNetworksResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetNetworkingUxiV1alpha1WiredNetworksGet`: %v\n", resp)
 }
 ```
 
@@ -486,7 +486,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetUxiV1alpha1WiredNetworksGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetNetworkingUxiV1alpha1WiredNetworksGetRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -513,9 +513,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetUxiV1alpha1WirelessNetworksGet
+## GetNetworkingUxiV1alpha1WirelessNetworksGet
 
-> WirelessNetworksResponse GetUxiV1alpha1WirelessNetworksGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+> WirelessNetworksResponse GetNetworkingUxiV1alpha1WirelessNetworksGet(ctx).Id(id).Next(next).Limit(limit).Execute()
 
 Get
 
@@ -540,13 +540,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetUxiV1alpha1WirelessNetworksGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GetNetworkingUxiV1alpha1WirelessNetworksGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetUxiV1alpha1WirelessNetworksGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetNetworkingUxiV1alpha1WirelessNetworksGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetUxiV1alpha1WirelessNetworksGet`: WirelessNetworksResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetUxiV1alpha1WirelessNetworksGet`: %v\n", resp)
+	// response from `GetNetworkingUxiV1alpha1WirelessNetworksGet`: WirelessNetworksResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetNetworkingUxiV1alpha1WirelessNetworksGet`: %v\n", resp)
 }
 ```
 
@@ -556,7 +556,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetUxiV1alpha1WirelessNetworksGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -583,9 +583,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GroupsDeleteUxiV1alpha1GroupsGroupUidDelete
+## GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete
 
-> interface{} GroupsDeleteUxiV1alpha1GroupsGroupUidDelete(ctx, groupUid).Execute()
+> interface{} GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete(ctx, groupUid).Execute()
 
 Groups Delete
 
@@ -608,13 +608,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupsDeleteUxiV1alpha1GroupsGroupUidDelete(context.Background(), groupUid).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete(context.Background(), groupUid).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsDeleteUxiV1alpha1GroupsGroupUidDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GroupsDeleteUxiV1alpha1GroupsGroupUidDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsDeleteUxiV1alpha1GroupsGroupUidDelete`: %v\n", resp)
+	// response from `GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete`: %v\n", resp)
 }
 ```
 
@@ -628,7 +628,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGroupsDeleteUxiV1alpha1GroupsGroupUidDeleteRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDeleteRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -653,9 +653,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GroupsGetUxiV1alpha1GroupsGet
+## GroupsGetNetworkingUxiV1alpha1GroupsGet
 
-> GroupsGetResponse GroupsGetUxiV1alpha1GroupsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+> GroupsGetResponse GroupsGetNetworkingUxiV1alpha1GroupsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
 
 Groups Get
 
@@ -680,13 +680,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupsGetUxiV1alpha1GroupsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GroupsGetNetworkingUxiV1alpha1GroupsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsGetUxiV1alpha1GroupsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsGetNetworkingUxiV1alpha1GroupsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GroupsGetUxiV1alpha1GroupsGet`: GroupsGetResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsGetUxiV1alpha1GroupsGet`: %v\n", resp)
+	// response from `GroupsGetNetworkingUxiV1alpha1GroupsGet`: GroupsGetResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsGetNetworkingUxiV1alpha1GroupsGet`: %v\n", resp)
 }
 ```
 
@@ -696,7 +696,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGroupsGetUxiV1alpha1GroupsGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -723,9 +723,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GroupsPatchUxiV1alpha1GroupsGroupUidPatch
+## GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch
 
-> GroupsPatchResponse GroupsPatchUxiV1alpha1GroupsGroupUidPatch(ctx, groupUid).GroupsPatchRequest(groupsPatchRequest).Execute()
+> GroupsPatchResponse GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch(ctx, groupUid).GroupsPatchRequest(groupsPatchRequest).Execute()
 
 Groups Patch
 
@@ -749,13 +749,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupsPatchUxiV1alpha1GroupsGroupUidPatch(context.Background(), groupUid).GroupsPatchRequest(groupsPatchRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch(context.Background(), groupUid).GroupsPatchRequest(groupsPatchRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsPatchUxiV1alpha1GroupsGroupUidPatch``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GroupsPatchUxiV1alpha1GroupsGroupUidPatch`: GroupsPatchResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsPatchUxiV1alpha1GroupsGroupUidPatch`: %v\n", resp)
+	// response from `GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch`: GroupsPatchResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch`: %v\n", resp)
 }
 ```
 
@@ -769,7 +769,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGroupsPatchUxiV1alpha1GroupsGroupUidPatchRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -795,9 +795,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GroupsPostUxiV1alpha1GroupsPost
+## GroupsPostNetworkingUxiV1alpha1GroupsPost
 
-> GroupsPostResponse GroupsPostUxiV1alpha1GroupsPost(ctx).GroupsPostRequest(groupsPostRequest).Execute()
+> GroupsPostResponse GroupsPostNetworkingUxiV1alpha1GroupsPost(ctx).GroupsPostRequest(groupsPostRequest).Execute()
 
 Groups Post
 
@@ -820,13 +820,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost(context.Background()).GroupsPostRequest(groupsPostRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GroupsPostNetworkingUxiV1alpha1GroupsPost(context.Background()).GroupsPostRequest(groupsPostRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsPostNetworkingUxiV1alpha1GroupsPost``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GroupsPostUxiV1alpha1GroupsPost`: GroupsPostResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsPostUxiV1alpha1GroupsPost`: %v\n", resp)
+	// response from `GroupsPostNetworkingUxiV1alpha1GroupsPost`: GroupsPostResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsPostNetworkingUxiV1alpha1GroupsPost`: %v\n", resp)
 }
 ```
 
@@ -836,7 +836,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGroupsPostUxiV1alpha1GroupsPostRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGroupsPostNetworkingUxiV1alpha1GroupsPostRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -861,9 +861,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## PostUxiV1alpha1NetworkGroupAssignmentsPost
+## PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost
 
-> NetworkGroupAssignmentsPostResponse PostUxiV1alpha1NetworkGroupAssignmentsPost(ctx).NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest).Execute()
+> NetworkGroupAssignmentsPostResponse PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost(ctx).NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest).Execute()
 
 Post
 
@@ -886,13 +886,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.PostUxiV1alpha1NetworkGroupAssignmentsPost(context.Background()).NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost(context.Background()).NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.PostUxiV1alpha1NetworkGroupAssignmentsPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PostUxiV1alpha1NetworkGroupAssignmentsPost`: NetworkGroupAssignmentsPostResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.PostUxiV1alpha1NetworkGroupAssignmentsPost`: %v\n", resp)
+	// response from `PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost`: NetworkGroupAssignmentsPostResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost`: %v\n", resp)
 }
 ```
 
@@ -902,7 +902,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPostUxiV1alpha1NetworkGroupAssignmentsPostRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiPostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -927,9 +927,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## PostUxiV1alpha1SensorGroupAssignmentsPost
+## PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost
 
-> SensorGroupAssignmentResponse PostUxiV1alpha1SensorGroupAssignmentsPost(ctx).SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest).Execute()
+> SensorGroupAssignmentResponse PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost(ctx).SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest).Execute()
 
 Post
 
@@ -952,13 +952,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.PostUxiV1alpha1SensorGroupAssignmentsPost(context.Background()).SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost(context.Background()).SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.PostUxiV1alpha1SensorGroupAssignmentsPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PostUxiV1alpha1SensorGroupAssignmentsPost`: SensorGroupAssignmentResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.PostUxiV1alpha1SensorGroupAssignmentsPost`: %v\n", resp)
+	// response from `PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost`: SensorGroupAssignmentResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost`: %v\n", resp)
 }
 ```
 
@@ -968,7 +968,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPostUxiV1alpha1SensorGroupAssignmentsPostRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiPostNetworkingUxiV1alpha1SensorGroupAssignmentsPostRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -993,9 +993,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## PostUxiV1alpha1ServiceTestGroupAssignmentsPost
+## PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost
 
-> ServiceTestGroupAssignmentsPostResponse PostUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx).ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest).Execute()
+> ServiceTestGroupAssignmentsPostResponse PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx).ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest).Execute()
 
 Post
 
@@ -1018,13 +1018,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.PostUxiV1alpha1ServiceTestGroupAssignmentsPost(context.Background()).ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost(context.Background()).ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.PostUxiV1alpha1ServiceTestGroupAssignmentsPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PostUxiV1alpha1ServiceTestGroupAssignmentsPost`: ServiceTestGroupAssignmentsPostResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.PostUxiV1alpha1ServiceTestGroupAssignmentsPost`: %v\n", resp)
+	// response from `PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost`: ServiceTestGroupAssignmentsPostResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost`: %v\n", resp)
 }
 ```
 
@@ -1034,7 +1034,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPostUxiV1alpha1ServiceTestGroupAssignmentsPostRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiPostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -1059,9 +1059,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## ServiceTestsGetUxiV1alpha1ServiceTestsGet
+## ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet
 
-> ServiceTestsListResponse ServiceTestsGetUxiV1alpha1ServiceTestsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+> ServiceTestsListResponse ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
 
 Service Tests Get
 
@@ -1086,13 +1086,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.ServiceTestsGetUxiV1alpha1ServiceTestsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.ServiceTestsGetUxiV1alpha1ServiceTestsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ServiceTestsGetUxiV1alpha1ServiceTestsGet`: ServiceTestsListResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.ServiceTestsGetUxiV1alpha1ServiceTestsGet`: %v\n", resp)
+	// response from `ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet`: ServiceTestsListResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet`: %v\n", resp)
 }
 ```
 
@@ -1102,7 +1102,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiServiceTestsGetUxiV1alpha1ServiceTestsGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes

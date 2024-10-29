@@ -66,7 +66,7 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 			{
 				PreConfig: func() {
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/wired-networks").
+						Get("/networking-uxi/v1alpha1/wired-networks").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetWiredNetwork(
@@ -105,7 +105,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/uxi/v1alpha1/wired-networks").
+						Get("/networking-uxi/v1alpha1/wired-networks").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,
