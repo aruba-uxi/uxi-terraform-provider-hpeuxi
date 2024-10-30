@@ -17,42 +17,42 @@ import (
 	"fmt"
 )
 
-// checks if the WiredNetworksResponse type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &WiredNetworksResponse{}
+// checks if the AgentsResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AgentsResponse{}
 
-// WiredNetworksResponse struct for WiredNetworksResponse
-type WiredNetworksResponse struct {
-	Items []WiredNetworksItem `json:"items"`
-	Count int32               `json:"count"`
-	Next  NullableString      `json:"next"`
+// AgentsResponse struct for AgentsResponse
+type AgentsResponse struct {
+	Items []AgentItem    `json:"items"`
+	Count int32          `json:"count"`
+	Next  NullableString `json:"next"`
 }
 
-type _WiredNetworksResponse WiredNetworksResponse
+type _AgentsResponse AgentsResponse
 
-// NewWiredNetworksResponse instantiates a new WiredNetworksResponse object
+// NewAgentsResponse instantiates a new AgentsResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWiredNetworksResponse(items []WiredNetworksItem, count int32, next NullableString) *WiredNetworksResponse {
-	this := WiredNetworksResponse{}
+func NewAgentsResponse(items []AgentItem, count int32, next NullableString) *AgentsResponse {
+	this := AgentsResponse{}
 	this.Items = items
 	this.Count = count
 	this.Next = next
 	return &this
 }
 
-// NewWiredNetworksResponseWithDefaults instantiates a new WiredNetworksResponse object
+// NewAgentsResponseWithDefaults instantiates a new AgentsResponse object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewWiredNetworksResponseWithDefaults() *WiredNetworksResponse {
-	this := WiredNetworksResponse{}
+func NewAgentsResponseWithDefaults() *AgentsResponse {
+	this := AgentsResponse{}
 	return &this
 }
 
 // GetItems returns the Items field value
-func (o *WiredNetworksResponse) GetItems() []WiredNetworksItem {
+func (o *AgentsResponse) GetItems() []AgentItem {
 	if o == nil {
-		var ret []WiredNetworksItem
+		var ret []AgentItem
 		return ret
 	}
 
@@ -61,7 +61,7 @@ func (o *WiredNetworksResponse) GetItems() []WiredNetworksItem {
 
 // GetItemsOk returns a tuple with the Items field value
 // and a boolean to check if the value has been set.
-func (o *WiredNetworksResponse) GetItemsOk() ([]WiredNetworksItem, bool) {
+func (o *AgentsResponse) GetItemsOk() ([]AgentItem, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -69,12 +69,12 @@ func (o *WiredNetworksResponse) GetItemsOk() ([]WiredNetworksItem, bool) {
 }
 
 // SetItems sets field value
-func (o *WiredNetworksResponse) SetItems(v []WiredNetworksItem) {
+func (o *AgentsResponse) SetItems(v []AgentItem) {
 	o.Items = v
 }
 
 // GetCount returns the Count field value
-func (o *WiredNetworksResponse) GetCount() int32 {
+func (o *AgentsResponse) GetCount() int32 {
 	if o == nil {
 		var ret int32
 		return ret
@@ -85,7 +85,7 @@ func (o *WiredNetworksResponse) GetCount() int32 {
 
 // GetCountOk returns a tuple with the Count field value
 // and a boolean to check if the value has been set.
-func (o *WiredNetworksResponse) GetCountOk() (*int32, bool) {
+func (o *AgentsResponse) GetCountOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -93,13 +93,13 @@ func (o *WiredNetworksResponse) GetCountOk() (*int32, bool) {
 }
 
 // SetCount sets field value
-func (o *WiredNetworksResponse) SetCount(v int32) {
+func (o *AgentsResponse) SetCount(v int32) {
 	o.Count = v
 }
 
 // GetNext returns the Next field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *WiredNetworksResponse) GetNext() string {
+func (o *AgentsResponse) GetNext() string {
 	if o == nil || o.Next.Get() == nil {
 		var ret string
 		return ret
@@ -111,7 +111,7 @@ func (o *WiredNetworksResponse) GetNext() string {
 // GetNextOk returns a tuple with the Next field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *WiredNetworksResponse) GetNextOk() (*string, bool) {
+func (o *AgentsResponse) GetNextOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -119,11 +119,11 @@ func (o *WiredNetworksResponse) GetNextOk() (*string, bool) {
 }
 
 // SetNext sets field value
-func (o *WiredNetworksResponse) SetNext(v string) {
+func (o *AgentsResponse) SetNext(v string) {
 	o.Next.Set(&v)
 }
 
-func (o WiredNetworksResponse) MarshalJSON() ([]byte, error) {
+func (o AgentsResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -131,7 +131,7 @@ func (o WiredNetworksResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o WiredNetworksResponse) ToMap() (map[string]interface{}, error) {
+func (o AgentsResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["items"] = o.Items
 	toSerialize["count"] = o.Count
@@ -139,7 +139,7 @@ func (o WiredNetworksResponse) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *WiredNetworksResponse) UnmarshalJSON(data []byte) (err error) {
+func (o *AgentsResponse) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -163,53 +163,53 @@ func (o *WiredNetworksResponse) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varWiredNetworksResponse := _WiredNetworksResponse{}
+	varAgentsResponse := _AgentsResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varWiredNetworksResponse)
+	err = decoder.Decode(&varAgentsResponse)
 
 	if err != nil {
 		return err
 	}
 
-	*o = WiredNetworksResponse(varWiredNetworksResponse)
+	*o = AgentsResponse(varAgentsResponse)
 
 	return err
 }
 
-type NullableWiredNetworksResponse struct {
-	value *WiredNetworksResponse
+type NullableAgentsResponse struct {
+	value *AgentsResponse
 	isSet bool
 }
 
-func (v NullableWiredNetworksResponse) Get() *WiredNetworksResponse {
+func (v NullableAgentsResponse) Get() *AgentsResponse {
 	return v.value
 }
 
-func (v *NullableWiredNetworksResponse) Set(val *WiredNetworksResponse) {
+func (v *NullableAgentsResponse) Set(val *AgentsResponse) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableWiredNetworksResponse) IsSet() bool {
+func (v NullableAgentsResponse) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableWiredNetworksResponse) Unset() {
+func (v *NullableAgentsResponse) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableWiredNetworksResponse(val *WiredNetworksResponse) *NullableWiredNetworksResponse {
-	return &NullableWiredNetworksResponse{value: val, isSet: true}
+func NewNullableAgentsResponse(val *AgentsResponse) *NullableAgentsResponse {
+	return &NullableAgentsResponse{value: val, isSet: true}
 }
 
-func (v NullableWiredNetworksResponse) MarshalJSON() ([]byte, error) {
+func (v NullableAgentsResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableWiredNetworksResponse) UnmarshalJSON(src []byte) error {
+func (v *NullableAgentsResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

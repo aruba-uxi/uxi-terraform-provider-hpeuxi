@@ -125,7 +125,7 @@ func (d *sensorDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 
 	state.Id = types.StringValue(sensor.Id)
 	state.Name = types.StringValue(sensor.Name)
-	state.ModelNumber = types.StringPointerValue(sensor.ModelNumber.Get())
+	state.ModelNumber = types.StringValue(sensor.ModelNumber)
 	state.WifiMacAddress = types.StringPointerValue(sensor.WifiMacAddress.Get())
 	state.EthernetMacAddress = types.StringPointerValue(sensor.EthernetMacAddress.Get())
 	state.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
