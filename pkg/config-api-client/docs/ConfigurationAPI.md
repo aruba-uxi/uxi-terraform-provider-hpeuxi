@@ -4,588 +4,29 @@ All URIs are relative to *https://api.capenetworks.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete**](ConfigurationAPI.md#DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete) | **Delete** /networking-uxi/v1alpha1/network-group-assignments/{id} | Delete Network Group Assignment
-[**DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete**](ConfigurationAPI.md#DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete) | **Delete** /networking-uxi/v1alpha1/sensor-group-assignments/{id} | Delete Sensor Group Assignment
-[**DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete**](ConfigurationAPI.md#DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete) | **Delete** /networking-uxi/v1alpha1/service-test-group-assignments/{id} | Delete Service Test Group Assignment
-[**GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet**](ConfigurationAPI.md#GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/network-group-assignments | Get
-[**GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet**](ConfigurationAPI.md#GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/sensor-group-assignments | Get
-[**GetNetworkingUxiV1alpha1SensorsGet**](ConfigurationAPI.md#GetNetworkingUxiV1alpha1SensorsGet) | **Get** /networking-uxi/v1alpha1/sensors | Get
-[**GetNetworkingUxiV1alpha1WiredNetworksGet**](ConfigurationAPI.md#GetNetworkingUxiV1alpha1WiredNetworksGet) | **Get** /networking-uxi/v1alpha1/wired-networks | Get
-[**GetNetworkingUxiV1alpha1WirelessNetworksGet**](ConfigurationAPI.md#GetNetworkingUxiV1alpha1WirelessNetworksGet) | **Get** /networking-uxi/v1alpha1/wireless-networks | Get
-[**GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete**](ConfigurationAPI.md#GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete) | **Delete** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Delete
-[**GroupsGetNetworkingUxiV1alpha1GroupsGet**](ConfigurationAPI.md#GroupsGetNetworkingUxiV1alpha1GroupsGet) | **Get** /networking-uxi/v1alpha1/groups | Groups Get
-[**GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch**](ConfigurationAPI.md#GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch) | **Patch** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Patch
-[**GroupsPostNetworkingUxiV1alpha1GroupsPost**](ConfigurationAPI.md#GroupsPostNetworkingUxiV1alpha1GroupsPost) | **Post** /networking-uxi/v1alpha1/groups | Groups Post
-[**PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost**](ConfigurationAPI.md#PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/network-group-assignments | Post
-[**PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost**](ConfigurationAPI.md#PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/sensor-group-assignments | Post
-[**PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost**](ConfigurationAPI.md#PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/service-test-group-assignments | Post
-[**ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet**](ConfigurationAPI.md#ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet) | **Get** /networking-uxi/v1alpha1/service-tests | Service Tests Get
-
-
-
-## DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete
-
-> interface{} DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete(ctx, id).Execute()
-
-Delete Network Group Assignment
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
-)
-
-func main() {
-	id := "id_example" // string | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete(context.Background(), id).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDeleteRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-**interface{}**
-
-### Authorization
-
-[HTTPBearer](../README.md#HTTPBearer)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete
-
-> interface{} DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete(ctx, id).Execute()
-
-Delete Sensor Group Assignment
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
-)
-
-func main() {
-	id := "id_example" // string | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete(context.Background(), id).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDeleteRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-**interface{}**
-
-### Authorization
-
-[HTTPBearer](../README.md#HTTPBearer)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete
-
-> interface{} DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(ctx, id).Execute()
-
-Delete Service Test Group Assignment
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
-)
-
-func main() {
-	id := "id_example" // string | 
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(context.Background(), id).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDeleteRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
-**interface{}**
-
-### Authorization
-
-[HTTPBearer](../README.md#HTTPBearer)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet
-
-> NetworkGroupAssignmentsResponse GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
-
-Get
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
-)
-
-func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet`: NetworkGroupAssignmentsResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetNetworkingUxiV1alpha1NetworkGroupAssignmentsGetRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
-
-### Return type
-
-[**NetworkGroupAssignmentsResponse**](NetworkGroupAssignmentsResponse.md)
-
-### Authorization
-
-[HTTPBearer](../README.md#HTTPBearer)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet
-
-> SensorGroupAssignmentsResponse GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
-
-Get
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
-)
-
-func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet`: SensorGroupAssignmentsResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetNetworkingUxiV1alpha1SensorGroupAssignmentsGetRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
-
-### Return type
-
-[**SensorGroupAssignmentsResponse**](SensorGroupAssignmentsResponse.md)
-
-### Authorization
-
-[HTTPBearer](../README.md#HTTPBearer)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetNetworkingUxiV1alpha1SensorsGet
-
-> SensorsResponse GetNetworkingUxiV1alpha1SensorsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
-
-Get
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
-)
-
-func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetNetworkingUxiV1alpha1SensorsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetNetworkingUxiV1alpha1SensorsGet``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetNetworkingUxiV1alpha1SensorsGet`: SensorsResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetNetworkingUxiV1alpha1SensorsGet`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetNetworkingUxiV1alpha1SensorsGetRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
-
-### Return type
-
-[**SensorsResponse**](SensorsResponse.md)
-
-### Authorization
-
-[HTTPBearer](../README.md#HTTPBearer)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetNetworkingUxiV1alpha1WiredNetworksGet
-
-> WiredNetworksResponse GetNetworkingUxiV1alpha1WiredNetworksGet(ctx).Id(id).Next(next).Limit(limit).Execute()
-
-Get
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
-)
-
-func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetNetworkingUxiV1alpha1WiredNetworksGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetNetworkingUxiV1alpha1WiredNetworksGet``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetNetworkingUxiV1alpha1WiredNetworksGet`: WiredNetworksResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetNetworkingUxiV1alpha1WiredNetworksGet`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetNetworkingUxiV1alpha1WiredNetworksGetRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
-
-### Return type
-
-[**WiredNetworksResponse**](WiredNetworksResponse.md)
-
-### Authorization
-
-[HTTPBearer](../README.md#HTTPBearer)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetNetworkingUxiV1alpha1WirelessNetworksGet
-
-> WirelessNetworksResponse GetNetworkingUxiV1alpha1WirelessNetworksGet(ctx).Id(id).Next(next).Limit(limit).Execute()
-
-Get
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
-)
-
-func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GetNetworkingUxiV1alpha1WirelessNetworksGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GetNetworkingUxiV1alpha1WirelessNetworksGet``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetNetworkingUxiV1alpha1WirelessNetworksGet`: WirelessNetworksResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GetNetworkingUxiV1alpha1WirelessNetworksGet`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetNetworkingUxiV1alpha1WirelessNetworksGetRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
-
-### Return type
-
-[**WirelessNetworksResponse**](WirelessNetworksResponse.md)
-
-### Authorization
-
-[HTTPBearer](../README.md#HTTPBearer)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete
-
-> interface{} GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete(ctx, groupUid).Execute()
+[**GroupsDelete**](ConfigurationAPI.md#GroupsDelete) | **Delete** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Delete
+[**GroupsGet**](ConfigurationAPI.md#GroupsGet) | **Get** /networking-uxi/v1alpha1/groups | Groups Get
+[**GroupsPatch**](ConfigurationAPI.md#GroupsPatch) | **Patch** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Patch
+[**GroupsPost**](ConfigurationAPI.md#GroupsPost) | **Post** /networking-uxi/v1alpha1/groups | Groups Post
+[**NetworkGroupAssignmentsDelete**](ConfigurationAPI.md#NetworkGroupAssignmentsDelete) | **Delete** /networking-uxi/v1alpha1/network-group-assignments/{id} | Network Group Assignments Delete
+[**NetworkGroupAssignmentsGet**](ConfigurationAPI.md#NetworkGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/network-group-assignments | Network Group Assignments Get
+[**NetworkGroupAssignmentsPost**](ConfigurationAPI.md#NetworkGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/network-group-assignments | Network Group Assignments Post
+[**SensorGroupAssignmentsDelete**](ConfigurationAPI.md#SensorGroupAssignmentsDelete) | **Delete** /networking-uxi/v1alpha1/sensor-group-assignments/{id} | Sensor Group Assignments Delete
+[**SensorGroupAssignmentsGet**](ConfigurationAPI.md#SensorGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/sensor-group-assignments | Sensor Group Assignments Get
+[**SensorGroupAssignmentsPost**](ConfigurationAPI.md#SensorGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/sensor-group-assignments | Sensor Group Assignments Post
+[**SensorsGet**](ConfigurationAPI.md#SensorsGet) | **Get** /networking-uxi/v1alpha1/sensors | Sensors Get
+[**SensorsPatch**](ConfigurationAPI.md#SensorsPatch) | **Patch** /networking-uxi/v1alpha1/sensors/{sensor_uid} | Sensors Patch
+[**ServiceTestGroupAssignmentsDelete**](ConfigurationAPI.md#ServiceTestGroupAssignmentsDelete) | **Delete** /networking-uxi/v1alpha1/service-test-group-assignments/{id} | Service Test Group Assignments Delete
+[**ServiceTestGroupAssignmentsPost**](ConfigurationAPI.md#ServiceTestGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/service-test-group-assignments | Service Test Group Assignments Post
+[**ServiceTestsGet**](ConfigurationAPI.md#ServiceTestsGet) | **Get** /networking-uxi/v1alpha1/service-tests | Service Tests Get
+[**WiredNetworksGet**](ConfigurationAPI.md#WiredNetworksGet) | **Get** /networking-uxi/v1alpha1/wired-networks | Wired Networks Get
+[**WirelessNetworksGet**](ConfigurationAPI.md#WirelessNetworksGet) | **Get** /networking-uxi/v1alpha1/wireless-networks | Wireless Networks Get
+
+
+
+## GroupsDelete
+
+> interface{} GroupsDelete(ctx, groupUid).Execute()
 
 Groups Delete
 
@@ -608,13 +49,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete(context.Background(), groupUid).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GroupsDelete(context.Background(), groupUid).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete`: %v\n", resp)
+	// response from `GroupsDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsDelete`: %v\n", resp)
 }
 ```
 
@@ -628,7 +69,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDeleteRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGroupsDeleteRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -653,9 +94,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GroupsGetNetworkingUxiV1alpha1GroupsGet
+## GroupsGet
 
-> GroupsGetResponse GroupsGetNetworkingUxiV1alpha1GroupsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+> GroupsGetResponse GroupsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
 
 Groups Get
 
@@ -680,13 +121,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupsGetNetworkingUxiV1alpha1GroupsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GroupsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsGetNetworkingUxiV1alpha1GroupsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GroupsGetNetworkingUxiV1alpha1GroupsGet`: GroupsGetResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsGetNetworkingUxiV1alpha1GroupsGet`: %v\n", resp)
+	// response from `GroupsGet`: GroupsGetResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsGet`: %v\n", resp)
 }
 ```
 
@@ -696,7 +137,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGroupsGetNetworkingUxiV1alpha1GroupsGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGroupsGetRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -723,9 +164,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch
+## GroupsPatch
 
-> GroupsPatchResponse GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch(ctx, groupUid).GroupsPatchRequest(groupsPatchRequest).Execute()
+> GroupsPatchResponse GroupsPatch(ctx, groupUid).GroupsPatchRequest(groupsPatchRequest).Execute()
 
 Groups Patch
 
@@ -745,17 +186,17 @@ import (
 
 func main() {
 	groupUid := "groupUid_example" // string | 
-	groupsPatchRequest := *openapiclient.NewGroupsPatchRequest("Name_example") // GroupsPatchRequest | 
+	groupsPatchRequest := *openapiclient.NewGroupsPatchRequest("Name_example") // GroupsPatchRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch(context.Background(), groupUid).GroupsPatchRequest(groupsPatchRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GroupsPatch(context.Background(), groupUid).GroupsPatchRequest(groupsPatchRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsPatch``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch`: GroupsPatchResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch`: %v\n", resp)
+	// response from `GroupsPatch`: GroupsPatchResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsPatch`: %v\n", resp)
 }
 ```
 
@@ -769,7 +210,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatchRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGroupsPatchRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -787,7 +228,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
+- **Content-Type**: application/merge-patch+json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -795,9 +236,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GroupsPostNetworkingUxiV1alpha1GroupsPost
+## GroupsPost
 
-> GroupsPostResponse GroupsPostNetworkingUxiV1alpha1GroupsPost(ctx).GroupsPostRequest(groupsPostRequest).Execute()
+> GroupsPostResponse GroupsPost(ctx).GroupsPostRequest(groupsPostRequest).Execute()
 
 Groups Post
 
@@ -820,13 +261,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupsPostNetworkingUxiV1alpha1GroupsPost(context.Background()).GroupsPostRequest(groupsPostRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GroupsPost(context.Background()).GroupsPostRequest(groupsPostRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsPostNetworkingUxiV1alpha1GroupsPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupsPost``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GroupsPostNetworkingUxiV1alpha1GroupsPost`: GroupsPostResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsPostNetworkingUxiV1alpha1GroupsPost`: %v\n", resp)
+	// response from `GroupsPost`: GroupsPostResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupsPost`: %v\n", resp)
 }
 ```
 
@@ -836,7 +277,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGroupsPostNetworkingUxiV1alpha1GroupsPostRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGroupsPostRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -861,11 +302,151 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost
+## NetworkGroupAssignmentsDelete
 
-> NetworkGroupAssignmentsPostResponse PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost(ctx).NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest).Execute()
+> interface{} NetworkGroupAssignmentsDelete(ctx, id).Execute()
 
-Post
+Network Group Assignments Delete
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.NetworkGroupAssignmentsDelete(context.Background(), id).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.NetworkGroupAssignmentsDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `NetworkGroupAssignmentsDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.NetworkGroupAssignmentsDelete`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiNetworkGroupAssignmentsDeleteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+**interface{}**
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## NetworkGroupAssignmentsGet
+
+> NetworkGroupAssignmentsResponse NetworkGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+
+Network Group Assignments Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string |  (optional)
+	next := "next_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.NetworkGroupAssignmentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.NetworkGroupAssignmentsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `NetworkGroupAssignmentsGet`: NetworkGroupAssignmentsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.NetworkGroupAssignmentsGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiNetworkGroupAssignmentsGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **string** |  | 
+ **next** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**NetworkGroupAssignmentsResponse**](NetworkGroupAssignmentsResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## NetworkGroupAssignmentsPost
+
+> NetworkGroupAssignmentsPostResponse NetworkGroupAssignmentsPost(ctx).NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest).Execute()
+
+Network Group Assignments Post
 
 
 
@@ -886,13 +467,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost(context.Background()).NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.NetworkGroupAssignmentsPost(context.Background()).NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.NetworkGroupAssignmentsPost``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost`: NetworkGroupAssignmentsPostResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost`: %v\n", resp)
+	// response from `NetworkGroupAssignmentsPost`: NetworkGroupAssignmentsPostResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.NetworkGroupAssignmentsPost`: %v\n", resp)
 }
 ```
 
@@ -902,7 +483,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPostNetworkingUxiV1alpha1NetworkGroupAssignmentsPostRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiNetworkGroupAssignmentsPostRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -927,11 +508,151 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost
+## SensorGroupAssignmentsDelete
 
-> SensorGroupAssignmentResponse PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost(ctx).SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest).Execute()
+> interface{} SensorGroupAssignmentsDelete(ctx, id).Execute()
 
-Post
+Sensor Group Assignments Delete
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.SensorGroupAssignmentsDelete(context.Background(), id).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.SensorGroupAssignmentsDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `SensorGroupAssignmentsDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.SensorGroupAssignmentsDelete`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSensorGroupAssignmentsDeleteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+**interface{}**
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## SensorGroupAssignmentsGet
+
+> SensorGroupAssignmentsResponse SensorGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+
+Sensor Group Assignments Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string |  (optional)
+	next := "next_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.SensorGroupAssignmentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.SensorGroupAssignmentsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `SensorGroupAssignmentsGet`: SensorGroupAssignmentsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.SensorGroupAssignmentsGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSensorGroupAssignmentsGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **string** |  | 
+ **next** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**SensorGroupAssignmentsResponse**](SensorGroupAssignmentsResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## SensorGroupAssignmentsPost
+
+> SensorGroupAssignmentResponse SensorGroupAssignmentsPost(ctx).SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest).Execute()
+
+Sensor Group Assignments Post
 
 
 
@@ -952,13 +673,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost(context.Background()).SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.SensorGroupAssignmentsPost(context.Background()).SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.SensorGroupAssignmentsPost``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost`: SensorGroupAssignmentResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost`: %v\n", resp)
+	// response from `SensorGroupAssignmentsPost`: SensorGroupAssignmentResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.SensorGroupAssignmentsPost`: %v\n", resp)
 }
 ```
 
@@ -968,7 +689,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPostNetworkingUxiV1alpha1SensorGroupAssignmentsPostRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiSensorGroupAssignmentsPostRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -993,11 +714,223 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost
+## SensorsGet
 
-> ServiceTestGroupAssignmentsPostResponse PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx).ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest).Execute()
+> SensorsResponse SensorsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
 
-Post
+Sensors Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string |  (optional)
+	next := "next_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.SensorsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.SensorsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `SensorsGet`: SensorsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.SensorsGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSensorsGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **string** |  | 
+ **next** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**SensorsResponse**](SensorsResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## SensorsPatch
+
+> SensorsPatchResponse SensorsPatch(ctx, sensorUid).SensorsPatchRequest(sensorsPatchRequest).Execute()
+
+Sensors Patch
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	sensorUid := "sensorUid_example" // string | 
+	sensorsPatchRequest := *openapiclient.NewSensorsPatchRequest() // SensorsPatchRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.SensorsPatch(context.Background(), sensorUid).SensorsPatchRequest(sensorsPatchRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.SensorsPatch``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `SensorsPatch`: SensorsPatchResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.SensorsPatch`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**sensorUid** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSensorsPatchRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **sensorsPatchRequest** | [**SensorsPatchRequest**](SensorsPatchRequest.md) |  | 
+
+### Return type
+
+[**SensorsPatchResponse**](SensorsPatchResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ServiceTestGroupAssignmentsDelete
+
+> interface{} ServiceTestGroupAssignmentsDelete(ctx, id).Execute()
+
+Service Test Group Assignments Delete
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.ServiceTestGroupAssignmentsDelete(context.Background(), id).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.ServiceTestGroupAssignmentsDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ServiceTestGroupAssignmentsDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.ServiceTestGroupAssignmentsDelete`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiServiceTestGroupAssignmentsDeleteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+**interface{}**
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ServiceTestGroupAssignmentsPost
+
+> ServiceTestGroupAssignmentsPostResponse ServiceTestGroupAssignmentsPost(ctx).ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest).Execute()
+
+Service Test Group Assignments Post
 
 
 
@@ -1018,13 +951,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost(context.Background()).ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.ServiceTestGroupAssignmentsPost(context.Background()).ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.ServiceTestGroupAssignmentsPost``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost`: ServiceTestGroupAssignmentsPostResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost`: %v\n", resp)
+	// response from `ServiceTestGroupAssignmentsPost`: ServiceTestGroupAssignmentsPostResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.ServiceTestGroupAssignmentsPost`: %v\n", resp)
 }
 ```
 
@@ -1034,7 +967,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPostRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiServiceTestGroupAssignmentsPostRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -1059,9 +992,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet
+## ServiceTestsGet
 
-> ServiceTestsListResponse ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+> ServiceTestsListResponse ServiceTestsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
 
 Service Tests Get
 
@@ -1086,13 +1019,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.ServiceTestsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.ServiceTestsGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet`: ServiceTestsListResponse
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.ServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGet`: %v\n", resp)
+	// response from `ServiceTestsGet`: ServiceTestsListResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.ServiceTestsGet`: %v\n", resp)
 }
 ```
 
@@ -1102,7 +1035,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiServiceTestsGetNetworkingUxiV1alpha1ServiceTestsGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiServiceTestsGetRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -1114,6 +1047,146 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**ServiceTestsListResponse**](ServiceTestsListResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## WiredNetworksGet
+
+> WiredNetworksResponse WiredNetworksGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+
+Wired Networks Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string |  (optional)
+	next := "next_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.WiredNetworksGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.WiredNetworksGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `WiredNetworksGet`: WiredNetworksResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.WiredNetworksGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiWiredNetworksGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **string** |  | 
+ **next** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**WiredNetworksResponse**](WiredNetworksResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## WirelessNetworksGet
+
+> WirelessNetworksResponse WirelessNetworksGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+
+Wireless Networks Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string |  (optional)
+	next := "next_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.WirelessNetworksGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.WirelessNetworksGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `WirelessNetworksGet`: WirelessNetworksResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.WirelessNetworksGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiWirelessNetworksGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **string** |  | 
+ **next** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**WirelessNetworksResponse**](WirelessNetworksResponse.md)
 
 ### Authorization
 

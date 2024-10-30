@@ -17,11 +17,11 @@ import (
 	"fmt"
 )
 
-// checks if the SensorItem type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &SensorItem{}
+// checks if the SensorsPatchResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SensorsPatchResponse{}
 
-// SensorItem struct for SensorItem
-type SensorItem struct {
+// SensorsPatchResponse struct for SensorsPatchResponse
+type SensorsPatchResponse struct {
 	Id                 string          `json:"id"`
 	Serial             string          `json:"serial"`
 	Name               string          `json:"name"`
@@ -36,14 +36,14 @@ type SensorItem struct {
 	Type               string          `json:"type"`
 }
 
-type _SensorItem SensorItem
+type _SensorsPatchResponse SensorsPatchResponse
 
-// NewSensorItem instantiates a new SensorItem object
+// NewSensorsPatchResponse instantiates a new SensorsPatchResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorItem(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, type_ string) *SensorItem {
-	this := SensorItem{}
+func NewSensorsPatchResponse(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, type_ string) *SensorsPatchResponse {
+	this := SensorsPatchResponse{}
 	this.Id = id
 	this.Serial = serial
 	this.Name = name
@@ -59,16 +59,16 @@ func NewSensorItem(id string, serial string, name string, modelNumber NullableSt
 	return &this
 }
 
-// NewSensorItemWithDefaults instantiates a new SensorItem object
+// NewSensorsPatchResponseWithDefaults instantiates a new SensorsPatchResponse object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewSensorItemWithDefaults() *SensorItem {
-	this := SensorItem{}
+func NewSensorsPatchResponseWithDefaults() *SensorsPatchResponse {
+	this := SensorsPatchResponse{}
 	return &this
 }
 
 // GetId returns the Id field value
-func (o *SensorItem) GetId() string {
+func (o *SensorsPatchResponse) GetId() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -79,7 +79,7 @@ func (o *SensorItem) GetId() string {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *SensorItem) GetIdOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -87,12 +87,12 @@ func (o *SensorItem) GetIdOk() (*string, bool) {
 }
 
 // SetId sets field value
-func (o *SensorItem) SetId(v string) {
+func (o *SensorsPatchResponse) SetId(v string) {
 	o.Id = v
 }
 
 // GetSerial returns the Serial field value
-func (o *SensorItem) GetSerial() string {
+func (o *SensorsPatchResponse) GetSerial() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -103,7 +103,7 @@ func (o *SensorItem) GetSerial() string {
 
 // GetSerialOk returns a tuple with the Serial field value
 // and a boolean to check if the value has been set.
-func (o *SensorItem) GetSerialOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetSerialOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -111,12 +111,12 @@ func (o *SensorItem) GetSerialOk() (*string, bool) {
 }
 
 // SetSerial sets field value
-func (o *SensorItem) SetSerial(v string) {
+func (o *SensorsPatchResponse) SetSerial(v string) {
 	o.Serial = v
 }
 
 // GetName returns the Name field value
-func (o *SensorItem) GetName() string {
+func (o *SensorsPatchResponse) GetName() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -127,7 +127,7 @@ func (o *SensorItem) GetName() string {
 
 // GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *SensorItem) GetNameOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -135,13 +135,13 @@ func (o *SensorItem) GetNameOk() (*string, bool) {
 }
 
 // SetName sets field value
-func (o *SensorItem) SetName(v string) {
+func (o *SensorsPatchResponse) SetName(v string) {
 	o.Name = v
 }
 
 // GetModelNumber returns the ModelNumber field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *SensorItem) GetModelNumber() string {
+func (o *SensorsPatchResponse) GetModelNumber() string {
 	if o == nil || o.ModelNumber.Get() == nil {
 		var ret string
 		return ret
@@ -153,7 +153,7 @@ func (o *SensorItem) GetModelNumber() string {
 // GetModelNumberOk returns a tuple with the ModelNumber field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SensorItem) GetModelNumberOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetModelNumberOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -161,13 +161,13 @@ func (o *SensorItem) GetModelNumberOk() (*string, bool) {
 }
 
 // SetModelNumber sets field value
-func (o *SensorItem) SetModelNumber(v string) {
+func (o *SensorsPatchResponse) SetModelNumber(v string) {
 	o.ModelNumber.Set(&v)
 }
 
 // GetWifiMacAddress returns the WifiMacAddress field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *SensorItem) GetWifiMacAddress() string {
+func (o *SensorsPatchResponse) GetWifiMacAddress() string {
 	if o == nil || o.WifiMacAddress.Get() == nil {
 		var ret string
 		return ret
@@ -179,7 +179,7 @@ func (o *SensorItem) GetWifiMacAddress() string {
 // GetWifiMacAddressOk returns a tuple with the WifiMacAddress field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SensorItem) GetWifiMacAddressOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetWifiMacAddressOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -187,13 +187,13 @@ func (o *SensorItem) GetWifiMacAddressOk() (*string, bool) {
 }
 
 // SetWifiMacAddress sets field value
-func (o *SensorItem) SetWifiMacAddress(v string) {
+func (o *SensorsPatchResponse) SetWifiMacAddress(v string) {
 	o.WifiMacAddress.Set(&v)
 }
 
 // GetEthernetMacAddress returns the EthernetMacAddress field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *SensorItem) GetEthernetMacAddress() string {
+func (o *SensorsPatchResponse) GetEthernetMacAddress() string {
 	if o == nil || o.EthernetMacAddress.Get() == nil {
 		var ret string
 		return ret
@@ -205,7 +205,7 @@ func (o *SensorItem) GetEthernetMacAddress() string {
 // GetEthernetMacAddressOk returns a tuple with the EthernetMacAddress field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SensorItem) GetEthernetMacAddressOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetEthernetMacAddressOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -213,13 +213,13 @@ func (o *SensorItem) GetEthernetMacAddressOk() (*string, bool) {
 }
 
 // SetEthernetMacAddress sets field value
-func (o *SensorItem) SetEthernetMacAddress(v string) {
+func (o *SensorsPatchResponse) SetEthernetMacAddress(v string) {
 	o.EthernetMacAddress.Set(&v)
 }
 
 // GetAddressNote returns the AddressNote field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *SensorItem) GetAddressNote() string {
+func (o *SensorsPatchResponse) GetAddressNote() string {
 	if o == nil || o.AddressNote.Get() == nil {
 		var ret string
 		return ret
@@ -231,7 +231,7 @@ func (o *SensorItem) GetAddressNote() string {
 // GetAddressNoteOk returns a tuple with the AddressNote field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SensorItem) GetAddressNoteOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetAddressNoteOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -239,13 +239,13 @@ func (o *SensorItem) GetAddressNoteOk() (*string, bool) {
 }
 
 // SetAddressNote sets field value
-func (o *SensorItem) SetAddressNote(v string) {
+func (o *SensorsPatchResponse) SetAddressNote(v string) {
 	o.AddressNote.Set(&v)
 }
 
 // GetLongitude returns the Longitude field value
 // If the value is explicit nil, the zero value for float32 will be returned
-func (o *SensorItem) GetLongitude() float32 {
+func (o *SensorsPatchResponse) GetLongitude() float32 {
 	if o == nil || o.Longitude.Get() == nil {
 		var ret float32
 		return ret
@@ -257,7 +257,7 @@ func (o *SensorItem) GetLongitude() float32 {
 // GetLongitudeOk returns a tuple with the Longitude field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SensorItem) GetLongitudeOk() (*float32, bool) {
+func (o *SensorsPatchResponse) GetLongitudeOk() (*float32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -265,13 +265,13 @@ func (o *SensorItem) GetLongitudeOk() (*float32, bool) {
 }
 
 // SetLongitude sets field value
-func (o *SensorItem) SetLongitude(v float32) {
+func (o *SensorsPatchResponse) SetLongitude(v float32) {
 	o.Longitude.Set(&v)
 }
 
 // GetLatitude returns the Latitude field value
 // If the value is explicit nil, the zero value for float32 will be returned
-func (o *SensorItem) GetLatitude() float32 {
+func (o *SensorsPatchResponse) GetLatitude() float32 {
 	if o == nil || o.Latitude.Get() == nil {
 		var ret float32
 		return ret
@@ -283,7 +283,7 @@ func (o *SensorItem) GetLatitude() float32 {
 // GetLatitudeOk returns a tuple with the Latitude field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SensorItem) GetLatitudeOk() (*float32, bool) {
+func (o *SensorsPatchResponse) GetLatitudeOk() (*float32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -291,13 +291,13 @@ func (o *SensorItem) GetLatitudeOk() (*float32, bool) {
 }
 
 // SetLatitude sets field value
-func (o *SensorItem) SetLatitude(v float32) {
+func (o *SensorsPatchResponse) SetLatitude(v float32) {
 	o.Latitude.Set(&v)
 }
 
 // GetNotes returns the Notes field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *SensorItem) GetNotes() string {
+func (o *SensorsPatchResponse) GetNotes() string {
 	if o == nil || o.Notes.Get() == nil {
 		var ret string
 		return ret
@@ -309,7 +309,7 @@ func (o *SensorItem) GetNotes() string {
 // GetNotesOk returns a tuple with the Notes field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SensorItem) GetNotesOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetNotesOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -317,13 +317,13 @@ func (o *SensorItem) GetNotesOk() (*string, bool) {
 }
 
 // SetNotes sets field value
-func (o *SensorItem) SetNotes(v string) {
+func (o *SensorsPatchResponse) SetNotes(v string) {
 	o.Notes.Set(&v)
 }
 
 // GetPcapMode returns the PcapMode field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *SensorItem) GetPcapMode() string {
+func (o *SensorsPatchResponse) GetPcapMode() string {
 	if o == nil || o.PcapMode.Get() == nil {
 		var ret string
 		return ret
@@ -335,7 +335,7 @@ func (o *SensorItem) GetPcapMode() string {
 // GetPcapModeOk returns a tuple with the PcapMode field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SensorItem) GetPcapModeOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetPcapModeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -343,12 +343,12 @@ func (o *SensorItem) GetPcapModeOk() (*string, bool) {
 }
 
 // SetPcapMode sets field value
-func (o *SensorItem) SetPcapMode(v string) {
+func (o *SensorsPatchResponse) SetPcapMode(v string) {
 	o.PcapMode.Set(&v)
 }
 
 // GetType returns the Type field value
-func (o *SensorItem) GetType() string {
+func (o *SensorsPatchResponse) GetType() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -359,7 +359,7 @@ func (o *SensorItem) GetType() string {
 
 // GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
-func (o *SensorItem) GetTypeOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetTypeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -367,11 +367,11 @@ func (o *SensorItem) GetTypeOk() (*string, bool) {
 }
 
 // SetType sets field value
-func (o *SensorItem) SetType(v string) {
+func (o *SensorsPatchResponse) SetType(v string) {
 	o.Type = v
 }
 
-func (o SensorItem) MarshalJSON() ([]byte, error) {
+func (o SensorsPatchResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -379,7 +379,7 @@ func (o SensorItem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o SensorItem) ToMap() (map[string]interface{}, error) {
+func (o SensorsPatchResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["serial"] = o.Serial
@@ -396,7 +396,7 @@ func (o SensorItem) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *SensorItem) UnmarshalJSON(data []byte) (err error) {
+func (o *SensorsPatchResponse) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -429,53 +429,53 @@ func (o *SensorItem) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varSensorItem := _SensorItem{}
+	varSensorsPatchResponse := _SensorsPatchResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSensorItem)
+	err = decoder.Decode(&varSensorsPatchResponse)
 
 	if err != nil {
 		return err
 	}
 
-	*o = SensorItem(varSensorItem)
+	*o = SensorsPatchResponse(varSensorsPatchResponse)
 
 	return err
 }
 
-type NullableSensorItem struct {
-	value *SensorItem
+type NullableSensorsPatchResponse struct {
+	value *SensorsPatchResponse
 	isSet bool
 }
 
-func (v NullableSensorItem) Get() *SensorItem {
+func (v NullableSensorsPatchResponse) Get() *SensorsPatchResponse {
 	return v.value
 }
 
-func (v *NullableSensorItem) Set(val *SensorItem) {
+func (v *NullableSensorsPatchResponse) Set(val *SensorsPatchResponse) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableSensorItem) IsSet() bool {
+func (v NullableSensorsPatchResponse) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableSensorItem) Unset() {
+func (v *NullableSensorsPatchResponse) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableSensorItem(val *SensorItem) *NullableSensorItem {
-	return &NullableSensorItem{value: val, isSet: true}
+func NewNullableSensorsPatchResponse(val *SensorsPatchResponse) *NullableSensorsPatchResponse {
+	return &NullableSensorsPatchResponse{value: val, isSet: true}
 }
 
-func (v NullableSensorItem) MarshalJSON() ([]byte, error) {
+func (v NullableSensorsPatchResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableSensorItem) UnmarshalJSON(src []byte) error {
+func (v *NullableSensorsPatchResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

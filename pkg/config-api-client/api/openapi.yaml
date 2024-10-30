@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 3.0.0
+  version: 4.0.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -31,7 +31,7 @@ paths:
   /networking-uxi/v1alpha1/groups/{group_uid}:
     delete:
       description: Delete an existing group.
-      operationId: groups_delete_networking_uxi_v1alpha1_groups__group_uid__delete
+      operationId: groups_delete
       parameters:
       - explode: false
         in: path
@@ -68,7 +68,7 @@ paths:
       - configuration
     patch:
       description: Update an existing group.
-      operationId: groups_patch_networking_uxi_v1alpha1_groups__group_uid__patch
+      operationId: groups_patch
       parameters:
       - explode: false
         in: path
@@ -80,10 +80,9 @@ paths:
         style: simple
       requestBody:
         content:
-          application/json:
+          application/merge-patch+json:
             schema:
               $ref: '#/components/schemas/GroupsPatchRequest'
-        required: true
       responses:
         "200":
           content:
@@ -111,7 +110,7 @@ paths:
   /networking-uxi/v1alpha1/groups:
     get:
       description: Lists groups matching provided criteria
-      operationId: groups_get_networking_uxi_v1alpha1_groups_get
+      operationId: groups_get
       parameters:
       - explode: true
         in: query
@@ -166,9 +165,9 @@ paths:
       - configuration
       x-stability-level: alpha
     post:
-      description: Create a new group with the group identified in `parent_uid` as
-        its parent
-      operationId: groups_post_networking_uxi_v1alpha1_groups_post
+      description: Create a new group with the group identified in `parentId` as its
+        parent
+      operationId: groups_post
       requestBody:
         content:
           application/json:
@@ -203,7 +202,7 @@ paths:
   /networking-uxi/v1alpha1/network-group-assignments/{id}:
     delete:
       description: Delete a network group assignment
-      operationId: delete_network_group_assignment_networking_uxi_v1alpha1_network_group_assignments__id__delete
+      operationId: network_group_assignments_delete
       parameters:
       - explode: false
         in: path
@@ -235,14 +234,14 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Delete Network Group Assignment
+      summary: Network Group Assignments Delete
       tags:
       - configuration
       x-stability-level: alpha
   /networking-uxi/v1alpha1/network-group-assignments:
     get:
       description: Get a list of network group assignments
-      operationId: get_networking_uxi_v1alpha1_network_group_assignments_get
+      operationId: network_group_assignments_get
       parameters:
       - explode: true
         in: query
@@ -290,13 +289,13 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Get
+      summary: Network Group Assignments Get
       tags:
       - configuration
       x-stability-level: alpha
     post:
       description: Create a network group assignment
-      operationId: post_networking_uxi_v1alpha1_network_group_assignments_post
+      operationId: network_group_assignments_post
       requestBody:
         content:
           application/json:
@@ -324,14 +323,14 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Post
+      summary: Network Group Assignments Post
       tags:
       - configuration
       x-stability-level: alpha
   /networking-uxi/v1alpha1/sensor-group-assignments:
     get:
       description: Get a list of sensor group assignments
-      operationId: get_networking_uxi_v1alpha1_sensor_group_assignments_get
+      operationId: sensor_group_assignments_get
       parameters:
       - explode: true
         in: query
@@ -379,13 +378,13 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Get
+      summary: Sensor Group Assignments Get
       tags:
       - configuration
       x-stability-level: alpha
     post:
       description: Create sensor group assignment
-      operationId: post_networking_uxi_v1alpha1_sensor_group_assignments_post
+      operationId: sensor_group_assignments_post
       requestBody:
         content:
           application/json:
@@ -413,14 +412,14 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Post
+      summary: Sensor Group Assignments Post
       tags:
       - configuration
       x-stability-level: alpha
   /networking-uxi/v1alpha1/sensor-group-assignments/{id}:
     delete:
       description: Delete a sensor group assignment
-      operationId: delete_sensor_group_assignment_networking_uxi_v1alpha1_sensor_group_assignments__id__delete
+      operationId: sensor_group_assignments_delete
       parameters:
       - explode: false
         in: path
@@ -452,14 +451,14 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Delete Sensor Group Assignment
+      summary: Sensor Group Assignments Delete
       tags:
       - configuration
       x-stability-level: alpha
   /networking-uxi/v1alpha1/sensors:
     get:
       description: Get a list of sensors
-      operationId: get_networking_uxi_v1alpha1_sensors_get
+      operationId: sensors_get
       parameters:
       - explode: true
         in: query
@@ -509,14 +508,57 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Get
+      summary: Sensors Get
       tags:
       - configuration
       x-stability-level: alpha
+  /networking-uxi/v1alpha1/sensors/{sensor_uid}:
+    patch:
+      description: Update an existing sensor.
+      operationId: sensors_patch
+      parameters:
+      - explode: false
+        in: path
+        name: sensor_uid
+        required: true
+        schema:
+          title: Sensor Uid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SensorsPatchRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorsPatchResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Sensors Patch
+      tags:
+      - configuration
   /networking-uxi/v1alpha1/service-test-group-assignments/{id}:
     delete:
       description: Delete a service test group assignment
-      operationId: delete_service_test_group_assignment_networking_uxi_v1alpha1_service_test_group_assignments__id__delete
+      operationId: service_test_group_assignments_delete
       parameters:
       - explode: false
         in: path
@@ -548,14 +590,14 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Delete Service Test Group Assignment
+      summary: Service Test Group Assignments Delete
       tags:
       - configuration
       x-stability-level: alpha
   /networking-uxi/v1alpha1/service-test-group-assignments:
     post:
       description: Create a service-test group assignment
-      operationId: post_networking_uxi_v1alpha1_service_test_group_assignments_post
+      operationId: service_test_group_assignments_post
       requestBody:
         content:
           application/json:
@@ -583,14 +625,14 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Post
+      summary: Service Test Group Assignments Post
       tags:
       - configuration
       x-stability-level: alpha
   /networking-uxi/v1alpha1/service-tests:
     get:
       description: Lists service-tests matching provided criteria
-      operationId: service_tests_get_networking_uxi_v1alpha1_service_tests_get
+      operationId: service_tests_get
       parameters:
       - explode: true
         in: query
@@ -647,7 +689,7 @@ paths:
   /networking-uxi/v1alpha1/wired-networks:
     get:
       description: Get a list of wired networks
-      operationId: get_networking_uxi_v1alpha1_wired_networks_get
+      operationId: wired_networks_get
       parameters:
       - explode: true
         in: query
@@ -695,14 +737,14 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Get
+      summary: Wired Networks Get
       tags:
       - configuration
       x-stability-level: alpha
   /networking-uxi/v1alpha1/wireless-networks:
     get:
       description: Get a list of wireless networks
-      operationId: get_networking_uxi_v1alpha1_wireless_networks_get
+      operationId: wireless_networks_get
       parameters:
       - explode: true
         in: query
@@ -750,7 +792,7 @@ paths:
           description: Server Error
       security:
       - HTTPBearer: []
-      summary: Get
+      summary: Wireless Networks Get
       tags:
       - configuration
       x-stability-level: alpha
@@ -907,17 +949,6 @@ components:
       - next
       title: GroupsGetResponse
       type: object
-    GroupsPatchRequest:
-      example:
-        name: name
-      properties:
-        name:
-          title: Name
-          type: string
-      required:
-      - name
-      title: GroupsPatchRequest
-      type: object
     GroupsPatchResponse:
       example:
         path: path
@@ -957,6 +988,8 @@ components:
         parentId: parentId
       properties:
         parentId:
+          maxLength: 12
+          minLength: 12
           nullable: true
           type: string
         name:
@@ -1341,6 +1374,95 @@ components:
       - type
       - wifiMacAddress
       title: SensorItem
+      type: object
+    SensorsPatchRequest:
+      example:
+        address_note: address_note
+        notes: notes
+        name: name
+        pcap_mode: pcap_mode
+      properties:
+        name:
+          title: Name
+          type: string
+        address_note:
+          nullable: true
+          type: string
+        notes:
+          nullable: true
+          type: string
+        pcap_mode:
+          title: Pcap Mode
+          type: string
+      title: SensorsPatchRequest
+      type: object
+    SensorsPatchResponse:
+      example:
+        addressNote: addressNote
+        notes: notes
+        pcapMode: pcapMode
+        serial: serial
+        ethernetMacAddress: ethernetMacAddress
+        latitude: 6.027456183070403
+        name: name
+        modelNumber: modelNumber
+        id: id
+        type: networking-uxi/sensor
+        wifiMacAddress: wifiMacAddress
+        longitude: 0.8008281904610115
+      properties:
+        id:
+          title: Id
+          type: string
+        serial:
+          title: Serial
+          type: string
+        name:
+          title: Name
+          type: string
+        modelNumber:
+          nullable: true
+          type: string
+        wifiMacAddress:
+          nullable: true
+          type: string
+        ethernetMacAddress:
+          nullable: true
+          type: string
+        addressNote:
+          nullable: true
+          type: string
+        longitude:
+          nullable: true
+          type: number
+        latitude:
+          nullable: true
+          type: number
+        notes:
+          nullable: true
+          type: string
+        pcapMode:
+          nullable: true
+          type: string
+        type:
+          enum:
+          - networking-uxi/sensor
+          title: Type
+          type: string
+      required:
+      - addressNote
+      - ethernetMacAddress
+      - id
+      - latitude
+      - longitude
+      - modelNumber
+      - name
+      - notes
+      - pcapMode
+      - serial
+      - type
+      - wifiMacAddress
+      title: SensorsPatchResponse
       type: object
     SensorsResponse:
       example:
@@ -1772,6 +1894,15 @@ components:
       - items
       - next
       title: WirelessNetworksResponse
+      type: object
+    GroupsPatchRequest:
+      properties:
+        name:
+          title: Name
+          type: string
+      required:
+      - name
+      title: GroupsPatchRequest
       type: object
   securitySchemes:
     HTTPBearer:

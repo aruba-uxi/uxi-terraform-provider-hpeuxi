@@ -99,7 +99,7 @@ func (r *sensorGroupAssignmentResource) Create(ctx context.Context, req resource
 
 	postRequest := config_api_client.NewSensorGroupAssignmentsPostRequest(plan.GroupID.ValueString(), plan.SensorID.ValueString())
 	request := r.client.ConfigurationAPI.
-		PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost(ctx).
+		SensorGroupAssignmentsPost(ctx).
 		SensorGroupAssignmentsPostRequest(*postRequest)
 	sensorGroupAssignment, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
@@ -130,7 +130,7 @@ func (r *sensorGroupAssignmentResource) Read(ctx context.Context, req resource.R
 	}
 
 	request := r.client.ConfigurationAPI.
-		GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet(ctx).
+		SensorGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
 	sensorGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
@@ -183,7 +183,7 @@ func (r *sensorGroupAssignmentResource) Delete(ctx context.Context, req resource
 
 	// Delete existing sensorGroupAssignment using the plan_id
 	request := r.client.ConfigurationAPI.
-		DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
+		SensorGroupAssignmentsDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 

@@ -20,7 +20,7 @@ func TestConfigurationAPI(t *testing.T) {
 
 	defer gock.Off()
 
-	t.Run("Test ConfigurationAPI GroupsGetNetworkingUxiV1alpha1GroupsGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI GroupsGet", func(t *testing.T) {
 		parent_uid := "parent_uid"
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/groups").
@@ -40,7 +40,7 @@ func TestConfigurationAPI(t *testing.T) {
 				"count": 1,
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			GroupsGetNetworkingUxiV1alpha1GroupsGet(context.Background()).
+			GroupsGet(context.Background()).
 			Id("uid").
 			Limit(10).
 			Next("some-cursor").
@@ -63,12 +63,10 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GroupsPostNetworkingUxiV1alpha1GroupsPost", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI GroupsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/groups").
-			MatchType("json").
-			BodyString(`{"parentId": "parent.uid", "name": "name"}`).
 			JSON(map[string]interface{}{
 				"name":     "name",
 				"parentId": "parent.uid",
@@ -84,7 +82,7 @@ func TestConfigurationAPI(t *testing.T) {
 		groupsPostRequest := openapiclient.NewGroupsPostRequest("name")
 		groupsPostRequest.SetParentId("parent.uid")
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			GroupsPostNetworkingUxiV1alpha1GroupsPost(context.Background()).
+			GroupsPost(context.Background()).
 			GroupsPostRequest(*groupsPostRequest).Execute()
 
 		require.Nil(t, err)
@@ -98,14 +96,10 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch", func(t *testing.T) {
-		gock.New(configuration.Scheme + "://" + configuration.Host).
+	t.Run("Test ConfigurationAPI GroupsPatch", func(t *testing.T) {
+		gock.New(configuration.Scheme+"://"+configuration.Host).
 			Patch("/networking-uxi/v1alpha1/groups/node").
-			MatchType("json").
-			BodyString(`{"name": "new_name"}`).
-			JSON(map[string]interface{}{
-				"name": "new_name",
-			}).
+			MatchHeader("Content-Type", "application/merge-patch+json").
 			Reply(200).
 			JSON(map[string]interface{}{
 				"id":     "node",
@@ -116,7 +110,7 @@ func TestConfigurationAPI(t *testing.T) {
 			})
 		groupsPatchRequest := openapiclient.NewGroupsPatchRequest("new_name")
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch(context.Background(), "node").
+			GroupsPatch(context.Background(), "node").
 			GroupsPatchRequest(*groupsPatchRequest).Execute()
 
 		require.Nil(t, err)
@@ -130,20 +124,20 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI GroupsDelete", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Delete("/networking-uxi/v1alpha1/groups/uid").
 			Reply(204)
 
 		_, httpRes, err := apiClient.ConfigurationAPI.
-			GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete(context.Background(), "uid").
+			GroupsDelete(context.Background(), "uid").
 			Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 204, httpRes.StatusCode)
 	})
 
-	t.Run("Test ConfigurationAPI GetNetworkingUxiV1alpha1SensorsGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI SensorsGet", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/sensors").
 			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
@@ -170,7 +164,7 @@ func TestConfigurationAPI(t *testing.T) {
 			})
 
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			GetNetworkingUxiV1alpha1SensorsGet(context.Background()).
+			SensorsGet(context.Background()).
 			Id("uid").
 			Limit(10).
 			Next("some-cursor").
@@ -209,7 +203,72 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI GroupsPatch", func(t *testing.T) {
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Patch("/networking-uxi/v1alpha1/sensors/uid").
+			// TODO: uncomment this once spec has been updated to merge-patch+json
+			// MatchHeader("Content-Type", "application/merge-patch+json").
+			// TODO: Change these fields to camelCase once the spec has been updated
+			BodyString(`{"name":"new_name","address_note":"new_address_note","notes":"new_notes","pcap_mode":"off"}`).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"id":                 "uid",
+				"serial":             "serial",
+				"name":               "new_name",
+				"modelNumber":        "model_number",
+				"wifiMacAddress":     "wifi_mac_address",
+				"ethernetMacAddress": "ethernet_mac_address",
+				"addressNote":        "new_address_note",
+				"longitude":          0.0,
+				"latitude":           0.0,
+				"notes":              "new_notes",
+				"pcapMode":           "off",
+				"type":               "networking-uxi/sensor",
+			},
+			)
+		name := "new_name"
+		addressNote := "new_address_note"
+		notes := "new_notes"
+		pcapMode := "off"
+		sensorsPatchRequest := openapiclient.SensorsPatchRequest{
+			Name:        &name,
+			AddressNote: *openapiclient.NewNullableString(&addressNote),
+			Notes:       *openapiclient.NewNullableString(&notes),
+			PcapMode:    &pcapMode,
+		}
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			SensorsPatch(context.Background(), "uid").
+			SensorsPatchRequest(sensorsPatchRequest).
+			Execute()
+
+		ModelNumber := "model_number"
+		WifiMacAddress := "wifi_mac_address"
+		EthernetMacAddress := "ethernet_mac_address"
+		AddressNote := "new_address_note"
+		var Longitude float32 = 0.0
+		var Latitude float32 = 0.0
+		Notes := "new_notes"
+		PcapMode := "off"
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.SensorsPatchResponse{
+			Id:                 "uid",
+			Serial:             "serial",
+			Name:               "new_name",
+			ModelNumber:        *openapiclient.NewNullableString(&ModelNumber),
+			WifiMacAddress:     *openapiclient.NewNullableString(&WifiMacAddress),
+			EthernetMacAddress: *openapiclient.NewNullableString(&EthernetMacAddress),
+			AddressNote:        *openapiclient.NewNullableString(&AddressNote),
+			Longitude:          *openapiclient.NewNullableFloat32(&Longitude),
+			Latitude:           *openapiclient.NewNullableFloat32(&Latitude),
+			Notes:              *openapiclient.NewNullableString(&Notes),
+			PcapMode:           *openapiclient.NewNullableString(&PcapMode),
+			Type:               "networking-uxi/sensor",
+		})
+	})
+
+	t.Run("Test ConfigurationAPI SensorGroupAssignmentsGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/sensor-group-assignments").
@@ -228,7 +287,7 @@ func TestConfigurationAPI(t *testing.T) {
 				"next":  nil,
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet(context.Background()).
+			SensorGroupAssignmentsGet(context.Background()).
 			Id("uid").
 			Limit(10).
 			Next("some-cursor").
@@ -250,12 +309,10 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI SensorGroupAssignmentsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/sensor-group-assignments").
-			MatchType("json").
-			BodyString(`{"groupId": "group_uid", "sensorId": "sensor_uid"}`).
 			JSON(map[string]interface{}{
 				"groupId":  "group_uid",
 				"sensorId": "sensor_uid",
@@ -270,7 +327,7 @@ func TestConfigurationAPI(t *testing.T) {
 
 		postRequest := openapiclient.NewSensorGroupAssignmentsPostRequest("group_uid", "sensor_uid")
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost(context.Background()).
+			SensorGroupAssignmentsPost(context.Background()).
 			SensorGroupAssignmentsPostRequest(*postRequest).
 			Execute()
 
@@ -284,20 +341,20 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI SensorGroupAssignmentsDelete", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Delete("/networking-uxi/v1alpha1/sensor-group-assignments/uid").
 			Reply(204)
 
 		_, httpRes, err := apiClient.ConfigurationAPI.
-			DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete(context.Background(), "uid").
+			SensorGroupAssignmentsDelete(context.Background(), "uid").
 			Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 204, httpRes.StatusCode)
 	})
 
-	t.Run("Test ConfigurationAPI GetNetworkingUxiV1alpha1WiredNetworksGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI WiredNetworksGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/wired-networks").
@@ -324,7 +381,7 @@ func TestConfigurationAPI(t *testing.T) {
 				"next":  nil,
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			GetNetworkingUxiV1alpha1WiredNetworksGet(context.Background()).
+			WiredNetworksGet(context.Background()).
 			Id("uid").
 			Limit(10).
 			Next("some-cursor").
@@ -358,7 +415,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GetNetworkingUxiV1alpha1WirelessNetworksGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI WirelessNetworksGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/wireless-networks").
@@ -387,7 +444,7 @@ func TestConfigurationAPI(t *testing.T) {
 				"next":  nil,
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			GetNetworkingUxiV1alpha1WirelessNetworksGet(context.Background()).
+			WirelessNetworksGet(context.Background()).
 			Id("uid").
 			Limit(10).
 			Next("some-cursor").
@@ -422,7 +479,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI NetworkGroupAssignmentsGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/network-group-assignments").
@@ -441,7 +498,7 @@ func TestConfigurationAPI(t *testing.T) {
 				"next":  nil,
 			})
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet(context.Background()).
+			NetworkGroupAssignmentsGet(context.Background()).
 			Id("uid").
 			Limit(10).
 			Next("some-cursor").
@@ -463,12 +520,10 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI NetworkGroupAssignmentsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/network-group-assignments").
-			MatchType("json").
-			BodyString(`{"groupId": "group_uid", "networkId": "network_uid"}`).
 			JSON(map[string]interface{}{
 				"groupId":   "group_uid",
 				"networkId": "network_uid",
@@ -483,7 +538,7 @@ func TestConfigurationAPI(t *testing.T) {
 
 		postRequest := openapiclient.NewNetworkGroupAssignmentsPostRequest("group_uid", "network_uid")
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost(context.Background()).
+			NetworkGroupAssignmentsPost(context.Background()).
 			NetworkGroupAssignmentsPostRequest(*postRequest).
 			Execute()
 
@@ -497,25 +552,23 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI NetworkGroupAssignmentsDelete", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Delete("/networking-uxi/v1alpha1/network-group-assignments/uid").
 			Reply(204)
 
 		_, httpRes, err := apiClient.ConfigurationAPI.
-			DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete(context.Background(), "uid").
+			NetworkGroupAssignmentsDelete(context.Background(), "uid").
 			Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 204, httpRes.StatusCode)
 	})
 
-	t.Run("Test ConfigurationAPI PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI ServiceTestGroupAssignmentsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/service-test-group-assignments").
-			MatchType("json").
-			BodyString(`{"groupId": "group_uid", "serviceTestId": "service_test_uid"}`).
 			JSON(map[string]interface{}{
 				"groupId":       "group_uid",
 				"serviceTestId": "service_test_uid",
@@ -530,7 +583,7 @@ func TestConfigurationAPI(t *testing.T) {
 
 		postRequest := openapiclient.NewServiceTestGroupAssignmentsPostRequest("group_uid", "service_test_uid")
 		resp, httpRes, err := apiClient.ConfigurationAPI.
-			PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost(context.Background()).
+			ServiceTestGroupAssignmentsPost(context.Background()).
 			ServiceTestGroupAssignmentsPostRequest(*postRequest).
 			Execute()
 
@@ -544,14 +597,14 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI ServiceTestGroupAssignmentsDelete", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Delete("/networking-uxi/v1alpha1/service-test-group-assignments/uid").
 			Reply(204)
 
 		_, httpRes, err := apiClient.ConfigurationAPI.
-			DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(context.Background(), "uid").
+			ServiceTestGroupAssignmentsDelete(context.Background(), "uid").
 			Execute()
 
 		require.Nil(t, err)
