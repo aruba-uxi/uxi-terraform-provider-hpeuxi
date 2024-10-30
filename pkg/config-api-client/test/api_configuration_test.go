@@ -203,6 +203,71 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
+	t.Run("Test ConfigurationAPI GroupsPatch", func(t *testing.T) {
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Patch("/networking-uxi/v1alpha1/sensors/uid").
+			// TODO: uncomment this once spec has been updated to merge-patch+json
+			// MatchHeader("Content-Type", "application/merge-patch+json").
+			// TODO: Change these fields to camelCase once the spec has been updated
+			BodyString(`{"name":"new_name","address_note":"new_address_note","notes":"new_notes","pcap_mode":"off"}`).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"id":                 "uid",
+				"serial":             "serial",
+				"name":               "new_name",
+				"modelNumber":        "model_number",
+				"wifiMacAddress":     "wifi_mac_address",
+				"ethernetMacAddress": "ethernet_mac_address",
+				"addressNote":        "new_address_note",
+				"longitude":          0.0,
+				"latitude":           0.0,
+				"notes":              "new_notes",
+				"pcapMode":           "off",
+				"type":               "networking-uxi/sensor",
+			},
+			)
+		name := "new_name"
+		addressNote := "new_address_note"
+		notes := "new_notes"
+		pcapMode := "off"
+		sensorsPatchRequest := openapiclient.SensorsPatchRequest{
+			Name:        &name,
+			AddressNote: *openapiclient.NewNullableString(&addressNote),
+			Notes:       *openapiclient.NewNullableString(&notes),
+			PcapMode:    &pcapMode,
+		}
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			SensorsPatch(context.Background(), "uid").
+			SensorsPatchRequest(sensorsPatchRequest).
+			Execute()
+
+		ModelNumber := "model_number"
+		WifiMacAddress := "wifi_mac_address"
+		EthernetMacAddress := "ethernet_mac_address"
+		AddressNote := "new_address_note"
+		var Longitude float32 = 0.0
+		var Latitude float32 = 0.0
+		Notes := "new_notes"
+		PcapMode := "off"
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.SensorsPatchResponse{
+			Id:                 "uid",
+			Serial:             "serial",
+			Name:               "new_name",
+			ModelNumber:        *openapiclient.NewNullableString(&ModelNumber),
+			WifiMacAddress:     *openapiclient.NewNullableString(&WifiMacAddress),
+			EthernetMacAddress: *openapiclient.NewNullableString(&EthernetMacAddress),
+			AddressNote:        *openapiclient.NewNullableString(&AddressNote),
+			Longitude:          *openapiclient.NewNullableFloat32(&Longitude),
+			Latitude:           *openapiclient.NewNullableFloat32(&Latitude),
+			Notes:              *openapiclient.NewNullableString(&Notes),
+			PcapMode:           *openapiclient.NewNullableString(&PcapMode),
+			Type:               "networking-uxi/sensor",
+		})
+	})
+
 	t.Run("Test ConfigurationAPI SensorGroupAssignmentsGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
