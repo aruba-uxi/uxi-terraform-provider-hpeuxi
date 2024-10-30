@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Id** | **string** |  | 
 **Serial** | **string** |  | 
 **Name** | **string** |  | 
-**ModelNumber** | **NullableString** |  | 
+**ModelNumber** | **string** |  | 
 **WifiMacAddress** | **NullableString** |  | 
 **EthernetMacAddress** | **NullableString** |  | 
 **AddressNote** | **NullableString** |  | 
@@ -21,7 +21,7 @@ Name | Type | Description | Notes
 
 ### NewSensorsPatchResponse
 
-`func NewSensorsPatchResponse(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, type_ string, ) *SensorsPatchResponse`
+`func NewSensorsPatchResponse(id string, serial string, name string, modelNumber string, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, type_ string, ) *SensorsPatchResponse`
 
 NewSensorsPatchResponse instantiates a new SensorsPatchResponse object
 This constructor will assign default values to properties that have it defined,
@@ -116,16 +116,6 @@ and a boolean to check if the value has been set.
 SetModelNumber sets ModelNumber field to given value.
 
 
-### SetModelNumberNil
-
-`func (o *SensorsPatchResponse) SetModelNumberNil(b bool)`
-
- SetModelNumberNil sets the value for ModelNumber to be an explicit nil
-
-### UnsetModelNumber
-`func (o *SensorsPatchResponse) UnsetModelNumber()`
-
-UnsetModelNumber ensures that no value is present for ModelNumber, not even an explicit nil
 ### GetWifiMacAddress
 
 `func (o *SensorsPatchResponse) GetWifiMacAddress() string`

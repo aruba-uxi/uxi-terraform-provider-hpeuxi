@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 4.0.0
+  version: 5.2.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -18,6 +18,7 @@ tags:
 - name: v1
 - name: v1alpha1
 - name: configuration
+- name: agents
 - name: groups
 - name: health
 - name: network-group-assignments
@@ -28,6 +29,63 @@ tags:
 - name: wired-networks
 - name: wireless-networks
 paths:
+  /networking-uxi/v1alpha1/agents:
+    get:
+      description: Get a list of agents
+      operationId: agents_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agents Get
+      tags:
+      - configuration
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/groups/{group_uid}:
     delete:
       description: Delete an existing group.
@@ -798,6 +856,100 @@ paths:
       x-stability-level: alpha
 components:
   schemas:
+    AgentItem:
+      example:
+        notes: notes
+        pcapMode: pcapMode
+        serial: serial
+        ethernetMacAddress: ethernetMacAddress
+        name: name
+        modelNumber: modelNumber
+        id: id
+        type: networking-uxi/agent
+        wifiMacAddress: wifiMacAddress
+      properties:
+        id:
+          title: Id
+          type: string
+        serial:
+          title: Serial
+          type: string
+        name:
+          title: Name
+          type: string
+        modelNumber:
+          nullable: true
+          type: string
+        wifiMacAddress:
+          nullable: true
+          type: string
+        ethernetMacAddress:
+          nullable: true
+          type: string
+        notes:
+          nullable: true
+          type: string
+        pcapMode:
+          nullable: true
+          type: string
+        type:
+          enum:
+          - networking-uxi/agent
+          title: Type
+          type: string
+      required:
+      - ethernetMacAddress
+      - id
+      - modelNumber
+      - name
+      - notes
+      - pcapMode
+      - serial
+      - type
+      - wifiMacAddress
+      title: AgentItem
+      type: object
+    AgentsResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - notes: notes
+          pcapMode: pcapMode
+          serial: serial
+          ethernetMacAddress: ethernetMacAddress
+          name: name
+          modelNumber: modelNumber
+          id: id
+          type: networking-uxi/agent
+          wifiMacAddress: wifiMacAddress
+        - notes: notes
+          pcapMode: pcapMode
+          serial: serial
+          ethernetMacAddress: ethernetMacAddress
+          name: name
+          modelNumber: modelNumber
+          id: id
+          type: networking-uxi/agent
+          wifiMacAddress: wifiMacAddress
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/AgentItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: AgentsResponse
+      type: object
     ErrorDetail:
       example:
         type: type
@@ -827,7 +979,7 @@ components:
         errorCode: errorCode
         debugId: debugId
         message: message
-        httpStatusCode: 0
+        httpStatusCode: 6
         errorDetails:
         - type: type
           issues:
@@ -1332,7 +1484,7 @@ components:
           title: Name
           type: string
         modelNumber:
-          nullable: true
+          title: Modelnumber
           type: string
         wifiMacAddress:
           nullable: true
@@ -1421,7 +1573,7 @@ components:
           title: Name
           type: string
         modelNumber:
-          nullable: true
+          title: Modelnumber
           type: string
         wifiMacAddress:
           nullable: true

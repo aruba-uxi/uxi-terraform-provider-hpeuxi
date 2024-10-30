@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 4.0.0
+API version: 5.2.0
 Contact: support@capenetworks.com
 */
 
@@ -25,7 +25,7 @@ type SensorsPatchResponse struct {
 	Id                 string          `json:"id"`
 	Serial             string          `json:"serial"`
 	Name               string          `json:"name"`
-	ModelNumber        NullableString  `json:"modelNumber"`
+	ModelNumber        string          `json:"modelNumber"`
 	WifiMacAddress     NullableString  `json:"wifiMacAddress"`
 	EthernetMacAddress NullableString  `json:"ethernetMacAddress"`
 	AddressNote        NullableString  `json:"addressNote"`
@@ -42,7 +42,7 @@ type _SensorsPatchResponse SensorsPatchResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorsPatchResponse(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, type_ string) *SensorsPatchResponse {
+func NewSensorsPatchResponse(id string, serial string, name string, modelNumber string, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, type_ string) *SensorsPatchResponse {
 	this := SensorsPatchResponse{}
 	this.Id = id
 	this.Serial = serial
@@ -140,29 +140,27 @@ func (o *SensorsPatchResponse) SetName(v string) {
 }
 
 // GetModelNumber returns the ModelNumber field value
-// If the value is explicit nil, the zero value for string will be returned
 func (o *SensorsPatchResponse) GetModelNumber() string {
-	if o == nil || o.ModelNumber.Get() == nil {
+	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return *o.ModelNumber.Get()
+	return o.ModelNumber
 }
 
 // GetModelNumberOk returns a tuple with the ModelNumber field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *SensorsPatchResponse) GetModelNumberOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.ModelNumber.Get(), o.ModelNumber.IsSet()
+	return &o.ModelNumber, true
 }
 
 // SetModelNumber sets field value
 func (o *SensorsPatchResponse) SetModelNumber(v string) {
-	o.ModelNumber.Set(&v)
+	o.ModelNumber = v
 }
 
 // GetWifiMacAddress returns the WifiMacAddress field value
@@ -384,7 +382,7 @@ func (o SensorsPatchResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["serial"] = o.Serial
 	toSerialize["name"] = o.Name
-	toSerialize["modelNumber"] = o.ModelNumber.Get()
+	toSerialize["modelNumber"] = o.ModelNumber
 	toSerialize["wifiMacAddress"] = o.WifiMacAddress.Get()
 	toSerialize["ethernetMacAddress"] = o.EthernetMacAddress.Get()
 	toSerialize["addressNote"] = o.AddressNote.Get()

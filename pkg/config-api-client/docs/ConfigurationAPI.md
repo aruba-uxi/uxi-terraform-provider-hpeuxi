@@ -4,6 +4,7 @@ All URIs are relative to *https://api.capenetworks.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**AgentsGet**](ConfigurationAPI.md#AgentsGet) | **Get** /networking-uxi/v1alpha1/agents | Agents Get
 [**GroupsDelete**](ConfigurationAPI.md#GroupsDelete) | **Delete** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Delete
 [**GroupsGet**](ConfigurationAPI.md#GroupsGet) | **Get** /networking-uxi/v1alpha1/groups | Groups Get
 [**GroupsPatch**](ConfigurationAPI.md#GroupsPatch) | **Patch** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Patch
@@ -22,6 +23,76 @@ Method | HTTP request | Description
 [**WiredNetworksGet**](ConfigurationAPI.md#WiredNetworksGet) | **Get** /networking-uxi/v1alpha1/wired-networks | Wired Networks Get
 [**WirelessNetworksGet**](ConfigurationAPI.md#WirelessNetworksGet) | **Get** /networking-uxi/v1alpha1/wireless-networks | Wireless Networks Get
 
+
+
+## AgentsGet
+
+> AgentsResponse AgentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+
+Agents Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string |  (optional)
+	next := "next_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.AgentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.AgentsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `AgentsGet`: AgentsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.AgentsGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAgentsGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **string** |  | 
+ **next** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**AgentsResponse**](AgentsResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## GroupsDelete

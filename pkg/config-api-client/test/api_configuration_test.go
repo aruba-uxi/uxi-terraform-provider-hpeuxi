@@ -20,6 +20,62 @@ func TestConfigurationAPI(t *testing.T) {
 
 	defer gock.Off()
 
+	t.Run("Test ConfigurationAPI AgentsGet", func(t *testing.T) {
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Get("/networking-uxi/v1alpha1/agents").
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"items": []map[string]interface{}{
+					{
+						"id":                 "uid",
+						"serial":             "serial",
+						"name":               "name",
+						"modelNumber":        "model_number",
+						"wifiMacAddress":     "wifi_mac_address",
+						"ethernetMacAddress": "ethernet_mac_address",
+						"notes":              "notes",
+						"pcapMode":           "pcap_mode",
+						"type":               "networking-uxi/sensor",
+					},
+				},
+				"next":  nil,
+				"count": 1,
+			})
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			AgentsGet(context.Background()).
+			Id("uid").
+			Limit(10).
+			Next("some-cursor").
+			Execute()
+
+		modelNumber := "model_number"
+		wifiMacAddress := "wifi_mac_address"
+		ethernetMacAddress := "ethernet_mac_address"
+		notes := "notes"
+		pcapMode := "pcap_mode"
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.AgentsResponse{
+			Items: []openapiclient.AgentItem{
+				{
+					Id:                 "uid",
+					Serial:             "serial",
+					Name:               "name",
+					ModelNumber:        *openapiclient.NewNullableString(&modelNumber),
+					WifiMacAddress:     *openapiclient.NewNullableString(&wifiMacAddress),
+					EthernetMacAddress: *openapiclient.NewNullableString(&ethernetMacAddress),
+					Notes:              *openapiclient.NewNullableString(&notes),
+					PcapMode:           *openapiclient.NewNullableString(&pcapMode),
+					Type:               "networking-uxi/sensor",
+				},
+			},
+			Next:  *openapiclient.NewNullableString(nil),
+			Count: 1,
+		})
+	})
+
 	t.Run("Test ConfigurationAPI GroupsGet", func(t *testing.T) {
 		parent_uid := "parent_uid"
 		gock.New(configuration.Scheme + "://" + configuration.Host).
@@ -170,7 +226,6 @@ func TestConfigurationAPI(t *testing.T) {
 			Next("some-cursor").
 			Execute()
 
-		ModelNumber := "model_number"
 		WifiMacAddress := "wifi_mac_address"
 		EthernetMacAddress := "ethernet_mac_address"
 		AddressNote := "address_note"
@@ -187,7 +242,7 @@ func TestConfigurationAPI(t *testing.T) {
 					Id:                 "uid",
 					Serial:             "serial",
 					Name:               "name",
-					ModelNumber:        *openapiclient.NewNullableString(&ModelNumber),
+					ModelNumber:        "model_number",
 					WifiMacAddress:     *openapiclient.NewNullableString(&WifiMacAddress),
 					EthernetMacAddress: *openapiclient.NewNullableString(&EthernetMacAddress),
 					AddressNote:        *openapiclient.NewNullableString(&AddressNote),
@@ -241,14 +296,10 @@ func TestConfigurationAPI(t *testing.T) {
 			SensorsPatchRequest(sensorsPatchRequest).
 			Execute()
 
-		ModelNumber := "model_number"
-		WifiMacAddress := "wifi_mac_address"
-		EthernetMacAddress := "ethernet_mac_address"
-		AddressNote := "new_address_note"
-		var Longitude float32 = 0.0
-		var Latitude float32 = 0.0
-		Notes := "new_notes"
-		PcapMode := "off"
+		wifiMacAddress := "wifi_mac_address"
+		ethernetMacAddress := "ethernet_mac_address"
+		var longitude float32 = 0.0
+		var latitude float32 = 0.0
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
@@ -256,14 +307,14 @@ func TestConfigurationAPI(t *testing.T) {
 			Id:                 "uid",
 			Serial:             "serial",
 			Name:               "new_name",
-			ModelNumber:        *openapiclient.NewNullableString(&ModelNumber),
-			WifiMacAddress:     *openapiclient.NewNullableString(&WifiMacAddress),
-			EthernetMacAddress: *openapiclient.NewNullableString(&EthernetMacAddress),
-			AddressNote:        *openapiclient.NewNullableString(&AddressNote),
-			Longitude:          *openapiclient.NewNullableFloat32(&Longitude),
-			Latitude:           *openapiclient.NewNullableFloat32(&Latitude),
-			Notes:              *openapiclient.NewNullableString(&Notes),
-			PcapMode:           *openapiclient.NewNullableString(&PcapMode),
+			ModelNumber:        "model_number",
+			WifiMacAddress:     *openapiclient.NewNullableString(&wifiMacAddress),
+			EthernetMacAddress: *openapiclient.NewNullableString(&ethernetMacAddress),
+			AddressNote:        *openapiclient.NewNullableString(&addressNote),
+			Longitude:          *openapiclient.NewNullableFloat32(&longitude),
+			Latitude:           *openapiclient.NewNullableFloat32(&latitude),
+			Notes:              *openapiclient.NewNullableString(&notes),
+			PcapMode:           *openapiclient.NewNullableString(&pcapMode),
 			Type:               "networking-uxi/sensor",
 		})
 	})

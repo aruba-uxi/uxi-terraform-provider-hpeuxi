@@ -9,11 +9,69 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 4.0.0
+  version: 5.2.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
 paths:
+  /networking-uxi/v1alpha1/agents:
+    get:
+      operationId: agents_get
+      summary: Agents Get
+      description: Get a list of agents
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Id
+        - name: next
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            title: Next
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+            minimum: 0
+            title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - agents
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/groups/{group_uid}:
     delete:
       operationId: groups_delete
@@ -815,6 +873,80 @@ paths:
       x-stability-level: alpha
 components:
   schemas:
+    AgentItem:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        serial:
+          type: string
+          title: Serial
+        name:
+          type: string
+          title: Name
+        modelNumber:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Modelnumber
+        wifiMacAddress:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Wifimacaddress
+        ethernetMacAddress:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Ethernetmacaddress
+        notes:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Notes
+        pcapMode:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Pcapmode
+        type:
+          type: string
+          enum:
+            - networking-uxi/agent
+          title: Type
+      required:
+        - id
+        - serial
+        - name
+        - modelNumber
+        - wifiMacAddress
+        - ethernetMacAddress
+        - notes
+        - pcapMode
+        - type
+      title: AgentItem
+    AgentsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentItem'
+          title: Items
+        count:
+          type: integer
+          title: Count
+        next:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Next
+      required:
+        - items
+        - count
+        - next
+      title: AgentsResponse
     ErrorDetail:
       type: object
       properties:
@@ -1200,9 +1332,7 @@ components:
           type: string
           title: Name
         modelNumber:
-          anyOf:
-            - type: string
-          nullable: true
+          type: string
           title: Modelnumber
         wifiMacAddress:
           anyOf:
@@ -1291,9 +1421,7 @@ components:
           type: string
           title: Name
         modelNumber:
-          anyOf:
-            - type: string
-          nullable: true
+          type: string
           title: Modelnumber
         wifiMacAddress:
           anyOf:
@@ -1655,6 +1783,7 @@ tags:
   - name: v1
   - name: v1alpha1
   - name: configuration
+  - name: agents
   - name: groups
   - name: health
   - name: network-group-assignments
