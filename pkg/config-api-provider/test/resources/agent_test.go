@@ -1,7 +1,6 @@
 package resource_test
 
 import (
-	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/resources"
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/provider"
 	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/test/util"
 	"github.com/h2non/gock"
@@ -31,9 +30,11 @@ func TestAgentResource(t *testing.T) {
 			// Importing an agent
 			{
 				PreConfig: func() {
-					resources.GetAgent = func(uid string) resources.AgentResponseModel {
-						return util.GenerateAgentResponseModel(uid, "")
-					}
+					util.MockGetAgent(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						2,
+					)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_agent" "my_agent" {
@@ -56,6 +57,13 @@ func TestAgentResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
+				PreConfig: func() {
+					util.MockGetAgent(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						1,
+					)
+				},
 				ResourceName:      "uxi_agent.my_agent",
 				ImportState:       true,
 				ImportStateVerify: true,
@@ -63,9 +71,18 @@ func TestAgentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					resources.GetAgent = func(uid string) resources.AgentResponseModel {
-						return util.GenerateAgentResponseModel(uid, "_2")
-					}
+					// original
+					util.MockGetAgent(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						1,
+					)
+					// updated
+					util.MockGetAgent(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "_2")}),
+						1,
+					)
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_agent" "my_agent" {
