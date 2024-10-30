@@ -214,11 +214,13 @@ func MockGetGroup(uid string, response map[string]interface{}, times int) {
 }
 
 func MockUpdateGroup(uid string, request map[string]interface{}, response map[string]interface{}, times int) {
+	body, _ := json.Marshal(request)
 	gock.New("https://test.api.capenetworks.com").
 		Patch("/networking-uxi/v1alpha1/groups/"+uid).
 		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Content-Type", "application/merge-patch+json").
+		BodyString(string(body)).
 		Times(times).
-		JSON(request).
 		Reply(200).
 		JSON(response)
 }

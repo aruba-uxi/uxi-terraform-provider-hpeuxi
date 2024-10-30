@@ -103,7 +103,7 @@ func (d *sensorDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	}
 
 	request := d.client.ConfigurationAPI.
-		GetNetworkingUxiV1alpha1SensorsGet(ctx).
+		SensorsGet(ctx).
 		Id(state.Filter.SensorID.ValueString())
 
 	sensorResponse, response, err := util.RetryFor429(request.Execute)

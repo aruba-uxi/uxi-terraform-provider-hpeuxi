@@ -20,7 +20,7 @@ func TestConfigurationAPI(t *testing.T) {
 
 	defer gock.Off()
 
-	t.Run("Test ConfigurationAPI GroupsGetNetworkingUxiV1alpha1GroupsGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI GroupsGet", func(t *testing.T) {
 		parent_uid := "parent_uid"
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/groups").
@@ -63,7 +63,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GroupsPostNetworkingUxiV1alpha1GroupsPost", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI GroupsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/groups").
@@ -96,7 +96,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GroupsPatchNetworkingUxiV1alpha1GroupsGroupUidPatch", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI GroupsPatch", func(t *testing.T) {
 		gock.New(configuration.Scheme+"://"+configuration.Host).
 			Patch("/networking-uxi/v1alpha1/groups/node").
 			MatchHeader("Content-Type", "application/merge-patch+json").
@@ -124,7 +124,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GroupsDeleteNetworkingUxiV1alpha1GroupsGroupUidDelete", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI GroupsDelete", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Delete("/networking-uxi/v1alpha1/groups/uid").
 			Reply(204)
@@ -137,7 +137,7 @@ func TestConfigurationAPI(t *testing.T) {
 		assert.Equal(t, 204, httpRes.StatusCode)
 	})
 
-	t.Run("Test ConfigurationAPI GetNetworkingUxiV1alpha1SensorsGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI SensorsGet", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/sensors").
 			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
@@ -203,7 +203,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GetNetworkingUxiV1alpha1SensorGroupAssignmentsGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI SensorGroupAssignmentsGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/sensor-group-assignments").
@@ -244,7 +244,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI PostNetworkingUxiV1alpha1SensorGroupAssignmentsPost", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI SensorGroupAssignmentsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/sensor-group-assignments").
@@ -276,7 +276,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI DeleteSensorGroupAssignmentNetworkingUxiV1alpha1SensorGroupAssignmentsIdDelete", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI SensorGroupAssignmentsDelete", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Delete("/networking-uxi/v1alpha1/sensor-group-assignments/uid").
 			Reply(204)
@@ -289,7 +289,7 @@ func TestConfigurationAPI(t *testing.T) {
 		assert.Equal(t, 204, httpRes.StatusCode)
 	})
 
-	t.Run("Test ConfigurationAPI GetNetworkingUxiV1alpha1WiredNetworksGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI WiredNetworksGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/wired-networks").
@@ -350,7 +350,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GetNetworkingUxiV1alpha1WirelessNetworksGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI WirelessNetworksGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/wireless-networks").
@@ -414,7 +414,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GetNetworkingUxiV1alpha1NetworkGroupAssignmentsGet", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI NetworkGroupAssignmentsGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/network-group-assignments").
@@ -455,7 +455,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI PostNetworkingUxiV1alpha1NetworkGroupAssignmentsPost", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI NetworkGroupAssignmentsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/network-group-assignments").
@@ -487,7 +487,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI DeleteNetworkGroupAssignmentNetworkingUxiV1alpha1NetworkGroupAssignmentsIdDelete", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI NetworkGroupAssignmentsDelete", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Delete("/networking-uxi/v1alpha1/network-group-assignments/uid").
 			Reply(204)
@@ -500,7 +500,7 @@ func TestConfigurationAPI(t *testing.T) {
 		assert.Equal(t, 204, httpRes.StatusCode)
 	})
 
-	t.Run("Test ConfigurationAPI PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI ServiceTestGroupAssignmentsPost", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/service-test-group-assignments").
@@ -532,7 +532,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI ServiceTestGroupAssignmentsDelete", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Delete("/networking-uxi/v1alpha1/service-test-group-assignments/uid").

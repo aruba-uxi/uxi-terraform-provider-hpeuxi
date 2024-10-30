@@ -94,7 +94,7 @@ func (r *serviceTestGroupAssignmentResource) Create(ctx context.Context, req res
 		plan.ServiceTestID.ValueString(),
 	)
 	request := r.client.ConfigurationAPI.
-		PostNetworkingUxiV1alpha1ServiceTestGroupAssignmentsPost(ctx).
+		ServiceTestGroupAssignmentsPost(ctx).
 		ServiceTestGroupAssignmentsPostRequest(*postRequest)
 	serviceTestGroupAssignment, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
@@ -162,7 +162,7 @@ func (r *serviceTestGroupAssignmentResource) Delete(ctx context.Context, req res
 	}
 
 	request := r.client.ConfigurationAPI.
-		DeleteServiceTestGroupAssignmentNetworkingUxiV1alpha1ServiceTestGroupAssignmentsIdDelete(ctx, state.ID.ValueString())
+		ServiceTestGroupAssignmentsDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

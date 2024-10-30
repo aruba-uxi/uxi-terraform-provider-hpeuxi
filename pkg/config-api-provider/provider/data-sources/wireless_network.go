@@ -105,7 +105,7 @@ func (d *wirelessNetworkDataSource) Read(ctx context.Context, req datasource.Rea
 	}
 
 	request := d.client.ConfigurationAPI.
-		GetNetworkingUxiV1alpha1WirelessNetworksGet(ctx).
+		WirelessNetworksGet(ctx).
 		Id(state.Filter.WirelessNetworkID)
 	networkResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
