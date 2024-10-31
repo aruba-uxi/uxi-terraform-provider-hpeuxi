@@ -1,6 +1,7 @@
 TMP_DIR := "tmp"
 CONFIG_API_CLIENT_DIR := "pkg/config-api-client"
 CONFIG_API_PROVIDER_DIR := "pkg/config-api-provider"
+TOOLS_PROVIDER_DIR := "tools"
 OPENAPI_SPEC := "pkg/config-api-client/api"
 SOURCE_OPEN_API_SPEC_FILE := ".openapi.source.yaml"
 
@@ -76,14 +77,17 @@ test-provider +ARGS='':
   cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 generate-provider-docs:
-  cd tools && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} -provider-name uxi
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} -provider-name uxi
   sed -i.backup '/subcategory: ""/d' ./{{ CONFIG_API_PROVIDER_DIR }}/docs/index.md && rm ./{{ CONFIG_API_PROVIDER_DIR }}/docs/index.md.backup
 
 validate-provider-docs:
-  cd tools && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} -provider-name uxi
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} -provider-name uxi
 
 coverage-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} && go tool cover -html=.coverage -o=.coverage.html
+
+tidy-tools:
+  cd {{ TOOLS_PROVIDER_DIR }} && go mod tidy
 
 test +ARGS='':
   just test-client {{ ARGS }}
@@ -104,6 +108,7 @@ fmt:
 tidy:
   just tidy-client
   just tidy-provider
+  just tidy-tools
 
 clean:
   find . -name ".coverage*" -type f -delete
