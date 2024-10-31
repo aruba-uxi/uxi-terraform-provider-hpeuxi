@@ -109,7 +109,17 @@ func TestAgentResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light_2"),
 				),
 			},
-			// Delete testing automatically occurs in TestCase
+			// Delete testing
+			{
+				PreConfig: func() {
+					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						1,
+					)
+					util.MockDeleteAgent("uid", 1)
+				},
+				Config: provider.ProviderConfig,
+			},
 		},
 	})
 
@@ -160,7 +170,17 @@ func TestAgentResource429Handling(t *testing.T) {
 					},
 				),
 			},
-			// Deletion occurs automatically
+			// Delete testing
+			{
+				PreConfig: func() {
+					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						1,
+					)
+					util.MockDeleteAgent("uid", 1)
+				},
+				Config: provider.ProviderConfig,
+			},
 		},
 	})
 
