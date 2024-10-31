@@ -34,7 +34,12 @@ type _SensorGroupAssignmentsItem SensorGroupAssignmentsItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorGroupAssignmentsItem(id string, group Group, sensor Sensor, type_ string) *SensorGroupAssignmentsItem {
+func NewSensorGroupAssignmentsItem(
+	id string,
+	group Group,
+	sensor Sensor,
+	type_ string,
+) *SensorGroupAssignmentsItem {
 	this := SensorGroupAssignmentsItem{}
 	this.Id = id
 	this.Group = group
@@ -227,7 +232,9 @@ func (v *NullableSensorGroupAssignmentsItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSensorGroupAssignmentsItem(val *SensorGroupAssignmentsItem) *NullableSensorGroupAssignmentsItem {
+func NewNullableSensorGroupAssignmentsItem(
+	val *SensorGroupAssignmentsItem,
+) *NullableSensorGroupAssignmentsItem {
 	return &NullableSensorGroupAssignmentsItem{value: val, isSet: true}
 }
 

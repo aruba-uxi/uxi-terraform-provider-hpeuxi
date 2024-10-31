@@ -39,7 +39,17 @@ type _AgentItem AgentItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAgentItem(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, notes NullableString, pcapMode NullableString, type_ string) *AgentItem {
+func NewAgentItem(
+	id string,
+	serial string,
+	name string,
+	modelNumber NullableString,
+	wifiMacAddress NullableString,
+	ethernetMacAddress NullableString,
+	notes NullableString,
+	pcapMode NullableString,
+	type_ string,
+) *AgentItem {
 	this := AgentItem{}
 	this.Id = id
 	this.Serial = serial

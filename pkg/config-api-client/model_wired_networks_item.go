@@ -43,7 +43,20 @@ type _WiredNetworksItem WiredNetworksItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWiredNetworksItem(id string, name string, ipVersion string, createdAt time.Time, updatedAt time.Time, security NullableString, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, vLanId NullableInt32, type_ string) *WiredNetworksItem {
+func NewWiredNetworksItem(
+	id string,
+	name string,
+	ipVersion string,
+	createdAt time.Time,
+	updatedAt time.Time,
+	security NullableString,
+	dnsLookupDomain NullableString,
+	disableEdns bool,
+	useDns64 bool,
+	externalConnectivity bool,
+	vLanId NullableInt32,
+	type_ string,
+) *WiredNetworksItem {
 	this := WiredNetworksItem{}
 	this.Id = id
 	this.Name = name

@@ -33,7 +33,11 @@ type _NetworkGroupAssignmentsResponse NetworkGroupAssignmentsResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNetworkGroupAssignmentsResponse(items []NetworkGroupAssignmentsItem, count int32, next NullableString) *NetworkGroupAssignmentsResponse {
+func NewNetworkGroupAssignmentsResponse(
+	items []NetworkGroupAssignmentsItem,
+	count int32,
+	next NullableString,
+) *NetworkGroupAssignmentsResponse {
 	this := NetworkGroupAssignmentsResponse{}
 	this.Items = items
 	this.Count = count
@@ -201,7 +205,9 @@ func (v *NullableNetworkGroupAssignmentsResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNetworkGroupAssignmentsResponse(val *NetworkGroupAssignmentsResponse) *NullableNetworkGroupAssignmentsResponse {
+func NewNullableNetworkGroupAssignmentsResponse(
+	val *NetworkGroupAssignmentsResponse,
+) *NullableNetworkGroupAssignmentsResponse {
 	return &NullableNetworkGroupAssignmentsResponse{value: val, isSet: true}
 }
 
