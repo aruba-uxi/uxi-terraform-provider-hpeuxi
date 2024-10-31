@@ -76,6 +76,19 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
+	t.Run("Test ConfigurationAPI AgentsDelete", func(t *testing.T) {
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Delete("/networking-uxi/v1alpha1/agents/uid").
+			Reply(204)
+
+		_, httpRes, err := apiClient.ConfigurationAPI.
+			AgentsDelete(context.Background(), "uid").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 204, httpRes.StatusCode)
+	})
+
 	t.Run("Test ConfigurationAPI GroupsGet", func(t *testing.T) {
 		parent_uid := "parent_uid"
 		gock.New(configuration.Scheme + "://" + configuration.Host).
