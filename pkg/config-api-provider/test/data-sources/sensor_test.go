@@ -24,7 +24,9 @@ func TestSensorDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetSensor(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")},
+						),
 						3,
 					)
 				},
@@ -63,7 +65,9 @@ func TestSensorDataSource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensor(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")},
+						),
 						3,
 					)
 				},
@@ -114,7 +118,9 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 						}
 					}
 				`,
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Not found error
 			{

@@ -39,11 +39,19 @@ func NewServiceTestResource() resource.Resource {
 
 type serviceTestResource struct{}
 
-func (r *serviceTestResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *serviceTestResource) Metadata(
+	ctx context.Context,
+	req resource.MetadataRequest,
+	resp *resource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_service_test"
 }
 
-func (r *serviceTestResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *serviceTestResource) Schema(
+	_ context.Context,
+	_ resource.SchemaRequest,
+	resp *resource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -59,18 +67,33 @@ func (r *serviceTestResource) Schema(_ context.Context, _ resource.SchemaRequest
 	}
 }
 
-func (r *serviceTestResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *serviceTestResource) Configure(
+	_ context.Context,
+	req resource.ConfigureRequest,
+	resp *resource.ConfigureResponse,
+) {
 }
 
-func (r *serviceTestResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *serviceTestResource) Create(
+	ctx context.Context,
+	req resource.CreateRequest,
+	resp *resource.CreateResponse,
+) {
 	// Retrieve values from plan
 	var plan serviceTestResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "creating a service_test is not supported; service_tests can only be imported")
+	diags.AddError(
+		"operation not supported",
+		"creating a service_test is not supported; service_tests can only be imported",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *serviceTestResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *serviceTestResource) Read(
+	ctx context.Context,
+	req resource.ReadRequest,
+	resp *resource.ReadResponse,
+) {
 	// Get current state
 	var state serviceTestResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -92,23 +115,41 @@ func (r *serviceTestResource) Read(ctx context.Context, req resource.ReadRequest
 	}
 }
 
-func (r *serviceTestResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *serviceTestResource) Update(
+	ctx context.Context,
+	req resource.UpdateRequest,
+	resp *resource.UpdateResponse,
+) {
 	// Retrieve values from plan
 	var plan serviceTestResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "updating a service_test is not supported; service_tests can only be updated through the dashboard")
+	diags.AddError(
+		"operation not supported",
+		"updating a service_test is not supported; service_tests can only be updated through the dashboard",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *serviceTestResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *serviceTestResource) Delete(
+	ctx context.Context,
+	req resource.DeleteRequest,
+	resp *resource.DeleteResponse,
+) {
 	// Retrieve values from state
 	var state serviceTestResourceModel
 	diags := req.State.Get(ctx, &state)
-	diags.AddError("operation not supported", "deleting a service_test is not supported; service_tests can only removed from state")
+	diags.AddError(
+		"operation not supported",
+		"deleting a service_test is not supported; service_tests can only removed from state",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *serviceTestResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *serviceTestResource) ImportState(
+	ctx context.Context,
+	req resource.ImportStateRequest,
+	resp *resource.ImportStateResponse,
+) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 

@@ -25,7 +25,11 @@ func TestGroupDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("uid", "", ""),
+							},
+						),
 						3,
 					)
 				},
@@ -45,12 +49,16 @@ func TestGroupDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"my_root_group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.StructToMap(config_api_client.GroupsGetItem{
-							Id:     "my_root_group_uid",
-							Name:   "root",
-							Parent: *config_api_client.NewNullableParent(nil),
-							Path:   "my_root_group_uid",
-						})}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.StructToMap(config_api_client.GroupsGetItem{
+									Id:     "my_root_group_uid",
+									Name:   "root",
+									Parent: *config_api_client.NewNullableParent(nil),
+									Path:   "my_root_group_uid",
+								}),
+							},
+						),
 						1,
 					)
 				},
@@ -87,7 +95,11 @@ func TestGroupDataSource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetGroup(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("uid", "", ""),
+							},
+						),
 						3,
 					)
 				},
@@ -138,7 +150,9 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 						}
 					}
 				`,
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Not found error
 			{

@@ -58,11 +58,19 @@ type sensorResource struct {
 	client *config_api_client.APIClient
 }
 
-func (r *sensorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *sensorResource) Metadata(
+	ctx context.Context,
+	req resource.MetadataRequest,
+	resp *resource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_sensor"
 }
 
-func (r *sensorResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *sensorResource) Schema(
+	_ context.Context,
+	_ resource.SchemaRequest,
+	resp *resource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -87,7 +95,11 @@ func (r *sensorResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 	}
 }
 
-func (r *sensorResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *sensorResource) Configure(
+	_ context.Context,
+	req resource.ConfigureRequest,
+	resp *resource.ConfigureResponse,
+) {
 	// Add a nil check when handling ProviderData because Terraform
 	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
@@ -107,15 +119,26 @@ func (r *sensorResource) Configure(_ context.Context, req resource.ConfigureRequ
 	r.client = client
 }
 
-func (r *sensorResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *sensorResource) Create(
+	ctx context.Context,
+	req resource.CreateRequest,
+	resp *resource.CreateResponse,
+) {
 	// Retrieve values from plan
 	var plan sensorResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "creating a sensor is not supported; sensors can only be imported")
+	diags.AddError(
+		"operation not supported",
+		"creating a sensor is not supported; sensors can only be imported",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *sensorResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *sensorResource) Read(
+	ctx context.Context,
+	req resource.ReadRequest,
+	resp *resource.ReadResponse,
+) {
 	// Get current state
 	var state sensorResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -157,7 +180,11 @@ func (r *sensorResource) Read(ctx context.Context, req resource.ReadRequest, res
 	}
 }
 
-func (r *sensorResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *sensorResource) Update(
+	ctx context.Context,
+	req resource.UpdateRequest,
+	resp *resource.UpdateResponse,
+) {
 	// Retrieve values from plan
 	var plan sensorResourceModel
 	diags := req.Plan.Get(ctx, &plan)
@@ -188,15 +215,26 @@ func (r *sensorResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 }
 
-func (r *sensorResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *sensorResource) Delete(
+	ctx context.Context,
+	req resource.DeleteRequest,
+	resp *resource.DeleteResponse,
+) {
 	// Retrieve values from state
 	var state sensorResourceModel
 	diags := req.State.Get(ctx, &state)
-	diags.AddError("operation not supported", "deleting a sensor is not supported; sensors can only removed from state")
+	diags.AddError(
+		"operation not supported",
+		"deleting a sensor is not supported; sensors can only removed from state",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *sensorResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *sensorResource) ImportState(
+	ctx context.Context,
+	req resource.ImportStateRequest,
+	resp *resource.ImportStateResponse,
+) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 

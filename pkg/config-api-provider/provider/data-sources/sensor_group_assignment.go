@@ -33,11 +33,19 @@ type sensorGroupAssignmentDataSourceModel struct {
 	} `tfsdk:"filter"`
 }
 
-func (d *sensorGroupAssignmentDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *sensorGroupAssignmentDataSource) Metadata(
+	_ context.Context,
+	req datasource.MetadataRequest,
+	resp *datasource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_sensor_group_assignment"
 }
 
-func (d *sensorGroupAssignmentDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *sensorGroupAssignmentDataSource) Schema(
+	_ context.Context,
+	_ datasource.SchemaRequest,
+	resp *datasource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -61,7 +69,11 @@ func (d *sensorGroupAssignmentDataSource) Schema(_ context.Context, _ datasource
 	}
 }
 
-func (d *sensorGroupAssignmentDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+func (d *sensorGroupAssignmentDataSource) Read(
+	ctx context.Context,
+	req datasource.ReadRequest,
+	resp *datasource.ReadResponse,
+) {
 	var state sensorGroupAssignmentDataSourceModel
 
 	// Read configuration from request
@@ -102,7 +114,11 @@ func (d *sensorGroupAssignmentDataSource) Read(ctx context.Context, req datasour
 	}
 }
 
-func (d *sensorGroupAssignmentDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *sensorGroupAssignmentDataSource) Configure(
+	_ context.Context,
+	req datasource.ConfigureRequest,
+	resp *datasource.ConfigureResponse,
+) {
 	// Add a nil check when handling ProviderData because Terraform
 	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {

@@ -29,14 +29,20 @@ func TestWirelessNetworkResource(t *testing.T) {
 						name = "name"
 					}`,
 
-				ExpectError: regexp.MustCompile(`(?s)creating a wireless_network is not supported; wireless_networks can only be\s*imported`),
+				ExpectError: regexp.MustCompile(
+					`(?s)creating a wireless_network is not supported; wireless_networks can only be\s*imported`,
+				),
 			},
 			// Importing a wireless_network
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
+						),
 						2,
 					)
 				},
@@ -51,8 +57,16 @@ func TestWirelessNetworkResource(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_wireless_network.my_wireless_network", "name", "name"),
-					resource.TestCheckResourceAttr("uxi_wireless_network.my_wireless_network", "id", "uid"),
+					resource.TestCheckResourceAttr(
+						"uxi_wireless_network.my_wireless_network",
+						"name",
+						"name",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_wireless_network.my_wireless_network",
+						"id",
+						"uid",
+					),
 				),
 			},
 			// ImportState testing
@@ -60,7 +74,11 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
+						),
 						1,
 					)
 				},
@@ -73,7 +91,11 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
+						),
 						1,
 					)
 				},
@@ -81,26 +103,38 @@ func TestWirelessNetworkResource(t *testing.T) {
 				resource "uxi_wireless_network" "my_wireless_network" {
 					name = "updated_name"
 				}`,
-				ExpectError: regexp.MustCompile(`(?s)updating a wireless_network is not supported; wireless_networks can only be\s*updated through the dashboard`),
+				ExpectError: regexp.MustCompile(
+					`(?s)updating a wireless_network is not supported; wireless_networks can only be\s*updated through the dashboard`,
+				),
 			},
 			// Deleting a wireless_network is not allowed
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
+						),
 						1,
 					)
 				},
-				Config:      provider.ProviderConfig + ``,
-				ExpectError: regexp.MustCompile(`(?s)deleting a wireless_network is not supported; wireless_networks can only\s*removed from state`),
+				Config: provider.ProviderConfig + ``,
+				ExpectError: regexp.MustCompile(
+					`(?s)deleting a wireless_network is not supported; wireless_networks can only\s*removed from state`,
+				),
 			},
 			// Remove wireless_network from state
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
+						),
 						1,
 					)
 				},
@@ -170,7 +204,9 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 						to = uxi_wireless_network.my_wireless_network
 						id = "uid"
 					}`,
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 		},
 	})

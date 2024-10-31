@@ -23,12 +23,18 @@ func RetryFor429[T any](f func() (T, *http.Response, error)) (T, *http.Response,
 
 		waitForSeconds := httpResponse.Header.Get("X-Ratelimit-Reset")
 		if waitForSeconds == "" {
-			return result, httpResponse, errors.Join(err, errors.New("header X-Ratelimit-Reset is missing or contains non valid value"))
+			return result, httpResponse, errors.Join(
+				err,
+				errors.New("header X-Ratelimit-Reset is missing or contains non valid value"),
+			)
 		}
 
 		rateLimitedFor, _ := strconv.Atoi(httpResponse.Header.Get("X-Ratelimit-Reset"))
 		time.Sleep(time.Duration(rateLimitedFor) * time.Second)
 	}
 
-	return result, httpResponse, errors.Join(err, errors.New("number of retries exceeded for 429 retries"))
+	return result, httpResponse, errors.Join(
+		err,
+		errors.New("number of retries exceeded for 429 retries"),
+	)
 }

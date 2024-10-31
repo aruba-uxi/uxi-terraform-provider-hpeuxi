@@ -24,7 +24,11 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetSensorGroupAssignment(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse("uid", ""),
+							},
+						),
 						3,
 					)
 				},
@@ -36,9 +40,21 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_sensor_group_assignment.my_sensor_group_assignment", "id", "uid"),
-					resource.TestCheckResourceAttr("data.uxi_sensor_group_assignment.my_sensor_group_assignment", "group_id", "group_uid"),
-					resource.TestCheckResourceAttr("data.uxi_sensor_group_assignment.my_sensor_group_assignment", "sensor_id", "sensor_uid"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"id",
+						"uid",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"group_id",
+						"group_uid",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"sensor_id",
+						"sensor_uid",
+					),
 				),
 			},
 		},
@@ -64,7 +80,11 @@ func TestSensorGroupAssignmentDataSource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensorGroupAssignment(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse("uid", ""),
+							},
+						),
 						3,
 					)
 				},
@@ -76,7 +96,11 @@ func TestSensorGroupAssignmentDataSource429Handling(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_sensor_group_assignment.my_sensor_group_assignment", "id", "uid"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"id",
+						"uid",
+					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
 						return nil
@@ -113,7 +137,9 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 						}
 					}
 				`,
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			{
 				PreConfig: func() {

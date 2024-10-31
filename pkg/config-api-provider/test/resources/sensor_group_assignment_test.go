@@ -24,7 +24,10 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					// required for sensor import
 					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("sensor_uid", "")}),
+						[]map[string]interface{}{
+							util.GenerateSensorResponseModel("sensor_uid", ""),
+						},
+					),
 						2,
 					)
 
@@ -36,19 +39,36 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 
 					// required for sensor group assignment create
 					util.MockPostSensorGroupAssignment(
-						util.GenerateSensorGroupAssignmentRequest("sensor_group_assignment_uid", ""),
-						util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", ""),
+						util.GenerateSensorGroupAssignmentRequest(
+							"sensor_group_assignment_uid",
+							"",
+						),
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_uid",
+							"",
+						),
 						1,
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_uid",
+									"",
+								),
+							},
+						),
 						1,
 					)
 				},
@@ -76,9 +96,21 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						group_id 		= uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor_group_assignment.my_sensor_group_assignment", "sensor_id", "sensor_uid"),
-					resource.TestCheckResourceAttr("uxi_sensor_group_assignment.my_sensor_group_assignment", "group_id", "group_uid"),
-					resource.TestCheckResourceAttr("uxi_sensor_group_assignment.my_sensor_group_assignment", "id", "sensor_group_assignment_uid"),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"sensor_id",
+						"sensor_uid",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"group_id",
+						"group_uid",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"id",
+						"sensor_group_assignment_uid",
+					),
 				),
 			},
 			// ImportState testing
@@ -86,7 +118,14 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_uid",
+									"",
+								),
+							},
+						),
 						1,
 					)
 				},
@@ -98,22 +137,36 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor("sensor_uid_2", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("sensor_uid_2", "_2")}),
+						[]map[string]interface{}{
+							util.GenerateSensorResponseModel("sensor_uid_2", "_2"),
+						},
+					),
 						2,
 					)
 					util.MockGetSensor("sensor_uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("sensor_uid", "")}),
+						[]map[string]interface{}{
+							util.GenerateSensorResponseModel("sensor_uid", ""),
+						},
+					),
 						3,
 					)
 
 					util.MockGetGroup(
 						"group_uid_2",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid_2", "_2", "_2"),
+							},
+						),
 						1,
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						2,
 					)
 
@@ -121,25 +174,47 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					util.MockDeleteSensorGroupAssignment("sensor_group_assignment_uid", 1)
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("group_uid_2", "_2", "_2"),
-						util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						util.StructToMap(
+							util.GenerateGroupResponseModel("group_uid_2", "_2", "_2"),
+						),
 						1,
 					)
 
 					// required for sensor group assignment create
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_uid",
+									"",
+								),
+							},
+						),
 						1,
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid_2",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_uid_2",
+									"_2",
+								),
+							},
+						),
 						1,
 					)
 
 					util.MockPostSensorGroupAssignment(
-						util.GenerateSensorGroupAssignmentRequest("sensor_group_assignment_uid_2", "_2"),
-						util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid_2", "_2"),
+						util.GenerateSensorGroupAssignmentRequest(
+							"sensor_group_assignment_uid_2",
+							"_2",
+						),
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_uid_2",
+							"_2",
+						),
 						1,
 					)
 				},
@@ -186,9 +261,21 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						group_id 		= uxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor_group_assignment.my_sensor_group_assignment", "sensor_id", "sensor_uid_2"),
-					resource.TestCheckResourceAttr("uxi_sensor_group_assignment.my_sensor_group_assignment", "group_id", "group_uid_2"),
-					resource.TestCheckResourceAttr("uxi_sensor_group_assignment.my_sensor_group_assignment", "id", "sensor_group_assignment_uid_2"),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"sensor_id",
+						"sensor_uid_2",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"group_id",
+						"group_uid_2",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"id",
+						"sensor_group_assignment_uid_2",
+					),
 				),
 			},
 			// Delete sensor-group assignments and remove sensors from state
@@ -196,17 +283,32 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_uid_2",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid_2", "_2", "_2"),
+							},
+						),
 						1,
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_uid",
+									"",
+								),
+							},
+						),
 						1,
 					)
 
@@ -250,7 +352,10 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 				PreConfig: func() {
 					// required for sensor import
 					util.MockGetSensor("sensor_uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("sensor_uid", "")}),
+						[]map[string]interface{}{
+							util.GenerateSensorResponseModel("sensor_uid", ""),
+						},
+					),
 						2,
 					)
 
@@ -262,7 +367,11 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 
@@ -272,13 +381,26 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostSensorGroupAssignment(
-						util.GenerateSensorGroupAssignmentRequest("sensor_group_assignment_uid", ""),
-						util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", ""),
+						util.GenerateSensorGroupAssignmentRequest(
+							"sensor_group_assignment_uid",
+							"",
+						),
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_uid",
+							"",
+						),
 						1,
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_uid",
+									"",
+								),
+							},
+						),
 						1,
 					)
 				},
@@ -306,7 +428,11 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 						group_id 		= uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor_group_assignment.my_sensor_group_assignment", "id", "sensor_group_assignment_uid"),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"id",
+						"sensor_group_assignment_uid",
+					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
 						return nil
@@ -318,12 +444,23 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_uid",
+									"",
+								),
+							},
+						),
 						1,
 					)
 
@@ -375,7 +512,10 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					// required for sensor import
 					util.MockGetSensor("sensor_uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("sensor_uid", "")}),
+						[]map[string]interface{}{
+							util.GenerateSensorResponseModel("sensor_uid", ""),
+						},
+					),
 						1,
 					)
 
@@ -387,7 +527,11 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 
@@ -425,14 +569,19 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						sensor_id       = uxi_sensor.my_sensor.id
 						group_id 		= uxi_group.my_group.id
 					}`,
-				ExpectError: regexp.MustCompile(`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// read not found error
 			{
 				PreConfig: func() {
 					// required for sensor import
 					util.MockGetSensor("sensor_uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("sensor_uid", "")}),
+						[]map[string]interface{}{
+							util.GenerateSensorResponseModel("sensor_uid", ""),
+						},
+					),
 						1,
 					)
 
@@ -444,7 +593,11 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 
@@ -490,7 +643,10 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					// required for sensor import
 					util.MockGetSensor("sensor_uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("sensor_uid", "")}),
+						[]map[string]interface{}{
+							util.GenerateSensorResponseModel("sensor_uid", ""),
+						},
+					),
 						1,
 					)
 
@@ -502,7 +658,11 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 
@@ -546,14 +706,19 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 				`,
 
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Actually Creating a sensor group assignment - needed for next step
 			{
 				PreConfig: func() {
 					// required for sensor import
 					util.MockGetSensor("sensor_uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("sensor_uid", "")}),
+						[]map[string]interface{}{
+							util.GenerateSensorResponseModel("sensor_uid", ""),
+						},
+					),
 						2,
 					)
 
@@ -565,19 +730,36 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 
 					// required for sensor group assignment create
 					util.MockPostSensorGroupAssignment(
-						util.GenerateSensorGroupAssignmentRequest("sensor_group_assignment_uid", ""),
-						util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", ""),
+						util.GenerateSensorGroupAssignmentRequest(
+							"sensor_group_assignment_uid",
+							"",
+						),
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_uid",
+							"",
+						),
 						1,
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_uid",
+									"",
+								),
+							},
+						),
 						1,
 					)
 				},
@@ -605,7 +787,11 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						group_id 		= uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor_group_assignment.my_sensor_group_assignment", "id", "sensor_group_assignment_uid"),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"id",
+						"sensor_group_assignment_uid",
+					),
 				),
 			},
 			// Delete sensor-group assignments and remove sensors from state - errors
@@ -613,12 +799,23 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_uid",
+									"",
+								),
+							},
+						),
 						1,
 					)
 
@@ -648,19 +845,32 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 							destroy = false
 						}
 					}`,
-				ExpectError: regexp.MustCompile(`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Actually Delete sensor-group assignments and remove sensors from state
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateSensorGroupAssignmentResponse("sensor_group_assignment_uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_uid",
+									"",
+								),
+							},
+						),
 						1,
 					)
 					util.MockDeleteGroup("group_uid", 1)

@@ -30,7 +30,9 @@ func TestServiceTestResource(t *testing.T) {
 						name = "name"
 					}`,
 
-				ExpectError: regexp.MustCompile(`(?s)creating a service_test is not supported; service_tests can only be\s*imported`),
+				ExpectError: regexp.MustCompile(
+					`(?s)creating a service_test is not supported; service_tests can only be\s*imported`,
+				),
 			},
 			// Importing a service_test
 			{
@@ -50,7 +52,11 @@ func TestServiceTestResource(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_service_test.my_service_test", "name", "name"),
+					resource.TestCheckResourceAttr(
+						"uxi_service_test.my_service_test",
+						"name",
+						"name",
+					),
 					resource.TestCheckResourceAttr("uxi_service_test.my_service_test", "id", "uid"),
 				),
 			},
@@ -66,12 +72,16 @@ func TestServiceTestResource(t *testing.T) {
 				resource "uxi_service_test" "my_service_test" {
 					name = "updated_name"
 				}`,
-				ExpectError: regexp.MustCompile(`(?s)updating a service_test is not supported; service_tests can only be updated\s*through the dashboard`),
+				ExpectError: regexp.MustCompile(
+					`(?s)updating a service_test is not supported; service_tests can only be updated\s*through the dashboard`,
+				),
 			},
 			// Deleting a service_test is not allowed
 			{
-				Config:      provider.ProviderConfig + ``,
-				ExpectError: regexp.MustCompile(`(?s)deleting a service_test is not supported; service_tests can only removed from\s*state`),
+				Config: provider.ProviderConfig + ``,
+				ExpectError: regexp.MustCompile(
+					`(?s)deleting a service_test is not supported; service_tests can only removed from\s*state`,
+				),
 			},
 			// Remove service_test from state
 			{

@@ -40,11 +40,19 @@ func NewAgentGroupAssignmentResource() resource.Resource {
 
 type agentGroupAssignmentResource struct{}
 
-func (r *agentGroupAssignmentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *agentGroupAssignmentResource) Metadata(
+	ctx context.Context,
+	req resource.MetadataRequest,
+	resp *resource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_agent_group_assignment"
 }
 
-func (r *agentGroupAssignmentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *agentGroupAssignmentResource) Schema(
+	_ context.Context,
+	_ resource.SchemaRequest,
+	resp *resource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -69,10 +77,18 @@ func (r *agentGroupAssignmentResource) Schema(_ context.Context, _ resource.Sche
 	}
 }
 
-func (r *agentGroupAssignmentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *agentGroupAssignmentResource) Configure(
+	_ context.Context,
+	req resource.ConfigureRequest,
+	resp *resource.ConfigureResponse,
+) {
 }
 
-func (r *agentGroupAssignmentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *agentGroupAssignmentResource) Create(
+	ctx context.Context,
+	req resource.CreateRequest,
+	resp *resource.CreateResponse,
+) {
 	// Retrieve values from plan
 	var plan agentGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
@@ -100,7 +116,11 @@ func (r *agentGroupAssignmentResource) Create(ctx context.Context, req resource.
 	}
 }
 
-func (r *agentGroupAssignmentResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *agentGroupAssignmentResource) Read(
+	ctx context.Context,
+	req resource.ReadRequest,
+	resp *resource.ReadResponse,
+) {
 	// Get current state
 	var state agentGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -124,7 +144,11 @@ func (r *agentGroupAssignmentResource) Read(ctx context.Context, req resource.Re
 	}
 }
 
-func (r *agentGroupAssignmentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *agentGroupAssignmentResource) Update(
+	ctx context.Context,
+	req resource.UpdateRequest,
+	resp *resource.UpdateResponse,
+) {
 	// Retrieve values from plan
 	var plan agentGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
@@ -135,7 +159,11 @@ func (r *agentGroupAssignmentResource) Update(ctx context.Context, req resource.
 	}
 }
 
-func (r *agentGroupAssignmentResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *agentGroupAssignmentResource) Delete(
+	ctx context.Context,
+	req resource.DeleteRequest,
+	resp *resource.DeleteResponse,
+) {
 	// Retrieve values from state
 	var state agentGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -147,7 +175,11 @@ func (r *agentGroupAssignmentResource) Delete(ctx context.Context, req resource.
 	// Delete existing agentGroupAssignment using the plan_id
 }
 
-func (r *agentGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *agentGroupAssignmentResource) ImportState(
+	ctx context.Context,
+	req resource.ImportStateRequest,
+	resp *resource.ImportStateResponse,
+) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 

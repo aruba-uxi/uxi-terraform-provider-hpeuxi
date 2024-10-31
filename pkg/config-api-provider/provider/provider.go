@@ -52,13 +52,21 @@ type uxiConfigurationProvider struct {
 }
 
 // Metadata returns the provider type name.
-func (p *uxiConfigurationProvider) Metadata(_ context.Context, _ provider.MetadataRequest, resp *provider.MetadataResponse) {
+func (p *uxiConfigurationProvider) Metadata(
+	_ context.Context,
+	_ provider.MetadataRequest,
+	resp *provider.MetadataResponse,
+) {
 	resp.TypeName = "uxi"
 	resp.Version = p.version
 }
 
 // Schema defines the provider-level schema for configuration data.
-func (p *uxiConfigurationProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *provider.SchemaResponse) {
+func (p *uxiConfigurationProvider) Schema(
+	_ context.Context,
+	_ provider.SchemaRequest,
+	resp *provider.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{Attributes: map[string]schema.Attribute{
 		"host":          schema.StringAttribute{Optional: true},
 		"client_id":     schema.StringAttribute{Optional: true},
@@ -69,7 +77,11 @@ func (p *uxiConfigurationProvider) Schema(_ context.Context, _ provider.SchemaRe
 
 // TODO: Obtain a greenlake access token
 // Configure prepares a Configuration API client for data sources and resources.
-func (p *uxiConfigurationProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+func (p *uxiConfigurationProvider) Configure(
+	ctx context.Context,
+	req provider.ConfigureRequest,
+	resp *provider.ConfigureResponse,
+) {
 	// Init
 	var config uxiProviderModel
 	diags := req.Config.Get(ctx, &config)

@@ -28,14 +28,18 @@ func TestAgentResource(t *testing.T) {
 						pcap_mode = "light"
 					}`,
 
-				ExpectError: regexp.MustCompile(`creating an agent is not supported; agents can only be imported`),
+				ExpectError: regexp.MustCompile(
+					`creating an agent is not supported; agents can only be imported`,
+				),
 			},
 			// Importing an agent
 			{
 				PreConfig: func() {
 					util.MockGetAgent(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+						),
 						2,
 					)
 				},
@@ -63,7 +67,9 @@ func TestAgentResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetAgent(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+						),
 						1,
 					)
 				},
@@ -77,13 +83,17 @@ func TestAgentResource(t *testing.T) {
 					// original
 					util.MockGetAgent(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+						),
 						1,
 					)
 					// updated
 					util.MockGetAgent(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "_2")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "_2")},
+						),
 						1,
 					)
 				},
@@ -193,7 +203,9 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 						id = "uid"
 					}`,
 
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Read not found
 			{
