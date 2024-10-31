@@ -1,6 +1,7 @@
 TMP_DIR := "tmp"
 CONFIG_API_CLIENT_DIR := "pkg/config-api-client"
 CONFIG_API_PROVIDER_DIR := "pkg/config-api-provider"
+TOOLS_PROVIDER_DIR := "tools"
 OPENAPI_SPEC := "pkg/config-api-client/api"
 SOURCE_OPEN_API_SPEC_FILE := ".openapi.source.yaml"
 
@@ -75,12 +76,22 @@ tidy-provider:
 test-provider +ARGS='':
   cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
+generate-provider-docs:
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} -provider-name uxi
+  sed -i.backup '/subcategory: ""/d' ./{{ CONFIG_API_PROVIDER_DIR }}/docs/index.md && rm ./{{ CONFIG_API_PROVIDER_DIR }}/docs/index.md.backup
+
+validate-provider-docs:
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} -provider-name uxi
+
 coverage-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} && go tool cover -html=.coverage -o=.coverage.html
 
-test:
-  just test-client
-  just test-provider
+tidy-tools:
+  cd {{ TOOLS_PROVIDER_DIR }} && go mod tidy
+
+test +ARGS='':
+  just test-client {{ ARGS }}
+  just test-provider {{ ARGS }}
 
 coverage:
   just coverage-client
@@ -97,14 +108,17 @@ fmt:
 tidy:
   just tidy-client
   just tidy-provider
+  just tidy-tools
 
 clean:
   find . -name ".coverage*" -type f -delete
 
-plan +ARGS='':
-  cd {{ CONFIG_API_PROVIDER_DIR }} && go install .
-  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/full-demo && terraform plan {{ ARGS }}
+DEFAULT_EXAMPLE := "full-demo"
 
-apply +ARGS='':
+plan example=DEFAULT_EXAMPLE +ARGS='':
   cd {{ CONFIG_API_PROVIDER_DIR }} && go install .
-  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/full-demo && terraform apply {{ ARGS }}
+  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/{{example}} && terraform plan {{ ARGS }}
+
+apply example=DEFAULT_EXAMPLE +ARGS='':
+  cd {{ CONFIG_API_PROVIDER_DIR }} && go install .
+  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/{{example}} && terraform apply {{ ARGS }}

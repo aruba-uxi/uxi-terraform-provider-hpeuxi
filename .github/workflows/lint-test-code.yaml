@@ -48,6 +48,14 @@ jobs:
           just test
           just coverage
 
+      - name: Check Provider docs up to date
+        run: |
+          just generate-provider-docs
+          git diff --exit-code -- pkg/config-api-provider/docs
+
+      - name: Check Provider docs valid
+        run: just validate-provider-docs
+
       - name: Upload Code Coverage Report
         uses: codecov/codecov-action@v4
         with:
