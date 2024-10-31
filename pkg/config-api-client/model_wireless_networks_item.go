@@ -45,7 +45,22 @@ type _WirelessNetworksItem WirelessNetworksItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWirelessNetworksItem(id string, name string, ssid string, security NullableString, ipVersion string, createdAt time.Time, updatedAt time.Time, hidden bool, bandLocking string, dnsLookupDomain NullableString, disableEdns bool, useDns64 bool, externalConnectivity bool, type_ string) *WirelessNetworksItem {
+func NewWirelessNetworksItem(
+	id string,
+	name string,
+	ssid string,
+	security NullableString,
+	ipVersion string,
+	createdAt time.Time,
+	updatedAt time.Time,
+	hidden bool,
+	bandLocking string,
+	dnsLookupDomain NullableString,
+	disableEdns bool,
+	useDns64 bool,
+	externalConnectivity bool,
+	type_ string,
+) *WirelessNetworksItem {
 	this := WirelessNetworksItem{}
 	this.Id = id
 	this.Name = name

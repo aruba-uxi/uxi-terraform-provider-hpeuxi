@@ -32,11 +32,19 @@ type wirelessNetworkResource struct {
 	client *config_api_client.APIClient
 }
 
-func (r *wirelessNetworkResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *wirelessNetworkResource) Metadata(
+	ctx context.Context,
+	req resource.MetadataRequest,
+	resp *resource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_wireless_network"
 }
 
-func (r *wirelessNetworkResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *wirelessNetworkResource) Schema(
+	_ context.Context,
+	_ resource.SchemaRequest,
+	resp *resource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -52,7 +60,11 @@ func (r *wirelessNetworkResource) Schema(_ context.Context, _ resource.SchemaReq
 	}
 }
 
-func (r *wirelessNetworkResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *wirelessNetworkResource) Configure(
+	_ context.Context,
+	req resource.ConfigureRequest,
+	resp *resource.ConfigureResponse,
+) {
 	// Add a nil check when handling ProviderData because Terraform
 	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
@@ -72,15 +84,26 @@ func (r *wirelessNetworkResource) Configure(_ context.Context, req resource.Conf
 	r.client = client
 }
 
-func (r *wirelessNetworkResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *wirelessNetworkResource) Create(
+	ctx context.Context,
+	req resource.CreateRequest,
+	resp *resource.CreateResponse,
+) {
 	// Retrieve values from plan
 	var plan wirelessNetworkResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "creating a wireless_network is not supported; wireless_networks can only be imported")
+	diags.AddError(
+		"operation not supported",
+		"creating a wireless_network is not supported; wireless_networks can only be imported",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *wirelessNetworkResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *wirelessNetworkResource) Read(
+	ctx context.Context,
+	req resource.ReadRequest,
+	resp *resource.ReadResponse,
+) {
 	// Get current state
 	var state wirelessNetworkResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -120,22 +143,40 @@ func (r *wirelessNetworkResource) Read(ctx context.Context, req resource.ReadReq
 	}
 }
 
-func (r *wirelessNetworkResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *wirelessNetworkResource) Update(
+	ctx context.Context,
+	req resource.UpdateRequest,
+	resp *resource.UpdateResponse,
+) {
 	// Retrieve values from plan
 	var plan wirelessNetworkResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "updating a wireless_network is not supported; wireless_networks can only be updated through the dashboard")
+	diags.AddError(
+		"operation not supported",
+		"updating a wireless_network is not supported; wireless_networks can only be updated through the dashboard",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *wirelessNetworkResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *wirelessNetworkResource) Delete(
+	ctx context.Context,
+	req resource.DeleteRequest,
+	resp *resource.DeleteResponse,
+) {
 	// Retrieve values from state
 	var state wirelessNetworkResourceModel
 	diags := req.State.Get(ctx, &state)
-	diags.AddError("operation not supported", "deleting a wireless_network is not supported; wireless_networks can only removed from state")
+	diags.AddError(
+		"operation not supported",
+		"deleting a wireless_network is not supported; wireless_networks can only removed from state",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *wirelessNetworkResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *wirelessNetworkResource) ImportState(
+	ctx context.Context,
+	req resource.ImportStateRequest,
+	resp *resource.ImportStateResponse,
+) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

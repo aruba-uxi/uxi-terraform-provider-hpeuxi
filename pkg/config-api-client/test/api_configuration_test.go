@@ -587,7 +587,10 @@ func TestConfigurationAPI(t *testing.T) {
 				"type":    "networking-uxi/network-group-assignment",
 			})
 
-		postRequest := openapiclient.NewNetworkGroupAssignmentsPostRequest("group_uid", "network_uid")
+		postRequest := openapiclient.NewNetworkGroupAssignmentsPostRequest(
+			"group_uid",
+			"network_uid",
+		)
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			NetworkGroupAssignmentsPost(context.Background()).
 			NetworkGroupAssignmentsPostRequest(*postRequest).
@@ -632,7 +635,10 @@ func TestConfigurationAPI(t *testing.T) {
 				"type":        "networking-uxi/service-test-group-assignment",
 			})
 
-		postRequest := openapiclient.NewServiceTestGroupAssignmentsPostRequest("group_uid", "service_test_uid")
+		postRequest := openapiclient.NewServiceTestGroupAssignmentsPostRequest(
+			"group_uid",
+			"service_test_uid",
+		)
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			ServiceTestGroupAssignmentsPost(context.Background()).
 			ServiceTestGroupAssignmentsPostRequest(*postRequest).

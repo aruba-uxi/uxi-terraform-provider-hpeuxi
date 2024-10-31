@@ -29,14 +29,18 @@ func TestWiredNetworkResource(t *testing.T) {
 						name = "name"
 					}`,
 
-				ExpectError: regexp.MustCompile(`(?s)creating a wired_network is not supported; wired_networks can only be\s*imported`),
+				ExpectError: regexp.MustCompile(
+					`(?s)creating a wired_network is not supported; wired_networks can only be\s*imported`,
+				),
 			},
 			// Importing a wired_network
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+						),
 						2,
 					)
 				},
@@ -51,8 +55,16 @@ func TestWiredNetworkResource(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_wired_network.my_wired_network", "name", "name"),
-					resource.TestCheckResourceAttr("uxi_wired_network.my_wired_network", "id", "uid"),
+					resource.TestCheckResourceAttr(
+						"uxi_wired_network.my_wired_network",
+						"name",
+						"name",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_wired_network.my_wired_network",
+						"id",
+						"uid",
+					),
 				),
 			},
 			// ImportState testing
@@ -60,7 +72,9 @@ func TestWiredNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+						),
 						1,
 					)
 				},
@@ -73,7 +87,9 @@ func TestWiredNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+						),
 						1,
 					)
 				},
@@ -81,19 +97,25 @@ func TestWiredNetworkResource(t *testing.T) {
 				resource "uxi_wired_network" "my_wired_network" {
 					name = "updated_name"
 				}`,
-				ExpectError: regexp.MustCompile(`(?s)updating a wired_network is not supported; wired_networks can only be updated\s*through the dashboard`),
+				ExpectError: regexp.MustCompile(
+					`(?s)updating a wired_network is not supported; wired_networks can only be updated\s*through the dashboard`,
+				),
 			},
 			// Deleting a wired_network is not allowed
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+						),
 						2,
 					)
 				},
-				Config:      provider.ProviderConfig + ``,
-				ExpectError: regexp.MustCompile(`(?s)deleting a wired_network is not supported; wired_networks can only removed\s*from state`),
+				Config: provider.ProviderConfig + ``,
+				ExpectError: regexp.MustCompile(
+					`(?s)deleting a wired_network is not supported; wired_networks can only removed\s*from state`,
+				),
 			},
 			// Remove wired_network from state
 			{
@@ -163,7 +185,9 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 						to = uxi_wired_network.my_wired_network
 						id = "uid"
 					}`,
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 		},
 	})

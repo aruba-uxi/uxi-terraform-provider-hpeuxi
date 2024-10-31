@@ -44,7 +44,11 @@ func TestGroupResource(t *testing.T) {
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_group_id", "parent_uid"),
+					resource.TestCheckResourceAttr(
+						"uxi_group.my_group",
+						"parent_group_id",
+						"parent_uid",
+					),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
 				),
 			},
@@ -87,7 +91,11 @@ func TestGroupResource(t *testing.T) {
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_group_id", "parent_uid"),
+					resource.TestCheckResourceAttr(
+						"uxi_group.my_group",
+						"parent_group_id",
+						"parent_uid",
+					),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
 				),
 			},
@@ -106,7 +114,10 @@ func TestGroupResource(t *testing.T) {
 						1,
 					)
 					util.MockGetGroup("new_uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateGroupResponseModel("new_uid", "", "_2")}),
+						[]map[string]interface{}{
+							util.GenerateGroupResponseModel("new_uid", "", "_2"),
+						},
+					),
 						1,
 					)
 					// delete old group (being replaced)
@@ -119,7 +130,11 @@ func TestGroupResource(t *testing.T) {
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "parent_group_id", "parent_uid_2"),
+					resource.TestCheckResourceAttr(
+						"uxi_group.my_group",
+						"parent_group_id",
+						"parent_uid_2",
+					),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "new_uid"),
 				),
 			},
@@ -127,7 +142,10 @@ func TestGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetGroup("new_uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateGroupResponseModel("new_uid", "", "_2")}),
+						[]map[string]interface{}{
+							util.GenerateGroupResponseModel("new_uid", "", "_2"),
+						},
+					),
 						1,
 					)
 					util.MockDeleteGroup("new_uid", 1)
@@ -204,7 +222,11 @@ func TestGroupResource429Handling(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("uid", "", ""),
+							},
+						),
 						1,
 					)
 				},
@@ -306,7 +328,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						id = "uid"
 					}
 				`,
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Read not found
 			{
@@ -349,7 +373,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					name            = "name"
 					parent_group_id = "parent_uid"
 				}`,
-				ExpectError: regexp.MustCompile(`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Create group in prep for next step
 			{
@@ -361,7 +387,11 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("uid", "", ""),
+							},
+						),
 						1,
 					)
 				},
@@ -398,7 +428,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						name            = "name_2"
 						parent_group_id = "parent_uid"
 					}`,
-				ExpectError: regexp.MustCompile(`(?s)Unable to create group - a sibling group already has the specified name\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Unable to create group - a sibling group already has the specified name\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Delete 4xx
 			{
@@ -419,8 +451,10 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 							"debugId":        "12312-123123-123123-1231212",
 						})
 				},
-				Config:      provider.ProviderConfig,
-				ExpectError: regexp.MustCompile(`(?s)Unable to delete group\s*DebugID: 12312-123123-123123-1231212`),
+				Config: provider.ProviderConfig,
+				ExpectError: regexp.MustCompile(
+					`(?s)Unable to delete group\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Actually delete group for cleanup reasons
 			{

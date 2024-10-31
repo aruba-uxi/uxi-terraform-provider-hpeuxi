@@ -25,7 +25,9 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+						),
 						3,
 					)
 				},
@@ -37,15 +39,51 @@ func TestWiredNetworkDataSource(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "id", "uid"),
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "name", "name"),
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "ip_version", "ip_version"),
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "security", "security"),
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "dns_lookup_domain", "dns_lookup_domain"),
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "disable_edns", "false"),
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "use_dns64", "false"),
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "external_connectivity", "false"),
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "vlan_id", "123"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"id",
+						"uid",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"name",
+						"name",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"ip_version",
+						"ip_version",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"security",
+						"security",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"dns_lookup_domain",
+						"dns_lookup_domain",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"disable_edns",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"use_dns64",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"external_connectivity",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"vlan_id",
+						"123",
+					),
 				),
 			},
 		},
@@ -71,7 +109,9 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetWiredNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+						),
 						3,
 					)
 				},
@@ -83,7 +123,11 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_wired_network.my_wired_network", "id", "uid"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"id",
+						"uid",
+					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
 						return nil
@@ -121,7 +165,9 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 						}
 					}
 				`,
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			{
 				PreConfig: func() {

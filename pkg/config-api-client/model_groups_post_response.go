@@ -35,7 +35,13 @@ type _GroupsPostResponse GroupsPostResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupsPostResponse(id string, name string, path string, parent Parent, type_ string) *GroupsPostResponse {
+func NewGroupsPostResponse(
+	id string,
+	name string,
+	path string,
+	parent Parent,
+	type_ string,
+) *GroupsPostResponse {
 	this := GroupsPostResponse{}
 	this.Id = id
 	this.Name = name

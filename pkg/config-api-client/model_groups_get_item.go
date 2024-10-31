@@ -35,7 +35,13 @@ type _GroupsGetItem GroupsGetItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupsGetItem(id string, name string, parent NullableParent, path string, type_ string) *GroupsGetItem {
+func NewGroupsGetItem(
+	id string,
+	name string,
+	parent NullableParent,
+	path string,
+	type_ string,
+) *GroupsGetItem {
 	this := GroupsGetItem{}
 	this.Id = id
 	this.Name = name

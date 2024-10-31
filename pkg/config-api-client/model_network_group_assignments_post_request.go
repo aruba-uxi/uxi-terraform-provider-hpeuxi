@@ -32,7 +32,10 @@ type _NetworkGroupAssignmentsPostRequest NetworkGroupAssignmentsPostRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNetworkGroupAssignmentsPostRequest(groupId string, networkId string) *NetworkGroupAssignmentsPostRequest {
+func NewNetworkGroupAssignmentsPostRequest(
+	groupId string,
+	networkId string,
+) *NetworkGroupAssignmentsPostRequest {
 	this := NetworkGroupAssignmentsPostRequest{}
 	this.GroupId = groupId
 	this.NetworkId = networkId
@@ -171,7 +174,9 @@ func (v *NullableNetworkGroupAssignmentsPostRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNetworkGroupAssignmentsPostRequest(val *NetworkGroupAssignmentsPostRequest) *NullableNetworkGroupAssignmentsPostRequest {
+func NewNullableNetworkGroupAssignmentsPostRequest(
+	val *NetworkGroupAssignmentsPostRequest,
+) *NullableNetworkGroupAssignmentsPostRequest {
 	return &NullableNetworkGroupAssignmentsPostRequest{value: val, isSet: true}
 }
 

@@ -24,7 +24,11 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetNetworkGroupAssignment(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateNetworkGroupAssignmentResponse("uid", ""),
+							},
+						),
 						3,
 					)
 				},
@@ -36,9 +40,21 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_network_group_assignment.my_network_group_assignment", "id", "uid"),
-					resource.TestCheckResourceAttr("data.uxi_network_group_assignment.my_network_group_assignment", "group_id", "group_uid"),
-					resource.TestCheckResourceAttr("data.uxi_network_group_assignment.my_network_group_assignment", "network_id", "network_uid"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_network_group_assignment.my_network_group_assignment",
+						"id",
+						"uid",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_network_group_assignment.my_network_group_assignment",
+						"group_id",
+						"group_uid",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_network_group_assignment.my_network_group_assignment",
+						"network_id",
+						"network_uid",
+					),
 				),
 			},
 		},
@@ -64,7 +80,11 @@ func TestNetworkGroupAssignmentDataSource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetNetworkGroupAssignment(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateNetworkGroupAssignmentResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateNetworkGroupAssignmentResponse("uid", ""),
+							},
+						),
 						3,
 					)
 				},
@@ -76,7 +96,11 @@ func TestNetworkGroupAssignmentDataSource429Handling(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_network_group_assignment.my_network_group_assignment", "id", "uid"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_network_group_assignment.my_network_group_assignment",
+						"id",
+						"uid",
+					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
 						return nil
@@ -114,7 +138,9 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 						}
 					}
 				`,
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			{
 				PreConfig: func() {

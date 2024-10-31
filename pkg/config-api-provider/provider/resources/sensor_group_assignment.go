@@ -38,11 +38,19 @@ type sensorGroupAssignmentResource struct {
 	client *config_api_client.APIClient
 }
 
-func (r *sensorGroupAssignmentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *sensorGroupAssignmentResource) Metadata(
+	ctx context.Context,
+	req resource.MetadataRequest,
+	resp *resource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_sensor_group_assignment"
 }
 
-func (r *sensorGroupAssignmentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *sensorGroupAssignmentResource) Schema(
+	_ context.Context,
+	_ resource.SchemaRequest,
+	resp *resource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -67,7 +75,11 @@ func (r *sensorGroupAssignmentResource) Schema(_ context.Context, _ resource.Sch
 	}
 }
 
-func (r *sensorGroupAssignmentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *sensorGroupAssignmentResource) Configure(
+	_ context.Context,
+	req resource.ConfigureRequest,
+	resp *resource.ConfigureResponse,
+) {
 	// Add a nil check when handling ProviderData because Terraform
 	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
@@ -88,7 +100,11 @@ func (r *sensorGroupAssignmentResource) Configure(_ context.Context, req resourc
 
 }
 
-func (r *sensorGroupAssignmentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *sensorGroupAssignmentResource) Create(
+	ctx context.Context,
+	req resource.CreateRequest,
+	resp *resource.CreateResponse,
+) {
 	// Retrieve values from plan
 	var plan sensorGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
@@ -97,7 +113,10 @@ func (r *sensorGroupAssignmentResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	postRequest := config_api_client.NewSensorGroupAssignmentsPostRequest(plan.GroupID.ValueString(), plan.SensorID.ValueString())
+	postRequest := config_api_client.NewSensorGroupAssignmentsPostRequest(
+		plan.GroupID.ValueString(),
+		plan.SensorID.ValueString(),
+	)
 	request := r.client.ConfigurationAPI.
 		SensorGroupAssignmentsPost(ctx).
 		SensorGroupAssignmentsPostRequest(*postRequest)
@@ -105,7 +124,10 @@ func (r *sensorGroupAssignmentResource) Create(ctx context.Context, req resource
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_sensor_group_assignment"), errorDetail)
+		resp.Diagnostics.AddError(
+			util.GenerateErrorSummary("create", "uxi_sensor_group_assignment"),
+			errorDetail,
+		)
 		return
 	}
 
@@ -120,7 +142,11 @@ func (r *sensorGroupAssignmentResource) Create(ctx context.Context, req resource
 	}
 }
 
-func (r *sensorGroupAssignmentResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *sensorGroupAssignmentResource) Read(
+	ctx context.Context,
+	req resource.ReadRequest,
+	resp *resource.ReadResponse,
+) {
 	// Get current state
 	var state sensorGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -161,7 +187,11 @@ func (r *sensorGroupAssignmentResource) Read(ctx context.Context, req resource.R
 	}
 }
 
-func (r *sensorGroupAssignmentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *sensorGroupAssignmentResource) Update(
+	ctx context.Context,
+	req resource.UpdateRequest,
+	resp *resource.UpdateResponse,
+) {
 	// Retrieve values from plan
 	var plan sensorGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
@@ -172,7 +202,11 @@ func (r *sensorGroupAssignmentResource) Update(ctx context.Context, req resource
 	}
 }
 
-func (r *sensorGroupAssignmentResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *sensorGroupAssignmentResource) Delete(
+	ctx context.Context,
+	req resource.DeleteRequest,
+	resp *resource.DeleteResponse,
+) {
 	// Retrieve values from state
 	var state sensorGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -188,11 +222,18 @@ func (r *sensorGroupAssignmentResource) Delete(ctx context.Context, req resource
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_sensor_group_assignment"), errorDetail)
+		resp.Diagnostics.AddError(
+			util.GenerateErrorSummary("delete", "uxi_sensor_group_assignment"),
+			errorDetail,
+		)
 		return
 	}
 }
 
-func (r *sensorGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *sensorGroupAssignmentResource) ImportState(
+	ctx context.Context,
+	req resource.ImportStateRequest,
+	resp *resource.ImportStateResponse,
+) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

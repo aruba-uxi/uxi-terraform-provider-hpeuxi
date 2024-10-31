@@ -42,11 +42,19 @@ type wirelessNetworkDataSourceModel struct {
 	} `tfsdk:"filter"`
 }
 
-func (d *wirelessNetworkDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *wirelessNetworkDataSource) Metadata(
+	_ context.Context,
+	req datasource.MetadataRequest,
+	resp *datasource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_wireless_network"
 }
 
-func (d *wirelessNetworkDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *wirelessNetworkDataSource) Schema(
+	_ context.Context,
+	_ datasource.SchemaRequest,
+	resp *datasource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -94,7 +102,11 @@ func (d *wirelessNetworkDataSource) Schema(_ context.Context, _ datasource.Schem
 	}
 }
 
-func (d *wirelessNetworkDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+func (d *wirelessNetworkDataSource) Read(
+	ctx context.Context,
+	req datasource.ReadRequest,
+	resp *datasource.ReadResponse,
+) {
 	var state wirelessNetworkDataSourceModel
 
 	// Read configuration from request
@@ -143,7 +155,11 @@ func (d *wirelessNetworkDataSource) Read(ctx context.Context, req datasource.Rea
 	}
 }
 
-func (d *wirelessNetworkDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *wirelessNetworkDataSource) Configure(
+	_ context.Context,
+	req datasource.ConfigureRequest,
+	resp *datasource.ConfigureResponse,
+) {
 	// Add a nil check when handling ProviderData because Terraform
 	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {

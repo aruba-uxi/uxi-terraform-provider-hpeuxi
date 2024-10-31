@@ -25,7 +25,11 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
+						),
 						3,
 					)
 				},
@@ -37,17 +41,61 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "id", "uid"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "ssid", "ssid"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "name", "name"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "ip_version", "ip_version"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "security", "security"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "hidden", "false"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "band_locking", "band_locking"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "dns_lookup_domain", "dns_lookup_domain"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "disable_edns", "false"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "use_dns64", "false"),
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "external_connectivity", "false"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"id",
+						"uid",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"ssid",
+						"ssid",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"name",
+						"name",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"ip_version",
+						"ip_version",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"security",
+						"security",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"hidden",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"band_locking",
+						"band_locking",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"dns_lookup_domain",
+						"dns_lookup_domain",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"disable_edns",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"use_dns64",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"external_connectivity",
+						"false",
+					),
 				),
 			},
 		},
@@ -73,7 +121,11 @@ func TestWirelessNetworkDataSource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetWirelessNetwork(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateWirelessNetworkResponse("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
+						),
 						3,
 					)
 				},
@@ -85,7 +137,11 @@ func TestWirelessNetworkDataSource429Handling(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_wireless_network.my_wireless_network", "id", "uid"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"id",
+						"uid",
+					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
 						return nil
@@ -123,7 +179,9 @@ func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 						}
 					}
 				`,
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			{
 				PreConfig: func() {

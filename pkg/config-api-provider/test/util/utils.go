@@ -52,7 +52,11 @@ func GenerateMockedAgentResponseModel(uid string, postfix string) resources.Agen
 	}
 }
 
-func GenerateGroupResponseModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) map[string]interface{} {
+func GenerateGroupResponseModel(
+	uid string,
+	nonReplacementFieldPostfix string,
+	replacementFieldPostfix string,
+) map[string]interface{} {
 	parentId := "parent_uid" + replacementFieldPostfix
 
 	return map[string]interface{}{
@@ -64,7 +68,11 @@ func GenerateGroupResponseModel(uid string, nonReplacementFieldPostfix string, r
 	}
 }
 
-func GenerateGroupRequestModel(uid string, nonReplacementFieldPostfix string, replacementFieldPostfix string) map[string]interface{} {
+func GenerateGroupRequestModel(
+	uid string,
+	nonReplacementFieldPostfix string,
+	replacementFieldPostfix string,
+) map[string]interface{} {
 	return map[string]interface{}{
 		"name":     "name" + nonReplacementFieldPostfix,
 		"parentId": "parent_uid" + replacementFieldPostfix,
@@ -79,7 +87,10 @@ func GeneratePaginatedResponse(items []map[string]interface{}) map[string]interf
 	}
 }
 
-func GenerateServiceTestResponseModel(uid string, postfix string) resources.ServiceTestResponseModel {
+func GenerateServiceTestResponseModel(
+	uid string,
+	postfix string,
+) resources.ServiceTestResponseModel {
 	return resources.ServiceTestResponseModel{
 		Uid:       uid,
 		Category:  "external" + postfix,
@@ -142,7 +153,10 @@ func GenerateSensorGroupAssignmentRequest(uid string, postfix string) map[string
 	}
 }
 
-func GenerateAgentGroupAssignmentResponse(uid string, postfix string) resources.AgentGroupAssignmentResponseModel {
+func GenerateAgentGroupAssignmentResponse(
+	uid string,
+	postfix string,
+) resources.AgentGroupAssignmentResponseModel {
 	return resources.AgentGroupAssignmentResponseModel{
 		UID:      uid,
 		GroupUID: "group_uid" + postfix,
@@ -166,7 +180,10 @@ func GenerateNetworkGroupAssignmentRequest(uid string, postfix string) map[strin
 	}
 }
 
-func GenerateServiceTestGroupAssignmentResponse(uid string, postfix string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
+func GenerateServiceTestGroupAssignmentResponse(
+	uid string,
+	postfix string,
+) config_api_client.ServiceTestGroupAssignmentsPostResponse {
 	return config_api_client.ServiceTestGroupAssignmentsPostResponse{
 		Id:          uid,
 		Group:       *config_api_client.NewGroup("group_uid" + postfix),
@@ -237,7 +254,12 @@ func MockGetGroup(uid string, response map[string]interface{}, times int) {
 		JSON(response)
 }
 
-func MockUpdateGroup(uid string, request map[string]interface{}, response map[string]interface{}, times int) {
+func MockUpdateGroup(
+	uid string,
+	request map[string]interface{},
+	response map[string]interface{},
+	times int,
+) {
 	body, _ := json.Marshal(request)
 	gock.New("https://test.api.capenetworks.com").
 		Patch("/networking-uxi/v1alpha1/groups/"+uid).
@@ -297,7 +319,11 @@ func MockGetSensorGroupAssignment(uid string, response map[string]interface{}, t
 		JSON(response)
 }
 
-func MockPostSensorGroupAssignment(request map[string]interface{}, response map[string]interface{}, times int) {
+func MockPostSensorGroupAssignment(
+	request map[string]interface{},
+	response map[string]interface{},
+	times int,
+) {
 	gock.New("https://test.api.capenetworks.com").
 		Post("/networking-uxi/v1alpha1/sensor-group-assignments").
 		MatchHeader("Content-Type", "application/json").
@@ -326,7 +352,11 @@ func MockGetNetworkGroupAssignment(uid string, response map[string]interface{}, 
 		JSON(response)
 }
 
-func MockPostNetworkGroupAssignment(request map[string]interface{}, response map[string]interface{}, times int) {
+func MockPostNetworkGroupAssignment(
+	request map[string]interface{},
+	response map[string]interface{},
+	times int,
+) {
 	gock.New("https://test.api.capenetworks.com").
 		Post("/networking-uxi/v1alpha1/network-group-assignments").
 		MatchHeader("Content-Type", "application/json").
@@ -345,7 +375,11 @@ func MockDeleteNetworkGroupAssignment(uid string, times int) {
 		Reply(204)
 }
 
-func MockPostServiceTestGroupAssignment(request map[string]interface{}, response map[string]interface{}, times int) {
+func MockPostServiceTestGroupAssignment(
+	request map[string]interface{},
+	response map[string]interface{},
+	times int,
+) {
 	gock.New("https://test.api.capenetworks.com").
 		Post("/networking-uxi/v1alpha1/service-test-group-assignments").
 		MatchHeader("Content-Type", "application/json").

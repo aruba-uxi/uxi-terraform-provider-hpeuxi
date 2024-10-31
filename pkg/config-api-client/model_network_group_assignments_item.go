@@ -34,7 +34,12 @@ type _NetworkGroupAssignmentsItem NetworkGroupAssignmentsItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNetworkGroupAssignmentsItem(id string, group Group, network Network, type_ string) *NetworkGroupAssignmentsItem {
+func NewNetworkGroupAssignmentsItem(
+	id string,
+	group Group,
+	network Network,
+	type_ string,
+) *NetworkGroupAssignmentsItem {
 	this := NetworkGroupAssignmentsItem{}
 	this.Id = id
 	this.Group = group
@@ -227,7 +232,9 @@ func (v *NullableNetworkGroupAssignmentsItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNetworkGroupAssignmentsItem(val *NetworkGroupAssignmentsItem) *NullableNetworkGroupAssignmentsItem {
+func NewNullableNetworkGroupAssignmentsItem(
+	val *NetworkGroupAssignmentsItem,
+) *NullableNetworkGroupAssignmentsItem {
 	return &NullableNetworkGroupAssignmentsItem{value: val, isSet: true}
 }
 

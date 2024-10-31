@@ -32,7 +32,10 @@ type _ServiceTestGroupAssignmentsPostRequest ServiceTestGroupAssignmentsPostRequ
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewServiceTestGroupAssignmentsPostRequest(groupId string, serviceTestId string) *ServiceTestGroupAssignmentsPostRequest {
+func NewServiceTestGroupAssignmentsPostRequest(
+	groupId string,
+	serviceTestId string,
+) *ServiceTestGroupAssignmentsPostRequest {
 	this := ServiceTestGroupAssignmentsPostRequest{}
 	this.GroupId = groupId
 	this.ServiceTestId = serviceTestId
@@ -157,7 +160,9 @@ func (v NullableServiceTestGroupAssignmentsPostRequest) Get() *ServiceTestGroupA
 	return v.value
 }
 
-func (v *NullableServiceTestGroupAssignmentsPostRequest) Set(val *ServiceTestGroupAssignmentsPostRequest) {
+func (v *NullableServiceTestGroupAssignmentsPostRequest) Set(
+	val *ServiceTestGroupAssignmentsPostRequest,
+) {
 	v.value = val
 	v.isSet = true
 }
@@ -171,7 +176,9 @@ func (v *NullableServiceTestGroupAssignmentsPostRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableServiceTestGroupAssignmentsPostRequest(val *ServiceTestGroupAssignmentsPostRequest) *NullableServiceTestGroupAssignmentsPostRequest {
+func NewNullableServiceTestGroupAssignmentsPostRequest(
+	val *ServiceTestGroupAssignmentsPostRequest,
+) *NullableServiceTestGroupAssignmentsPostRequest {
 	return &NullableServiceTestGroupAssignmentsPostRequest{value: val, isSet: true}
 }
 

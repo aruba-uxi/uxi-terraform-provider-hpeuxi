@@ -34,7 +34,12 @@ type _NetworkGroupAssignmentsPostResponse NetworkGroupAssignmentsPostResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNetworkGroupAssignmentsPostResponse(id string, group Group, network Network, type_ string) *NetworkGroupAssignmentsPostResponse {
+func NewNetworkGroupAssignmentsPostResponse(
+	id string,
+	group Group,
+	network Network,
+	type_ string,
+) *NetworkGroupAssignmentsPostResponse {
 	this := NetworkGroupAssignmentsPostResponse{}
 	this.Id = id
 	this.Group = group
@@ -213,7 +218,9 @@ func (v NullableNetworkGroupAssignmentsPostResponse) Get() *NetworkGroupAssignme
 	return v.value
 }
 
-func (v *NullableNetworkGroupAssignmentsPostResponse) Set(val *NetworkGroupAssignmentsPostResponse) {
+func (v *NullableNetworkGroupAssignmentsPostResponse) Set(
+	val *NetworkGroupAssignmentsPostResponse,
+) {
 	v.value = val
 	v.isSet = true
 }
@@ -227,7 +234,9 @@ func (v *NullableNetworkGroupAssignmentsPostResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNetworkGroupAssignmentsPostResponse(val *NetworkGroupAssignmentsPostResponse) *NullableNetworkGroupAssignmentsPostResponse {
+func NewNullableNetworkGroupAssignmentsPostResponse(
+	val *NetworkGroupAssignmentsPostResponse,
+) *NullableNetworkGroupAssignmentsPostResponse {
 	return &NullableNetworkGroupAssignmentsPostResponse{value: val, isSet: true}
 }
 

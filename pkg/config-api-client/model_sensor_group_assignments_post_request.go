@@ -32,7 +32,10 @@ type _SensorGroupAssignmentsPostRequest SensorGroupAssignmentsPostRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorGroupAssignmentsPostRequest(groupId string, sensorId string) *SensorGroupAssignmentsPostRequest {
+func NewSensorGroupAssignmentsPostRequest(
+	groupId string,
+	sensorId string,
+) *SensorGroupAssignmentsPostRequest {
 	this := SensorGroupAssignmentsPostRequest{}
 	this.GroupId = groupId
 	this.SensorId = sensorId
@@ -171,7 +174,9 @@ func (v *NullableSensorGroupAssignmentsPostRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSensorGroupAssignmentsPostRequest(val *SensorGroupAssignmentsPostRequest) *NullableSensorGroupAssignmentsPostRequest {
+func NewNullableSensorGroupAssignmentsPostRequest(
+	val *SensorGroupAssignmentsPostRequest,
+) *NullableSensorGroupAssignmentsPostRequest {
 	return &NullableSensorGroupAssignmentsPostRequest{value: val, isSet: true}
 }
 

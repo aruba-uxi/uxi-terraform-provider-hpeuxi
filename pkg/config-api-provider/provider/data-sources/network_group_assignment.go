@@ -32,11 +32,19 @@ type networkGroupAssignmentDataSourceModel struct {
 	} `tfsdk:"filter"`
 }
 
-func (d *networkGroupAssignmentDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *networkGroupAssignmentDataSource) Metadata(
+	_ context.Context,
+	req datasource.MetadataRequest,
+	resp *datasource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_network_group_assignment"
 }
 
-func (d *networkGroupAssignmentDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *networkGroupAssignmentDataSource) Schema(
+	_ context.Context,
+	_ datasource.SchemaRequest,
+	resp *datasource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -60,7 +68,11 @@ func (d *networkGroupAssignmentDataSource) Schema(_ context.Context, _ datasourc
 	}
 }
 
-func (d *networkGroupAssignmentDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+func (d *networkGroupAssignmentDataSource) Read(
+	ctx context.Context,
+	req datasource.ReadRequest,
+	resp *datasource.ReadResponse,
+) {
 	var state networkGroupAssignmentDataSourceModel
 
 	diags := req.Config.Get(ctx, &state)
@@ -99,7 +111,11 @@ func (d *networkGroupAssignmentDataSource) Read(ctx context.Context, req datasou
 	}
 }
 
-func (d *networkGroupAssignmentDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *networkGroupAssignmentDataSource) Configure(
+	_ context.Context,
+	req datasource.ConfigureRequest,
+	resp *datasource.ConfigureResponse,
+) {
 	if req.ProviderData == nil {
 		return
 	}

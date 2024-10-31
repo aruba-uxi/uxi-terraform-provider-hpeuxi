@@ -34,7 +34,9 @@ func TestSensorResource(t *testing.T) {
 						pcap_mode = "light"
 					}`,
 
-				ExpectError: regexp.MustCompile(`creating a sensor is not supported; sensors can only be imported`),
+				ExpectError: regexp.MustCompile(
+					`creating a sensor is not supported; sensors can only be imported`,
+				),
 			},
 			// Importing a sensor
 			{
@@ -59,7 +61,11 @@ func TestSensorResource(t *testing.T) {
 
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "address_note", "address_note"),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor.my_sensor",
+						"address_note",
+						"address_note",
+					),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
@@ -100,7 +106,11 @@ func TestSensorResource(t *testing.T) {
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "address_note", "address_note_2"),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor.my_sensor",
+						"address_note",
+						"address_note_2",
+					),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes_2"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light_2"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
@@ -114,8 +124,10 @@ func TestSensorResource(t *testing.T) {
 						1,
 					)
 				},
-				Config:      provider.ProviderConfig + ``,
-				ExpectError: regexp.MustCompile(`deleting a sensor is not supported; sensors can only removed from state`),
+				Config: provider.ProviderConfig + ``,
+				ExpectError: regexp.MustCompile(
+					`deleting a sensor is not supported; sensors can only removed from state`,
+				),
 			},
 			// Remove sensor from state
 			{
@@ -233,7 +245,9 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 						id = "uid"
 					}`,
 
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Read not found
 			{
