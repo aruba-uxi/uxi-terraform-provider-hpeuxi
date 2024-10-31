@@ -9,11 +9,50 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 5.2.0
+  version: 5.3.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
 paths:
+  /networking-uxi/v1alpha1/agents/{agent_uid}:
+    delete:
+      operationId: agents_delete
+      summary: Agents Delete
+      description: Delete an existing agent.
+      parameters:
+        - name: agent_uid
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Agent Uid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '204':
+          description: No Content
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1
+        - agents
   /networking-uxi/v1alpha1/agents:
     get:
       operationId: agents_get

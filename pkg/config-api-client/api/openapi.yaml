@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 5.2.0
+  version: 5.3.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -29,6 +29,44 @@ tags:
 - name: wired-networks
 - name: wireless-networks
 paths:
+  /networking-uxi/v1alpha1/agents/{agent_uid}:
+    delete:
+      description: Delete an existing agent.
+      operationId: agents_delete
+      parameters:
+      - explode: false
+        in: path
+        name: agent_uid
+        required: true
+        schema:
+          title: Agent Uid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agents Delete
+      tags:
+      - configuration
   /networking-uxi/v1alpha1/agents:
     get:
       description: Get a list of agents
@@ -979,7 +1017,7 @@ components:
         errorCode: errorCode
         debugId: debugId
         message: message
-        httpStatusCode: 6
+        httpStatusCode: 0
         errorDetails:
         - type: type
           issues:
