@@ -3,7 +3,9 @@ package resources
 import (
 	"context"
 
-	// "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/terraform-provider-configuration/provider/util"
+
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -48,7 +50,9 @@ func NewAgentResource() resource.Resource {
 	return &agentResource{}
 }
 
-type agentResource struct{}
+type agentResource struct {
+	client *config_api_client.APIClient
+}
 
 func (r *agentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_agent"
@@ -77,7 +81,23 @@ func (r *agentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 }
 
 func (r *agentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	// Add a nil check when handling ProviderData because Terraform
+	// sets that data after it calls the ConfigureProvider RPC.
+	if req.ProviderData == nil {
+		return
+	}
 
+	client, ok := req.ProviderData.(*config_api_client.APIClient)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Resource type: Group. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.client = client
 }
 
 func (r *agentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -89,7 +109,6 @@ func (r *agentResource) Create(ctx context.Context, req resource.CreateRequest, 
 }
 
 func (r *agentResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	// Get current state
 	var state agentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -97,14 +116,29 @@ func (r *agentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		return
 	}
 
-	response := GetAgent(state.ID.ValueString())
+	request := r.client.ConfigurationAPI.
+		AgentsGet(ctx).
+		Id(state.ID.ValueString())
+	sensorResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	// Update state from client response
-	state.Name = types.StringValue(response.Name)
-	state.Notes = types.StringValue(response.Notes)
-	state.PCapMode = types.StringValue(response.PCapMode)
+	errorSummary := util.GenerateErrorSummary("read", "uxi_agent")
 
-	// Set refreshed state
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(sensorResponse.Items) != 1 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+	sensor := sensorResponse.Items[0]
+
+	state.Name = types.StringValue(sensor.Name)
+	state.Notes = types.StringPointerValue(sensor.Notes.Get())
+	state.PCapMode = types.StringPointerValue(sensor.PcapMode.Get())
+
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -156,22 +190,6 @@ func (r *agentResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 
 func (r *agentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-// Get the agent using the configuration-api client
-var GetAgent = func(uid string) AgentResponseModel {
-	// TODO: Query the agent using the client
-
-	return AgentResponseModel{
-		UID:                uid,
-		Serial:             "mock_serial",
-		Name:               "mock_name",
-		ModelNumber:        "mock_model_number",
-		WifiMacAddress:     "mock_wifi_mac_address",
-		EthernetMacAddress: "mock_ethernet_mac_address",
-		Notes:              "mock_notes",
-		PCapMode:           "mock_pcap_mode",
-	}
 }
 
 // Update the agent using the configuration-api client

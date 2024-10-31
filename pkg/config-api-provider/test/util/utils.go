@@ -25,7 +25,21 @@ func GenerateSensorResponseModel(uid string, postfix string) map[string]interfac
 	}
 }
 
-func GenerateAgentResponseModel(uid string, postfix string) resources.AgentResponseModel {
+func GenerateAgentResponseModel(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"id":                 uid,
+		"serial":             "serial" + postfix,
+		"name":               "name" + postfix,
+		"modelNumber":        "model_number" + postfix,
+		"wifiMacAddress":     "wifi_mac_address" + postfix,
+		"ethernetMacAddress": "ethernet_mac_address" + postfix,
+		"notes":              "notes" + postfix,
+		"pcapMode":           "light" + postfix,
+		"type":               "networking-uxi/sensor",
+	}
+}
+
+func GenerateMockedAgentResponseModel(uid string, postfix string) resources.AgentResponseModel {
 	return resources.AgentResponseModel{
 		UID:                uid,
 		Serial:             "serial" + postfix,
@@ -190,6 +204,16 @@ func MockOAuth() *gock.Response {
 			"expires_in":   3600,
 		})
 
+}
+
+func MockGetAgent(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Get("/networking-uxi/v1alpha1/agents").
+		MatchHeader("Authorization", "mock_token").
+		MatchParam("id", uid).
+		Times(times).
+		Reply(200).
+		JSON(response)
 }
 
 func MockPostGroup(request map[string]interface{}, response map[string]interface{}, times int) {

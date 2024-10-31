@@ -21,9 +21,11 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for agent import
-					resources.GetAgent = func(uid string) resources.AgentResponseModel {
-						return util.GenerateAgentResponseModel(uid, "")
-					}
+					util.MockGetAgent(
+						"uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						2,
+					)
 
 					// required for group create
 					util.MockPostGroup(
@@ -83,13 +85,16 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					resources.GetAgent = func(uid string) resources.AgentResponseModel {
-						if uid == "agent_uid" {
-							return util.GenerateAgentResponseModel(uid, "")
-						} else {
-							return util.GenerateAgentResponseModel(uid, "_2")
-						}
-					}
+					util.MockGetAgent(
+						"agent_uid_2",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("agent_uid_2", "_2")}),
+						2,
+					)
+					util.MockGetAgent(
+						"agent_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("agent_uid", "")}),
+						2,
+					)
 					util.MockGetGroup(
 						"group_uid_2",
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")}),
@@ -169,6 +174,16 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			// Delete testing automatically occurs in TestCase
 			{
 				PreConfig: func() {
+					util.MockGetAgent(
+						"agent_uid",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("agent_uid", "")}),
+						2,
+					)
+					util.MockGetAgent(
+						"agent_uid_2",
+						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("agent_uid_2", "_2")}),
+						1,
+					)
 					util.MockGetGroup(
 						"group_uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
