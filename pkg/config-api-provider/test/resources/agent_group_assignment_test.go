@@ -177,7 +177,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					util.MockGetAgent(
 						"agent_uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("agent_uid", "")}),
-						1,
+						2,
 					)
 					util.MockGetAgent(
 						"agent_uid_2",
