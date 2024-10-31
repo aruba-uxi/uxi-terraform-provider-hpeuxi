@@ -33,7 +33,11 @@ type _ServiceTestsListResponse ServiceTestsListResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewServiceTestsListResponse(items []ServiceTestsListItem, count int32, next NullableString) *ServiceTestsListResponse {
+func NewServiceTestsListResponse(
+	items []ServiceTestsListItem,
+	count int32,
+	next NullableString,
+) *ServiceTestsListResponse {
 	this := ServiceTestsListResponse{}
 	this.Items = items
 	this.Count = count
@@ -201,7 +205,9 @@ func (v *NullableServiceTestsListResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableServiceTestsListResponse(val *ServiceTestsListResponse) *NullableServiceTestsListResponse {
+func NewNullableServiceTestsListResponse(
+	val *ServiceTestsListResponse,
+) *NullableServiceTestsListResponse {
 	return &NullableServiceTestsListResponse{value: val, isSet: true}
 }
 

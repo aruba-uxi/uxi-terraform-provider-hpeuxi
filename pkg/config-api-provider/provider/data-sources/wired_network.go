@@ -40,11 +40,19 @@ type wiredNetworkDataSourceModel struct {
 	} `tfsdk:"filter"`
 }
 
-func (d *wiredNetworkDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *wiredNetworkDataSource) Metadata(
+	_ context.Context,
+	req datasource.MetadataRequest,
+	resp *datasource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_wired_network"
 }
 
-func (d *wiredNetworkDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *wiredNetworkDataSource) Schema(
+	_ context.Context,
+	_ datasource.SchemaRequest,
+	resp *datasource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -86,7 +94,11 @@ func (d *wiredNetworkDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 	}
 }
 
-func (d *wiredNetworkDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+func (d *wiredNetworkDataSource) Read(
+	ctx context.Context,
+	req datasource.ReadRequest,
+	resp *datasource.ReadResponse,
+) {
 	var state wiredNetworkDataSourceModel
 
 	// Read configuration from request
@@ -133,7 +145,11 @@ func (d *wiredNetworkDataSource) Read(ctx context.Context, req datasource.ReadRe
 	}
 }
 
-func (d *wiredNetworkDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *wiredNetworkDataSource) Configure(
+	_ context.Context,
+	req datasource.ConfigureRequest,
+	resp *datasource.ConfigureResponse,
+) {
 	// Add a nil check when handling ProviderData because Terraform
 	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {

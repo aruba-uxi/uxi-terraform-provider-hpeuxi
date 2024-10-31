@@ -33,7 +33,11 @@ type _GroupsGetResponse GroupsGetResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupsGetResponse(items []GroupsGetItem, count int32, next NullableString) *GroupsGetResponse {
+func NewGroupsGetResponse(
+	items []GroupsGetItem,
+	count int32,
+	next NullableString,
+) *GroupsGetResponse {
 	this := GroupsGetResponse{}
 	this.Items = items
 	this.Count = count

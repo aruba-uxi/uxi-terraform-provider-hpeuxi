@@ -37,7 +37,15 @@ type _ServiceTestsListItem ServiceTestsListItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewServiceTestsListItem(id string, category string, name string, target NullableString, template string, isEnabled bool, type_ string) *ServiceTestsListItem {
+func NewServiceTestsListItem(
+	id string,
+	category string,
+	name string,
+	target NullableString,
+	template string,
+	isEnabled bool,
+	type_ string,
+) *ServiceTestsListItem {
 	this := ServiceTestsListItem{}
 	this.Id = id
 	this.Category = category

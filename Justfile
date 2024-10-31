@@ -30,6 +30,7 @@ generate-config-api-client: retrieve-config-api-openapi-spec
 
 setup-dev:
   curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.60.1
+  go install github.com/segmentio/golines@latest
 
 test-client +ARGS='':
   cd {{ CONFIG_API_CLIENT_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
@@ -38,7 +39,8 @@ coverage-client:
   cd {{ CONFIG_API_CLIENT_DIR }} && go tool cover -html=.coverage -o=.coverage.html
 
 fmt-client:
-  gofmt -w pkg/config-api-client
+  gofmt -w {{ CONFIG_API_CLIENT_DIR }}
+  golines -w {{ CONFIG_API_CLIENT_DIR }}
 
 tidy-client:
   cd {{ CONFIG_API_CLIENT_DIR }} && go mod tidy
@@ -50,6 +52,11 @@ lint-client:
 
   if [ -n "$(gofmt -d .)" ]; then
     echo "Error: (gofmt) formatting required" >&2
+    exit 1
+  fi
+
+  if [ -n "$(golines . --dry-run)" ]; then
+    echo "Error: (golines) formatting required" >&2
     exit 1
   fi
 
@@ -65,10 +72,16 @@ lint-provider:
     exit 1
   fi
 
+  if [ -n "$(golines . --dry-run)" ]; then
+    echo "Error: (golines) formatting required" >&2
+    exit 1
+  fi
+
   golangci-lint run
 
 fmt-provider:
-  gofmt -w pkg/config-api-provider
+  gofmt -w {{ CONFIG_API_PROVIDER_DIR }}
+  golines -w {{ CONFIG_API_PROVIDER_DIR }}
 
 tidy-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} && go mod tidy

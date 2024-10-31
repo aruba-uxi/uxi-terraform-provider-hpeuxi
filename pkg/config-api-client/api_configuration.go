@@ -53,7 +53,7 @@ func (r ApiAgentsGetRequest) Execute() (*AgentsResponse, *http.Response, error) 
 /*
 AgentsGet Agents Get
 
-Get a list of agents
+# Get a list of agents
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiAgentsGetRequest
@@ -68,7 +68,9 @@ func (a *ConfigurationAPIService) AgentsGet(ctx context.Context) ApiAgentsGetReq
 // Execute executes the request
 //
 //	@return AgentsResponse
-func (a *ConfigurationAPIService) AgentsGetExecute(r ApiAgentsGetRequest) (*AgentsResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) AgentsGetExecute(
+	r ApiAgentsGetRequest,
+) (*AgentsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -76,7 +78,10 @@ func (a *ConfigurationAPIService) AgentsGetExecute(r ApiAgentsGetRequest) (*Agen
 		localVarReturnValue *AgentsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.AgentsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.AgentsGet",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -116,7 +121,16 @@ func (a *ConfigurationAPIService) AgentsGetExecute(r ApiAgentsGetRequest) (*Agen
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -162,7 +176,11 @@ func (a *ConfigurationAPIService) AgentsGetExecute(r ApiAgentsGetRequest) (*Agen
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -193,7 +211,10 @@ Delete an existing group.
 	@param groupUid
 	@return ApiGroupsDeleteRequest
 */
-func (a *ConfigurationAPIService) GroupsDelete(ctx context.Context, groupUid string) ApiGroupsDeleteRequest {
+func (a *ConfigurationAPIService) GroupsDelete(
+	ctx context.Context,
+	groupUid string,
+) ApiGroupsDeleteRequest {
 	return ApiGroupsDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -204,7 +225,9 @@ func (a *ConfigurationAPIService) GroupsDelete(ctx context.Context, groupUid str
 // Execute executes the request
 //
 //	@return interface{}
-func (a *ConfigurationAPIService) GroupsDeleteExecute(r ApiGroupsDeleteRequest) (interface{}, *http.Response, error) {
+func (a *ConfigurationAPIService) GroupsDeleteExecute(
+	r ApiGroupsDeleteRequest,
+) (interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -212,13 +235,21 @@ func (a *ConfigurationAPIService) GroupsDeleteExecute(r ApiGroupsDeleteRequest) 
 		localVarReturnValue interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsDelete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.GroupsDelete",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/networking-uxi/v1alpha1/groups/{group_uid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"group_uid"+"}", url.PathEscape(parameterValueToString(r.groupUid, "groupUid")), -1)
+	localVarPath = strings.Replace(
+		localVarPath,
+		"{"+"group_uid"+"}",
+		url.PathEscape(parameterValueToString(r.groupUid, "groupUid")),
+		-1,
+	)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -241,7 +272,16 @@ func (a *ConfigurationAPIService) GroupsDeleteExecute(r ApiGroupsDeleteRequest) 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -287,7 +327,11 @@ func (a *ConfigurationAPIService) GroupsDeleteExecute(r ApiGroupsDeleteRequest) 
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -329,7 +373,7 @@ func (r ApiGroupsGetRequest) Execute() (*GroupsGetResponse, *http.Response, erro
 /*
 GroupsGet Groups Get
 
-Lists groups matching provided criteria
+# Lists groups matching provided criteria
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiGroupsGetRequest
@@ -344,7 +388,9 @@ func (a *ConfigurationAPIService) GroupsGet(ctx context.Context) ApiGroupsGetReq
 // Execute executes the request
 //
 //	@return GroupsGetResponse
-func (a *ConfigurationAPIService) GroupsGetExecute(r ApiGroupsGetRequest) (*GroupsGetResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GroupsGetExecute(
+	r ApiGroupsGetRequest,
+) (*GroupsGetResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -352,7 +398,10 @@ func (a *ConfigurationAPIService) GroupsGetExecute(r ApiGroupsGetRequest) (*Grou
 		localVarReturnValue *GroupsGetResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.GroupsGet",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -392,7 +441,16 @@ func (a *ConfigurationAPIService) GroupsGetExecute(r ApiGroupsGetRequest) (*Grou
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -438,7 +496,11 @@ func (a *ConfigurationAPIService) GroupsGetExecute(r ApiGroupsGetRequest) (*Grou
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -457,7 +519,9 @@ type ApiGroupsPatchRequest struct {
 	groupsPatchRequest *GroupsPatchRequest
 }
 
-func (r ApiGroupsPatchRequest) GroupsPatchRequest(groupsPatchRequest GroupsPatchRequest) ApiGroupsPatchRequest {
+func (r ApiGroupsPatchRequest) GroupsPatchRequest(
+	groupsPatchRequest GroupsPatchRequest,
+) ApiGroupsPatchRequest {
 	r.groupsPatchRequest = &groupsPatchRequest
 	return r
 }
@@ -475,7 +539,10 @@ Update an existing group.
 	@param groupUid
 	@return ApiGroupsPatchRequest
 */
-func (a *ConfigurationAPIService) GroupsPatch(ctx context.Context, groupUid string) ApiGroupsPatchRequest {
+func (a *ConfigurationAPIService) GroupsPatch(
+	ctx context.Context,
+	groupUid string,
+) ApiGroupsPatchRequest {
 	return ApiGroupsPatchRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -486,7 +553,9 @@ func (a *ConfigurationAPIService) GroupsPatch(ctx context.Context, groupUid stri
 // Execute executes the request
 //
 //	@return GroupsPatchResponse
-func (a *ConfigurationAPIService) GroupsPatchExecute(r ApiGroupsPatchRequest) (*GroupsPatchResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GroupsPatchExecute(
+	r ApiGroupsPatchRequest,
+) (*GroupsPatchResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPatch
 		localVarPostBody    interface{}
@@ -494,13 +563,21 @@ func (a *ConfigurationAPIService) GroupsPatchExecute(r ApiGroupsPatchRequest) (*
 		localVarReturnValue *GroupsPatchResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsPatch")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.GroupsPatch",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/networking-uxi/v1alpha1/groups/{group_uid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"group_uid"+"}", url.PathEscape(parameterValueToString(r.groupUid, "groupUid")), -1)
+	localVarPath = strings.Replace(
+		localVarPath,
+		"{"+"group_uid"+"}",
+		url.PathEscape(parameterValueToString(r.groupUid, "groupUid")),
+		-1,
+	)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -525,7 +602,16 @@ func (a *ConfigurationAPIService) GroupsPatchExecute(r ApiGroupsPatchRequest) (*
 	}
 	// body params
 	localVarPostBody = r.groupsPatchRequest
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -571,7 +657,11 @@ func (a *ConfigurationAPIService) GroupsPatchExecute(r ApiGroupsPatchRequest) (*
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -589,7 +679,9 @@ type ApiGroupsPostRequest struct {
 	groupsPostRequest *GroupsPostRequest
 }
 
-func (r ApiGroupsPostRequest) GroupsPostRequest(groupsPostRequest GroupsPostRequest) ApiGroupsPostRequest {
+func (r ApiGroupsPostRequest) GroupsPostRequest(
+	groupsPostRequest GroupsPostRequest,
+) ApiGroupsPostRequest {
 	r.groupsPostRequest = &groupsPostRequest
 	return r
 }
@@ -601,7 +693,7 @@ func (r ApiGroupsPostRequest) Execute() (*GroupsPostResponse, *http.Response, er
 /*
 GroupsPost Groups Post
 
-Create a new group with the group identified in `parentId` as its parent
+# Create a new group with the group identified in `parentId` as its parent
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiGroupsPostRequest
@@ -616,7 +708,9 @@ func (a *ConfigurationAPIService) GroupsPost(ctx context.Context) ApiGroupsPostR
 // Execute executes the request
 //
 //	@return GroupsPostResponse
-func (a *ConfigurationAPIService) GroupsPostExecute(r ApiGroupsPostRequest) (*GroupsPostResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) GroupsPostExecute(
+	r ApiGroupsPostRequest,
+) (*GroupsPostResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -624,7 +718,10 @@ func (a *ConfigurationAPIService) GroupsPostExecute(r ApiGroupsPostRequest) (*Gr
 		localVarReturnValue *GroupsPostResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.GroupsPost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.GroupsPost",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -635,7 +732,9 @@ func (a *ConfigurationAPIService) GroupsPostExecute(r ApiGroupsPostRequest) (*Gr
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.groupsPostRequest == nil {
-		return localVarReturnValue, nil, reportError("groupsPostRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError(
+			"groupsPostRequest is required and must be specified",
+		)
 	}
 
 	// to determine the Content-Type header
@@ -657,7 +756,16 @@ func (a *ConfigurationAPIService) GroupsPostExecute(r ApiGroupsPostRequest) (*Gr
 	}
 	// body params
 	localVarPostBody = r.groupsPostRequest
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -703,7 +811,11 @@ func (a *ConfigurationAPIService) GroupsPostExecute(r ApiGroupsPostRequest) (*Gr
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -728,13 +840,16 @@ func (r ApiNetworkGroupAssignmentsDeleteRequest) Execute() (interface{}, *http.R
 /*
 NetworkGroupAssignmentsDelete Network Group Assignments Delete
 
-Delete a network group assignment
+# Delete a network group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
 	@return ApiNetworkGroupAssignmentsDeleteRequest
 */
-func (a *ConfigurationAPIService) NetworkGroupAssignmentsDelete(ctx context.Context, id string) ApiNetworkGroupAssignmentsDeleteRequest {
+func (a *ConfigurationAPIService) NetworkGroupAssignmentsDelete(
+	ctx context.Context,
+	id string,
+) ApiNetworkGroupAssignmentsDeleteRequest {
 	return ApiNetworkGroupAssignmentsDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -745,7 +860,9 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsDelete(ctx context.Cont
 // Execute executes the request
 //
 //	@return interface{}
-func (a *ConfigurationAPIService) NetworkGroupAssignmentsDeleteExecute(r ApiNetworkGroupAssignmentsDeleteRequest) (interface{}, *http.Response, error) {
+func (a *ConfigurationAPIService) NetworkGroupAssignmentsDeleteExecute(
+	r ApiNetworkGroupAssignmentsDeleteRequest,
+) (interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -753,13 +870,21 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsDeleteExecute(r ApiNetw
 		localVarReturnValue interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.NetworkGroupAssignmentsDelete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.NetworkGroupAssignmentsDelete",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/networking-uxi/v1alpha1/network-group-assignments/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath = strings.Replace(
+		localVarPath,
+		"{"+"id"+"}",
+		url.PathEscape(parameterValueToString(r.id, "id")),
+		-1,
+	)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -782,7 +907,16 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsDeleteExecute(r ApiNetw
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -828,7 +962,11 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsDeleteExecute(r ApiNetw
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -853,12 +991,16 @@ func (r ApiNetworkGroupAssignmentsGetRequest) Id(id string) ApiNetworkGroupAssig
 	return r
 }
 
-func (r ApiNetworkGroupAssignmentsGetRequest) Next(next string) ApiNetworkGroupAssignmentsGetRequest {
+func (r ApiNetworkGroupAssignmentsGetRequest) Next(
+	next string,
+) ApiNetworkGroupAssignmentsGetRequest {
 	r.next = &next
 	return r
 }
 
-func (r ApiNetworkGroupAssignmentsGetRequest) Limit(limit int32) ApiNetworkGroupAssignmentsGetRequest {
+func (r ApiNetworkGroupAssignmentsGetRequest) Limit(
+	limit int32,
+) ApiNetworkGroupAssignmentsGetRequest {
 	r.limit = &limit
 	return r
 }
@@ -870,12 +1012,14 @@ func (r ApiNetworkGroupAssignmentsGetRequest) Execute() (*NetworkGroupAssignment
 /*
 NetworkGroupAssignmentsGet Network Group Assignments Get
 
-Get a list of network group assignments
+# Get a list of network group assignments
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiNetworkGroupAssignmentsGetRequest
 */
-func (a *ConfigurationAPIService) NetworkGroupAssignmentsGet(ctx context.Context) ApiNetworkGroupAssignmentsGetRequest {
+func (a *ConfigurationAPIService) NetworkGroupAssignmentsGet(
+	ctx context.Context,
+) ApiNetworkGroupAssignmentsGetRequest {
 	return ApiNetworkGroupAssignmentsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -885,7 +1029,9 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsGet(ctx context.Context
 // Execute executes the request
 //
 //	@return NetworkGroupAssignmentsResponse
-func (a *ConfigurationAPIService) NetworkGroupAssignmentsGetExecute(r ApiNetworkGroupAssignmentsGetRequest) (*NetworkGroupAssignmentsResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) NetworkGroupAssignmentsGetExecute(
+	r ApiNetworkGroupAssignmentsGetRequest,
+) (*NetworkGroupAssignmentsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -893,7 +1039,10 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsGetExecute(r ApiNetwork
 		localVarReturnValue *NetworkGroupAssignmentsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.NetworkGroupAssignmentsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.NetworkGroupAssignmentsGet",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -933,7 +1082,16 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsGetExecute(r ApiNetwork
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -979,7 +1137,11 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsGetExecute(r ApiNetwork
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -997,7 +1159,9 @@ type ApiNetworkGroupAssignmentsPostRequest struct {
 	networkGroupAssignmentsPostRequest *NetworkGroupAssignmentsPostRequest
 }
 
-func (r ApiNetworkGroupAssignmentsPostRequest) NetworkGroupAssignmentsPostRequest(networkGroupAssignmentsPostRequest NetworkGroupAssignmentsPostRequest) ApiNetworkGroupAssignmentsPostRequest {
+func (r ApiNetworkGroupAssignmentsPostRequest) NetworkGroupAssignmentsPostRequest(
+	networkGroupAssignmentsPostRequest NetworkGroupAssignmentsPostRequest,
+) ApiNetworkGroupAssignmentsPostRequest {
 	r.networkGroupAssignmentsPostRequest = &networkGroupAssignmentsPostRequest
 	return r
 }
@@ -1009,12 +1173,14 @@ func (r ApiNetworkGroupAssignmentsPostRequest) Execute() (*NetworkGroupAssignmen
 /*
 NetworkGroupAssignmentsPost Network Group Assignments Post
 
-Create a network group assignment
+# Create a network group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiNetworkGroupAssignmentsPostRequest
 */
-func (a *ConfigurationAPIService) NetworkGroupAssignmentsPost(ctx context.Context) ApiNetworkGroupAssignmentsPostRequest {
+func (a *ConfigurationAPIService) NetworkGroupAssignmentsPost(
+	ctx context.Context,
+) ApiNetworkGroupAssignmentsPostRequest {
 	return ApiNetworkGroupAssignmentsPostRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -1024,7 +1190,9 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsPost(ctx context.Contex
 // Execute executes the request
 //
 //	@return NetworkGroupAssignmentsPostResponse
-func (a *ConfigurationAPIService) NetworkGroupAssignmentsPostExecute(r ApiNetworkGroupAssignmentsPostRequest) (*NetworkGroupAssignmentsPostResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) NetworkGroupAssignmentsPostExecute(
+	r ApiNetworkGroupAssignmentsPostRequest,
+) (*NetworkGroupAssignmentsPostResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -1032,7 +1200,10 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsPostExecute(r ApiNetwor
 		localVarReturnValue *NetworkGroupAssignmentsPostResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.NetworkGroupAssignmentsPost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.NetworkGroupAssignmentsPost",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -1043,7 +1214,9 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsPostExecute(r ApiNetwor
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.networkGroupAssignmentsPostRequest == nil {
-		return localVarReturnValue, nil, reportError("networkGroupAssignmentsPostRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError(
+			"networkGroupAssignmentsPostRequest is required and must be specified",
+		)
 	}
 
 	// to determine the Content-Type header
@@ -1065,7 +1238,16 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsPostExecute(r ApiNetwor
 	}
 	// body params
 	localVarPostBody = r.networkGroupAssignmentsPostRequest
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1111,7 +1293,11 @@ func (a *ConfigurationAPIService) NetworkGroupAssignmentsPostExecute(r ApiNetwor
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -1136,13 +1322,16 @@ func (r ApiSensorGroupAssignmentsDeleteRequest) Execute() (interface{}, *http.Re
 /*
 SensorGroupAssignmentsDelete Sensor Group Assignments Delete
 
-Delete a sensor group assignment
+# Delete a sensor group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
 	@return ApiSensorGroupAssignmentsDeleteRequest
 */
-func (a *ConfigurationAPIService) SensorGroupAssignmentsDelete(ctx context.Context, id string) ApiSensorGroupAssignmentsDeleteRequest {
+func (a *ConfigurationAPIService) SensorGroupAssignmentsDelete(
+	ctx context.Context,
+	id string,
+) ApiSensorGroupAssignmentsDeleteRequest {
 	return ApiSensorGroupAssignmentsDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -1153,7 +1342,9 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsDelete(ctx context.Conte
 // Execute executes the request
 //
 //	@return interface{}
-func (a *ConfigurationAPIService) SensorGroupAssignmentsDeleteExecute(r ApiSensorGroupAssignmentsDeleteRequest) (interface{}, *http.Response, error) {
+func (a *ConfigurationAPIService) SensorGroupAssignmentsDeleteExecute(
+	r ApiSensorGroupAssignmentsDeleteRequest,
+) (interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -1161,13 +1352,21 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsDeleteExecute(r ApiSenso
 		localVarReturnValue interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.SensorGroupAssignmentsDelete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.SensorGroupAssignmentsDelete",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/networking-uxi/v1alpha1/sensor-group-assignments/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath = strings.Replace(
+		localVarPath,
+		"{"+"id"+"}",
+		url.PathEscape(parameterValueToString(r.id, "id")),
+		-1,
+	)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1190,7 +1389,16 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsDeleteExecute(r ApiSenso
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1236,7 +1444,11 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsDeleteExecute(r ApiSenso
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -1266,7 +1478,9 @@ func (r ApiSensorGroupAssignmentsGetRequest) Next(next string) ApiSensorGroupAss
 	return r
 }
 
-func (r ApiSensorGroupAssignmentsGetRequest) Limit(limit int32) ApiSensorGroupAssignmentsGetRequest {
+func (r ApiSensorGroupAssignmentsGetRequest) Limit(
+	limit int32,
+) ApiSensorGroupAssignmentsGetRequest {
 	r.limit = &limit
 	return r
 }
@@ -1278,12 +1492,14 @@ func (r ApiSensorGroupAssignmentsGetRequest) Execute() (*SensorGroupAssignmentsR
 /*
 SensorGroupAssignmentsGet Sensor Group Assignments Get
 
-Get a list of sensor group assignments
+# Get a list of sensor group assignments
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiSensorGroupAssignmentsGetRequest
 */
-func (a *ConfigurationAPIService) SensorGroupAssignmentsGet(ctx context.Context) ApiSensorGroupAssignmentsGetRequest {
+func (a *ConfigurationAPIService) SensorGroupAssignmentsGet(
+	ctx context.Context,
+) ApiSensorGroupAssignmentsGetRequest {
 	return ApiSensorGroupAssignmentsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -1293,7 +1509,9 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsGet(ctx context.Context)
 // Execute executes the request
 //
 //	@return SensorGroupAssignmentsResponse
-func (a *ConfigurationAPIService) SensorGroupAssignmentsGetExecute(r ApiSensorGroupAssignmentsGetRequest) (*SensorGroupAssignmentsResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) SensorGroupAssignmentsGetExecute(
+	r ApiSensorGroupAssignmentsGetRequest,
+) (*SensorGroupAssignmentsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -1301,7 +1519,10 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsGetExecute(r ApiSensorGr
 		localVarReturnValue *SensorGroupAssignmentsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.SensorGroupAssignmentsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.SensorGroupAssignmentsGet",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -1341,7 +1562,16 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsGetExecute(r ApiSensorGr
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1387,7 +1617,11 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsGetExecute(r ApiSensorGr
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -1405,7 +1639,9 @@ type ApiSensorGroupAssignmentsPostRequest struct {
 	sensorGroupAssignmentsPostRequest *SensorGroupAssignmentsPostRequest
 }
 
-func (r ApiSensorGroupAssignmentsPostRequest) SensorGroupAssignmentsPostRequest(sensorGroupAssignmentsPostRequest SensorGroupAssignmentsPostRequest) ApiSensorGroupAssignmentsPostRequest {
+func (r ApiSensorGroupAssignmentsPostRequest) SensorGroupAssignmentsPostRequest(
+	sensorGroupAssignmentsPostRequest SensorGroupAssignmentsPostRequest,
+) ApiSensorGroupAssignmentsPostRequest {
 	r.sensorGroupAssignmentsPostRequest = &sensorGroupAssignmentsPostRequest
 	return r
 }
@@ -1417,12 +1653,14 @@ func (r ApiSensorGroupAssignmentsPostRequest) Execute() (*SensorGroupAssignmentR
 /*
 SensorGroupAssignmentsPost Sensor Group Assignments Post
 
-Create sensor group assignment
+# Create sensor group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiSensorGroupAssignmentsPostRequest
 */
-func (a *ConfigurationAPIService) SensorGroupAssignmentsPost(ctx context.Context) ApiSensorGroupAssignmentsPostRequest {
+func (a *ConfigurationAPIService) SensorGroupAssignmentsPost(
+	ctx context.Context,
+) ApiSensorGroupAssignmentsPostRequest {
 	return ApiSensorGroupAssignmentsPostRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -1432,7 +1670,9 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsPost(ctx context.Context
 // Execute executes the request
 //
 //	@return SensorGroupAssignmentResponse
-func (a *ConfigurationAPIService) SensorGroupAssignmentsPostExecute(r ApiSensorGroupAssignmentsPostRequest) (*SensorGroupAssignmentResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) SensorGroupAssignmentsPostExecute(
+	r ApiSensorGroupAssignmentsPostRequest,
+) (*SensorGroupAssignmentResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -1440,7 +1680,10 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsPostExecute(r ApiSensorG
 		localVarReturnValue *SensorGroupAssignmentResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.SensorGroupAssignmentsPost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.SensorGroupAssignmentsPost",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -1451,7 +1694,9 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsPostExecute(r ApiSensorG
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.sensorGroupAssignmentsPostRequest == nil {
-		return localVarReturnValue, nil, reportError("sensorGroupAssignmentsPostRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError(
+			"sensorGroupAssignmentsPostRequest is required and must be specified",
+		)
 	}
 
 	// to determine the Content-Type header
@@ -1473,7 +1718,16 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsPostExecute(r ApiSensorG
 	}
 	// body params
 	localVarPostBody = r.sensorGroupAssignmentsPostRequest
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1519,7 +1773,11 @@ func (a *ConfigurationAPIService) SensorGroupAssignmentsPostExecute(r ApiSensorG
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -1561,7 +1819,7 @@ func (r ApiSensorsGetRequest) Execute() (*SensorsResponse, *http.Response, error
 /*
 SensorsGet Sensors Get
 
-Get a list of sensors
+# Get a list of sensors
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiSensorsGetRequest
@@ -1576,7 +1834,9 @@ func (a *ConfigurationAPIService) SensorsGet(ctx context.Context) ApiSensorsGetR
 // Execute executes the request
 //
 //	@return SensorsResponse
-func (a *ConfigurationAPIService) SensorsGetExecute(r ApiSensorsGetRequest) (*SensorsResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) SensorsGetExecute(
+	r ApiSensorsGetRequest,
+) (*SensorsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -1584,7 +1844,10 @@ func (a *ConfigurationAPIService) SensorsGetExecute(r ApiSensorsGetRequest) (*Se
 		localVarReturnValue *SensorsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.SensorsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.SensorsGet",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -1624,7 +1887,16 @@ func (a *ConfigurationAPIService) SensorsGetExecute(r ApiSensorsGetRequest) (*Se
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1670,7 +1942,11 @@ func (a *ConfigurationAPIService) SensorsGetExecute(r ApiSensorsGetRequest) (*Se
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -1689,7 +1965,9 @@ type ApiSensorsPatchRequest struct {
 	sensorsPatchRequest *SensorsPatchRequest
 }
 
-func (r ApiSensorsPatchRequest) SensorsPatchRequest(sensorsPatchRequest SensorsPatchRequest) ApiSensorsPatchRequest {
+func (r ApiSensorsPatchRequest) SensorsPatchRequest(
+	sensorsPatchRequest SensorsPatchRequest,
+) ApiSensorsPatchRequest {
 	r.sensorsPatchRequest = &sensorsPatchRequest
 	return r
 }
@@ -1707,7 +1985,10 @@ Update an existing sensor.
 	@param sensorUid
 	@return ApiSensorsPatchRequest
 */
-func (a *ConfigurationAPIService) SensorsPatch(ctx context.Context, sensorUid string) ApiSensorsPatchRequest {
+func (a *ConfigurationAPIService) SensorsPatch(
+	ctx context.Context,
+	sensorUid string,
+) ApiSensorsPatchRequest {
 	return ApiSensorsPatchRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -1718,7 +1999,9 @@ func (a *ConfigurationAPIService) SensorsPatch(ctx context.Context, sensorUid st
 // Execute executes the request
 //
 //	@return SensorsPatchResponse
-func (a *ConfigurationAPIService) SensorsPatchExecute(r ApiSensorsPatchRequest) (*SensorsPatchResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) SensorsPatchExecute(
+	r ApiSensorsPatchRequest,
+) (*SensorsPatchResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPatch
 		localVarPostBody    interface{}
@@ -1726,19 +2009,29 @@ func (a *ConfigurationAPIService) SensorsPatchExecute(r ApiSensorsPatchRequest) 
 		localVarReturnValue *SensorsPatchResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.SensorsPatch")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.SensorsPatch",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/networking-uxi/v1alpha1/sensors/{sensor_uid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"sensor_uid"+"}", url.PathEscape(parameterValueToString(r.sensorUid, "sensorUid")), -1)
+	localVarPath = strings.Replace(
+		localVarPath,
+		"{"+"sensor_uid"+"}",
+		url.PathEscape(parameterValueToString(r.sensorUid, "sensorUid")),
+		-1,
+	)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.sensorsPatchRequest == nil {
-		return localVarReturnValue, nil, reportError("sensorsPatchRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError(
+			"sensorsPatchRequest is required and must be specified",
+		)
 	}
 
 	// to determine the Content-Type header
@@ -1760,7 +2053,16 @@ func (a *ConfigurationAPIService) SensorsPatchExecute(r ApiSensorsPatchRequest) 
 	}
 	// body params
 	localVarPostBody = r.sensorsPatchRequest
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1806,7 +2108,11 @@ func (a *ConfigurationAPIService) SensorsPatchExecute(r ApiSensorsPatchRequest) 
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -1831,13 +2137,16 @@ func (r ApiServiceTestGroupAssignmentsDeleteRequest) Execute() (interface{}, *ht
 /*
 ServiceTestGroupAssignmentsDelete Service Test Group Assignments Delete
 
-Delete a service test group assignment
+# Delete a service test group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param id
 	@return ApiServiceTestGroupAssignmentsDeleteRequest
 */
-func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsDelete(ctx context.Context, id string) ApiServiceTestGroupAssignmentsDeleteRequest {
+func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsDelete(
+	ctx context.Context,
+	id string,
+) ApiServiceTestGroupAssignmentsDeleteRequest {
 	return ApiServiceTestGroupAssignmentsDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -1848,7 +2157,9 @@ func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsDelete(ctx context.
 // Execute executes the request
 //
 //	@return interface{}
-func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsDeleteExecute(r ApiServiceTestGroupAssignmentsDeleteRequest) (interface{}, *http.Response, error) {
+func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsDeleteExecute(
+	r ApiServiceTestGroupAssignmentsDeleteRequest,
+) (interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
@@ -1856,13 +2167,21 @@ func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsDeleteExecute(r Api
 		localVarReturnValue interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.ServiceTestGroupAssignmentsDelete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.ServiceTestGroupAssignmentsDelete",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/networking-uxi/v1alpha1/service-test-group-assignments/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath = strings.Replace(
+		localVarPath,
+		"{"+"id"+"}",
+		url.PathEscape(parameterValueToString(r.id, "id")),
+		-1,
+	)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1885,7 +2204,16 @@ func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsDeleteExecute(r Api
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1931,7 +2259,11 @@ func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsDeleteExecute(r Api
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -1949,7 +2281,9 @@ type ApiServiceTestGroupAssignmentsPostRequest struct {
 	serviceTestGroupAssignmentsPostRequest *ServiceTestGroupAssignmentsPostRequest
 }
 
-func (r ApiServiceTestGroupAssignmentsPostRequest) ServiceTestGroupAssignmentsPostRequest(serviceTestGroupAssignmentsPostRequest ServiceTestGroupAssignmentsPostRequest) ApiServiceTestGroupAssignmentsPostRequest {
+func (r ApiServiceTestGroupAssignmentsPostRequest) ServiceTestGroupAssignmentsPostRequest(
+	serviceTestGroupAssignmentsPostRequest ServiceTestGroupAssignmentsPostRequest,
+) ApiServiceTestGroupAssignmentsPostRequest {
 	r.serviceTestGroupAssignmentsPostRequest = &serviceTestGroupAssignmentsPostRequest
 	return r
 }
@@ -1961,12 +2295,14 @@ func (r ApiServiceTestGroupAssignmentsPostRequest) Execute() (*ServiceTestGroupA
 /*
 ServiceTestGroupAssignmentsPost Service Test Group Assignments Post
 
-Create a service-test group assignment
+# Create a service-test group assignment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiServiceTestGroupAssignmentsPostRequest
 */
-func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsPost(ctx context.Context) ApiServiceTestGroupAssignmentsPostRequest {
+func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsPost(
+	ctx context.Context,
+) ApiServiceTestGroupAssignmentsPostRequest {
 	return ApiServiceTestGroupAssignmentsPostRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -1976,7 +2312,9 @@ func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsPost(ctx context.Co
 // Execute executes the request
 //
 //	@return ServiceTestGroupAssignmentsPostResponse
-func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsPostExecute(r ApiServiceTestGroupAssignmentsPostRequest) (*ServiceTestGroupAssignmentsPostResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsPostExecute(
+	r ApiServiceTestGroupAssignmentsPostRequest,
+) (*ServiceTestGroupAssignmentsPostResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -1984,7 +2322,10 @@ func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsPostExecute(r ApiSe
 		localVarReturnValue *ServiceTestGroupAssignmentsPostResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.ServiceTestGroupAssignmentsPost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.ServiceTestGroupAssignmentsPost",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -1995,7 +2336,9 @@ func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsPostExecute(r ApiSe
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.serviceTestGroupAssignmentsPostRequest == nil {
-		return localVarReturnValue, nil, reportError("serviceTestGroupAssignmentsPostRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError(
+			"serviceTestGroupAssignmentsPostRequest is required and must be specified",
+		)
 	}
 
 	// to determine the Content-Type header
@@ -2017,7 +2360,16 @@ func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsPostExecute(r ApiSe
 	}
 	// body params
 	localVarPostBody = r.serviceTestGroupAssignmentsPostRequest
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -2063,7 +2415,11 @@ func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsPostExecute(r ApiSe
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -2105,7 +2461,7 @@ func (r ApiServiceTestsGetRequest) Execute() (*ServiceTestsListResponse, *http.R
 /*
 ServiceTestsGet Service Tests Get
 
-Lists service-tests matching provided criteria
+# Lists service-tests matching provided criteria
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiServiceTestsGetRequest
@@ -2120,7 +2476,9 @@ func (a *ConfigurationAPIService) ServiceTestsGet(ctx context.Context) ApiServic
 // Execute executes the request
 //
 //	@return ServiceTestsListResponse
-func (a *ConfigurationAPIService) ServiceTestsGetExecute(r ApiServiceTestsGetRequest) (*ServiceTestsListResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) ServiceTestsGetExecute(
+	r ApiServiceTestsGetRequest,
+) (*ServiceTestsListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -2128,7 +2486,10 @@ func (a *ConfigurationAPIService) ServiceTestsGetExecute(r ApiServiceTestsGetReq
 		localVarReturnValue *ServiceTestsListResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.ServiceTestsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.ServiceTestsGet",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -2168,7 +2529,16 @@ func (a *ConfigurationAPIService) ServiceTestsGetExecute(r ApiServiceTestsGetReq
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -2214,7 +2584,11 @@ func (a *ConfigurationAPIService) ServiceTestsGetExecute(r ApiServiceTestsGetReq
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -2256,7 +2630,7 @@ func (r ApiWiredNetworksGetRequest) Execute() (*WiredNetworksResponse, *http.Res
 /*
 WiredNetworksGet Wired Networks Get
 
-Get a list of wired networks
+# Get a list of wired networks
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiWiredNetworksGetRequest
@@ -2271,7 +2645,9 @@ func (a *ConfigurationAPIService) WiredNetworksGet(ctx context.Context) ApiWired
 // Execute executes the request
 //
 //	@return WiredNetworksResponse
-func (a *ConfigurationAPIService) WiredNetworksGetExecute(r ApiWiredNetworksGetRequest) (*WiredNetworksResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) WiredNetworksGetExecute(
+	r ApiWiredNetworksGetRequest,
+) (*WiredNetworksResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -2279,7 +2655,10 @@ func (a *ConfigurationAPIService) WiredNetworksGetExecute(r ApiWiredNetworksGetR
 		localVarReturnValue *WiredNetworksResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.WiredNetworksGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.WiredNetworksGet",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -2319,7 +2698,16 @@ func (a *ConfigurationAPIService) WiredNetworksGetExecute(r ApiWiredNetworksGetR
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -2365,7 +2753,11 @@ func (a *ConfigurationAPIService) WiredNetworksGetExecute(r ApiWiredNetworksGetR
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
@@ -2407,12 +2799,14 @@ func (r ApiWirelessNetworksGetRequest) Execute() (*WirelessNetworksResponse, *ht
 /*
 WirelessNetworksGet Wireless Networks Get
 
-Get a list of wireless networks
+# Get a list of wireless networks
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiWirelessNetworksGetRequest
 */
-func (a *ConfigurationAPIService) WirelessNetworksGet(ctx context.Context) ApiWirelessNetworksGetRequest {
+func (a *ConfigurationAPIService) WirelessNetworksGet(
+	ctx context.Context,
+) ApiWirelessNetworksGetRequest {
 	return ApiWirelessNetworksGetRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -2422,7 +2816,9 @@ func (a *ConfigurationAPIService) WirelessNetworksGet(ctx context.Context) ApiWi
 // Execute executes the request
 //
 //	@return WirelessNetworksResponse
-func (a *ConfigurationAPIService) WirelessNetworksGetExecute(r ApiWirelessNetworksGetRequest) (*WirelessNetworksResponse, *http.Response, error) {
+func (a *ConfigurationAPIService) WirelessNetworksGetExecute(
+	r ApiWirelessNetworksGetRequest,
+) (*WirelessNetworksResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -2430,7 +2826,10 @@ func (a *ConfigurationAPIService) WirelessNetworksGetExecute(r ApiWirelessNetwor
 		localVarReturnValue *WirelessNetworksResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationAPIService.WirelessNetworksGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.WirelessNetworksGet",
+	)
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -2470,7 +2869,16 @@ func (a *ConfigurationAPIService) WirelessNetworksGetExecute(r ApiWirelessNetwor
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -2516,7 +2924,11 @@ func (a *ConfigurationAPIService) WirelessNetworksGetExecute(r ApiWirelessNetwor
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
 	if err != nil {
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,

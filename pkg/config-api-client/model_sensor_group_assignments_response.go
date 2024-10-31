@@ -33,7 +33,11 @@ type _SensorGroupAssignmentsResponse SensorGroupAssignmentsResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorGroupAssignmentsResponse(items []SensorGroupAssignmentsItem, count int32, next NullableString) *SensorGroupAssignmentsResponse {
+func NewSensorGroupAssignmentsResponse(
+	items []SensorGroupAssignmentsItem,
+	count int32,
+	next NullableString,
+) *SensorGroupAssignmentsResponse {
 	this := SensorGroupAssignmentsResponse{}
 	this.Items = items
 	this.Count = count
@@ -201,7 +205,9 @@ func (v *NullableSensorGroupAssignmentsResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSensorGroupAssignmentsResponse(val *SensorGroupAssignmentsResponse) *NullableSensorGroupAssignmentsResponse {
+func NewNullableSensorGroupAssignmentsResponse(
+	val *SensorGroupAssignmentsResponse,
+) *NullableSensorGroupAssignmentsResponse {
 	return &NullableSensorGroupAssignmentsResponse{value: val, isSet: true}
 }
 

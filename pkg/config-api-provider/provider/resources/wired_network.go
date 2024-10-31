@@ -32,11 +32,19 @@ type wiredNetworkResource struct {
 	client *config_api_client.APIClient
 }
 
-func (r *wiredNetworkResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *wiredNetworkResource) Metadata(
+	ctx context.Context,
+	req resource.MetadataRequest,
+	resp *resource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_wired_network"
 }
 
-func (r *wiredNetworkResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *wiredNetworkResource) Schema(
+	_ context.Context,
+	_ resource.SchemaRequest,
+	resp *resource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -52,7 +60,11 @@ func (r *wiredNetworkResource) Schema(_ context.Context, _ resource.SchemaReques
 	}
 }
 
-func (r *wiredNetworkResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *wiredNetworkResource) Configure(
+	_ context.Context,
+	req resource.ConfigureRequest,
+	resp *resource.ConfigureResponse,
+) {
 	// Add a nil check when handling ProviderData because Terraform
 	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
@@ -72,15 +84,26 @@ func (r *wiredNetworkResource) Configure(_ context.Context, req resource.Configu
 	r.client = client
 }
 
-func (r *wiredNetworkResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *wiredNetworkResource) Create(
+	ctx context.Context,
+	req resource.CreateRequest,
+	resp *resource.CreateResponse,
+) {
 	// Retrieve values from plan
 	var plan wiredNetworkResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "creating a wired_network is not supported; wired_networks can only be imported")
+	diags.AddError(
+		"operation not supported",
+		"creating a wired_network is not supported; wired_networks can only be imported",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *wiredNetworkResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *wiredNetworkResource) Read(
+	ctx context.Context,
+	req resource.ReadRequest,
+	resp *resource.ReadResponse,
+) {
 	// Get current state
 	var state wiredNetworkResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -120,22 +143,40 @@ func (r *wiredNetworkResource) Read(ctx context.Context, req resource.ReadReques
 	}
 }
 
-func (r *wiredNetworkResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *wiredNetworkResource) Update(
+	ctx context.Context,
+	req resource.UpdateRequest,
+	resp *resource.UpdateResponse,
+) {
 	// Retrieve values from plan
 	var plan wiredNetworkResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "updating a wired_network is not supported; wired_networks can only be updated through the dashboard")
+	diags.AddError(
+		"operation not supported",
+		"updating a wired_network is not supported; wired_networks can only be updated through the dashboard",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *wiredNetworkResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *wiredNetworkResource) Delete(
+	ctx context.Context,
+	req resource.DeleteRequest,
+	resp *resource.DeleteResponse,
+) {
 	// Retrieve values from state
 	var state wiredNetworkResourceModel
 	diags := req.State.Get(ctx, &state)
-	diags.AddError("operation not supported", "deleting a wired_network is not supported; wired_networks can only removed from state")
+	diags.AddError(
+		"operation not supported",
+		"deleting a wired_network is not supported; wired_networks can only removed from state",
+	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *wiredNetworkResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *wiredNetworkResource) ImportState(
+	ctx context.Context,
+	req resource.ImportStateRequest,
+	resp *resource.ImportStateResponse,
+) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

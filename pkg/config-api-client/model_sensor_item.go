@@ -42,7 +42,20 @@ type _SensorItem SensorItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSensorItem(id string, serial string, name string, modelNumber string, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, type_ string) *SensorItem {
+func NewSensorItem(
+	id string,
+	serial string,
+	name string,
+	modelNumber string,
+	wifiMacAddress NullableString,
+	ethernetMacAddress NullableString,
+	addressNote NullableString,
+	longitude NullableFloat32,
+	latitude NullableFloat32,
+	notes NullableString,
+	pcapMode NullableString,
+	type_ string,
+) *SensorItem {
 	this := SensorItem{}
 	this.Id = id
 	this.Serial = serial

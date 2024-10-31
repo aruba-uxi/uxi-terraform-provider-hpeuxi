@@ -24,7 +24,9 @@ func TestAgentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetAgent(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+						),
 						3,
 					)
 				},
@@ -63,7 +65,9 @@ func TestAgentDataSource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetAgent(
 						"uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+						),
 						3,
 					)
 				},
@@ -114,7 +118,9 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 						}
 					}
 				`,
-				ExpectError: regexp.MustCompile(`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Not found error
 			{

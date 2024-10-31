@@ -33,11 +33,19 @@ type networkGroupAssignmentResource struct {
 	client *config_api_client.APIClient
 }
 
-func (r *networkGroupAssignmentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *networkGroupAssignmentResource) Metadata(
+	ctx context.Context,
+	req resource.MetadataRequest,
+	resp *resource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_network_group_assignment"
 }
 
-func (r *networkGroupAssignmentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *networkGroupAssignmentResource) Schema(
+	_ context.Context,
+	_ resource.SchemaRequest,
+	resp *resource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -62,7 +70,11 @@ func (r *networkGroupAssignmentResource) Schema(_ context.Context, _ resource.Sc
 	}
 }
 
-func (r *networkGroupAssignmentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *networkGroupAssignmentResource) Configure(
+	_ context.Context,
+	req resource.ConfigureRequest,
+	resp *resource.ConfigureResponse,
+) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -80,7 +92,11 @@ func (r *networkGroupAssignmentResource) Configure(_ context.Context, req resour
 	r.client = client
 }
 
-func (r *networkGroupAssignmentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *networkGroupAssignmentResource) Create(
+	ctx context.Context,
+	req resource.CreateRequest,
+	resp *resource.CreateResponse,
+) {
 	// Retrieve values from plan
 	var plan networkGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
@@ -100,7 +116,10 @@ func (r *networkGroupAssignmentResource) Create(ctx context.Context, req resourc
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_network_group_assignment"), errorDetail)
+		resp.Diagnostics.AddError(
+			util.GenerateErrorSummary("create", "uxi_network_group_assignment"),
+			errorDetail,
+		)
 		return
 	}
 
@@ -117,7 +136,11 @@ func (r *networkGroupAssignmentResource) Create(ctx context.Context, req resourc
 	}
 }
 
-func (r *networkGroupAssignmentResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *networkGroupAssignmentResource) Read(
+	ctx context.Context,
+	req resource.ReadRequest,
+	resp *resource.ReadResponse,
+) {
 	// Get current state
 	var state networkGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -157,18 +180,29 @@ func (r *networkGroupAssignmentResource) Read(ctx context.Context, req resource.
 	}
 }
 
-func (r *networkGroupAssignmentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *networkGroupAssignmentResource) Update(
+	ctx context.Context,
+	req resource.UpdateRequest,
+	resp *resource.UpdateResponse,
+) {
 	// Retrieve values from plan
 	var plan networkGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "updating a network group assignment is not supported")
+	diags.AddError(
+		"operation not supported",
+		"updating a network group assignment is not supported",
+	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 }
 
-func (r *networkGroupAssignmentResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *networkGroupAssignmentResource) Delete(
+	ctx context.Context,
+	req resource.DeleteRequest,
+	resp *resource.DeleteResponse,
+) {
 	// Retrieve values from state
 	var state networkGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -183,11 +217,18 @@ func (r *networkGroupAssignmentResource) Delete(ctx context.Context, req resourc
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_network_group_assignment"), errorDetail)
+		resp.Diagnostics.AddError(
+			util.GenerateErrorSummary("delete", "uxi_network_group_assignment"),
+			errorDetail,
+		)
 		return
 	}
 }
 
-func (r *networkGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *networkGroupAssignmentResource) ImportState(
+	ctx context.Context,
+	req resource.ImportStateRequest,
+	resp *resource.ImportStateResponse,
+) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

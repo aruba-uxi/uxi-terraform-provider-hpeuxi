@@ -120,7 +120,12 @@ func typeCheckParameter(obj interface{}, expected string, name string) error {
 
 	// Check the type is as expected.
 	if reflect.TypeOf(obj).String() != expected {
-		return fmt.Errorf("expected %s to be of type %s but received %s", name, expected, reflect.TypeOf(obj).String())
+		return fmt.Errorf(
+			"expected %s to be of type %s but received %s",
+			name,
+			expected,
+			reflect.TypeOf(obj).String(),
+		)
 	}
 	return nil
 }
@@ -142,7 +147,13 @@ func parameterValueToString(obj interface{}, key string) string {
 
 // parameterAddToHeaderOrQuery adds the provided object to the request header or url query
 // supporting deep object syntax
-func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix string, obj interface{}, style string, collectionType string) {
+func parameterAddToHeaderOrQuery(
+	headerOrQueryParams interface{},
+	keyPrefix string,
+	obj interface{},
+	style string,
+	collectionType string,
+) {
 	var v = reflect.ValueOf(obj)
 	var value = ""
 	if v == reflect.ValueOf(nil) {
@@ -304,7 +315,9 @@ func (c *APIClient) prepareRequest(
 	}
 
 	// add form parameters and file if available.
-	if strings.HasPrefix(headerParams["Content-Type"], "multipart/form-data") && len(formParams) > 0 || (len(formFiles) > 0) {
+	if strings.HasPrefix(headerParams["Content-Type"], "multipart/form-data") &&
+		len(formParams) > 0 ||
+		(len(formFiles) > 0) {
 		if body != nil {
 			return nil, errors.New("Cannot specify postBody and multipart form at the same time.")
 		}
@@ -326,7 +339,10 @@ func (c *APIClient) prepareRequest(
 		for _, formFile := range formFiles {
 			if len(formFile.fileBytes) > 0 && formFile.fileName != "" {
 				w.Boundary()
-				part, err := w.CreateFormFile(formFile.formFileName, filepath.Base(formFile.fileName))
+				part, err := w.CreateFormFile(
+					formFile.formFileName,
+					filepath.Base(formFile.fileName),
+				)
 				if err != nil {
 					return nil, err
 				}
@@ -345,9 +361,12 @@ func (c *APIClient) prepareRequest(
 		w.Close()
 	}
 
-	if strings.HasPrefix(headerParams["Content-Type"], "application/x-www-form-urlencoded") && len(formParams) > 0 {
+	if strings.HasPrefix(headerParams["Content-Type"], "application/x-www-form-urlencoded") &&
+		len(formParams) > 0 {
 		if body != nil {
-			return nil, errors.New("Cannot specify postBody and x-www-form-urlencoded form at the same time.")
+			return nil, errors.New(
+				"Cannot specify postBody and x-www-form-urlencoded form at the same time.",
+			)
 		}
 		body = &bytes.Buffer{}
 		body.WriteString(formParams.Encode())

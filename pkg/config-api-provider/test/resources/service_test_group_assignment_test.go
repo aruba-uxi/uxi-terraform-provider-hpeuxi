@@ -38,18 +38,33 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 
 					// required for serviceTest group assignment create
 					util.MockPostServiceTestGroupAssignment(
-						util.GenerateServiceTestGroupAssignmentRequest("service_test_group_assignment_uid", ""),
-						util.StructToMap(util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")),
+						util.GenerateServiceTestGroupAssignmentRequest(
+							"service_test_group_assignment_uid",
+							"",
+						),
+						util.StructToMap(
+							util.GenerateServiceTestGroupAssignmentResponse(
+								"service_test_group_assignment_uid",
+								"",
+							),
+						),
 						1,
 					)
 					resources.GetServiceTestGroupAssignment = func(uid string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
-						return util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")
+						return util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_uid",
+							"",
+						)
 					}
 				},
 
@@ -73,9 +88,21 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						group_id 		= uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_service_test_group_assignment.my_service_test_group_assignment", "service_test_id", "service_test_uid"),
-					resource.TestCheckResourceAttr("uxi_service_test_group_assignment.my_service_test_group_assignment", "group_id", "group_uid"),
-					resource.TestCheckResourceAttr("uxi_service_test_group_assignment.my_service_test_group_assignment", "id", "service_test_group_assignment_uid"),
+					resource.TestCheckResourceAttr(
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"service_test_id",
+						"service_test_uid",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"group_id",
+						"group_uid",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"id",
+						"service_test_group_assignment_uid",
+					),
 				),
 			},
 			// ImportState testing
@@ -96,12 +123,20 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					}
 					util.MockGetGroup(
 						"group_uid_2",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid_2", "_2", "_2"),
+							},
+						),
 						1,
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						3,
 					)
 
@@ -111,21 +146,34 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					// required for creating another group
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("group_uid_2", "_2", "_2"),
-						util.StructToMap(util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")),
+						util.StructToMap(
+							util.GenerateGroupResponseModel("group_uid_2", "_2", "_2"),
+						),
 						1,
 					)
 
 					// required for serviceTest group assignment create
 					resources.GetServiceTestGroupAssignment = func(uid string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
 						if uid == "service_test_group_assignment_uid" {
-							return util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")
+							return util.GenerateServiceTestGroupAssignmentResponse(
+								"service_test_group_assignment_uid",
+								"",
+							)
 						} else {
 							return util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid_2", "_2")
 						}
 					}
 					util.MockPostServiceTestGroupAssignment(
-						util.GenerateServiceTestGroupAssignmentRequest("service_test_group_assignment_uid_2", "_2"),
-						util.StructToMap(util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid_2", "_2")),
+						util.GenerateServiceTestGroupAssignmentRequest(
+							"service_test_group_assignment_uid_2",
+							"_2",
+						),
+						util.StructToMap(
+							util.GenerateServiceTestGroupAssignmentResponse(
+								"service_test_group_assignment_uid_2",
+								"_2",
+							),
+						),
 						1,
 					)
 				},
@@ -166,9 +214,21 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						group_id 		= uxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_service_test_group_assignment.my_service_test_group_assignment", "service_test_id", "service_test_uid_2"),
-					resource.TestCheckResourceAttr("uxi_service_test_group_assignment.my_service_test_group_assignment", "group_id", "group_uid_2"),
-					resource.TestCheckResourceAttr("uxi_service_test_group_assignment.my_service_test_group_assignment", "id", "service_test_group_assignment_uid_2"),
+					resource.TestCheckResourceAttr(
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"service_test_id",
+						"service_test_uid_2",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"group_id",
+						"group_uid_2",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"id",
+						"service_test_group_assignment_uid_2",
+					),
 				),
 			},
 			// Remove serviceTests from state
@@ -176,18 +236,29 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 					util.MockGetGroup(
 						"group_uid_2",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid_2", "_2", "_2")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid_2", "_2", "_2"),
+							},
+						),
 						1,
 					)
 
 					util.MockDeleteGroup("group_uid", 1)
 					util.MockDeleteGroup("group_uid_2", 1)
-					util.MockDeleteServiceTestGroupAssignment("service_test_group_assignment_uid_2", 1)
+					util.MockDeleteServiceTestGroupAssignment(
+						"service_test_group_assignment_uid_2",
+						1,
+					)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
@@ -236,7 +307,11 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 
@@ -247,12 +322,23 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 
 					util.MockPostServiceTestGroupAssignment(
-						util.GenerateServiceTestGroupAssignmentRequest("service_test_group_assignment_uid", ""),
-						util.StructToMap(util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")),
+						util.GenerateServiceTestGroupAssignmentRequest(
+							"service_test_group_assignment_uid",
+							"",
+						),
+						util.StructToMap(
+							util.GenerateServiceTestGroupAssignmentResponse(
+								"service_test_group_assignment_uid",
+								"",
+							),
+						),
 						1,
 					)
 					resources.GetServiceTestGroupAssignment = func(uid string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
-						return util.GenerateServiceTestGroupAssignmentResponse("service_test_group_assignment_uid", "")
+						return util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_uid",
+							"",
+						)
 					}
 				},
 
@@ -276,7 +362,11 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 						group_id 		= uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_service_test_group_assignment.my_service_test_group_assignment", "id", "service_test_group_assignment_uid"),
+					resource.TestCheckResourceAttr(
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"id",
+						"service_test_group_assignment_uid",
+					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
 						return nil
@@ -288,7 +378,11 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 
@@ -333,7 +427,11 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 
@@ -368,14 +466,20 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						service_test_id = uxi_service_test.my_service_test.id
 						group_id 		= uxi_group.my_group.id
 					}`,
-				ExpectError: regexp.MustCompile(`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
+				),
 			},
 			// Remove serviceTests from state
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_uid",
-						util.GeneratePaginatedResponse([]map[string]interface{}{util.GenerateGroupResponseModel("group_uid", "", "")}),
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateGroupResponseModel("group_uid", "", ""),
+							},
+						),
 						1,
 					)
 

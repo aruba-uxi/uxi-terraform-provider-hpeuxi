@@ -33,11 +33,19 @@ type serviceTestGroupAssignmentResource struct {
 	client *config_api_client.APIClient
 }
 
-func (r *serviceTestGroupAssignmentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *serviceTestGroupAssignmentResource) Metadata(
+	ctx context.Context,
+	req resource.MetadataRequest,
+	resp *resource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_service_test_group_assignment"
 }
 
-func (r *serviceTestGroupAssignmentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *serviceTestGroupAssignmentResource) Schema(
+	_ context.Context,
+	_ resource.SchemaRequest,
+	resp *resource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -62,7 +70,11 @@ func (r *serviceTestGroupAssignmentResource) Schema(_ context.Context, _ resourc
 	}
 }
 
-func (r *serviceTestGroupAssignmentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *serviceTestGroupAssignmentResource) Configure(
+	_ context.Context,
+	req resource.ConfigureRequest,
+	resp *resource.ConfigureResponse,
+) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -80,7 +92,11 @@ func (r *serviceTestGroupAssignmentResource) Configure(_ context.Context, req re
 	r.client = client
 }
 
-func (r *serviceTestGroupAssignmentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *serviceTestGroupAssignmentResource) Create(
+	ctx context.Context,
+	req resource.CreateRequest,
+	resp *resource.CreateResponse,
+) {
 	// Retrieve values from plan
 	var plan serviceTestGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
@@ -100,7 +116,10 @@ func (r *serviceTestGroupAssignmentResource) Create(ctx context.Context, req res
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"), errorDetail)
+		resp.Diagnostics.AddError(
+			util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"),
+			errorDetail,
+		)
 		return
 	}
 
@@ -117,7 +136,11 @@ func (r *serviceTestGroupAssignmentResource) Create(ctx context.Context, req res
 	}
 }
 
-func (r *serviceTestGroupAssignmentResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *serviceTestGroupAssignmentResource) Read(
+	ctx context.Context,
+	req resource.ReadRequest,
+	resp *resource.ReadResponse,
+) {
 	// Get current state
 	var state serviceTestGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -141,18 +164,29 @@ func (r *serviceTestGroupAssignmentResource) Read(ctx context.Context, req resou
 	}
 }
 
-func (r *serviceTestGroupAssignmentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *serviceTestGroupAssignmentResource) Update(
+	ctx context.Context,
+	req resource.UpdateRequest,
+	resp *resource.UpdateResponse,
+) {
 	// Retrieve values from plan
 	var plan serviceTestGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "updating a service_test group assignment is not supported")
+	diags.AddError(
+		"operation not supported",
+		"updating a service_test group assignment is not supported",
+	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 }
 
-func (r *serviceTestGroupAssignmentResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *serviceTestGroupAssignmentResource) Delete(
+	ctx context.Context,
+	req resource.DeleteRequest,
+	resp *resource.DeleteResponse,
+) {
 	// Retrieve values from state
 	var state serviceTestGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -168,12 +202,19 @@ func (r *serviceTestGroupAssignmentResource) Delete(ctx context.Context, req res
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"), errorDetail)
+		resp.Diagnostics.AddError(
+			util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"),
+			errorDetail,
+		)
 		return
 	}
 }
 
-func (r *serviceTestGroupAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *serviceTestGroupAssignmentResource) ImportState(
+	ctx context.Context,
+	req resource.ImportStateRequest,
+	resp *resource.ImportStateResponse,
+) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
