@@ -12,11 +12,11 @@ retrieve-config-api-openapi-spec:
   cp {{ TMP_DIR }}/oas/openapi.yaml {{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }}
   rm -rf {{ TMP_DIR }}
 
-cleanup-old-files:
+cleanup-old-client-files:
   cd {{ CONFIG_API_CLIENT_DIR }} && cat .openapi-generator/FILES | xargs -n 1 rm -f
 
 generate-config-api-client: retrieve-config-api-openapi-spec
-  just cleanup-old-files
+  just cleanup-old-client-files
   docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
   --input-spec /local/{{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }} \
   --generator-name go \
@@ -45,10 +45,8 @@ fmt-client:
 tidy-client:
   cd {{ CONFIG_API_CLIENT_DIR }} && go mod tidy
 
-lint-client:
+lint:
   #!/usr/bin/env bash
-
-  cd pkg/config-api-client
 
   output=$(gofmt -d .)
   if [ -n "$output" ]; then
@@ -66,30 +64,9 @@ lint-client:
 
   golangci-lint run
 
-lint-provider:
-  #!/usr/bin/env bash
-
-  cd {{ CONFIG_API_PROVIDER_DIR }}
-
-  output=$(gofmt -d .)
-  if [ -n "$output" ]; then
-    echo "$output"
-    echo "Error: (gofmt) formatting required" >&2
-    exit 1
-  fi
-
-  output=$(golines . --dry-run)
-  if [ -n "$output" ]; then
-    echo "$output"
-    echo "Error: (golines) formatting required" >&2
-    exit 1
-  fi
-
-  golangci-lint run
-
-fmt-provider:
-  gofmt -w {{ CONFIG_API_PROVIDER_DIR }}
-  golines -w {{ CONFIG_API_PROVIDER_DIR }}
+fmt:
+  gofmt -w .
+  golines -w .
 
 tidy-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} go mod tidy
@@ -117,14 +94,6 @@ test +ARGS='':
 coverage:
   just coverage-client
   just coverage-provider
-
-lint:
-  just lint-client
-  just lint-provider
-
-fmt:
-  just fmt-client
-  just fmt-provider
 
 tidy:
   just tidy-client

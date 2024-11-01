@@ -36,13 +36,9 @@ jobs:
         run: just setup-dev
 
       - name: Run Code Linting Test
-        run: golines . --dry-run
-
-      - name: Run Code Linting-lint Test
-        run: just lint-provider
-
-      - name: Run Code Linting Test
-        run: just lint
+        run: |
+          just lint-client
+          just lint-provider
 
       - name: Check package files up to date
         run: |
