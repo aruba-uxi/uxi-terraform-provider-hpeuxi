@@ -215,8 +215,15 @@ func (r *agentResource) Delete(
 		return
 	}
 
-	// Delete existing agent using client here
-	// err := r.client.DeleteOrder(state.ID.ValueString())
+	request := r.client.ConfigurationAPI.AgentsDelete(ctx, state.ID.ValueString())
+
+	_, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_agent"), errorDetail)
+		return
+	}
 }
 
 func (r *agentResource) ImportState(
