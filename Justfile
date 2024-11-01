@@ -63,6 +63,7 @@ lint-client:
   golangci-lint run
 
 lint-provider:
+  golines . --dry-run
   #!/usr/bin/env bash
 
   cd {{ CONFIG_API_PROVIDER_DIR }}
