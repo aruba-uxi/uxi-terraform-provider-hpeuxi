@@ -36,12 +36,12 @@ jobs:
         run: just setup-dev
 
       - name: Run Code Linting Test
-        run: just lint >> "$GITHUB_STEP_SUMMARY"
+        run: just lint
 
       - name: Check package files up to date
         run: |
           just tidy
-          git diff --exit-code -- pkg/config-api-client/go.* pkg/config-api-provider/go.*
+          git diff --exit-code -- go.* pkg/config-api-client/go.*
 
       - name: Run Tests
         run: |
@@ -51,7 +51,7 @@ jobs:
       - name: Check Provider docs up to date
         run: |
           just generate-provider-docs
-          git diff --exit-code -- pkg/config-api-provider/docs
+          git diff --exit-code -- docs
 
       - name: Check Provider docs valid
         run: just validate-provider-docs
@@ -60,6 +60,6 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./pkg/config-api-client/.coverage,./pkg/config-api-provider/.coverage
+          files: ./pkg/config-api-client/.coverage,.coverage
           flage: client,provider
           fail_ci_if_error: true

@@ -1,6 +1,6 @@
 TMP_DIR := "tmp"
 CONFIG_API_CLIENT_DIR := "pkg/config-api-client"
-CONFIG_API_PROVIDER_DIR := "pkg/config-api-provider"
+CONFIG_API_PROVIDER_DIR := "."
 TOOLS_PROVIDER_DIR := "tools"
 OPENAPI_SPEC := "pkg/config-api-client/api"
 SOURCE_OPEN_API_SPEC_FILE := ".openapi.source.yaml"
@@ -12,11 +12,11 @@ retrieve-config-api-openapi-spec:
   cp {{ TMP_DIR }}/oas/openapi.yaml {{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }}
   rm -rf {{ TMP_DIR }}
 
-cleanup-old-files:
+cleanup-old-client-files:
   cd {{ CONFIG_API_CLIENT_DIR }} && cat .openapi-generator/FILES | xargs -n 1 rm -f
 
 generate-config-api-client: retrieve-config-api-openapi-spec
-  just cleanup-old-files
+  just cleanup-old-client-files
   docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
   --input-spec /local/{{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }} \
   --generator-name go \
@@ -45,56 +45,41 @@ fmt-client:
 tidy-client:
   cd {{ CONFIG_API_CLIENT_DIR }} && go mod tidy
 
-lint-client:
+lint:
   #!/usr/bin/env bash
 
-  cd pkg/config-api-client
-
-  if [ -n "$(gofmt -d .)" ]; then
+  output=$(gofmt -d .)
+  if [ -n "$output" ]; then
+    echo "$output"
     echo "Error: (gofmt) formatting required" >&2
     exit 1
   fi
 
-  if [ -n "$(golines . --dry-run)" ]; then
+  output=$(golines . --dry-run)
+  if [ -n "$output" ]; then
+    echo "$output"
     echo "Error: (golines) formatting required" >&2
     exit 1
   fi
 
   golangci-lint run
 
-lint-provider:
-  #!/usr/bin/env bash
-
-  cd pkg/config-api-provider
-
-  if [ -n "$(gofmt -d .)" ]; then
-    echo "Error: (gofmt) formatting required" >&2
-    exit 1
-  fi
-
-  if [ -n "$(golines . --dry-run)" ]; then
-    echo "Error: (golines) formatting required" >&2
-    exit 1
-  fi
-
-  golangci-lint run
-
-fmt-provider:
-  gofmt -w {{ CONFIG_API_PROVIDER_DIR }}
-  golines -w {{ CONFIG_API_PROVIDER_DIR }}
+fmt:
+  gofmt -w .
+  golines -w .
 
 tidy-provider:
-  cd {{ CONFIG_API_PROVIDER_DIR }} && go mod tidy
+  cd {{ CONFIG_API_PROVIDER_DIR }} go mod tidy
 
 test-provider +ARGS='':
   cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 generate-provider-docs:
-  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} -provider-name uxi
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} --provider-name uxi
   sed -i.backup '/subcategory: ""/d' ./{{ CONFIG_API_PROVIDER_DIR }}/docs/index.md && rm ./{{ CONFIG_API_PROVIDER_DIR }}/docs/index.md.backup
 
 validate-provider-docs:
-  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} -provider-name uxi
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} --provider-name uxi
 
 coverage-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} && go tool cover -html=.coverage -o=.coverage.html
@@ -109,14 +94,6 @@ test +ARGS='':
 coverage:
   just coverage-client
   just coverage-provider
-
-lint:
-  just lint-client
-  just lint-provider
-
-fmt:
-  just fmt-client
-  just fmt-provider
 
 tidy:
   just tidy-client
