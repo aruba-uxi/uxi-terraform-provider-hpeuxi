@@ -1,6 +1,6 @@
 TMP_DIR := "tmp"
 CONFIG_API_CLIENT_DIR := "pkg/config-api-client"
-CONFIG_API_PROVIDER_DIR := "internal"
+CONFIG_API_PROVIDER_DIR := "."
 TOOLS_PROVIDER_DIR := "tools"
 OPENAPI_SPEC := "pkg/config-api-client/api"
 SOURCE_OPEN_API_SPEC_FILE := ".openapi.source.yaml"
@@ -65,7 +65,7 @@ lint-client:
 lint-provider:
   #!/usr/bin/env bash
 
-  cd pkg/config-api-provider
+  cd {{ CONFIG_API_PROVIDER_DIR }}
 
   if [ -n "$(gofmt -d .)" ]; then
     echo "Error: (gofmt) formatting required" >&2
@@ -84,17 +84,17 @@ fmt-provider:
   golines -w {{ CONFIG_API_PROVIDER_DIR }}
 
 tidy-provider:
-  cd {{ CONFIG_API_PROVIDER_DIR }} && go mod tidy
+  cd {{ CONFIG_API_PROVIDER_DIR }} go mod tidy
 
 test-provider +ARGS='':
   cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 generate-provider-docs:
-  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} -provider-name uxi
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} --provider-name uxi
   sed -i.backup '/subcategory: ""/d' ./{{ CONFIG_API_PROVIDER_DIR }}/docs/index.md && rm ./{{ CONFIG_API_PROVIDER_DIR }}/docs/index.md.backup
 
 validate-provider-docs:
-  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} -provider-name uxi
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} --provider-name uxi
 
 coverage-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} && go tool cover -html=.coverage -o=.coverage.html
