@@ -36,9 +36,7 @@ jobs:
         run: just setup-dev
 
       - name: Run Code Linting Test
-        run: |
-          just lint-client
-          just lint-provider
+        run: just lint
 
       - name: Check package files up to date
         run: |
