@@ -1,6 +1,6 @@
 TMP_DIR := "tmp"
 CONFIG_API_CLIENT_DIR := "pkg/config-api-client"
-CONFIG_API_PROVIDER_DIR := "pkg/config-api-provider"
+CONFIG_API_PROVIDER_DIR := "internal"
 TOOLS_PROVIDER_DIR := "tools"
 OPENAPI_SPEC := "pkg/config-api-client/api"
 SOURCE_OPEN_API_SPEC_FILE := ".openapi.source.yaml"
