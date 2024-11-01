@@ -63,7 +63,6 @@ lint-client:
   golangci-lint run
 
 lint-provider:
-  golines . --dry-run
   #!/usr/bin/env bash
 
   cd {{ CONFIG_API_PROVIDER_DIR }}
@@ -73,6 +72,7 @@ lint-provider:
     exit 1
   fi
 
+  golines . --dry-run
   if [ -n "$(golines . --dry-run)" ]; then
     echo "Error: (golines) formatting required" >&2
     exit 1
