@@ -233,6 +233,14 @@ func MockGetAgent(uid string, response map[string]interface{}, times int) {
 		JSON(response)
 }
 
+func MockDeleteAgent(uid string, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Delete("/networking-uxi/v1alpha1/agents/"+uid).
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(204)
+}
+
 func MockPostGroup(request map[string]interface{}, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Post("/networking-uxi/v1alpha1/groups").

@@ -109,7 +109,17 @@ func TestAgentResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light_2"),
 				),
 			},
-			// Delete testing automatically occurs in TestCase
+			// Delete testing
+			{
+				PreConfig: func() {
+					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						1,
+					)
+					util.MockDeleteAgent("uid", 1)
+				},
+				Config: provider.ProviderConfig,
+			},
 		},
 	})
 
@@ -160,7 +170,27 @@ func TestAgentResource429Handling(t *testing.T) {
 					},
 				),
 			},
-			// Deletion occurs automatically
+			// Delete testing
+			{
+				PreConfig: func() {
+					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						1,
+					)
+					request429 = gock.New("https://test.api.capenetworks.com").
+						Delete("/networking-uxi/v1alpha1/agents/uid").
+						Reply(429).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockDeleteAgent("uid", 1)
+				},
+				Config: provider.ProviderConfig,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					func(s *terraform.State) error {
+						st.Assert(t, request429.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
+			},
 		},
 	})
 
@@ -229,6 +259,70 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					}`,
 
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
+			},
+			// Actually importing an agent for testing purposes
+			{
+				PreConfig: func() {
+					util.MockGetAgent(
+						"uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+						),
+						2,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_agent" "my_agent" {
+						name = "name"
+						notes = "notes"
+						pcap_mode = "light"
+					}
+
+					import {
+						to = uxi_agent.my_agent
+						id = "uid"
+					}`,
+
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "uid"),
+				),
+			},
+			// Delete 4xx
+			{
+				PreConfig: func() {
+					// existing agent
+					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						1,
+					)
+					// delete agent - with error
+					gock.New("https://test.api.capenetworks.com").
+						Delete("/networking-uxi/v1alpha1/agents/uid").
+						Reply(422).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 422,
+							"errorCode":      "HPE_GL_NETWORKING_UXI_HARDWARE_SENSOR_DELETION_FORBIDDEN",
+							"message":        "Cant delete sensor - hardware sensor deletion is forbidden",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+				Config: provider.ProviderConfig,
+				ExpectError: regexp.MustCompile(
+					`(?s)Cant delete sensor - hardware sensor deletion is forbidden\s*DebugID: 12312-123123-123123-1231212`,
+				),
+			},
+			// Actually delete group for cleanup reasons
+			{
+				PreConfig: func() {
+					// existing group
+					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+						1,
+					)
+					// delete group
+					util.MockDeleteAgent("uid", 1)
+				},
+				Config: provider.ProviderConfig,
 			},
 		},
 	})

@@ -266,6 +266,8 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					)
 					util.MockDeleteGroup("group_uid", 1)
 					util.MockDeleteGroup("group_uid_2", 1)
+					util.MockDeleteAgent("agent_uid", 1)
+					util.MockDeleteAgent("agent_uid_2", 1)
 				},
 				Config: provider.ProviderConfig,
 			},
