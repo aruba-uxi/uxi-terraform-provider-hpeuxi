@@ -50,12 +50,16 @@ lint-client:
 
   cd pkg/config-api-client
 
-  if [ -n "$(gofmt -d .)" ]; then
+  output=$(gofmt -d .)
+  if [ -n "$output" ]; then
+    echo "$output"
     echo "Error: (gofmt) formatting required" >&2
     exit 1
   fi
 
-  if [ -n "$(golines . --dry-run)" ]; then
+  output=$(golines . --dry-run)
+  if [ -n "$output" ]; then
+    echo "$output"
     echo "Error: (golines) formatting required" >&2
     exit 1
   fi
@@ -67,13 +71,16 @@ lint-provider:
 
   cd {{ CONFIG_API_PROVIDER_DIR }}
 
-  if [ -n "$(gofmt -d .)" ]; then
+  output=$(gofmt -d .)
+  if [ -n "$output" ]; then
+    echo "$output"
     echo "Error: (gofmt) formatting required" >&2
     exit 1
   fi
 
-  golines . --dry-run
-  if [ -n "$(golines . --dry-run)" ]; then
+  output=$(golines . --dry-run)
+  if [ -n "$output" ]; then
+    echo "$output"
     echo "Error: (golines) formatting required" >&2
     exit 1
   fi
