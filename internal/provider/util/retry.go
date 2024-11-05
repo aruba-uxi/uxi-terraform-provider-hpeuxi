@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/aruba-uxi/configuration-api-terraform-provider/internal/provider/config"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/config"
 )
 
 func RetryFor429[T any](f func() (T, *http.Response, error)) (T, *http.Response, error) {

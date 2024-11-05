@@ -23,7 +23,7 @@ go get golang.org/x/net/context
 Put the package under your project folder and add the following in import:
 
 ```go
-import config_api_client "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+import config_api_client "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 ```
 
 To use a proxy, set the environment variable `HTTP_PROXY`:
@@ -176,4 +176,3 @@ Each of these functions takes a value of the given basic type and returns a poin
 ## Author
 
 support@capenetworks.com
-

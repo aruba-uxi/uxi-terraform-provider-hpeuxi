@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 	"github.com/h2non/gock"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

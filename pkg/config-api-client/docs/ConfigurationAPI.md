@@ -43,11 +43,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	agentUid := "agentUid_example" // string | 
+	agentUid := "agentUid_example" // string |
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -67,7 +67,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**agentUid** | **string** |  | 
+**agentUid** | **string** |  |
 
 ### Other Parameters
 
@@ -113,7 +113,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
@@ -144,8 +144,8 @@ Other parameters are passed through a pointer to a apiAgentsGetRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
+ **id** | **string** |  |
+ **next** | **string** |  |
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -183,11 +183,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	groupUid := "groupUid_example" // string | 
+	groupUid := "groupUid_example" // string |
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -207,7 +207,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**groupUid** | **string** |  | 
+**groupUid** | **string** |  |
 
 ### Other Parameters
 
@@ -253,7 +253,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
@@ -284,8 +284,8 @@ Other parameters are passed through a pointer to a apiGroupsGetRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
+ **id** | **string** |  |
+ **next** | **string** |  |
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -323,11 +323,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	groupUid := "groupUid_example" // string | 
+	groupUid := "groupUid_example" // string |
 	groupsPatchRequest := *openapiclient.NewGroupsPatchRequest("Name_example") // GroupsPatchRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
@@ -348,7 +348,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**groupUid** | **string** |  | 
+**groupUid** | **string** |  |
 
 ### Other Parameters
 
@@ -358,7 +358,7 @@ Other parameters are passed through a pointer to a apiGroupsPatchRequest struct 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **groupsPatchRequest** | [**GroupsPatchRequest**](GroupsPatchRequest.md) |  | 
+ **groupsPatchRequest** | [**GroupsPatchRequest**](GroupsPatchRequest.md) |  |
 
 ### Return type
 
@@ -395,11 +395,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	groupsPostRequest := *openapiclient.NewGroupsPostRequest("Name_example") // GroupsPostRequest | 
+	groupsPostRequest := *openapiclient.NewGroupsPostRequest("Name_example") // GroupsPostRequest |
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -424,7 +424,7 @@ Other parameters are passed through a pointer to a apiGroupsPostRequest struct v
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **groupsPostRequest** | [**GroupsPostRequest**](GroupsPostRequest.md) |  | 
+ **groupsPostRequest** | [**GroupsPostRequest**](GroupsPostRequest.md) |  |
 
 ### Return type
 
@@ -461,11 +461,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	id := "id_example" // string | 
+	id := "id_example" // string |
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -485,7 +485,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  | 
+**id** | **string** |  |
 
 ### Other Parameters
 
@@ -531,7 +531,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
@@ -562,8 +562,8 @@ Other parameters are passed through a pointer to a apiNetworkGroupAssignmentsGet
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
+ **id** | **string** |  |
+ **next** | **string** |  |
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -601,11 +601,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	networkGroupAssignmentsPostRequest := *openapiclient.NewNetworkGroupAssignmentsPostRequest("GroupId_example", "NetworkId_example") // NetworkGroupAssignmentsPostRequest | 
+	networkGroupAssignmentsPostRequest := *openapiclient.NewNetworkGroupAssignmentsPostRequest("GroupId_example", "NetworkId_example") // NetworkGroupAssignmentsPostRequest |
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -630,7 +630,7 @@ Other parameters are passed through a pointer to a apiNetworkGroupAssignmentsPos
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **networkGroupAssignmentsPostRequest** | [**NetworkGroupAssignmentsPostRequest**](NetworkGroupAssignmentsPostRequest.md) |  | 
+ **networkGroupAssignmentsPostRequest** | [**NetworkGroupAssignmentsPostRequest**](NetworkGroupAssignmentsPostRequest.md) |  |
 
 ### Return type
 
@@ -667,11 +667,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	id := "id_example" // string | 
+	id := "id_example" // string |
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -691,7 +691,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  | 
+**id** | **string** |  |
 
 ### Other Parameters
 
@@ -737,7 +737,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
@@ -768,8 +768,8 @@ Other parameters are passed through a pointer to a apiSensorGroupAssignmentsGetR
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
+ **id** | **string** |  |
+ **next** | **string** |  |
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -807,11 +807,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	sensorGroupAssignmentsPostRequest := *openapiclient.NewSensorGroupAssignmentsPostRequest("GroupId_example", "SensorId_example") // SensorGroupAssignmentsPostRequest | 
+	sensorGroupAssignmentsPostRequest := *openapiclient.NewSensorGroupAssignmentsPostRequest("GroupId_example", "SensorId_example") // SensorGroupAssignmentsPostRequest |
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -836,7 +836,7 @@ Other parameters are passed through a pointer to a apiSensorGroupAssignmentsPost
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **sensorGroupAssignmentsPostRequest** | [**SensorGroupAssignmentsPostRequest**](SensorGroupAssignmentsPostRequest.md) |  | 
+ **sensorGroupAssignmentsPostRequest** | [**SensorGroupAssignmentsPostRequest**](SensorGroupAssignmentsPostRequest.md) |  |
 
 ### Return type
 
@@ -873,7 +873,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
@@ -904,8 +904,8 @@ Other parameters are passed through a pointer to a apiSensorsGetRequest struct v
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
+ **id** | **string** |  |
+ **next** | **string** |  |
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -943,12 +943,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	sensorUid := "sensorUid_example" // string | 
-	sensorsPatchRequest := *openapiclient.NewSensorsPatchRequest() // SensorsPatchRequest | 
+	sensorUid := "sensorUid_example" // string |
+	sensorsPatchRequest := *openapiclient.NewSensorsPatchRequest() // SensorsPatchRequest |
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -968,7 +968,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**sensorUid** | **string** |  | 
+**sensorUid** | **string** |  |
 
 ### Other Parameters
 
@@ -978,7 +978,7 @@ Other parameters are passed through a pointer to a apiSensorsPatchRequest struct
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **sensorsPatchRequest** | [**SensorsPatchRequest**](SensorsPatchRequest.md) |  | 
+ **sensorsPatchRequest** | [**SensorsPatchRequest**](SensorsPatchRequest.md) |  |
 
 ### Return type
 
@@ -1015,11 +1015,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	id := "id_example" // string | 
+	id := "id_example" // string |
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1039,7 +1039,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  | 
+**id** | **string** |  |
 
 ### Other Parameters
 
@@ -1085,11 +1085,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
-	serviceTestGroupAssignmentsPostRequest := *openapiclient.NewServiceTestGroupAssignmentsPostRequest("GroupId_example", "ServiceTestId_example") // ServiceTestGroupAssignmentsPostRequest | 
+	serviceTestGroupAssignmentsPostRequest := *openapiclient.NewServiceTestGroupAssignmentsPostRequest("GroupId_example", "ServiceTestId_example") // ServiceTestGroupAssignmentsPostRequest |
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1114,7 +1114,7 @@ Other parameters are passed through a pointer to a apiServiceTestGroupAssignment
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **serviceTestGroupAssignmentsPostRequest** | [**ServiceTestGroupAssignmentsPostRequest**](ServiceTestGroupAssignmentsPostRequest.md) |  | 
+ **serviceTestGroupAssignmentsPostRequest** | [**ServiceTestGroupAssignmentsPostRequest**](ServiceTestGroupAssignmentsPostRequest.md) |  |
 
 ### Return type
 
@@ -1151,7 +1151,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
@@ -1182,8 +1182,8 @@ Other parameters are passed through a pointer to a apiServiceTestsGetRequest str
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
+ **id** | **string** |  |
+ **next** | **string** |  |
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -1221,7 +1221,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
@@ -1252,8 +1252,8 @@ Other parameters are passed through a pointer to a apiWiredNetworksGetRequest st
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
+ **id** | **string** |  |
+ **next** | **string** |  |
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -1291,7 +1291,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 )
 
 func main() {
@@ -1322,8 +1322,8 @@ Other parameters are passed through a pointer to a apiWirelessNetworksGetRequest
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
+ **id** | **string** |  |
+ **next** | **string** |  |
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -1342,4 +1342,3 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to README]](../README.md)
-

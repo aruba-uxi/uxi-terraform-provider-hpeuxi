@@ -23,7 +23,7 @@ generate-config-api-client: retrieve-config-api-openapi-spec
   --output /local/{{ CONFIG_API_CLIENT_DIR }} \
   --package-name config_api_client \
   --git-user-id aruba-uxi \
-  --git-repo-id configuration-api-terraform-provider/{{ CONFIG_API_CLIENT_DIR }} \
+  --git-repo-id terraform-provider-configuration-api/{{ CONFIG_API_CLIENT_DIR }} \
   --openapi-normalizer SET_TAGS_FOR_ALL_OPERATIONS=configuration
   just tidy-client
   just fmt-client
@@ -72,7 +72,7 @@ tidy-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} go mod tidy
 
 test-provider +ARGS='':
-  cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
+  cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./test/mocked/... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 generate-provider-docs:
   cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} --provider-name uxi
@@ -86,6 +86,17 @@ coverage-provider:
 
 tidy-tools:
   cd {{ TOOLS_PROVIDER_DIR }} && go mod tidy
+
+acceptance-tests +ARGS='':
+  #!/usr/bin/env bash
+
+  read -p "This is going to run requests against UXI backend. Continue (y/Y)? " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+    TF_ACC=1 go test -v ./test/live/... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
+  fi
+
 
 test +ARGS='':
   just test-client {{ ARGS }}

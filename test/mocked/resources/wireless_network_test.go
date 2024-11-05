@@ -1,8 +1,8 @@
 package resource_test
 
 import (
-	"github.com/aruba-uxi/configuration-api-terraform-provider/test/provider"
-	"github.com/aruba-uxi/configuration-api-terraform-provider/test/util"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/util"
 	"regexp"
 	"testing"
 
@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestWiredNetworkResource(t *testing.T) {
+func TestWirelessNetworkResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
@@ -22,46 +22,48 @@ func TestWiredNetworkResource(t *testing.T) {
 			tfversion.RequireAbove(tfversion.Version1_7_0),
 		},
 		Steps: []resource.TestStep{
-			// Creating a wired_network is not allowed
+			// Creating a wireless_network is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "my_wired_network" {
+					resource "uxi_wireless_network" "my_wireless_network" {
 						name = "name"
 					}`,
 
 				ExpectError: regexp.MustCompile(
-					`(?s)creating a wired_network is not supported; wired_networks can only be\s*imported`,
+					`(?s)creating a wireless_network is not supported; wireless_networks can only be\s*imported`,
 				),
 			},
-			// Importing a wired_network
+			// Importing a wireless_network
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
+					util.MockGetWirelessNetwork(
 						"uid",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
 						),
 						2,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "my_wired_network" {
+					resource "uxi_wireless_network" "my_wireless_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_wired_network
+						to = uxi_wireless_network.my_wireless_network
 						id = "uid"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_wired_network.my_wired_network",
+						"uxi_wireless_network.my_wireless_network",
 						"name",
 						"name",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_wired_network.my_wired_network",
+						"uxi_wireless_network.my_wireless_network",
 						"id",
 						"uid",
 					),
@@ -70,58 +72,75 @@ func TestWiredNetworkResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
+					util.MockGetWirelessNetwork(
 						"uid",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
 						),
 						1,
 					)
 				},
-				ResourceName:      "uxi_wired_network.my_wired_network",
+				ResourceName:      "uxi_wireless_network.my_wireless_network",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Updating a wired_network is not allowed
+			// Updating a wireless_network is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
+					util.MockGetWirelessNetwork(
 						"uid",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
 						),
 						1,
 					)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_wired_network" "my_wired_network" {
+				resource "uxi_wireless_network" "my_wireless_network" {
 					name = "updated_name"
 				}`,
 				ExpectError: regexp.MustCompile(
-					`(?s)updating a wired_network is not supported; wired_networks can only be updated\s*through the dashboard`,
+					`(?s)updating a wireless_network is not supported; wireless_networks can only be\s*updated through the dashboard`,
 				),
 			},
-			// Deleting a wired_network is not allowed
+			// Deleting a wireless_network is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
+					util.MockGetWirelessNetwork(
 						"uid",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
 						),
-						2,
+						1,
 					)
 				},
 				Config: provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(
-					`(?s)deleting a wired_network is not supported; wired_networks can only removed\s*from state`,
+					`(?s)deleting a wireless_network is not supported; wireless_networks can only\s*removed from state`,
 				),
 			},
-			// Remove wired_network from state
+			// Remove wireless_network from state
 			{
+				PreConfig: func() {
+					util.MockGetWirelessNetwork(
+						"uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("uid", ""),
+							},
+						),
+						1,
+					)
+				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wired_network.my_wired_network
+						from = uxi_wireless_network.my_wireless_network
 
 						lifecycle {
 							destroy = false
@@ -134,7 +153,7 @@ func TestWiredNetworkResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
+func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
@@ -147,19 +166,19 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
+					util.MockGetWirelessNetwork(
 						"uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "my_wired_network" {
+					resource "uxi_wireless_network" "my_wireless_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_wired_network
+						to = uxi_wireless_network.my_wireless_network
 						id = "uid"
 					}`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
@@ -167,7 +186,7 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/networking-uxi/v1alpha1/wired-networks").
+						Get("/networking-uxi/v1alpha1/wireless-networks").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,
@@ -177,12 +196,12 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "my_wired_network" {
+					resource "uxi_wireless_network" "my_wireless_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_wired_network
+						to = uxi_wireless_network.my_wireless_network
 						id = "uid"
 					}`,
 				ExpectError: regexp.MustCompile(
