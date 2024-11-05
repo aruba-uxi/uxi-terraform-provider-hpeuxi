@@ -3,8 +3,8 @@ package resources
 import (
 	"context"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/util"
 	config_api_client "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"

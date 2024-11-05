@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/test/live/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration-api/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-configuration/test/live/provider"
+	"github.com/aruba-uxi/terraform-provider-configuration/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
@@ -36,7 +36,7 @@ func TestGroupResource(t *testing.T) {
 					resource.TestCheckResourceAttrPtr(
 						"uxi_group.parent",
 						"parent_group_id",
-						&rootGroup.Id,
+						nil,
 					),
 				),
 			},
