@@ -87,6 +87,17 @@ coverage-provider:
 tidy-tools:
   cd {{ TOOLS_PROVIDER_DIR }} && go mod tidy
 
+acceptance-tests +ARGS='':
+  #!/usr/bin/env bash
+
+  read -p "This is going to run requests against UXI backend. Continue (y/Y)? " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+    TF_ACC=1 go test -v ./test/live/... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
+  fi
+
+
 test +ARGS='':
   just test-client {{ ARGS }}
   just test-provider {{ ARGS }}
