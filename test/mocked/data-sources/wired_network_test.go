@@ -4,41 +4,86 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/configuration-api-terraform-provider/test/provider"
-	"github.com/aruba-uxi/configuration-api-terraform-provider/test/util"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/util"
+	"github.com/nbio/st"
+
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
 )
 
-func TestAgentDataSource(t *testing.T) {
+func TestWiredNetworkDataSource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Test Read
+			// Read testing
 			{
 				PreConfig: func() {
-					util.MockGetAgent(
+					util.MockGetWiredNetwork(
 						"uid",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
 						),
 						3,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent" "my_agent" {
+					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							agent_id = "uid"
+							wired_network_id = "uid"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "uid"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"id",
+						"uid",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"name",
+						"name",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"ip_version",
+						"ip_version",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"security",
+						"security",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"dns_lookup_domain",
+						"dns_lookup_domain",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"disable_edns",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"use_dns64",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"external_connectivity",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"vlan_id",
+						"123",
+					),
 				),
 			},
 		},
@@ -47,7 +92,7 @@ func TestAgentDataSource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestAgentDataSource429Handling(t *testing.T) {
+func TestWiredNetworkDataSource429Handling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mock429 *gock.Response
@@ -55,31 +100,34 @@ func TestAgentDataSource429Handling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-
-			// Test Read
+			// Read testing
 			{
 				PreConfig: func() {
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Get("/networking-uxi/v1alpha1/agents").
+						Get("/networking-uxi/v1alpha1/wired-networks").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetAgent(
+					util.MockGetWiredNetwork(
 						"uid",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
 						),
 						3,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent" "my_agent" {
+					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							agent_id = "uid"
+							wired_network_id = "uid"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "uid"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wired_network.my_wired_network",
+						"id",
+						"uid",
+					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
 						return nil
@@ -92,17 +140,16 @@ func TestAgentDataSource429Handling(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
+func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// 5xx error
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/networking-uxi/v1alpha1/agents").
+						Get("/networking-uxi/v1alpha1/wired-networks").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,
@@ -112,9 +159,9 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent" "my_agent" {
+					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							agent_id = "uid"
+							wired_network_id = "uid"
 						}
 					}
 				`,
@@ -122,19 +169,18 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
 				),
 			},
-			// Not found error
 			{
 				PreConfig: func() {
-					util.MockGetAgent(
+					util.MockGetWiredNetwork(
 						"uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent" "my_agent" {
+					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							agent_id = "uid"
+							wired_network_id = "uid"
 						}
 					}
 				`,

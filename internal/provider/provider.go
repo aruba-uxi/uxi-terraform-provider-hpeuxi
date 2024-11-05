@@ -4,15 +4,15 @@ import (
 	"context"
 	"os"
 
-	"github.com/aruba-uxi/configuration-api-terraform-provider/internal/provider/datasources"
-	"github.com/aruba-uxi/configuration-api-terraform-provider/internal/provider/resources"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/datasources"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/resources"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 
-	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"net/http"
 

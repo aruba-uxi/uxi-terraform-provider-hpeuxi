@@ -2,9 +2,9 @@ package util
 
 import (
 	"encoding/json"
-	"github.com/aruba-uxi/configuration-api-terraform-provider/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 
-	"github.com/aruba-uxi/configuration-api-terraform-provider/internal/provider/resources"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/resources"
 	"github.com/h2non/gock"
 )
 

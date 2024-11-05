@@ -4,15 +4,16 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/configuration-api-terraform-provider/test/provider"
-	"github.com/aruba-uxi/configuration-api-terraform-provider/test/util"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/util"
+	"github.com/nbio/st"
+
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
 )
 
-func TestNetworkGroupAssignmentDataSource(t *testing.T) {
+func TestWirelessNetworkDataSource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
@@ -22,38 +23,78 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 			// Read testing
 			{
 				PreConfig: func() {
-					util.MockGetNetworkGroupAssignment(
+					util.MockGetWirelessNetwork(
 						"uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNetworkGroupAssignmentResponse("uid", ""),
+								util.GenerateWirelessNetworkResponse("uid", ""),
 							},
 						),
 						3,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_network_group_assignment" "my_network_group_assignment" {
+					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							network_group_assignment_id = "uid"
+							wireless_network_id = "uid"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"data.uxi_network_group_assignment.my_network_group_assignment",
+						"data.uxi_wireless_network.my_wireless_network",
 						"id",
 						"uid",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_network_group_assignment.my_network_group_assignment",
-						"group_id",
-						"group_uid",
+						"data.uxi_wireless_network.my_wireless_network",
+						"ssid",
+						"ssid",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_network_group_assignment.my_network_group_assignment",
-						"network_id",
-						"network_uid",
+						"data.uxi_wireless_network.my_wireless_network",
+						"name",
+						"name",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"ip_version",
+						"ip_version",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"security",
+						"security",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"hidden",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"band_locking",
+						"band_locking",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"dns_lookup_domain",
+						"dns_lookup_domain",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"disable_edns",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"use_dns64",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"external_connectivity",
+						"false",
 					),
 				),
 			},
@@ -63,7 +104,7 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestNetworkGroupAssignmentDataSource429Handling(t *testing.T) {
+func TestWirelessNetworkDataSource429Handling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mock429 *gock.Response
@@ -75,29 +116,29 @@ func TestNetworkGroupAssignmentDataSource429Handling(t *testing.T) {
 			{
 				PreConfig: func() {
 					mock429 = gock.New("https://test.api.capenetworks.com").
-						Get("/networking-uxi/v1alpha1/network-group-assignments").
+						Get("/networking-uxi/v1alpha1/wireless-networks").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetNetworkGroupAssignment(
+					util.MockGetWirelessNetwork(
 						"uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNetworkGroupAssignmentResponse("uid", ""),
+								util.GenerateWirelessNetworkResponse("uid", ""),
 							},
 						),
 						3,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_network_group_assignment" "my_network_group_assignment" {
+					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							network_group_assignment_id = "uid"
+							wireless_network_id = "uid"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"data.uxi_network_group_assignment.my_network_group_assignment",
+						"data.uxi_wireless_network.my_wireless_network",
 						"id",
 						"uid",
 					),
@@ -113,7 +154,7 @@ func TestNetworkGroupAssignmentDataSource429Handling(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
+func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	resource.Test(t, resource.TestCase{
@@ -122,7 +163,7 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/networking-uxi/v1alpha1/network-group-assignments").
+						Get("/networking-uxi/v1alpha1/wireless-networks").
 						Reply(500).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 500,
@@ -132,9 +173,9 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_network_group_assignment" "my_network_group_assignment" {
+					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							network_group_assignment_id = "uid"
+							wireless_network_id = "uid"
 						}
 					}
 				`,
@@ -144,16 +185,16 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					util.MockGetNetworkGroupAssignment(
+					util.MockGetWirelessNetwork(
 						"uid",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_network_group_assignment" "my_network_group_assignment" {
+					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							network_group_assignment_id = "uid"
+							wireless_network_id = "uid"
 						}
 					}
 				`,
