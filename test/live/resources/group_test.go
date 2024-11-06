@@ -148,6 +148,35 @@ func TestGroupResource(t *testing.T) {
 					),
 				),
 			},
+			// Update non root node group back to the root node by removing parent_group_id
+			{
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "parent" {
+						name            = "tf_provider_acceptance_test_parent_name_updated"
+					}
+
+					resource "uxi_group" "child" {
+						name            = "tf_provider_acceptance_test_child"
+						parent_group_id = uxi_group.parent.id
+					}
+
+					# move grandchild from parent to root
+					resource "uxi_group" "grandchild" {
+						name            = "tf_provider_acceptance_test_grandchild_moved_to_root"
+					}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"uxi_group.grandchild",
+						"name",
+						"tf_provider_acceptance_test_grandchild_moved_to_root",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_group.grandchild",
+						"parent_group_id",
+						rootGroup.Id,
+					),
+				),
+			},
 			// Deletes happen automatically
 		},
 	})
