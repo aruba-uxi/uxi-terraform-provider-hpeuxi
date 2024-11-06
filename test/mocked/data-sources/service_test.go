@@ -25,7 +25,9 @@ func TestServiceTestDataSource(t *testing.T) {
 					util.MockGetServiceTest(
 						"uid",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateServiceTestResponseModel("uid", "")},
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("uid", ""),
+							},
 						),
 						3,
 					)
@@ -38,7 +40,11 @@ func TestServiceTestDataSource(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_service_test.my_service_test", "id", "uid"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_service_test.my_service_test",
+						"id",
+						"uid",
+					),
 				),
 			},
 		},
@@ -66,7 +72,9 @@ func TestServiceTestDataSource429Handling(t *testing.T) {
 					util.MockGetServiceTest(
 						"uid",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateServiceTestResponseModel("uid", "")},
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("uid", ""),
+							},
 						),
 						3,
 					)
@@ -79,7 +87,11 @@ func TestServiceTestDataSource429Handling(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_service_test.my_service_test", "id", "uid"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_service_test.my_service_test",
+						"id",
+						"uid",
+					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
 						return nil
