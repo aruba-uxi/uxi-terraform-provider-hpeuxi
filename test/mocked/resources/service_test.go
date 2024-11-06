@@ -6,7 +6,6 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/resources"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
@@ -37,9 +36,15 @@ func TestServiceTestResource(t *testing.T) {
 			// Importing a service_test
 			{
 				PreConfig: func() {
-					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
-						return util.GenerateServiceTestResponseModel(uid, "")
-					}
+					util.MockGetServiceTest(
+						"uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("uid", ""),
+							},
+						),
+						2,
+					)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_service_test" "my_service_test" {
@@ -62,12 +67,34 @@ func TestServiceTestResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
+				PreConfig: func() {
+					util.MockGetServiceTest(
+						"uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("uid", ""),
+							},
+						),
+						1,
+					)
+				},
 				ResourceName:      "uxi_service_test.my_service_test",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			// Updating a service_test is not allowed
 			{
+				PreConfig: func() {
+					util.MockGetServiceTest(
+						"uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("uid", ""),
+							},
+						),
+						1,
+					)
+				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_service_test" "my_service_test" {
 					name = "updated_name"
@@ -78,6 +105,17 @@ func TestServiceTestResource(t *testing.T) {
 			},
 			// Deleting a service_test is not allowed
 			{
+				PreConfig: func() {
+					util.MockGetServiceTest(
+						"uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("uid", ""),
+							},
+						),
+						1,
+					)
+				},
 				Config: provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(
 					`(?s)deleting a service_test is not supported; service_tests can only removed from\s*state`,

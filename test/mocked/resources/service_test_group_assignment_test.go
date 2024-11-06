@@ -26,10 +26,15 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for serviceTest import
-					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
-						return util.GenerateServiceTestResponseModel(uid, "")
-					}
-
+					util.MockGetServiceTest(
+						"service_test_uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("service_test_uid", ""),
+							},
+						),
+						2,
+					)
 					// required for group create
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("group_uid", "", ""),
@@ -47,7 +52,6 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						),
 						1,
 					)
-
 					// required for serviceTest group assignment create
 					util.MockPostServiceTestGroupAssignment(
 						util.GenerateServiceTestGroupAssignmentRequest(
@@ -116,13 +120,24 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
-						if uid == "service_test_uid" {
-							return util.GenerateServiceTestResponseModel("service_test_uid", "")
-						} else {
-							return util.GenerateServiceTestResponseModel("service_test_uid", "_2")
-						}
-					}
+					util.MockGetServiceTest(
+						"service_test_uid_2",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("service_test_uid_2", "_2"),
+							},
+						),
+						2,
+					)
+					util.MockGetServiceTest(
+						"service_test_uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("service_test_uid", ""),
+							},
+						),
+						2,
+					)
 					util.MockGetGroup(
 						"group_uid_2",
 						util.GeneratePaginatedResponse(
@@ -297,9 +312,15 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for serviceTest import
-					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
-						return util.GenerateServiceTestResponseModel(uid, "")
-					}
+					util.MockGetServiceTest(
+						"service_test_uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("service_test_uid", ""),
+							},
+						),
+						2,
+					)
 
 					// required for group create
 					util.MockPostGroup(
@@ -419,9 +440,15 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for serviceTest import
-					resources.GetServiceTest = func(uid string) resources.ServiceTestResponseModel {
-						return util.GenerateServiceTestResponseModel(uid, "")
-					}
+					util.MockGetServiceTest(
+						"service_test_uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponseModel("service_test_uid", ""),
+							},
+						),
+						1,
+					)
 
 					// required for group create
 					util.MockPostGroup(

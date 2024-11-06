@@ -2,8 +2,9 @@ package resources
 
 import (
 	"context"
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
 
-	// "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -23,21 +24,13 @@ type serviceTestResourceModel struct {
 	Name types.String `tfsdk:"name"`
 }
 
-// TODO: Switch this to use the Client Model when that becomes available
-type ServiceTestResponseModel struct {
-	Uid       string // <service_test_uid:str>,
-	Category  string // <category:str>,
-	Name      string // <name:str>,
-	Target    string // Nullable<<target:str>>,
-	Template  string // <template:str>,
-	IsEnabled bool   // <is_enabled:bool>
-}
-
 func NewServiceTestResource() resource.Resource {
 	return &serviceTestResource{}
 }
 
-type serviceTestResource struct{}
+type serviceTestResource struct {
+	client *config_api_client.APIClient
+}
 
 func (r *serviceTestResource) Metadata(
 	ctx context.Context,
@@ -72,6 +65,23 @@ func (r *serviceTestResource) Configure(
 	req resource.ConfigureRequest,
 	resp *resource.ConfigureResponse,
 ) {
+	// Add a nil check when handling ProviderData because Terraform
+	// sets that data after it calls the ConfigureProvider RPC.
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*config_api_client.APIClient)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Resource type: Group. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.client = client
 }
 
 func (r *serviceTestResource) Create(
@@ -102,10 +112,27 @@ func (r *serviceTestResource) Read(
 		return
 	}
 
-	response := GetServiceTest(state.ID.ValueString())
+	request := r.client.ConfigurationAPI.
+		ServiceTestsGet(ctx).
+		Id(state.ID.ValueString())
+	sensorResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(sensorResponse.Items) != 1 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+	serviceTest := sensorResponse.Items[0]
 
 	// Update state from client response
-	state.Name = types.StringValue(response.Name)
+	state.Name = types.StringValue(serviceTest.Name)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -151,18 +178,4 @@ func (r *serviceTestResource) ImportState(
 	resp *resource.ImportStateResponse,
 ) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-// Get the serviceTest using the configuration-api client
-var GetServiceTest = func(uid string) ServiceTestResponseModel {
-	// TODO: Query the serviceTest using the client
-
-	return ServiceTestResponseModel{
-		Uid:       uid,
-		Category:  "category",
-		Name:      "name",
-		Target:    "target",
-		Template:  "template",
-		IsEnabled: true,
-	}
 }
