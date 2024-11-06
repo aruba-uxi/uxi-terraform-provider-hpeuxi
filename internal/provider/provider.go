@@ -169,27 +169,28 @@ func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datas
 	return []func() datasource.DataSource{
 		datasources.NewAgentDataSource,
 		datasources.NewGroupDataSource,
+		datasources.NewNetworkGroupAssignmentDataSource,
 		datasources.NewSensorDataSource,
+		datasources.NewSensorGroupAssignmentDataSource,
+		datasources.NewServiceTestDataSource,
 		datasources.NewWiredNetworkDataSource,
 		datasources.NewWirelessNetworkDataSource,
-		datasources.NewSensorGroupAssignmentDataSource,
-		datasources.NewNetworkGroupAssignmentDataSource,
 	}
 }
 
 // Resources defines the resources implemented in the provider.
 func (p *uxiConfigurationProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
+		resources.NewAgentGroupAssignmentResource,
 		resources.NewAgentResource,
 		resources.NewGroupResource,
+		resources.NewNetworkGroupAssignmentResource,
+		resources.NewSensorGroupAssignmentResource,
 		resources.NewSensorResource,
+		resources.NewServiceTestGroupAssignmentResource,
+		resources.NewServiceTestResource,
 		resources.NewWiredNetworkResource,
 		resources.NewWirelessNetworkResource,
-		resources.NewServiceTestResource,
-		resources.NewSensorGroupAssignmentResource,
-		resources.NewAgentGroupAssignmentResource,
-		resources.NewNetworkGroupAssignmentResource,
-		resources.NewServiceTestGroupAssignmentResource,
 	}
 }
 
