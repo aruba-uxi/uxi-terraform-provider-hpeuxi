@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -34,14 +34,16 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					// required for group create
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("group_uid", "", ""),
-						util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+						util.StructToMap(
+							util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
+						),
 						1,
 					)
 					util.MockGetGroup(
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						1,
@@ -155,7 +157,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						"group_uid_2",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid_2", "_2", "_2"),
+								util.GenerateNonRootGroupResponseModel("group_uid_2", "_2", "_2"),
 							},
 						),
 						1,
@@ -164,7 +166,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						2,
@@ -175,7 +177,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("group_uid_2", "_2", "_2"),
 						util.StructToMap(
-							util.GenerateGroupResponseModel("group_uid_2", "_2", "_2"),
+							util.GenerateNonRootGroupResponseModel("group_uid_2", "_2", "_2"),
 						),
 						1,
 					)
@@ -285,7 +287,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						"group_uid_2",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid_2", "_2", "_2"),
+								util.GenerateNonRootGroupResponseModel("group_uid_2", "_2", "_2"),
 							},
 						),
 						1,
@@ -294,7 +296,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						1,
@@ -362,14 +364,16 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 					// required for group create
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("group_uid", "", ""),
-						util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+						util.StructToMap(
+							util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
+						),
 						1,
 					)
 					util.MockGetGroup(
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						1,
@@ -446,7 +450,7 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						1,
@@ -522,14 +526,16 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for group create
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("group_uid", "", ""),
-						util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+						util.StructToMap(
+							util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
+						),
 						1,
 					)
 					util.MockGetGroup(
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						1,
@@ -588,14 +594,16 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for group create
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("group_uid", "", ""),
-						util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+						util.StructToMap(
+							util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
+						),
 						1,
 					)
 					util.MockGetGroup(
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						1,
@@ -653,14 +661,16 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for group create
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("group_uid", "", ""),
-						util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+						util.StructToMap(
+							util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
+						),
 						1,
 					)
 					util.MockGetGroup(
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						1,
@@ -725,14 +735,16 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for group create
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("group_uid", "", ""),
-						util.StructToMap(util.GenerateGroupResponseModel("group_uid", "", "")),
+						util.StructToMap(
+							util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
+						),
 						1,
 					)
 					util.MockGetGroup(
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						1,
@@ -801,7 +813,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						1,
@@ -856,7 +868,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						"group_uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("group_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("group_uid", "", ""),
 							},
 						),
 						1,

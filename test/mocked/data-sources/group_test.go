@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -27,7 +27,7 @@ func TestGroupDataSource(t *testing.T) {
 						"uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("uid", "", ""),
 							},
 						),
 						3,
@@ -97,7 +97,7 @@ func TestGroupDataSource429Handling(t *testing.T) {
 						"uid",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateGroupResponseModel("uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("uid", "", ""),
 							},
 						),
 						3,

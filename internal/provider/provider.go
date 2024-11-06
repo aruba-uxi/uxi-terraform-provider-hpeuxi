@@ -4,8 +4,8 @@ import (
 	"context"
 	"os"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/datasources"
-	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/resources"
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/datasources"
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/resources"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"

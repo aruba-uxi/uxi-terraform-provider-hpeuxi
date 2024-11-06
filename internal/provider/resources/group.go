@@ -3,8 +3,8 @@ package resources
 import (
 	"context"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/util"
 	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -13,6 +13,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+const groupNotFoundErrorString = "not found"
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
@@ -64,7 +66,6 @@ func (r *groupResource) Schema(
 					// UXI business logic does not permit moving of groups
 					stringplanmodifier.RequiresReplace(),
 				},
-				Computed: true,
 			},
 		},
 	}
@@ -125,7 +126,11 @@ func (r *groupResource) Create(
 	// Update the state to match the plan (replace with response from client)
 	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
-	plan.ParentGroupId = types.StringValue(group.Parent.Id)
+	// only update parent if not attached to root node (else leave it as null)
+	parentGroup, _ := r.getGroup(ctx, group.Parent.Id)
+	if parentGroup != nil && !util.IsRoot(*parentGroup) {
+		plan.ParentGroupId = types.StringValue(group.Parent.Id)
+	}
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -148,33 +153,31 @@ func (r *groupResource) Read(
 		return
 	}
 
-	request := r.client.ConfigurationAPI.
-		GroupsGet(ctx).
-		Id(state.ID.ValueString())
-	groupResponse, response, err := util.RetryFor429(request.Execute)
-	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+	group, errorDetail := r.getGroup(ctx, state.ID.ValueString())
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_group")
 
-	if errorPresent {
-		resp.Diagnostics.AddError(errorSummary, errorDetail)
+	if errorDetail != nil {
+		if *errorDetail == groupNotFoundErrorString {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+		resp.Diagnostics.AddError(errorSummary, *errorDetail)
 		return
 	}
 
-	if len(groupResponse.Items) != 1 {
-		resp.State.RemoveResource(ctx)
-		return
-	}
-	group := groupResponse.Items[0]
-
-	if util.IsRoot(group) {
+	if util.IsRoot(*group) {
 		resp.Diagnostics.AddError(errorSummary, "The root group cannot be used as a resource")
 		return
 	}
 
 	// Update state from client response
 	state.Name = types.StringValue(group.Name)
-	state.ParentGroupId = types.StringValue(group.Parent.Get().Id)
+	// only update parent if not attached to root node (else leave it as null)
+	parentGroup, _ := r.getGroup(ctx, group.Parent.Get().Id)
+	if parentGroup != nil && !util.IsRoot(*parentGroup) {
+		state.ParentGroupId = types.StringValue(group.Parent.Get().Id)
+	}
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -190,8 +193,10 @@ func (r *groupResource) Update(
 	resp *resource.UpdateResponse,
 ) {
 	// Retrieve values from plan
-	var plan groupResourceModel
+	var plan, state groupResourceModel
 	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	diags = req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -253,4 +258,24 @@ func (r *groupResource) ImportState(
 	resp *resource.ImportStateResponse,
 ) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+}
+
+func (r *groupResource) getGroup(
+	ctx context.Context,
+	id string,
+) (*config_api_client.GroupsGetItem, *string) {
+	request := r.client.ConfigurationAPI.GroupsGet(ctx).Id(id)
+	groupResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		return nil, &errorDetail
+	}
+
+	if len(groupResponse.Items) != 1 {
+		notFound := groupNotFoundErrorString
+		return nil, &notFound
+	}
+
+	return &groupResponse.Items[0], nil
 }

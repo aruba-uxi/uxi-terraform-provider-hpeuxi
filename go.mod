@@ -1,4 +1,4 @@
-module github.com/aruba-uxi/terraform-provider-configuration-api
+module github.com/aruba-uxi/terraform-provider-configuration
 
 go 1.21
 

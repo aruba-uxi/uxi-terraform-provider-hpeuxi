@@ -1,12 +1,12 @@
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration-api/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/resources"
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/resources"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/resources"
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/resources"
 	"github.com/h2non/gock"
 )
 
@@ -52,7 +52,7 @@ func GenerateMockedAgentResponseModel(uid string, postfix string) resources.Agen
 	}
 }
 
-func GenerateGroupResponseModel(
+func GenerateNonRootGroupResponseModel(
 	uid string,
 	nonReplacementFieldPostfix string,
 	replacementFieldPostfix string,

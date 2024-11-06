@@ -3,8 +3,8 @@ package datasources
 import (
 	"context"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/internal/provider/util"
 	config_api_client "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
