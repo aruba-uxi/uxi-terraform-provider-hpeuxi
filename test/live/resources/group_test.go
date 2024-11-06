@@ -204,7 +204,7 @@ func TestRootGroupResource(t *testing.T) {
 }
 
 func checkGroupIsChildOfNode(actualParentGroupId, expectedParentName string) error {
-	expectedParentGroupId := util.GetNodeByName(expectedParentName).GetId()
+	expectedParentGroupId := util.GetGroupByName(expectedParentName).GetId()
 
 	if expectedParentGroupId != actualParentGroupId {
 		return fmt.Errorf(

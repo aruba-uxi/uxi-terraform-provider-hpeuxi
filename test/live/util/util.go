@@ -43,7 +43,7 @@ func GetRoot() *config_api_client.GroupsGetItem {
 	return nil
 }
 
-func GetNodeByName(name string) *config_api_client.GroupsGetItem {
+func GetGroupByName(name string) *config_api_client.GroupsGetItem {
 	groups, _, _ := Client.ConfigurationAPI.GroupsGet(context.Background()).Execute()
 	for _, group := range groups.Items {
 		if group.Name == name {
