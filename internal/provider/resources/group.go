@@ -219,7 +219,11 @@ func (r *groupResource) Update(
 	// Update the state to match the plan (replace with response from client)
 	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
-	plan.ParentGroupId = types.StringValue(group.Parent.Id)
+	// only update parent if not attached to root node (else leave it as null)
+	parentGroup, _ := r.getGroup(ctx, group.Parent.Id)
+	if parentGroup != nil && !util.IsRoot(*parentGroup) {
+		state.ParentGroupId = types.StringValue(group.Parent.Id)
+	}
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)

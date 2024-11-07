@@ -33,7 +33,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_wireless_network" "wireless_network_0" {
-						name = "tf-provider-acceptance-tests-ssid-0"
+						name = "` + config.WirelessNetworkName + `"
 					}
 
 					import {
@@ -45,7 +45,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_wireless_network.wireless_network_0",
 						"name",
-						"tf-provider-acceptance-tests-ssid-0",
+						config.WirelessNetworkName,
 					),
 					resource.TestCheckResourceAttr(
 						"uxi_wireless_network.wireless_network_0",
@@ -64,7 +64,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 				resource "uxi_wireless_network" "wireless_network_0" {
-					name = "tf-provider-acceptance-tests-ssid-0-updated-name"
+					name = "` + config.WirelessNetworkName + `-updated-name"
 				}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)updating a wireless_network is not supported; wireless_networks can only be\s*updated through the dashboard`,
