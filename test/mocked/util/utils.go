@@ -153,7 +153,16 @@ func GenerateSensorGroupAssignmentRequest(uid string, postfix string) map[string
 	}
 }
 
-func GenerateAgentGroupAssignmentResponse(
+func GenerateAgentGroupAssignmentResponse(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"id":    uid,
+		"group": map[string]string{"id": "group_uid" + postfix},
+		"agent": map[string]string{"id": "agent_uid" + postfix},
+		"type":  "networking-uxi/agent-group-assignment",
+	}
+}
+
+func GenerateAgentGroupAssignmentResponseMockedModel(
 	uid string,
 	postfix string,
 ) resources.AgentGroupAssignmentResponseModel {
@@ -310,6 +319,16 @@ func MockGetWiredNetwork(uid string, response map[string]interface{}, times int)
 func MockGetWirelessNetwork(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Get("/networking-uxi/v1alpha1/wireless-networks").
+		MatchHeader("Authorization", "mock_token").
+		MatchParam("id", uid).
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+func MockGetAgentGroupAssignment(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Get("/networking-uxi/v1alpha1/agent-group-assignments").
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
