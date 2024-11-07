@@ -48,16 +48,25 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					)
 
 					// required for agent group assignment create
-					agentGroupAssignmentResponse := util.GenerateAgentGroupAssignmentResponse(
+					agentGroupAssignmentResponse := util.GenerateAgentGroupAssignmentResponseMockedModel(
 						"agent_group_assignment_uid",
 						"",
 					)
 					resources.CreateAgentGroupAssignment = func(request resources.AgentGroupAssignmentRequestModel) resources.AgentGroupAssignmentResponseModel {
 						return agentGroupAssignmentResponse
 					}
-					resources.GetAgentGroupAssignment = func(uid string) resources.AgentGroupAssignmentResponseModel {
-						return agentGroupAssignmentResponse
-					}
+					util.MockGetAgentGroupAssignment(
+						"agent_group_assignment_uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateAgentGroupAssignmentResponse(
+									"agent_group_assignment_uid",
+									"",
+								),
+							},
+						),
+						1,
+					)
 				},
 
 				Config: provider.ProviderConfig + `
@@ -101,6 +110,20 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
+				PreConfig: func() {
+					util.MockGetAgentGroupAssignment(
+						"agent_group_assignment_uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateAgentGroupAssignmentResponse(
+									"agent_group_assignment_uid",
+									"",
+								),
+							},
+						),
+						1,
+					)
+				},
 				ResourceName:      "uxi_agent_group_assignment.my_agent_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
@@ -155,15 +178,32 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					)
 
 					// required for agent group assignment create
-					resources.GetAgentGroupAssignment = func(uid string) resources.AgentGroupAssignmentResponseModel {
-						if uid == "agent_group_assignment_uid" {
-							return util.GenerateAgentGroupAssignmentResponse(uid, "")
-						} else {
-							return util.GenerateAgentGroupAssignmentResponse(uid, "_2")
-						}
-					}
+					util.MockGetAgentGroupAssignment(
+						"agent_group_assignment_uid_2",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateAgentGroupAssignmentResponse(
+									"agent_group_assignment_uid_2",
+									"_2",
+								),
+							},
+						),
+						2,
+					)
+					util.MockGetAgentGroupAssignment(
+						"agent_group_assignment_uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateAgentGroupAssignmentResponse(
+									"agent_group_assignment_uid",
+									"",
+								),
+							},
+						),
+						1,
+					)
 					resources.CreateAgentGroupAssignment = func(request resources.AgentGroupAssignmentRequestModel) resources.AgentGroupAssignmentResponseModel {
-						return util.GenerateAgentGroupAssignmentResponse(
+						return util.GenerateAgentGroupAssignmentResponseMockedModel(
 							"agent_group_assignment_uid_2",
 							"_2",
 						)
