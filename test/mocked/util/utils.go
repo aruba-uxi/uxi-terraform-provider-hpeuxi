@@ -90,14 +90,15 @@ func GeneratePaginatedResponse(items []map[string]interface{}) map[string]interf
 func GenerateServiceTestResponseModel(
 	uid string,
 	postfix string,
-) resources.ServiceTestResponseModel {
-	return resources.ServiceTestResponseModel{
-		Uid:       uid,
-		Category:  "external" + postfix,
-		Name:      "name" + postfix,
-		Target:    "target" + postfix,
-		Template:  "template" + postfix,
-		IsEnabled: true,
+) map[string]interface{} {
+	return map[string]interface{}{
+		"id":        uid,
+		"category":  "external" + postfix,
+		"name":      "name" + postfix,
+		"target":    "target" + postfix,
+		"template":  "template" + postfix,
+		"isEnabled": true,
+		"type":      "networking-uxi/service-test",
 	}
 }
 
@@ -319,6 +320,16 @@ func MockGetWiredNetwork(uid string, response map[string]interface{}, times int)
 func MockGetWirelessNetwork(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Get("/networking-uxi/v1alpha1/wireless-networks").
+		MatchHeader("Authorization", "mock_token").
+		MatchParam("id", uid).
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+func MockGetServiceTest(uid string, response map[string]interface{}, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Get("/networking-uxi/v1alpha1/service-tests").
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
