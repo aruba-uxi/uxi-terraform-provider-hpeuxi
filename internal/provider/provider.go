@@ -168,6 +168,7 @@ func (p *uxiConfigurationProvider) Configure(
 func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		datasources.NewAgentDataSource,
+		datasources.NewAgentGroupAssignmentDataSource,
 		datasources.NewGroupDataSource,
 		datasources.NewSensorDataSource,
 		datasources.NewWiredNetworkDataSource,
