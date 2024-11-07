@@ -2,6 +2,8 @@ package resources
 
 import (
 	"context"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -38,7 +40,9 @@ func NewAgentGroupAssignmentResource() resource.Resource {
 	return &agentGroupAssignmentResource{}
 }
 
-type agentGroupAssignmentResource struct{}
+type agentGroupAssignmentResource struct {
+	client *config_api_client.APIClient
+}
 
 func (r *agentGroupAssignmentResource) Metadata(
 	ctx context.Context,
@@ -82,6 +86,21 @@ func (r *agentGroupAssignmentResource) Configure(
 	req resource.ConfigureRequest,
 	resp *resource.ConfigureResponse,
 ) {
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*config_api_client.APIClient)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			"Resource type: Network Group Assignment. Please report this issue to the provider developers.",
+		)
+		return
+	}
+
+	r.client = client
 }
 
 func (r *agentGroupAssignmentResource) Create(
@@ -129,12 +148,28 @@ func (r *agentGroupAssignmentResource) Read(
 		return
 	}
 
-	// TODO: Call client getAgentGroupAssignment method
-	agentGroupAssignment := GetAgentGroupAssignment(state.ID.ValueString())
+	request := r.client.ConfigurationAPI.
+		AgentGroupAssignmentsGet(ctx).
+		Id(state.ID.ValueString())
+	agentGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	errorSummary := util.GenerateErrorSummary("read", "uxi_agent_group_assignment")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(agentGroupAssignmentResponse.Items) != 1 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+	agentGroupAssignment := agentGroupAssignmentResponse.Items[0]
 
 	// Update state from client response
-	state.GroupID = types.StringValue(agentGroupAssignment.GroupUID)
-	state.AgentID = types.StringValue(agentGroupAssignment.AgentUID)
+	state.GroupID = types.StringValue(agentGroupAssignment.Group.Id)
+	state.AgentID = types.StringValue(agentGroupAssignment.Agent.Id)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -181,16 +216,6 @@ func (r *agentGroupAssignmentResource) ImportState(
 	resp *resource.ImportStateResponse,
 ) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-var GetAgentGroupAssignment = func(uid string) AgentGroupAssignmentResponseModel {
-	// TODO: Query the agentGroupAssignment using the client
-
-	return AgentGroupAssignmentResponseModel{
-		UID:      uid,
-		GroupUID: "mock_group_uid",
-		AgentUID: "mock_agent_uid",
-	}
 }
 
 var CreateAgentGroupAssignment = func(request AgentGroupAssignmentRequestModel) AgentGroupAssignmentResponseModel {
