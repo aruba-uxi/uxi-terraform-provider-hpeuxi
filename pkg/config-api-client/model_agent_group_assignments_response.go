@@ -17,46 +17,46 @@ import (
 	"fmt"
 )
 
-// checks if the ServiceTestsListResponse type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &ServiceTestsListResponse{}
+// checks if the AgentGroupAssignmentsResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AgentGroupAssignmentsResponse{}
 
-// ServiceTestsListResponse struct for ServiceTestsListResponse
-type ServiceTestsListResponse struct {
-	Items []ServiceTestsListItem `json:"items"`
-	Count int32                  `json:"count"`
-	Next  NullableString         `json:"next"`
+// AgentGroupAssignmentsResponse struct for AgentGroupAssignmentsResponse
+type AgentGroupAssignmentsResponse struct {
+	Items []AgentGroupAssignmentsItem `json:"items"`
+	Count int32                       `json:"count"`
+	Next  NullableString              `json:"next"`
 }
 
-type _ServiceTestsListResponse ServiceTestsListResponse
+type _AgentGroupAssignmentsResponse AgentGroupAssignmentsResponse
 
-// NewServiceTestsListResponse instantiates a new ServiceTestsListResponse object
+// NewAgentGroupAssignmentsResponse instantiates a new AgentGroupAssignmentsResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewServiceTestsListResponse(
-	items []ServiceTestsListItem,
+func NewAgentGroupAssignmentsResponse(
+	items []AgentGroupAssignmentsItem,
 	count int32,
 	next NullableString,
-) *ServiceTestsListResponse {
-	this := ServiceTestsListResponse{}
+) *AgentGroupAssignmentsResponse {
+	this := AgentGroupAssignmentsResponse{}
 	this.Items = items
 	this.Count = count
 	this.Next = next
 	return &this
 }
 
-// NewServiceTestsListResponseWithDefaults instantiates a new ServiceTestsListResponse object
+// NewAgentGroupAssignmentsResponseWithDefaults instantiates a new AgentGroupAssignmentsResponse object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewServiceTestsListResponseWithDefaults() *ServiceTestsListResponse {
-	this := ServiceTestsListResponse{}
+func NewAgentGroupAssignmentsResponseWithDefaults() *AgentGroupAssignmentsResponse {
+	this := AgentGroupAssignmentsResponse{}
 	return &this
 }
 
 // GetItems returns the Items field value
-func (o *ServiceTestsListResponse) GetItems() []ServiceTestsListItem {
+func (o *AgentGroupAssignmentsResponse) GetItems() []AgentGroupAssignmentsItem {
 	if o == nil {
-		var ret []ServiceTestsListItem
+		var ret []AgentGroupAssignmentsItem
 		return ret
 	}
 
@@ -65,7 +65,7 @@ func (o *ServiceTestsListResponse) GetItems() []ServiceTestsListItem {
 
 // GetItemsOk returns a tuple with the Items field value
 // and a boolean to check if the value has been set.
-func (o *ServiceTestsListResponse) GetItemsOk() ([]ServiceTestsListItem, bool) {
+func (o *AgentGroupAssignmentsResponse) GetItemsOk() ([]AgentGroupAssignmentsItem, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -73,12 +73,12 @@ func (o *ServiceTestsListResponse) GetItemsOk() ([]ServiceTestsListItem, bool) {
 }
 
 // SetItems sets field value
-func (o *ServiceTestsListResponse) SetItems(v []ServiceTestsListItem) {
+func (o *AgentGroupAssignmentsResponse) SetItems(v []AgentGroupAssignmentsItem) {
 	o.Items = v
 }
 
 // GetCount returns the Count field value
-func (o *ServiceTestsListResponse) GetCount() int32 {
+func (o *AgentGroupAssignmentsResponse) GetCount() int32 {
 	if o == nil {
 		var ret int32
 		return ret
@@ -89,7 +89,7 @@ func (o *ServiceTestsListResponse) GetCount() int32 {
 
 // GetCountOk returns a tuple with the Count field value
 // and a boolean to check if the value has been set.
-func (o *ServiceTestsListResponse) GetCountOk() (*int32, bool) {
+func (o *AgentGroupAssignmentsResponse) GetCountOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -97,13 +97,13 @@ func (o *ServiceTestsListResponse) GetCountOk() (*int32, bool) {
 }
 
 // SetCount sets field value
-func (o *ServiceTestsListResponse) SetCount(v int32) {
+func (o *AgentGroupAssignmentsResponse) SetCount(v int32) {
 	o.Count = v
 }
 
 // GetNext returns the Next field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *ServiceTestsListResponse) GetNext() string {
+func (o *AgentGroupAssignmentsResponse) GetNext() string {
 	if o == nil || o.Next.Get() == nil {
 		var ret string
 		return ret
@@ -115,7 +115,7 @@ func (o *ServiceTestsListResponse) GetNext() string {
 // GetNextOk returns a tuple with the Next field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ServiceTestsListResponse) GetNextOk() (*string, bool) {
+func (o *AgentGroupAssignmentsResponse) GetNextOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -123,11 +123,11 @@ func (o *ServiceTestsListResponse) GetNextOk() (*string, bool) {
 }
 
 // SetNext sets field value
-func (o *ServiceTestsListResponse) SetNext(v string) {
+func (o *AgentGroupAssignmentsResponse) SetNext(v string) {
 	o.Next.Set(&v)
 }
 
-func (o ServiceTestsListResponse) MarshalJSON() ([]byte, error) {
+func (o AgentGroupAssignmentsResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -135,7 +135,7 @@ func (o ServiceTestsListResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o ServiceTestsListResponse) ToMap() (map[string]interface{}, error) {
+func (o AgentGroupAssignmentsResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["items"] = o.Items
 	toSerialize["count"] = o.Count
@@ -143,7 +143,7 @@ func (o ServiceTestsListResponse) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *ServiceTestsListResponse) UnmarshalJSON(data []byte) (err error) {
+func (o *AgentGroupAssignmentsResponse) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -167,55 +167,55 @@ func (o *ServiceTestsListResponse) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varServiceTestsListResponse := _ServiceTestsListResponse{}
+	varAgentGroupAssignmentsResponse := _AgentGroupAssignmentsResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varServiceTestsListResponse)
+	err = decoder.Decode(&varAgentGroupAssignmentsResponse)
 
 	if err != nil {
 		return err
 	}
 
-	*o = ServiceTestsListResponse(varServiceTestsListResponse)
+	*o = AgentGroupAssignmentsResponse(varAgentGroupAssignmentsResponse)
 
 	return err
 }
 
-type NullableServiceTestsListResponse struct {
-	value *ServiceTestsListResponse
+type NullableAgentGroupAssignmentsResponse struct {
+	value *AgentGroupAssignmentsResponse
 	isSet bool
 }
 
-func (v NullableServiceTestsListResponse) Get() *ServiceTestsListResponse {
+func (v NullableAgentGroupAssignmentsResponse) Get() *AgentGroupAssignmentsResponse {
 	return v.value
 }
 
-func (v *NullableServiceTestsListResponse) Set(val *ServiceTestsListResponse) {
+func (v *NullableAgentGroupAssignmentsResponse) Set(val *AgentGroupAssignmentsResponse) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableServiceTestsListResponse) IsSet() bool {
+func (v NullableAgentGroupAssignmentsResponse) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableServiceTestsListResponse) Unset() {
+func (v *NullableAgentGroupAssignmentsResponse) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableServiceTestsListResponse(
-	val *ServiceTestsListResponse,
-) *NullableServiceTestsListResponse {
-	return &NullableServiceTestsListResponse{value: val, isSet: true}
+func NewNullableAgentGroupAssignmentsResponse(
+	val *AgentGroupAssignmentsResponse,
+) *NullableAgentGroupAssignmentsResponse {
+	return &NullableAgentGroupAssignmentsResponse{value: val, isSet: true}
 }
 
-func (v NullableServiceTestsListResponse) MarshalJSON() ([]byte, error) {
+func (v NullableAgentGroupAssignmentsResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableServiceTestsListResponse) UnmarshalJSON(src []byte) error {
+func (v *NullableAgentGroupAssignmentsResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

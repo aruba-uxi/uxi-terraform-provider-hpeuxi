@@ -332,6 +332,46 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
+	t.Run("Test ConfigurationAPI AgentGroupAssignmentsGet", func(t *testing.T) {
+
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Get("/networking-uxi/v1alpha1/agent-group-assignments").
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"items": []map[string]interface{}{
+					{
+						"id":    "uid",
+						"group": map[string]string{"id": "group_uid"},
+						"agent": map[string]string{"id": "agent_uid"},
+						"type":  "networking-uxi/agent-group-assignment",
+					},
+				},
+				"count": 1,
+				"next":  nil,
+			})
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			AgentGroupAssignmentsGet(context.Background()).
+			Id("uid").
+			Limit(10).
+			Next("some-cursor").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.AgentGroupAssignmentsResponse{
+			Items: []openapiclient.AgentGroupAssignmentsItem{
+				{
+					Id:    "uid",
+					Group: *openapiclient.NewGroup("group_uid"),
+					Agent: *openapiclient.NewAgent("agent_uid"),
+					Type:  "networking-uxi/agent-group-assignment",
+				},
+			},
+			Count: 1,
+			Next:  *openapiclient.NewNullableString(nil),
+		})
+	})
 	t.Run("Test ConfigurationAPI SensorGroupAssignmentsGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).

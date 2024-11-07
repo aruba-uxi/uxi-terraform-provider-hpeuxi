@@ -3,6 +3,9 @@ api/openapi.yaml
 api_configuration.go
 client.go
 configuration.go
+docs/Agent.md
+docs/AgentGroupAssignmentsItem.md
+docs/AgentGroupAssignmentsResponse.md
 docs/AgentItem.md
 docs/AgentsResponse.md
 docs/ConfigurationAPI.md
@@ -43,6 +46,9 @@ docs/WirelessNetworksItem.md
 docs/WirelessNetworksResponse.md
 go.mod
 go.sum
+model_agent.go
+model_agent_group_assignments_item.go
+model_agent_group_assignments_response.go
 model_agent_item.go
 model_agents_response.go
 model_error_detail.go
