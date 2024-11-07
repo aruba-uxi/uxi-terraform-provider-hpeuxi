@@ -1,6 +1,10 @@
 package resource_test
 
 import (
+	"regexp"
+	"testing"
+
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/resources"
 	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
 	"github.com/h2non/gock"
@@ -8,8 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 	"github.com/nbio/st"
-	"regexp"
-	"testing"
 )
 
 func TestAgentResource(t *testing.T) {
@@ -88,6 +90,9 @@ func TestAgentResource(t *testing.T) {
 						),
 						1,
 					)
+					resources.UpdateAgent = func(request resources.AgentUpdateRequestModel) resources.AgentResponseModel {
+						return util.GenerateMockedAgentResponseModel("uid", "_2")
+					}
 					// updated
 					util.MockGetAgent(
 						"uid",

@@ -172,6 +172,7 @@ func (r *groupResource) Read(
 	}
 
 	// Update state from client response
+	state.ID = types.StringValue(group.Id)
 	state.Name = types.StringValue(group.Name)
 	// only update parent if not attached to root node (else leave it as null)
 	parentGroup, _ := r.getGroup(ctx, group.Parent.Get().Id)
@@ -216,6 +217,7 @@ func (r *groupResource) Update(
 	}
 
 	// Update the state to match the plan (replace with response from client)
+	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
 	plan.ParentGroupId = types.StringValue(group.Parent.Id)
 

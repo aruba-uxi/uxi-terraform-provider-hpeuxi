@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/resources"
 	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
 	"regexp"
@@ -91,6 +92,9 @@ func TestSensorResource(t *testing.T) {
 						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
 						1,
 					)
+					resources.UpdateSensor = func(request resources.SensorUpdateRequestModel) resources.SensorResponseModel {
+						return util.GenerateMockedSensorResponseModel("uid", "_2")
+					}
 					// updated sensor
 					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "_2")}),

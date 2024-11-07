@@ -158,6 +158,7 @@ func (r *agentResource) Read(
 	}
 	sensor := sensorResponse.Items[0]
 
+	state.ID = types.StringValue(sensor.Id)
 	state.Name = types.StringValue(sensor.Name)
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
 	state.PCapMode = types.StringPointerValue(sensor.PcapMode.Get())
@@ -190,6 +191,7 @@ func (r *agentResource) Update(
 	})
 
 	// Update resource state with updated items
+	plan.ID = types.StringValue(response.UID)
 	plan.Name = types.StringValue(response.Name)
 	plan.Notes = types.StringValue(response.Notes)
 	plan.PCapMode = types.StringValue(response.PCapMode)
