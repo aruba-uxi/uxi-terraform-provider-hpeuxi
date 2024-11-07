@@ -330,11 +330,12 @@ func MockGetWirelessNetwork(uid string, response map[string]interface{}, times i
 func MockGetServiceTest(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Get("/networking-uxi/v1alpha1/service-tests").
-    MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
 		Reply(200).
 		JSON(response)
+}
 
 func MockGetAgentGroupAssignment(uid string, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
