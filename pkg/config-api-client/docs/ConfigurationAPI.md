@@ -4,6 +4,7 @@ All URIs are relative to *https://api.capenetworks.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**AgentGroupAssignmentsGet**](ConfigurationAPI.md#AgentGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/agent-group-assignments | Agent Group Assignments Get
 [**AgentsDelete**](ConfigurationAPI.md#AgentsDelete) | **Delete** /networking-uxi/v1alpha1/agents/{agent_uid} | Agents Delete
 [**AgentsGet**](ConfigurationAPI.md#AgentsGet) | **Get** /networking-uxi/v1alpha1/agents | Agents Get
 [**GroupsDelete**](ConfigurationAPI.md#GroupsDelete) | **Delete** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Delete
@@ -24,6 +25,76 @@ Method | HTTP request | Description
 [**WiredNetworksGet**](ConfigurationAPI.md#WiredNetworksGet) | **Get** /networking-uxi/v1alpha1/wired-networks | Wired Networks Get
 [**WirelessNetworksGet**](ConfigurationAPI.md#WirelessNetworksGet) | **Get** /networking-uxi/v1alpha1/wireless-networks | Wireless Networks Get
 
+
+
+## AgentGroupAssignmentsGet
+
+> AgentGroupAssignmentsResponse AgentGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+
+Agent Group Assignments Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string |  (optional)
+	next := "next_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.AgentGroupAssignmentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.AgentGroupAssignmentsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `AgentGroupAssignmentsGet`: AgentGroupAssignmentsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.AgentGroupAssignmentsGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAgentGroupAssignmentsGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **string** |  | 
+ **next** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**AgentGroupAssignmentsResponse**](AgentGroupAssignmentsResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## AgentsDelete
@@ -47,7 +118,7 @@ import (
 )
 
 func main() {
-	agentUid := "agentUid_example" // string |
+	agentUid := "agentUid_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -67,7 +138,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**agentUid** | **string** |  |
+**agentUid** | **string** |  | 
 
 ### Other Parameters
 
@@ -144,8 +215,8 @@ Other parameters are passed through a pointer to a apiAgentsGetRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  |
- **next** | **string** |  |
+ **id** | **string** |  | 
+ **next** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -187,7 +258,7 @@ import (
 )
 
 func main() {
-	groupUid := "groupUid_example" // string |
+	groupUid := "groupUid_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -207,7 +278,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**groupUid** | **string** |  |
+**groupUid** | **string** |  | 
 
 ### Other Parameters
 
@@ -284,8 +355,8 @@ Other parameters are passed through a pointer to a apiGroupsGetRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  |
- **next** | **string** |  |
+ **id** | **string** |  | 
+ **next** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -327,7 +398,7 @@ import (
 )
 
 func main() {
-	groupUid := "groupUid_example" // string |
+	groupUid := "groupUid_example" // string | 
 	groupsPatchRequest := *openapiclient.NewGroupsPatchRequest("Name_example") // GroupsPatchRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
@@ -348,7 +419,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**groupUid** | **string** |  |
+**groupUid** | **string** |  | 
 
 ### Other Parameters
 
@@ -358,7 +429,7 @@ Other parameters are passed through a pointer to a apiGroupsPatchRequest struct 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **groupsPatchRequest** | [**GroupsPatchRequest**](GroupsPatchRequest.md) |  |
+ **groupsPatchRequest** | [**GroupsPatchRequest**](GroupsPatchRequest.md) |  | 
 
 ### Return type
 
@@ -399,7 +470,7 @@ import (
 )
 
 func main() {
-	groupsPostRequest := *openapiclient.NewGroupsPostRequest("Name_example") // GroupsPostRequest |
+	groupsPostRequest := *openapiclient.NewGroupsPostRequest("Name_example") // GroupsPostRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -424,7 +495,7 @@ Other parameters are passed through a pointer to a apiGroupsPostRequest struct v
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **groupsPostRequest** | [**GroupsPostRequest**](GroupsPostRequest.md) |  |
+ **groupsPostRequest** | [**GroupsPostRequest**](GroupsPostRequest.md) |  | 
 
 ### Return type
 
@@ -465,7 +536,7 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |
+	id := "id_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -485,7 +556,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  |
+**id** | **string** |  | 
 
 ### Other Parameters
 
@@ -562,8 +633,8 @@ Other parameters are passed through a pointer to a apiNetworkGroupAssignmentsGet
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  |
- **next** | **string** |  |
+ **id** | **string** |  | 
+ **next** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -605,7 +676,7 @@ import (
 )
 
 func main() {
-	networkGroupAssignmentsPostRequest := *openapiclient.NewNetworkGroupAssignmentsPostRequest("GroupId_example", "NetworkId_example") // NetworkGroupAssignmentsPostRequest |
+	networkGroupAssignmentsPostRequest := *openapiclient.NewNetworkGroupAssignmentsPostRequest("GroupId_example", "NetworkId_example") // NetworkGroupAssignmentsPostRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -630,7 +701,7 @@ Other parameters are passed through a pointer to a apiNetworkGroupAssignmentsPos
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **networkGroupAssignmentsPostRequest** | [**NetworkGroupAssignmentsPostRequest**](NetworkGroupAssignmentsPostRequest.md) |  |
+ **networkGroupAssignmentsPostRequest** | [**NetworkGroupAssignmentsPostRequest**](NetworkGroupAssignmentsPostRequest.md) |  | 
 
 ### Return type
 
@@ -671,7 +742,7 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |
+	id := "id_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -691,7 +762,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  |
+**id** | **string** |  | 
 
 ### Other Parameters
 
@@ -768,8 +839,8 @@ Other parameters are passed through a pointer to a apiSensorGroupAssignmentsGetR
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  |
- **next** | **string** |  |
+ **id** | **string** |  | 
+ **next** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -811,7 +882,7 @@ import (
 )
 
 func main() {
-	sensorGroupAssignmentsPostRequest := *openapiclient.NewSensorGroupAssignmentsPostRequest("GroupId_example", "SensorId_example") // SensorGroupAssignmentsPostRequest |
+	sensorGroupAssignmentsPostRequest := *openapiclient.NewSensorGroupAssignmentsPostRequest("GroupId_example", "SensorId_example") // SensorGroupAssignmentsPostRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -836,7 +907,7 @@ Other parameters are passed through a pointer to a apiSensorGroupAssignmentsPost
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **sensorGroupAssignmentsPostRequest** | [**SensorGroupAssignmentsPostRequest**](SensorGroupAssignmentsPostRequest.md) |  |
+ **sensorGroupAssignmentsPostRequest** | [**SensorGroupAssignmentsPostRequest**](SensorGroupAssignmentsPostRequest.md) |  | 
 
 ### Return type
 
@@ -904,8 +975,8 @@ Other parameters are passed through a pointer to a apiSensorsGetRequest struct v
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  |
- **next** | **string** |  |
+ **id** | **string** |  | 
+ **next** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -947,8 +1018,8 @@ import (
 )
 
 func main() {
-	sensorUid := "sensorUid_example" // string |
-	sensorsPatchRequest := *openapiclient.NewSensorsPatchRequest() // SensorsPatchRequest |
+	sensorUid := "sensorUid_example" // string | 
+	sensorsPatchRequest := *openapiclient.NewSensorsPatchRequest() // SensorsPatchRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -968,7 +1039,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**sensorUid** | **string** |  |
+**sensorUid** | **string** |  | 
 
 ### Other Parameters
 
@@ -978,7 +1049,7 @@ Other parameters are passed through a pointer to a apiSensorsPatchRequest struct
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **sensorsPatchRequest** | [**SensorsPatchRequest**](SensorsPatchRequest.md) |  |
+ **sensorsPatchRequest** | [**SensorsPatchRequest**](SensorsPatchRequest.md) |  | 
 
 ### Return type
 
@@ -1019,7 +1090,7 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |
+	id := "id_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1039,7 +1110,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  |
+**id** | **string** |  | 
 
 ### Other Parameters
 
@@ -1089,7 +1160,7 @@ import (
 )
 
 func main() {
-	serviceTestGroupAssignmentsPostRequest := *openapiclient.NewServiceTestGroupAssignmentsPostRequest("GroupId_example", "ServiceTestId_example") // ServiceTestGroupAssignmentsPostRequest |
+	serviceTestGroupAssignmentsPostRequest := *openapiclient.NewServiceTestGroupAssignmentsPostRequest("GroupId_example", "ServiceTestId_example") // ServiceTestGroupAssignmentsPostRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1114,7 +1185,7 @@ Other parameters are passed through a pointer to a apiServiceTestGroupAssignment
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **serviceTestGroupAssignmentsPostRequest** | [**ServiceTestGroupAssignmentsPostRequest**](ServiceTestGroupAssignmentsPostRequest.md) |  |
+ **serviceTestGroupAssignmentsPostRequest** | [**ServiceTestGroupAssignmentsPostRequest**](ServiceTestGroupAssignmentsPostRequest.md) |  | 
 
 ### Return type
 
@@ -1182,8 +1253,8 @@ Other parameters are passed through a pointer to a apiServiceTestsGetRequest str
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  |
- **next** | **string** |  |
+ **id** | **string** |  | 
+ **next** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -1252,8 +1323,8 @@ Other parameters are passed through a pointer to a apiWiredNetworksGetRequest st
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  |
- **next** | **string** |  |
+ **id** | **string** |  | 
+ **next** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -1322,8 +1393,8 @@ Other parameters are passed through a pointer to a apiWirelessNetworksGetRequest
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  |
- **next** | **string** |  |
+ **id** | **string** |  | 
+ **next** | **string** |  | 
  **limit** | **int32** |  | [default to 50]
 
 ### Return type
@@ -1342,3 +1413,4 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to README]](../README.md)
+

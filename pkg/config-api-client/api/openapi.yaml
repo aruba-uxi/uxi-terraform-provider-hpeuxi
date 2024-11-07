@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 5.3.0
+  version: 5.4.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -19,6 +19,7 @@ tags:
 - name: v1alpha1
 - name: configuration
 - name: agents
+- name: agent-group-assignments
 - name: groups
 - name: health
 - name: network-group-assignments
@@ -29,6 +30,63 @@ tags:
 - name: wired-networks
 - name: wireless-networks
 paths:
+  /networking-uxi/v1alpha1/agent-group-assignments:
+    get:
+      description: Get a list of agent group assignments
+      operationId: agent_group_assignments_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentGroupAssignmentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agent Group Assignments Get
+      tags:
+      - configuration
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/agents/{agent_uid}:
     delete:
       description: Delete an existing agent.
@@ -894,6 +952,80 @@ paths:
       x-stability-level: alpha
 components:
   schemas:
+    Agent:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: Agent
+      type: object
+    AgentGroupAssignmentsItem:
+      example:
+        agent:
+          id: id
+        id: id
+        type: networking-uxi/agent-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        agent:
+          $ref: '#/components/schemas/Agent'
+        type:
+          enum:
+          - networking-uxi/agent-group-assignment
+          title: Type
+          type: string
+      required:
+      - agent
+      - group
+      - id
+      - type
+      title: AgentGroupAssignmentsItem
+      type: object
+    AgentGroupAssignmentsResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - agent:
+            id: id
+          id: id
+          type: networking-uxi/agent-group-assignment
+          group:
+            id: id
+        - agent:
+            id: id
+          id: id
+          type: networking-uxi/agent-group-assignment
+          group:
+            id: id
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/AgentGroupAssignmentsItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: AgentGroupAssignmentsResponse
+      type: object
     AgentItem:
       example:
         notes: notes
@@ -1017,7 +1149,7 @@ components:
         errorCode: errorCode
         debugId: debugId
         message: message
-        httpStatusCode: 0
+        httpStatusCode: 6
         errorDetails:
         - type: type
           issues:
