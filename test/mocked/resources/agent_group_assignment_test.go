@@ -22,9 +22,11 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					// required for agent import
 					util.MockGetAgent(
-						"uid",
+						"agent_uid",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{
+								util.GenerateAgentResponseModel("agent_uid", ""),
+							},
 						),
 						2,
 					)

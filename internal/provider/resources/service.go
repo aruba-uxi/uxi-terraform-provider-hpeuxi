@@ -132,6 +132,7 @@ func (r *serviceTestResource) Read(
 	serviceTest := sensorResponse.Items[0]
 
 	// Update state from client response
+	state.ID = types.StringValue(serviceTest.Id)
 	state.Name = types.StringValue(serviceTest.Name)
 
 	// Set refreshed state

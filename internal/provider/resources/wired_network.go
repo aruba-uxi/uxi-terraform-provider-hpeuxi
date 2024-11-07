@@ -133,6 +133,7 @@ func (r *wiredNetworkResource) Read(
 	network := networkResponse.Items[0]
 
 	// Update state from client response
+	state.ID = types.StringValue(network.Id)
 	state.Name = types.StringValue(network.Name)
 
 	// Set refreshed state

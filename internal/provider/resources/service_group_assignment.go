@@ -153,6 +153,7 @@ func (r *serviceTestGroupAssignmentResource) Read(
 	serviceTestGroupAssignment := GetServiceTestGroupAssignment(state.ID.ValueString())
 
 	// Update state from client response
+	state.ID = types.StringValue(serviceTestGroupAssignment.Id)
 	state.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
 	state.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTest.Id)
 

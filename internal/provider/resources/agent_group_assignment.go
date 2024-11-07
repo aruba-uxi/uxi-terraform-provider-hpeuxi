@@ -168,6 +168,7 @@ func (r *agentGroupAssignmentResource) Read(
 	agentGroupAssignment := agentGroupAssignmentResponse.Items[0]
 
 	// Update state from client response
+	state.ID = types.StringValue(agentGroupAssignment.Id)
 	state.GroupID = types.StringValue(agentGroupAssignment.Group.Id)
 	state.AgentID = types.StringValue(agentGroupAssignment.Agent.Id)
 

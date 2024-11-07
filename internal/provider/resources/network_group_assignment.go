@@ -169,6 +169,7 @@ func (r *networkGroupAssignmentResource) Read(
 	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
 
 	// Update state from client response
+	state.ID = types.StringValue(networkGroupAssignment.Id)
 	state.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
 	state.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
 

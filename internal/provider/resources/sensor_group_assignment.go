@@ -176,6 +176,7 @@ func (r *sensorGroupAssignmentResource) Read(
 	sensorGroupAssignment := sensorGroupAssignmentResponse.Items[0]
 
 	// Update state from client response
+	state.ID = types.StringValue(sensorGroupAssignment.Id)
 	state.GroupID = types.StringValue(sensorGroupAssignment.Group.Id)
 	state.SensorID = types.StringValue(sensorGroupAssignment.Sensor.Id)
 

@@ -36,8 +36,8 @@ type SensorResponseModel struct {
 	WifiMacAddress     string
 	EthernetMacAddress string
 	AddressNote        string
-	Longitude          string
-	Latitude           string
+	Longitude          float32
+	Latitude           float32
 	Notes              string
 	PCapMode           string
 }
@@ -167,6 +167,7 @@ func (r *sensorResource) Read(
 	sensor := sensorResponse.Items[0]
 
 	// Update state from client response
+	state.ID = types.StringValue(sensor.Id)
 	state.Name = types.StringValue(sensor.Name)
 	state.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
@@ -202,6 +203,7 @@ func (r *sensorResource) Update(
 	})
 
 	// Update resource state with updated items
+	plan.ID = types.StringValue(response.UID)
 	plan.Name = types.StringValue(response.Name)
 	plan.AddressNote = types.StringValue(response.AddressNote)
 	plan.Notes = types.StringValue(response.Notes)
@@ -250,8 +252,8 @@ var UpdateSensor = func(request SensorUpdateRequestModel) SensorResponseModel {
 		WifiMacAddress:     "mock_wifi_mac_address",
 		EthernetMacAddress: "mock_ethernet_mac_address",
 		AddressNote:        request.AddressNote,
-		Longitude:          "mock_longitude",
-		Latitude:           "mock_latitude",
+		Longitude:          0.0,
+		Latitude:           0.0,
 		Notes:              request.Notes,
 		PCapMode:           request.PCapMode,
 	}
