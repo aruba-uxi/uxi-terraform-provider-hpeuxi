@@ -17,6 +17,13 @@ type Fetcher interface {
 var rootGroup = util.GetRoot()
 
 func TestGroupResource(t *testing.T) {
+	const groupNameParent = "tf_provider_acceptance_test_parent"
+	const groupNameParentUpdated = groupNameParent + "_updated"
+	const groupNameChild = "tf_provider_acceptance_test_child"
+	const groupNameGrandChild = "tf_provider_acceptance_test_grandchild"
+	const groupNameGrandChildMovedToParent = groupNameGrandChild + "_moved_to_parent"
+	const groupNameGrandChildMovedToRoot = groupNameGrandChild + "_moved_to_root"
+
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -25,19 +32,13 @@ func TestGroupResource(t *testing.T) {
 				// Node without parent (attached to root)
 				Config: provider.ProviderConfig + `
 				resource "uxi_group" "parent" {
-					name = "tf_provider_acceptance_test_parent"
+					name = "` + groupNameParent + `"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_group.parent",
-						"name",
-						"tf_provider_acceptance_test_parent",
+						"uxi_group.parent", "name", groupNameParent,
 					),
-					resource.TestCheckResourceAttrPtr(
-						"uxi_group.parent",
-						"parent_group_id",
-						nil,
-					),
+					resource.TestCheckNoResourceAttr("uxi_group.parent", "parent_group_id"),
 				),
 			},
 			// ImportState testing
@@ -50,18 +51,17 @@ func TestGroupResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "parent" {
-						name            = "tf_provider_acceptance_test_parent_name_updated"
+						name = "` + groupNameParentUpdated + `"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"uxi_group.parent",
 						"name",
-						"tf_provider_acceptance_test_parent_name_updated",
+						groupNameParentUpdated,
 					),
-					resource.TestCheckResourceAttrPtr(
+					resource.TestCheckNoResourceAttr(
 						"uxi_group.parent",
 						"parent_group_id",
-						&rootGroup.Id,
 					),
 				),
 			},
@@ -69,46 +69,41 @@ func TestGroupResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "parent" {
-						name            = "tf_provider_acceptance_test_parent_name_updated"
+						name = "` + groupNameParentUpdated + `"
 					}
 
 					resource "uxi_group" "child" {
-						name            = "tf_provider_acceptance_test_child"
+						name            = "` + groupNameChild + `"
 						parent_group_id = uxi_group.parent.id
 					}
 
 					resource "uxi_group" "grandchild" {
-						name            = "tf_provider_acceptance_test_grandchild"
+						name            = "` + groupNameGrandChild + `"
 						parent_group_id = uxi_group.child.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"uxi_group.child",
 						"name",
-						"tf_provider_acceptance_test_child",
+						groupNameChild,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_group.child",
 						"parent_group_id",
 						func(parentGroupId string) error {
-							return checkGroupIsChildOfNode(
-								parentGroupId,
-								"tf_provider_acceptance_test_parent_name_updated",
-							)
+							return checkGroupIsChildOfNode(parentGroupId, groupNameParentUpdated)
 						},
 					),
 					resource.TestCheckResourceAttr(
 						"uxi_group.grandchild",
 						"name",
-						"tf_provider_acceptance_test_grandchild",
+						groupNameGrandChild,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_group.grandchild",
 						"parent_group_id",
 						func(parentGroupId string) error {
-							return checkGroupIsChildOfNode(
-								parentGroupId, "tf_provider_acceptance_test_child",
-							)
+							return checkGroupIsChildOfNode(parentGroupId, groupNameChild)
 						},
 					),
 				),
@@ -117,33 +112,30 @@ func TestGroupResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "parent" {
-						name            = "tf_provider_acceptance_test_parent_name_updated"
+						name = "` + groupNameParentUpdated + `"
 					}
 
 					resource "uxi_group" "child" {
-						name            = "tf_provider_acceptance_test_child"
+						name            = "` + groupNameChild + `"
 						parent_group_id = uxi_group.parent.id
 					}
 
 					# move grandchild from child to parent
 					resource "uxi_group" "grandchild" {
-						name            = "tf_provider_acceptance_test_grandchild_moved_to_parent"
+						name            = "` + groupNameGrandChildMovedToParent + `"
 						parent_group_id = uxi_group.parent.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"uxi_group.grandchild",
 						"name",
-						"tf_provider_acceptance_test_grandchild_moved_to_parent",
+						groupNameGrandChildMovedToParent,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_group.grandchild",
 						"parent_group_id",
 						func(parentGroupId string) error {
-							return checkGroupIsChildOfNode(
-								parentGroupId,
-								"tf_provider_acceptance_test_parent_name_updated",
-							)
+							return checkGroupIsChildOfNode(parentGroupId, groupNameParentUpdated)
 						},
 					),
 				),
@@ -152,28 +144,27 @@ func TestGroupResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "parent" {
-						name            = "tf_provider_acceptance_test_parent_name_updated"
+						name = "` + groupNameParentUpdated + `"
 					}
 
 					resource "uxi_group" "child" {
-						name            = "tf_provider_acceptance_test_child"
+						name            = "` + groupNameChild + `"
 						parent_group_id = uxi_group.parent.id
 					}
 
 					# move grandchild from parent to root
 					resource "uxi_group" "grandchild" {
-						name            = "tf_provider_acceptance_test_grandchild_moved_to_root"
+						name = "` + groupNameGrandChildMovedToRoot + `"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"uxi_group.grandchild",
 						"name",
-						"tf_provider_acceptance_test_grandchild_moved_to_root",
+						groupNameGrandChildMovedToRoot,
 					),
-					resource.TestCheckResourceAttr(
+					resource.TestCheckNoResourceAttr(
 						"uxi_group.grandchild",
 						"parent_group_id",
-						rootGroup.Id,
 					),
 				),
 			},

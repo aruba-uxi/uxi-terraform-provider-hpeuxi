@@ -116,7 +116,7 @@ func TestGroupResource(t *testing.T) {
 							util.GenerateNonRootGroupResponseModel("uid", "_2", ""),
 						},
 					),
-						2,
+						3,
 					)
 					util.MockGetGroup(
 						"parent_uid",
@@ -405,7 +405,7 @@ func TestGroupResource429Handling(t *testing.T) {
 							util.GenerateNonRootGroupResponseModel("uid", "_2", ""),
 						},
 					),
-						2,
+						3,
 					)
 					// to indicate the group has a parent
 					util.MockGetGroup(
