@@ -372,6 +372,39 @@ func TestConfigurationAPI(t *testing.T) {
 			Next:  *openapiclient.NewNullableString(nil),
 		})
 	})
+
+	t.Run("Test ConfigurationAPI AgentGroupAssignmentsPost", func(t *testing.T) {
+
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Post("/networking-uxi/v1alpha1/agent-group-assignments").
+			JSON(map[string]interface{}{
+				"groupId": "group_uid",
+				"agentId": "agent_uid",
+			}).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"id":    "uid",
+				"group": map[string]string{"id": "group_uid"},
+				"agent": map[string]string{"id": "agent_uid"},
+				"type":  "networking-uxi/agent-group-assignment",
+			})
+
+		postRequest := openapiclient.NewAgentGroupAssignmentsPostRequest("group_uid", "agent_uid")
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			AgentGroupAssignmentsPost(context.Background()).
+			AgentGroupAssignmentsPostRequest(*postRequest).
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.AgentGroupAssignmentResponse{
+			Id:    "uid",
+			Group: *openapiclient.NewGroup("group_uid"),
+			Agent: *openapiclient.NewAgent("agent_uid"),
+			Type:  "networking-uxi/agent-group-assignment",
+		})
+	})
+
 	t.Run("Test ConfigurationAPI SensorGroupAssignmentsGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
@@ -670,6 +703,47 @@ func TestConfigurationAPI(t *testing.T) {
 
 		require.Nil(t, err)
 		assert.Equal(t, 204, httpRes.StatusCode)
+	})
+
+	t.Run("Test ConfigurationAPI ServiceTestGroupAssignmentsGet", func(t *testing.T) {
+
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Get("/networking-uxi/v1alpha1/service-test-group-assignments").
+			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"items": []map[string]interface{}{
+					{
+						"id":          "uid",
+						"group":       map[string]string{"id": "group_uid"},
+						"serviceTest": map[string]string{"id": "service_test_uid"},
+						"type":        "networking-uxi/service-test-group-assignment",
+					},
+				},
+				"count": 1,
+				"next":  nil,
+			})
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			ServiceTestGroupAssignmentsGet(context.Background()).
+			Id("uid").
+			Limit(10).
+			Next("some-cursor").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &openapiclient.ServiceTestGroupAssignmentsResponse{
+			Items: []openapiclient.ServiceTestGroupAssignmentsItem{
+				{
+					Id:          "uid",
+					Group:       *openapiclient.NewGroup("group_uid"),
+					ServiceTest: *openapiclient.NewServiceTest("service_test_uid"),
+					Type:        "networking-uxi/service-test-group-assignment",
+				},
+			},
+			Count: 1,
+			Next:  *openapiclient.NewNullableString(nil),
+		})
 	})
 
 	t.Run("Test ConfigurationAPI ServiceTestGroupAssignmentsPost", func(t *testing.T) {
