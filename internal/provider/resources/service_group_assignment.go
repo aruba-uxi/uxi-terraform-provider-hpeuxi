@@ -152,7 +152,7 @@ func (r *serviceTestGroupAssignmentResource) Read(
 	request := r.client.ConfigurationAPI.
 		ServiceTestGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
-	networkGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	serviceTestGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
@@ -162,11 +162,11 @@ func (r *serviceTestGroupAssignmentResource) Read(
 		return
 	}
 
-	if len(networkGroupAssignmentResponse.Items) != 1 {
+	if len(serviceTestGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
 		return
 	}
-	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
+	serviceTestGroupAssignment := serviceTestGroupAssignmentResponse.Items[0]
 
 	// Update state from client response
 	state.ID = types.StringValue(networkGroupAssignment.Id)

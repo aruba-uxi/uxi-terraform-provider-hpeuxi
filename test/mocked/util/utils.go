@@ -169,6 +169,13 @@ func GenerateSensorGroupAssignmentRequest(uid string, postfix string) map[string
 	}
 }
 
+func GenerateAgentGroupAssignmentRequest(uid string, postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"groupId": "group_uid" + postfix,
+		"agentId": "agent_uid" + postfix,
+	}
+}
+
 func GenerateAgentGroupAssignmentResponse(uid string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"id":    uid,
@@ -355,6 +362,21 @@ func MockGetAgentGroupAssignment(uid string, response map[string]interface{}, ti
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+func MockPostAgentGroupAssignment(
+	request map[string]interface{},
+	response map[string]interface{},
+	times int,
+) {
+	gock.New("https://test.api.capenetworks.com").
+		Post("/networking-uxi/v1alpha1/agent-group-assignments").
+		MatchHeader("Content-Type", "application/json").
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		JSON(request).
 		Reply(200).
 		JSON(response)
 }
