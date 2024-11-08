@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.4.0
+API version: 5.6.0
 Contact: support@capenetworks.com
 */
 
@@ -123,6 +123,162 @@ func (a *ConfigurationAPIService) AgentGroupAssignmentsGetExecute(
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode >= 400 && localVarHTTPResponse.StatusCode < 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode >= 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiAgentGroupAssignmentsPostRequest struct {
+	ctx                              context.Context
+	ApiService                       *ConfigurationAPIService
+	agentGroupAssignmentsPostRequest *AgentGroupAssignmentsPostRequest
+}
+
+func (r ApiAgentGroupAssignmentsPostRequest) AgentGroupAssignmentsPostRequest(
+	agentGroupAssignmentsPostRequest AgentGroupAssignmentsPostRequest,
+) ApiAgentGroupAssignmentsPostRequest {
+	r.agentGroupAssignmentsPostRequest = &agentGroupAssignmentsPostRequest
+	return r
+}
+
+func (r ApiAgentGroupAssignmentsPostRequest) Execute() (*AgentGroupAssignmentResponse, *http.Response, error) {
+	return r.ApiService.AgentGroupAssignmentsPostExecute(r)
+}
+
+/*
+AgentGroupAssignmentsPost Agent Group Assignments Post
+
+# Create agent group assignment
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiAgentGroupAssignmentsPostRequest
+*/
+func (a *ConfigurationAPIService) AgentGroupAssignmentsPost(
+	ctx context.Context,
+) ApiAgentGroupAssignmentsPostRequest {
+	return ApiAgentGroupAssignmentsPostRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return AgentGroupAssignmentResponse
+func (a *ConfigurationAPIService) AgentGroupAssignmentsPostExecute(
+	r ApiAgentGroupAssignmentsPostRequest,
+) (*AgentGroupAssignmentResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AgentGroupAssignmentResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.AgentGroupAssignmentsPost",
+	)
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/agent-group-assignments"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.agentGroupAssignmentsPostRequest == nil {
+		return localVarReturnValue, nil, reportError(
+			"agentGroupAssignmentsPostRequest is required and must be specified",
+		)
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.agentGroupAssignmentsPostRequest
 	req, err := a.client.prepareRequest(
 		r.ctx,
 		localVarPath,
@@ -2509,6 +2665,183 @@ func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsDeleteExecute(
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(
+		r.ctx,
+		localVarPath,
+		localVarHTTPMethod,
+		localVarPostBody,
+		localVarHeaderParams,
+		localVarQueryParams,
+		localVarFormParams,
+		formFiles,
+	)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode >= 400 && localVarHTTPResponse.StatusCode < 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode >= 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(
+		&localVarReturnValue,
+		localVarBody,
+		localVarHTTPResponse.Header.Get("Content-Type"),
+	)
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiServiceTestGroupAssignmentsGetRequest struct {
+	ctx        context.Context
+	ApiService *ConfigurationAPIService
+	id         *string
+	next       *string
+	limit      *int32
+}
+
+func (r ApiServiceTestGroupAssignmentsGetRequest) Id(
+	id string,
+) ApiServiceTestGroupAssignmentsGetRequest {
+	r.id = &id
+	return r
+}
+
+func (r ApiServiceTestGroupAssignmentsGetRequest) Next(
+	next string,
+) ApiServiceTestGroupAssignmentsGetRequest {
+	r.next = &next
+	return r
+}
+
+func (r ApiServiceTestGroupAssignmentsGetRequest) Limit(
+	limit int32,
+) ApiServiceTestGroupAssignmentsGetRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r ApiServiceTestGroupAssignmentsGetRequest) Execute() (*ServiceTestGroupAssignmentsResponse, *http.Response, error) {
+	return r.ApiService.ServiceTestGroupAssignmentsGetExecute(r)
+}
+
+/*
+ServiceTestGroupAssignmentsGet Service Test Group Assignments Get
+
+# Get a list of service test group assignments
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiServiceTestGroupAssignmentsGetRequest
+*/
+func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsGet(
+	ctx context.Context,
+) ApiServiceTestGroupAssignmentsGetRequest {
+	return ApiServiceTestGroupAssignmentsGetRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ServiceTestGroupAssignmentsResponse
+func (a *ConfigurationAPIService) ServiceTestGroupAssignmentsGetExecute(
+	r ApiServiceTestGroupAssignmentsGetRequest,
+) (*ServiceTestGroupAssignmentsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ServiceTestGroupAssignmentsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(
+		r.ctx,
+		"ConfigurationAPIService.ServiceTestGroupAssignmentsGet",
+	)
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/networking-uxi/v1alpha1/service-test-group-assignments"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.id != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "form", "")
+	}
+	if r.next != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "next", r.next, "form", "")
+	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
+	} else {
+		var defaultValue int32 = 50
+		r.limit = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 

@@ -17,47 +17,47 @@ import (
 	"fmt"
 )
 
-// checks if the NetworkGroupAssignmentsItem type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &NetworkGroupAssignmentsItem{}
+// checks if the AgentGroupAssignmentResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AgentGroupAssignmentResponse{}
 
-// NetworkGroupAssignmentsItem struct for NetworkGroupAssignmentsItem
-type NetworkGroupAssignmentsItem struct {
-	Id      string  `json:"id"`
-	Group   Group   `json:"group"`
-	Network Network `json:"network"`
-	Type    string  `json:"type"`
+// AgentGroupAssignmentResponse struct for AgentGroupAssignmentResponse
+type AgentGroupAssignmentResponse struct {
+	Id    string `json:"id"`
+	Group Group  `json:"group"`
+	Agent Agent  `json:"agent"`
+	Type  string `json:"type"`
 }
 
-type _NetworkGroupAssignmentsItem NetworkGroupAssignmentsItem
+type _AgentGroupAssignmentResponse AgentGroupAssignmentResponse
 
-// NewNetworkGroupAssignmentsItem instantiates a new NetworkGroupAssignmentsItem object
+// NewAgentGroupAssignmentResponse instantiates a new AgentGroupAssignmentResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNetworkGroupAssignmentsItem(
+func NewAgentGroupAssignmentResponse(
 	id string,
 	group Group,
-	network Network,
+	agent Agent,
 	type_ string,
-) *NetworkGroupAssignmentsItem {
-	this := NetworkGroupAssignmentsItem{}
+) *AgentGroupAssignmentResponse {
+	this := AgentGroupAssignmentResponse{}
 	this.Id = id
 	this.Group = group
-	this.Network = network
+	this.Agent = agent
 	this.Type = type_
 	return &this
 }
 
-// NewNetworkGroupAssignmentsItemWithDefaults instantiates a new NetworkGroupAssignmentsItem object
+// NewAgentGroupAssignmentResponseWithDefaults instantiates a new AgentGroupAssignmentResponse object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewNetworkGroupAssignmentsItemWithDefaults() *NetworkGroupAssignmentsItem {
-	this := NetworkGroupAssignmentsItem{}
+func NewAgentGroupAssignmentResponseWithDefaults() *AgentGroupAssignmentResponse {
+	this := AgentGroupAssignmentResponse{}
 	return &this
 }
 
 // GetId returns the Id field value
-func (o *NetworkGroupAssignmentsItem) GetId() string {
+func (o *AgentGroupAssignmentResponse) GetId() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -68,7 +68,7 @@ func (o *NetworkGroupAssignmentsItem) GetId() string {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *NetworkGroupAssignmentsItem) GetIdOk() (*string, bool) {
+func (o *AgentGroupAssignmentResponse) GetIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -76,12 +76,12 @@ func (o *NetworkGroupAssignmentsItem) GetIdOk() (*string, bool) {
 }
 
 // SetId sets field value
-func (o *NetworkGroupAssignmentsItem) SetId(v string) {
+func (o *AgentGroupAssignmentResponse) SetId(v string) {
 	o.Id = v
 }
 
 // GetGroup returns the Group field value
-func (o *NetworkGroupAssignmentsItem) GetGroup() Group {
+func (o *AgentGroupAssignmentResponse) GetGroup() Group {
 	if o == nil {
 		var ret Group
 		return ret
@@ -92,7 +92,7 @@ func (o *NetworkGroupAssignmentsItem) GetGroup() Group {
 
 // GetGroupOk returns a tuple with the Group field value
 // and a boolean to check if the value has been set.
-func (o *NetworkGroupAssignmentsItem) GetGroupOk() (*Group, bool) {
+func (o *AgentGroupAssignmentResponse) GetGroupOk() (*Group, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -100,36 +100,36 @@ func (o *NetworkGroupAssignmentsItem) GetGroupOk() (*Group, bool) {
 }
 
 // SetGroup sets field value
-func (o *NetworkGroupAssignmentsItem) SetGroup(v Group) {
+func (o *AgentGroupAssignmentResponse) SetGroup(v Group) {
 	o.Group = v
 }
 
-// GetNetwork returns the Network field value
-func (o *NetworkGroupAssignmentsItem) GetNetwork() Network {
+// GetAgent returns the Agent field value
+func (o *AgentGroupAssignmentResponse) GetAgent() Agent {
 	if o == nil {
-		var ret Network
+		var ret Agent
 		return ret
 	}
 
-	return o.Network
+	return o.Agent
 }
 
-// GetNetworkOk returns a tuple with the Network field value
+// GetAgentOk returns a tuple with the Agent field value
 // and a boolean to check if the value has been set.
-func (o *NetworkGroupAssignmentsItem) GetNetworkOk() (*Network, bool) {
+func (o *AgentGroupAssignmentResponse) GetAgentOk() (*Agent, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Network, true
+	return &o.Agent, true
 }
 
-// SetNetwork sets field value
-func (o *NetworkGroupAssignmentsItem) SetNetwork(v Network) {
-	o.Network = v
+// SetAgent sets field value
+func (o *AgentGroupAssignmentResponse) SetAgent(v Agent) {
+	o.Agent = v
 }
 
 // GetType returns the Type field value
-func (o *NetworkGroupAssignmentsItem) GetType() string {
+func (o *AgentGroupAssignmentResponse) GetType() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -140,7 +140,7 @@ func (o *NetworkGroupAssignmentsItem) GetType() string {
 
 // GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
-func (o *NetworkGroupAssignmentsItem) GetTypeOk() (*string, bool) {
+func (o *AgentGroupAssignmentResponse) GetTypeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -148,11 +148,11 @@ func (o *NetworkGroupAssignmentsItem) GetTypeOk() (*string, bool) {
 }
 
 // SetType sets field value
-func (o *NetworkGroupAssignmentsItem) SetType(v string) {
+func (o *AgentGroupAssignmentResponse) SetType(v string) {
 	o.Type = v
 }
 
-func (o NetworkGroupAssignmentsItem) MarshalJSON() ([]byte, error) {
+func (o AgentGroupAssignmentResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -160,23 +160,23 @@ func (o NetworkGroupAssignmentsItem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o NetworkGroupAssignmentsItem) ToMap() (map[string]interface{}, error) {
+func (o AgentGroupAssignmentResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["group"] = o.Group
-	toSerialize["network"] = o.Network
+	toSerialize["agent"] = o.Agent
 	toSerialize["type"] = o.Type
 	return toSerialize, nil
 }
 
-func (o *NetworkGroupAssignmentsItem) UnmarshalJSON(data []byte) (err error) {
+func (o *AgentGroupAssignmentResponse) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"id",
 		"group",
-		"network",
+		"agent",
 		"type",
 	}
 
@@ -194,55 +194,55 @@ func (o *NetworkGroupAssignmentsItem) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varNetworkGroupAssignmentsItem := _NetworkGroupAssignmentsItem{}
+	varAgentGroupAssignmentResponse := _AgentGroupAssignmentResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNetworkGroupAssignmentsItem)
+	err = decoder.Decode(&varAgentGroupAssignmentResponse)
 
 	if err != nil {
 		return err
 	}
 
-	*o = NetworkGroupAssignmentsItem(varNetworkGroupAssignmentsItem)
+	*o = AgentGroupAssignmentResponse(varAgentGroupAssignmentResponse)
 
 	return err
 }
 
-type NullableNetworkGroupAssignmentsItem struct {
-	value *NetworkGroupAssignmentsItem
+type NullableAgentGroupAssignmentResponse struct {
+	value *AgentGroupAssignmentResponse
 	isSet bool
 }
 
-func (v NullableNetworkGroupAssignmentsItem) Get() *NetworkGroupAssignmentsItem {
+func (v NullableAgentGroupAssignmentResponse) Get() *AgentGroupAssignmentResponse {
 	return v.value
 }
 
-func (v *NullableNetworkGroupAssignmentsItem) Set(val *NetworkGroupAssignmentsItem) {
+func (v *NullableAgentGroupAssignmentResponse) Set(val *AgentGroupAssignmentResponse) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableNetworkGroupAssignmentsItem) IsSet() bool {
+func (v NullableAgentGroupAssignmentResponse) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableNetworkGroupAssignmentsItem) Unset() {
+func (v *NullableAgentGroupAssignmentResponse) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableNetworkGroupAssignmentsItem(
-	val *NetworkGroupAssignmentsItem,
-) *NullableNetworkGroupAssignmentsItem {
-	return &NullableNetworkGroupAssignmentsItem{value: val, isSet: true}
+func NewNullableAgentGroupAssignmentResponse(
+	val *AgentGroupAssignmentResponse,
+) *NullableAgentGroupAssignmentResponse {
+	return &NullableAgentGroupAssignmentResponse{value: val, isSet: true}
 }
 
-func (v NullableNetworkGroupAssignmentsItem) MarshalJSON() ([]byte, error) {
+func (v NullableAgentGroupAssignmentResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableNetworkGroupAssignmentsItem) UnmarshalJSON(src []byte) error {
+func (v *NullableAgentGroupAssignmentResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

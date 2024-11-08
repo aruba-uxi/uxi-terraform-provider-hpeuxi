@@ -5,6 +5,7 @@ All URIs are relative to *https://api.capenetworks.com*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**AgentGroupAssignmentsGet**](ConfigurationAPI.md#AgentGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/agent-group-assignments | Agent Group Assignments Get
+[**AgentGroupAssignmentsPost**](ConfigurationAPI.md#AgentGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/agent-group-assignments | Agent Group Assignments Post
 [**AgentsDelete**](ConfigurationAPI.md#AgentsDelete) | **Delete** /networking-uxi/v1alpha1/agents/{agent_uid} | Agents Delete
 [**AgentsGet**](ConfigurationAPI.md#AgentsGet) | **Get** /networking-uxi/v1alpha1/agents | Agents Get
 [**GroupsDelete**](ConfigurationAPI.md#GroupsDelete) | **Delete** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Delete
@@ -20,6 +21,7 @@ Method | HTTP request | Description
 [**SensorsGet**](ConfigurationAPI.md#SensorsGet) | **Get** /networking-uxi/v1alpha1/sensors | Sensors Get
 [**SensorsPatch**](ConfigurationAPI.md#SensorsPatch) | **Patch** /networking-uxi/v1alpha1/sensors/{sensor_uid} | Sensors Patch
 [**ServiceTestGroupAssignmentsDelete**](ConfigurationAPI.md#ServiceTestGroupAssignmentsDelete) | **Delete** /networking-uxi/v1alpha1/service-test-group-assignments/{id} | Service Test Group Assignments Delete
+[**ServiceTestGroupAssignmentsGet**](ConfigurationAPI.md#ServiceTestGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/service-test-group-assignments | Service Test Group Assignments Get
 [**ServiceTestGroupAssignmentsPost**](ConfigurationAPI.md#ServiceTestGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/service-test-group-assignments | Service Test Group Assignments Post
 [**ServiceTestsGet**](ConfigurationAPI.md#ServiceTestsGet) | **Get** /networking-uxi/v1alpha1/service-tests | Service Tests Get
 [**WiredNetworksGet**](ConfigurationAPI.md#WiredNetworksGet) | **Get** /networking-uxi/v1alpha1/wired-networks | Wired Networks Get
@@ -90,6 +92,72 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## AgentGroupAssignmentsPost
+
+> AgentGroupAssignmentResponse AgentGroupAssignmentsPost(ctx).AgentGroupAssignmentsPostRequest(agentGroupAssignmentsPostRequest).Execute()
+
+Agent Group Assignments Post
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+)
+
+func main() {
+	agentGroupAssignmentsPostRequest := *openapiclient.NewAgentGroupAssignmentsPostRequest("GroupId_example", "AgentId_example") // AgentGroupAssignmentsPostRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.AgentGroupAssignmentsPost(context.Background()).AgentGroupAssignmentsPostRequest(agentGroupAssignmentsPostRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.AgentGroupAssignmentsPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `AgentGroupAssignmentsPost`: AgentGroupAssignmentResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.AgentGroupAssignmentsPost`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAgentGroupAssignmentsPostRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **agentGroupAssignmentsPostRequest** | [**AgentGroupAssignmentsPostRequest**](AgentGroupAssignmentsPostRequest.md) |  | 
+
+### Return type
+
+[**AgentGroupAssignmentResponse**](AgentGroupAssignmentResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -1124,6 +1192,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 **interface{}**
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ServiceTestGroupAssignmentsGet
+
+> ServiceTestGroupAssignmentsResponse ServiceTestGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
+
+Service Test Group Assignments Get
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+)
+
+func main() {
+	id := "id_example" // string |  (optional)
+	next := "next_example" // string |  (optional)
+	limit := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.ServiceTestGroupAssignmentsGet(context.Background()).Id(id).Next(next).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.ServiceTestGroupAssignmentsGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ServiceTestGroupAssignmentsGet`: ServiceTestGroupAssignmentsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.ServiceTestGroupAssignmentsGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiServiceTestGroupAssignmentsGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **string** |  | 
+ **next** | **string** |  | 
+ **limit** | **int32** |  | [default to 50]
+
+### Return type
+
+[**ServiceTestGroupAssignmentsResponse**](ServiceTestGroupAssignmentsResponse.md)
 
 ### Authorization
 

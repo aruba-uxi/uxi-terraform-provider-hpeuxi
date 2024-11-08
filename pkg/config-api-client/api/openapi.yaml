@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 5.4.0
+  version: 5.6.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -84,6 +84,40 @@ paths:
       security:
       - HTTPBearer: []
       summary: Agent Group Assignments Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+    post:
+      description: Create agent group assignment
+      operationId: agent_group_assignments_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentGroupAssignmentsPostRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentGroupAssignmentResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agent Group Assignments Post
       tags:
       - configuration
       x-stability-level: alpha
@@ -749,6 +783,62 @@ paths:
       - configuration
       x-stability-level: alpha
   /networking-uxi/v1alpha1/service-test-group-assignments:
+    get:
+      description: Get a list of service test group assignments
+      operationId: service_test_group_assignments_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTestGroupAssignmentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Service Test Group Assignments Get
+      tags:
+      - configuration
+      x-stability-level: alpha
     post:
       description: Create a service-test group assignment
       operationId: service_test_group_assignments_post
@@ -963,6 +1053,34 @@ components:
       - id
       title: Agent
       type: object
+    AgentGroupAssignmentResponse:
+      example:
+        agent:
+          id: id
+        id: id
+        type: networking-uxi/agent-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        agent:
+          $ref: '#/components/schemas/Agent'
+        type:
+          enum:
+          - networking-uxi/agent-group-assignment
+          title: Type
+          type: string
+      required:
+      - agent
+      - group
+      - id
+      - type
+      title: AgentGroupAssignmentResponse
+      type: object
     AgentGroupAssignmentsItem:
       example:
         agent:
@@ -990,6 +1108,22 @@ components:
       - id
       - type
       title: AgentGroupAssignmentsItem
+      type: object
+    AgentGroupAssignmentsPostRequest:
+      example:
+        agentId: agentId
+        groupId: groupId
+      properties:
+        groupId:
+          title: Groupid
+          type: string
+        agentId:
+          title: Agentid
+          type: string
+      required:
+      - agentId
+      - groupId
+      title: AgentGroupAssignmentsPostRequest
       type: object
     AgentGroupAssignmentsResponse:
       example:
@@ -1844,6 +1978,34 @@ components:
       - id
       title: ServiceTest
       type: object
+    ServiceTestGroupAssignmentsItem:
+      example:
+        serviceTest:
+          id: id
+        id: id
+        type: networking-uxi/service-test-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        serviceTest:
+          $ref: '#/components/schemas/ServiceTest'
+        type:
+          enum:
+          - networking-uxi/service-test-group-assignment
+          title: Type
+          type: string
+      required:
+      - group
+      - id
+      - serviceTest
+      - type
+      title: ServiceTestGroupAssignmentsItem
+      type: object
     ServiceTestGroupAssignmentsPostRequest:
       example:
         groupId: groupId
@@ -1888,6 +2050,41 @@ components:
       - serviceTest
       - type
       title: ServiceTestGroupAssignmentsPostResponse
+      type: object
+    ServiceTestGroupAssignmentsResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - serviceTest:
+            id: id
+          id: id
+          type: networking-uxi/service-test-group-assignment
+          group:
+            id: id
+        - serviceTest:
+            id: id
+          id: id
+          type: networking-uxi/service-test-group-assignment
+          group:
+            id: id
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ServiceTestGroupAssignmentsItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: ServiceTestGroupAssignmentsResponse
       type: object
     ServiceTestsListItem:
       example:
