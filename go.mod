@@ -1,11 +1,11 @@
-module github.com/aruba-uxi/terraform-provider-configuration
+module github.com/aruba-uxi/terraform-provider-hpeuxi
 
 go 1.21
 
 toolchain go1.22.5
 
 require (
-	github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client v0.0.0-00010101000000-000000000000
+	github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client v0.0.0-00010101000000-000000000000
 	github.com/h2non/gock v1.2.0
 	github.com/hashicorp/terraform-plugin-framework v1.10.0
 	github.com/hashicorp/terraform-plugin-go v0.23.0
@@ -68,4 +68,4 @@ require (
 	google.golang.org/protobuf v1.34.0 // indirect
 )
 
-replace github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client => ./pkg/config-api-client
+replace github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client => ./pkg/config-api-client
