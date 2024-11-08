@@ -2,6 +2,7 @@ package util
 
 import (
 	"encoding/json"
+	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
 
 	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/resources"
 	"github.com/h2non/gock"
@@ -212,12 +213,15 @@ func GenerateNetworkGroupAssignmentRequest(uid string, postfix string) map[strin
 	}
 }
 
-func GenerateServiceTestGroupAssignmentResponse(uid string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"id":          uid,
-		"group":       map[string]string{"id": "group_uid" + postfix},
-		"serviceTest": map[string]string{"id": "service_test_uid" + postfix},
-		"type":        "networking-uxi/service-test-group-assignment",
+func GenerateServiceTestGroupAssignmentResponse(
+	uid string,
+	postfix string,
+) config_api_client.ServiceTestGroupAssignmentsPostResponse {
+	return config_api_client.ServiceTestGroupAssignmentsPostResponse{
+		Id:          uid,
+		Group:       *config_api_client.NewGroup("group_uid" + postfix),
+		ServiceTest: *config_api_client.NewServiceTest("service_test_uid" + postfix),
+		Type:        "networking-uxi/service-test-group-assignment",
 	}
 }
 
@@ -445,16 +449,6 @@ func MockDeleteNetworkGroupAssignment(uid string, times int) {
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
 		Reply(204)
-}
-
-func MockGetServiceTestGroupAssignment(uid string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
-		Get("/networking-uxi/v1alpha1/service-test-group-assignments").
-		MatchHeader("Authorization", "mock_token").
-		MatchParam("id", uid).
-		Times(times).
-		Reply(200).
-		JSON(response)
 }
 
 func MockPostServiceTestGroupAssignment(

@@ -234,3 +234,13 @@ func (r *serviceTestGroupAssignmentResource) ImportState(
 ) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
+
+var GetServiceTestGroupAssignment = func(uid string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
+	// TODO: Query the serviceTestGroupAssignment using the client
+	return config_api_client.ServiceTestGroupAssignmentsPostResponse{
+		Id:          uid,
+		Group:       *config_api_client.NewGroup("mock_group_uid"),
+		ServiceTest: *config_api_client.NewServiceTest("mock_serviceTest_uid"),
+		Type:        "networking-uxi/service-test-group-assignment",
+	}
+}
