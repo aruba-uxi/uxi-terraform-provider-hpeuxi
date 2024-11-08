@@ -4,7 +4,9 @@ api_configuration.go
 client.go
 configuration.go
 docs/Agent.md
+docs/AgentGroupAssignmentResponse.md
 docs/AgentGroupAssignmentsItem.md
+docs/AgentGroupAssignmentsPostRequest.md
 docs/AgentGroupAssignmentsResponse.md
 docs/AgentItem.md
 docs/AgentsResponse.md
@@ -36,8 +38,10 @@ docs/SensorsPatchRequest.md
 docs/SensorsPatchResponse.md
 docs/SensorsResponse.md
 docs/ServiceTest.md
+docs/ServiceTestGroupAssignmentsItem.md
 docs/ServiceTestGroupAssignmentsPostRequest.md
 docs/ServiceTestGroupAssignmentsPostResponse.md
+docs/ServiceTestGroupAssignmentsResponse.md
 docs/ServiceTestsListItem.md
 docs/ServiceTestsListResponse.md
 docs/WiredNetworksItem.md
@@ -47,7 +51,9 @@ docs/WirelessNetworksResponse.md
 go.mod
 go.sum
 model_agent.go
+model_agent_group_assignment_response.go
 model_agent_group_assignments_item.go
+model_agent_group_assignments_post_request.go
 model_agent_group_assignments_response.go
 model_agent_item.go
 model_agents_response.go
@@ -78,8 +84,10 @@ model_sensors_patch_request.go
 model_sensors_patch_response.go
 model_sensors_response.go
 model_service_test_.go
+model_service_test_group_assignments_item.go
 model_service_test_group_assignments_post_request.go
 model_service_test_group_assignments_post_response.go
+model_service_test_group_assignments_response.go
 model_service_tests_list_item.go
 model_service_tests_list_response.go
 model_wired_networks_item.go
