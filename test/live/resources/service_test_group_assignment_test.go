@@ -4,9 +4,10 @@ import (
 	"testing"
 
 	"github.com/aruba-uxi/terraform-provider-configuration/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-configuration/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-configuration/test/live/util"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/nbio/st"
 )
 
 func TestServiceTestGroupAssignmentResource(t *testing.T) {
@@ -42,15 +43,13 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						"service_test_id",
 						config.ServiceTestUid,
 					),
-					resource.TestCheckResourceAttr(
+					resource.TestCheckResourceAttrWith(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
-						util.GetGroupByName(groupName).Id,
-					),
-					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
-						"id",
-						config.ServiceTestUid,
+						func(value string) error {
+							st.Assert(t, value, util.GetGroupByName(groupName).Id)
+							return nil
+						},
 					),
 				),
 			},
@@ -88,10 +87,13 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						"service_test_id",
 						config.ServiceTestUid,
 					),
-					resource.TestCheckResourceAttr(
+					resource.TestCheckResourceAttrWith(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
-						util.GetGroupByName(group2Name).Id,
+						func(value string) error {
+							st.Assert(t, value, util.GetGroupByName(group2Name).Id)
+							return nil
+						},
 					),
 				),
 			},
