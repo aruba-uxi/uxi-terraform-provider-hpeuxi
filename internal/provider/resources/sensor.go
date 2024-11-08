@@ -35,19 +35,20 @@ type SensorResponseModel struct {
 	ModelNumber        string
 	WifiMacAddress     string
 	EthernetMacAddress string
-	AddressNote        string
+	AddressNote        *string
 	Longitude          float32
 	Latitude           float32
-	Notes              string
-	PCapMode           string
+	Notes              *string
+	PCapMode           *string
 }
 
 // TODO: Switch this to use the Client Model when that becomes available
 type SensorUpdateRequestModel struct {
+	Id          string
 	Name        string
-	AddressNote string
-	Notes       string
-	PCapMode    string
+	AddressNote *string
+	Notes       *string
+	PCapMode    *string
 }
 
 func NewSensorResource() resource.Resource {
@@ -196,18 +197,19 @@ func (r *sensorResource) Update(
 
 	// Update existing item
 	response := UpdateSensor(SensorUpdateRequestModel{
+		Id:          plan.ID.ValueString(),
 		Name:        plan.Name.ValueString(),
-		AddressNote: plan.AddressNote.ValueString(),
-		Notes:       plan.Notes.ValueString(),
-		PCapMode:    plan.PCapMode.ValueString(),
+		AddressNote: plan.AddressNote.ValueStringPointer(),
+		Notes:       plan.Notes.ValueStringPointer(),
+		PCapMode:    plan.PCapMode.ValueStringPointer(),
 	})
 
 	// Update resource state with updated items
 	plan.ID = types.StringValue(response.UID)
 	plan.Name = types.StringValue(response.Name)
-	plan.AddressNote = types.StringValue(response.AddressNote)
-	plan.Notes = types.StringValue(response.Notes)
-	plan.PCapMode = types.StringValue(response.PCapMode)
+	plan.AddressNote = types.StringPointerValue(response.AddressNote)
+	plan.Notes = types.StringPointerValue(response.Notes)
+	plan.PCapMode = types.StringPointerValue(response.PCapMode)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -245,7 +247,7 @@ var UpdateSensor = func(request SensorUpdateRequestModel) SensorResponseModel {
 	// TODO: Query the sensor using the client
 
 	return SensorResponseModel{
-		UID:                "mock_uid",
+		UID:                request.Id,
 		Serial:             "mock_serial",
 		Name:               request.Name,
 		ModelNumber:        "mock_model_number",
