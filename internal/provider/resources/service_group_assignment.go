@@ -149,13 +149,29 @@ func (r *serviceTestGroupAssignmentResource) Read(
 		return
 	}
 
-	// TODO: Call client getServiceTestGroupAssignment method
-	serviceTestGroupAssignment := GetServiceTestGroupAssignment(state.ID.ValueString())
+	request := r.client.ConfigurationAPI.
+		ServiceTestGroupAssignmentsGet(ctx).
+		Id(state.ID.ValueString())
+	networkGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
+
+	if errorPresent {
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
+		return
+	}
+
+	if len(networkGroupAssignmentResponse.Items) != 1 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
 
 	// Update state from client response
-	state.ID = types.StringValue(serviceTestGroupAssignment.Id)
-	state.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
-	state.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTest.Id)
+	state.ID = types.StringValue(networkGroupAssignment.Id)
+	state.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
+	state.ServiceTestID = types.StringValue(networkGroupAssignment.ServiceTest.Id)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -217,14 +233,4 @@ func (r *serviceTestGroupAssignmentResource) ImportState(
 	resp *resource.ImportStateResponse,
 ) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-var GetServiceTestGroupAssignment = func(uid string) config_api_client.ServiceTestGroupAssignmentsPostResponse {
-	// TODO: Query the serviceTestGroupAssignment using the client
-	return config_api_client.ServiceTestGroupAssignmentsPostResponse{
-		Id:          uid,
-		Group:       *config_api_client.NewGroup("mock_group_uid"),
-		ServiceTest: *config_api_client.NewServiceTest("mock_serviceTest_uid"),
-		Type:        "networking-uxi/service-test-group-assignment",
-	}
 }
