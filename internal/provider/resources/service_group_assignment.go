@@ -169,9 +169,9 @@ func (r *serviceTestGroupAssignmentResource) Read(
 	serviceTestGroupAssignment := serviceTestGroupAssignmentResponse.Items[0]
 
 	// Update state from client response
-	state.ID = types.StringValue(networkGroupAssignment.Id)
-	state.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
-	state.ServiceTestID = types.StringValue(networkGroupAssignment.ServiceTest.Id)
+	state.ID = types.StringValue(serviceTestGroupAssignment.Id)
+	state.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
+	state.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTest.Id)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
