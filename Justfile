@@ -32,6 +32,12 @@ setup-dev:
   curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.60.1
   go install github.com/segmentio/golines@latest
 
+build:
+  go install github.com/goreleaser/goreleaser/v2@latest
+  PATH="$GOPATH/bin:$PATH" goreleaser release --clean
+
+sign:
+  hpesign --sign
 test-client +ARGS='':
   cd {{ CONFIG_API_CLIENT_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
