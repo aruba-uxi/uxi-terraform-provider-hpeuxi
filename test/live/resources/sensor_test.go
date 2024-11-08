@@ -43,7 +43,7 @@ func TestSensorResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_sensor" "my_sensor" {
-						name = "` + config.SensorName + `"
+						name = "` + originalSensor.name + `"
 					}`,
 
 				ExpectError: regexp.MustCompile(
@@ -54,7 +54,7 @@ func TestSensorResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_sensor" "my_sensor" {
-						name = "` + config.SensorName + `"
+						name = "` + originalSensor.name + `"
 					}
 
 					import {
@@ -179,7 +179,7 @@ func getSensorProperties(id string) sensorProperties {
 		panic(err)
 	}
 	if len(result.Items) != 1 {
-		panic("set sensor with id `" + id + "` could not be found")
+		panic("sensor with id `" + id + "` could not be found")
 	}
 	sensor := result.Items[0]
 	// Read these in, as they may not be always constant with the acceptance test
