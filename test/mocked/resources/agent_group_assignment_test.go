@@ -5,7 +5,6 @@ import (
 	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/resources"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
@@ -50,13 +49,11 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					)
 
 					// required for agent group assignment create
-					agentGroupAssignmentResponse := util.GenerateAgentGroupAssignmentResponseMockedModel(
-						"agent_group_assignment_uid",
-						"",
+					util.MockPostAgentGroupAssignment(
+						util.GenerateAgentGroupAssignmentRequest("agent_group_assignment_uid", ""),
+						util.GenerateAgentGroupAssignmentResponse("agent_group_assignment_uid", ""),
+						1,
 					)
-					resources.CreateAgentGroupAssignment = func(request resources.AgentGroupAssignmentRequestModel) resources.AgentGroupAssignmentResponseModel {
-						return agentGroupAssignmentResponse
-					}
 					util.MockGetAgentGroupAssignment(
 						"agent_group_assignment_uid",
 						util.GeneratePaginatedResponse(
@@ -204,12 +201,17 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 						),
 						1,
 					)
-					resources.CreateAgentGroupAssignment = func(request resources.AgentGroupAssignmentRequestModel) resources.AgentGroupAssignmentResponseModel {
-						return util.GenerateAgentGroupAssignmentResponseMockedModel(
+					util.MockPostAgentGroupAssignment(
+						util.GenerateAgentGroupAssignmentRequest(
 							"agent_group_assignment_uid_2",
 							"_2",
-						)
-					}
+						),
+						util.GenerateAgentGroupAssignmentResponse(
+							"agent_group_assignment_uid_2",
+							"_2",
+						),
+						1,
+					)
 				},
 				Config: provider.ProviderConfig + `
 					// the original resources
