@@ -5,11 +5,11 @@ import (
 )
 
 type sensorProperties struct {
-	Id           string
-	Name         string
-	Notes        *string
-	AddressNotes *string
-	PcapMode     *string
+	Id          string
+	Name        string
+	Notes       *string
+	AddressNote *string
+	PcapMode    *string
 }
 
 func GetSensorProperties(id string) sensorProperties {
@@ -27,10 +27,10 @@ func GetSensorProperties(id string) sensorProperties {
 	// Read these in, as they may not be always constant with the acceptance test
 	// customer
 	return sensorProperties{
-		Id:           sensor.Id,
-		Name:         sensor.Name,
-		Notes:        sensor.Notes.Get(),
-		AddressNotes: sensor.AddressNote.Get(),
-		PcapMode:     sensor.PcapMode.Get(),
+		Id:          sensor.Id,
+		Name:        sensor.Name,
+		Notes:       sensor.Notes.Get(),
+		AddressNote: sensor.AddressNote.Get(),
+		PcapMode:    sensor.PcapMode.Get(),
 	}
 }

@@ -27,9 +27,9 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 
 					resource "uxi_sensor" "my_sensor" {
 						name 			= "` + existingSensorProperties.Name + `"
-						address_note 	= "` + *existingSensorProperties.AddressNotes + `"
-						notes 			= "` + *existingSensorProperties.Notes + `"
-						pcap_mode 		= "` + *existingSensorProperties.PcapMode + `"
+						` + util.ConditionalProperty("address_note", existingSensorProperties.AddressNote) + `
+						` + util.ConditionalProperty("notes", existingSensorProperties.Notes) + `
+						` + util.ConditionalProperty("pcap_mode", existingSensorProperties.PcapMode) + `
 					}
 
 					import {
@@ -38,8 +38,8 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id       = uxi_sensor.my_sensor.id
-						group_id 		= uxi_group.my_group.id
+						sensor_id = uxi_sensor.my_sensor.id
+						group_id  = uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
@@ -73,9 +73,9 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 
 					resource "uxi_sensor" "my_sensor" {
 						name 			= "` + existingSensorProperties.Name + `"
-						address_note 	= "` + *existingSensorProperties.AddressNotes + `"
-						notes 			= "` + *existingSensorProperties.Notes + `"
-						pcap_mode 		= "` + *existingSensorProperties.PcapMode + `"
+						` + util.ConditionalProperty("address_note", existingSensorProperties.AddressNote) + `
+						` + util.ConditionalProperty("notes", existingSensorProperties.Notes) + `
+						` + util.ConditionalProperty("pcap_mode", existingSensorProperties.PcapMode) + `
 					}
 
 					// the new resources we wanna update the assignment to
@@ -85,8 +85,8 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 
 					// the assignment update, updated from sensor/group to sensor/group_2
 					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id       = uxi_sensor.my_sensor_2.id
-						group_id 		= uxi_group.my_group_2.id
+						sensor_id = uxi_sensor.my_sensor.id
+						group_id  = uxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
