@@ -23,7 +23,7 @@ description: |-
 
 - `category` (String)
 - `id` (String) The ID of this resource.
-- `is_enabled` (String)
+- `is_enabled` (Boolean)
 - `name` (String)
 - `target` (String)
 - `template` (String)
