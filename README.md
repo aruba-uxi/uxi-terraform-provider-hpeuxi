@@ -9,7 +9,7 @@ go_path = $(go env GOPATH)/bin
 
 ```
 dev_overrides {
-    "registry.terraform.io/arubauxi/configuration" = "<go_path>"
+    "registry.terraform.io/arubauxi/hpeuxi" = "<go_path>"
 }
 ```
 
@@ -17,7 +17,7 @@ Example `~/.terraformrc` file
 ```
 provider_installation {
   dev_overrides {
-      "registry.terraform.io/arubauxi/configuration" = "/Users/<user>/go/bin"
+      "registry.terraform.io/arubauxi/hpeuxi" = "/Users/<user>/go/bin"
   }
   direct {}
 }

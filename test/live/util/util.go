@@ -4,8 +4,8 @@ import (
 	"context"
 	"os"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	resources_util "github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	resources_util "github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
 )

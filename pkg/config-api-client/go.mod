@@ -1,4 +1,4 @@
-module github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client
+module github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client
 
 go 1.18
 
