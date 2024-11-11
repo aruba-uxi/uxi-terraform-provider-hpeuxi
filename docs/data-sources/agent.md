@@ -21,11 +21,8 @@ description: |-
 
 ### Read-Only
 
-- `address_note` (String)
 - `ethernet_mac_address` (String)
 - `id` (String) The ID of this resource.
-- `latitude` (Number)
-- `longitude` (Number)
 - `model_number` (String)
 - `name` (String)
 - `notes` (String)
