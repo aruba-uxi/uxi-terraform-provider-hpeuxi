@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/aruba-uxi/terraform-provider-configuration/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-configuration/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-configuration/test/live/util"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/nbio/st"
 )
@@ -36,7 +36,7 @@ func TestGroupDataSource(t *testing.T) {
 
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "uxi_group.my_group_resource.id"
+							group_id = uxi_group.my_group_resource.id
 						}
 					}
 				`,
@@ -60,7 +60,7 @@ func TestGroupDataSource(t *testing.T) {
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_group.my_group",
-						"path",
+						"parent_group_id",
 						config.GroupUidRoot,
 					),
 				),
