@@ -42,4 +42,11 @@ func GetGroupByName(name string) *config_api_client.GroupsGetItem {
 	return nil
 }
 
+func ConditionalProperty(property string, value *string) string {
+	if value == nil {
+		return ""
+	}
+	return property + `= "` + *value + `"`
+}
+
 var Client = NewClient()
