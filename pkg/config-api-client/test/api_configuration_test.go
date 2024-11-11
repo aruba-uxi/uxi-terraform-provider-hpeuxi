@@ -271,7 +271,7 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GroupsPatch", func(t *testing.T) {
+	t.Run("Test ConfigurationAPI SensorsPatchRequest", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Patch("/networking-uxi/v1alpha1/sensors/uid").
 			// TODO: uncomment this once spec has been updated to merge-patch+json
