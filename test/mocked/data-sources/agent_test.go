@@ -39,6 +39,25 @@ func TestAgentDataSource(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "name", "name"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "serial", "serial"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_agent.my_agent",
+						"model_number",
+						"model_number",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_agent.my_agent",
+						"wifi_mac_address",
+						"wifi_mac_address",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_agent.my_agent",
+						"ethernet_mac_address",
+						"ethernet_mac_address",
+					),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "notes", "notes"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "pcap_mode", "light"),
 				),
 			},
 		},
