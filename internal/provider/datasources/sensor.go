@@ -142,8 +142,8 @@ func (d *sensorDataSource) Read(
 	state.WifiMacAddress = types.StringPointerValue(sensor.WifiMacAddress.Get())
 	state.EthernetMacAddress = types.StringPointerValue(sensor.EthernetMacAddress.Get())
 	state.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
-	state.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	state.Latitude = types.Float32PointerValue(sensor.Latitude.Get())
+	state.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
 	state.PcapMode = types.StringPointerValue(sensor.PcapMode.Get())
 

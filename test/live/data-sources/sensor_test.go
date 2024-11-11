@@ -9,20 +9,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAgentDataSource(t *testing.T) {
-	agent := util.GetAgentProperties(config.AgentUid)
+func TestSensorDataSource(t *testing.T) {
+	sensor := util.GetSensorProperties(config.SensorUid)
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: provider.ProviderConfig + `
-					data "uxi_agent" "my_agent" {
+					data "uxi_sensor" "my_sensor" {
 						filter = {
-							agent_id = "` + config.AgentUid + `"
+							sensor_id = "` + config.SensorUid + `"
 						}
 					}
 				`,
-				Check: util.CheckStateAgainstAgent(t, agent),
+				Check: util.CheckStateAgainstSensor(t, sensor),
 			},
 		},
 	})
