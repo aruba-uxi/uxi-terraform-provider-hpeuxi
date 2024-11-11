@@ -24,17 +24,14 @@ type agentDataSource struct {
 }
 
 type agentDataSourceModel struct {
-	Id                 types.String  `tfsdk:"id"`
-	Serial             types.String  `tfsdk:"serial"`
-	Name               types.String  `tfsdk:"name"`
-	ModelNumber        types.String  `tfsdk:"model_number"`
-	WifiMacAddress     types.String  `tfsdk:"wifi_mac_address"`
-	EthernetMacAddress types.String  `tfsdk:"ethernet_mac_address"`
-	AddressNote        types.String  `tfsdk:"address_note"`
-	Longitude          types.Float32 `tfsdk:"longitude"`
-	Latitude           types.Float32 `tfsdk:"latitude"`
-	Notes              types.String  `tfsdk:"notes"`
-	PcapMode           types.String  `tfsdk:"pcap_mode"`
+	Id                 types.String `tfsdk:"id"`
+	Serial             types.String `tfsdk:"serial"`
+	Name               types.String `tfsdk:"name"`
+	ModelNumber        types.String `tfsdk:"model_number"`
+	WifiMacAddress     types.String `tfsdk:"wifi_mac_address"`
+	EthernetMacAddress types.String `tfsdk:"ethernet_mac_address"`
+	Notes              types.String `tfsdk:"notes"`
+	PcapMode           types.String `tfsdk:"pcap_mode"`
 	Filter             struct {
 		AgentID types.String `tfsdk:"agent_id"`
 	} `tfsdk:"filter"`
@@ -71,15 +68,6 @@ func (d *agentDataSource) Schema(
 				Computed: true,
 			},
 			"ethernet_mac_address": schema.StringAttribute{
-				Computed: true,
-			},
-			"address_note": schema.StringAttribute{
-				Computed: true,
-			},
-			"longitude": schema.Float32Attribute{
-				Computed: true,
-			},
-			"latitude": schema.Float32Attribute{
 				Computed: true,
 			},
 			"notes": schema.StringAttribute{
@@ -137,6 +125,7 @@ func (d *agentDataSource) Read(
 
 	state.Id = types.StringValue(agent.Id)
 	state.Name = types.StringValue(agent.Name)
+	state.Serial = types.StringValue(agent.Serial)
 	state.ModelNumber = types.StringPointerValue(agent.ModelNumber.Get())
 	state.WifiMacAddress = types.StringPointerValue(agent.WifiMacAddress.Get())
 	state.EthernetMacAddress = types.StringPointerValue(agent.EthernetMacAddress.Get())
