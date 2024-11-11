@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -39,6 +39,36 @@ func TestSensorDataSource(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "name", "name"),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "serial", "serial"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_sensor.my_sensor",
+						"model_number",
+						"model_number",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_sensor.my_sensor",
+						"wifi_mac_address",
+						"wifi_mac_address",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_sensor.my_sensor",
+						"ethernet_mac_address",
+						"ethernet_mac_address",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_sensor.my_sensor",
+						"address_note",
+						"address_note",
+					),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "latitude", "0"),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "longitude", "0"),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "notes", "notes"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_sensor.my_sensor",
+						"pcap_mode",
+						"light",
+					),
 				),
 			},
 		},

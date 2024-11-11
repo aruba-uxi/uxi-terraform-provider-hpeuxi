@@ -2,8 +2,8 @@ package resources
 
 import (
 	"context"
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -27,11 +27,6 @@ type agentGroupAssignmentResourceModel struct {
 
 type AgentGroupAssignmentResponseModel struct {
 	UID      string //  <assignment_uid>
-	GroupUID string //  <group_uid:str>,
-	AgentUID string //  <agent_uid:str>
-}
-
-type AgentGroupAssignmentRequestModel struct {
 	GroupUID string //  <group_uid:str>,
 	AgentUID string //  <agent_uid:str>
 }
@@ -116,16 +111,28 @@ func (r *agentGroupAssignmentResource) Create(
 		return
 	}
 
-	// TODO: Call client createAgentGroupAssignment method
-	agentGroupAssignment := CreateAgentGroupAssignment(AgentGroupAssignmentRequestModel{
-		GroupUID: plan.GroupID.ValueString(),
-		AgentUID: plan.AgentID.ValueString(),
-	})
+	postRequest := config_api_client.NewAgentGroupAssignmentsPostRequest(
+		plan.GroupID.ValueString(),
+		plan.AgentID.ValueString(),
+	)
+	request := r.client.ConfigurationAPI.
+		AgentGroupAssignmentsPost(ctx).
+		AgentGroupAssignmentsPostRequest(*postRequest)
+	agentGroupAssignment, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(
+			util.GenerateErrorSummary("create", "uxi_agent_group_assignment"),
+			errorDetail,
+		)
+		return
+	}
 
 	// Update the state to match the plan
-	plan.ID = types.StringValue(agentGroupAssignment.UID)
-	plan.GroupID = types.StringValue(agentGroupAssignment.GroupUID)
-	plan.AgentID = types.StringValue(agentGroupAssignment.AgentUID)
+	plan.ID = types.StringValue(agentGroupAssignment.Id)
+	plan.GroupID = types.StringValue(agentGroupAssignment.Group.Id)
+	plan.AgentID = types.StringValue(agentGroupAssignment.Agent.Id)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -217,14 +224,4 @@ func (r *agentGroupAssignmentResource) ImportState(
 	resp *resource.ImportStateResponse,
 ) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-var CreateAgentGroupAssignment = func(request AgentGroupAssignmentRequestModel) AgentGroupAssignmentResponseModel {
-	// TODO: Query the agentGroupAssignment using the client
-
-	return AgentGroupAssignmentResponseModel{
-		UID:      "mock_uid",
-		GroupUID: "mock_group_uid",
-		AgentUID: "mock_agent_uid",
-	}
 }

@@ -4,15 +4,15 @@ import (
 	"context"
 	"os"
 
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/datasources"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/resources"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/datasources"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"net/http"
 
@@ -174,6 +174,7 @@ func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datas
 		datasources.NewSensorDataSource,
 		datasources.NewSensorGroupAssignmentDataSource,
 		datasources.NewServiceTestDataSource,
+		datasources.NewServiceTestGroupAssignmentDataSource,
 		datasources.NewWiredNetworkDataSource,
 		datasources.NewWirelessNetworkDataSource,
 	}

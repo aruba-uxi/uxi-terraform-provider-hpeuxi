@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     uxi = {
-      source = "registry.terraform.io/arubauxi/configuration"
+      source = "registry.terraform.io/arubauxi/hpeuxi"
     }
   }
 }

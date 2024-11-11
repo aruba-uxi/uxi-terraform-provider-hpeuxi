@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"github.com/nbio/st"
 
 	"github.com/h2non/gock"

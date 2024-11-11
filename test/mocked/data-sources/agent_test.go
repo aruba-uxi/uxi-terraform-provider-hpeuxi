@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -39,6 +39,25 @@ func TestAgentDataSource(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "name", "name"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "serial", "serial"),
+					resource.TestCheckResourceAttr(
+						"data.uxi_agent.my_agent",
+						"model_number",
+						"model_number",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_agent.my_agent",
+						"wifi_mac_address",
+						"wifi_mac_address",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_agent.my_agent",
+						"ethernet_mac_address",
+						"ethernet_mac_address",
+					),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "notes", "notes"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "pcap_mode", "light"),
 				),
 			},
 		},
