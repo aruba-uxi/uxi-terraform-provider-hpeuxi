@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 5.6.0
+  version: 5.7.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -254,6 +254,7 @@ paths:
       summary: Groups Delete
       tags:
       - configuration
+      x-stability-level: alpha
     patch:
       description: Update an existing group.
       operationId: groups_patch
@@ -295,6 +296,7 @@ paths:
       summary: Groups Patch
       tags:
       - configuration
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/groups:
     get:
       description: Lists groups matching provided criteria

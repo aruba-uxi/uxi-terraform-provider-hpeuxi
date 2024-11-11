@@ -9,7 +9,7 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 5.6.0
+  version: 5.7.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
@@ -243,8 +243,9 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - groups
+      x-stability-level: alpha
     patch:
       operationId: groups_patch
       summary: Groups Patch
@@ -292,8 +293,9 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - groups
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/groups:
     get:
       operationId: groups_get
