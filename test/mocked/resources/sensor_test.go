@@ -1,7 +1,6 @@
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"regexp"
@@ -92,9 +91,12 @@ func TestSensorResource(t *testing.T) {
 						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
 						1,
 					)
-					resources.UpdateSensor = func(request resources.SensorUpdateRequestModel) resources.SensorResponseModel {
-						return util.GenerateMockedSensorResponseModel("uid", "_2")
-					}
+					util.MockUpdateSensor(
+						"uid",
+						util.GenerateSensorRequestUpdateModel("_2"),
+						util.GenerateSensorResponseModel("uid", "_2"),
+						1,
+					)
 					// updated sensor
 					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "_2")}),
@@ -195,6 +197,45 @@ func TestSensorResource429Handling(t *testing.T) {
 					},
 				),
 			},
+			// Update and Read testing
+			{
+				PreConfig: func() {
+					// existing sensor
+					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+						1,
+					)
+					request429 = gock.New("https://test.api.capenetworks.com").
+						Patch("/networking-uxi/v1alpha1/sensors/uid").
+						Reply(429).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockUpdateSensor(
+						"uid",
+						util.GenerateSensorRequestUpdateModel("_2"),
+						util.GenerateSensorResponseModel("uid", "_2"),
+						1,
+					)
+					// updated sensor
+					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "_2")}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+				resource "uxi_sensor" "my_sensor" {
+					name = "name_2"
+					address_note = "address_note_2"
+					notes = "notes_2"
+					pcap_mode = "light_2"
+				}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
+					func(s *terraform.State) error {
+						st.Assert(t, request429.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
+			},
 			// Remove sensor from state
 			{
 				Config: provider.ProviderConfig + `
@@ -276,6 +317,81 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					}`,
 
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
+			},
+			// Actually import a sensor for subsequent testing
+			{
+				PreConfig: func() {
+					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+						2,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_sensor" "my_sensor" {
+						name = "name"
+						address_note = "address_note"
+						notes = "notes"
+						pcap_mode = "light"
+					}
+
+					import {
+						to = uxi_sensor.my_sensor
+						id = "uid"
+					}`,
+
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name"),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor.my_sensor",
+						"address_note",
+						"address_note",
+					),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
+				),
+			},
+			// Update 4xx
+			{
+				PreConfig: func() {
+					// existing sensor
+					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+						1,
+					)
+					// patch sensor - with error
+					gock.New("https://test.api.capenetworks.com").
+						Patch("/networking-uxi/v1alpha1/sensors/uid").
+						Reply(422).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 422,
+							"errorCode":      "HPE_GL_UXI_INVALID_PCAP_MODE_ERROR",
+							"message":        "Unable to update sensor - pcap_mode must be one the following ['light', 'full', 'off'].",
+							"debugId":        "12312-123123-123123-1231212",
+							"type":           "hpe.greenlake.uxi.invalid_pcap_mode",
+						})
+				},
+				Config: provider.ProviderConfig + `
+				resource "uxi_sensor" "my_sensor" {
+					name = "name_2"
+					address_note = "address_note_2"
+					notes = "notes_2"
+					pcap_mode = "light_2"
+				}`,
+				ExpectError: regexp.MustCompile(
+					`(?s)Unable to update sensor - pcap_mode must be one the following \['light',\s*'full', 'off'\].\s*DebugID: 12312-123123-123123-1231212`,
+				),
+			},
+			// Remove sensor from state
+			{
+				Config: provider.ProviderConfig + `
+					removed {
+						from = uxi_sensor.my_sensor
+
+						lifecycle {
+							destroy = false
+						}
+					}`,
 			},
 		},
 	})
