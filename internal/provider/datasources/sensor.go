@@ -137,6 +137,7 @@ func (d *sensorDataSource) Read(
 
 	state.Id = types.StringValue(sensor.Id)
 	state.Name = types.StringValue(sensor.Name)
+	state.Serial = types.StringValue(sensor.Serial)
 	state.ModelNumber = types.StringValue(sensor.ModelNumber)
 	state.WifiMacAddress = types.StringPointerValue(sensor.WifiMacAddress.Get())
 	state.EthernetMacAddress = types.StringPointerValue(sensor.EthernetMacAddress.Get())
