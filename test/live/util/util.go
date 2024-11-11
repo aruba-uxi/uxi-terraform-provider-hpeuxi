@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	resources_util "github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
 )
@@ -31,16 +30,6 @@ func NewClient() *config_api_client.APIClient {
 	uxiConfiguration.HTTPClient = config.Client(context.Background())
 
 	return config_api_client.NewAPIClient(uxiConfiguration)
-}
-
-func GetRoot() *config_api_client.GroupsGetItem {
-	groups, _, _ := Client.ConfigurationAPI.GroupsGet(context.Background()).Execute()
-	for _, group := range groups.Items {
-		if resources_util.IsRoot(group) {
-			return &group
-		}
-	}
-	return nil
 }
 
 func GetGroupByName(name string) *config_api_client.GroupsGetItem {

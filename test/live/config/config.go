@@ -1,5 +1,6 @@
 package config
 
+const GroupUidRoot = "07422d227c0b"
 const WiredNetworkUid = "ethernet-0ee5b46c2ef0"
 const WiredNetworkName = "tf-provider-acceptance-tests-ethernet-0"
 const WirelessNetworkUid = "ssid-bf704ff37dc0"
