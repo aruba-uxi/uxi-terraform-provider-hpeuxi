@@ -1,8 +1,8 @@
 package provider
 
 import (
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 )

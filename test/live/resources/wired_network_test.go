@@ -1,8 +1,8 @@
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-configuration/test/live/config"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/live/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"regexp"
 	"testing"
 
