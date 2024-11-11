@@ -25,6 +25,10 @@ func GenerateSensorResponseModel(uid string, postfix string) map[string]interfac
 }
 
 func GenerateMockedSensorResponseModel(uid string, postfix string) resources.SensorResponseModel {
+	addressNote := "address_note" + postfix
+	notes := "notes" + postfix
+	pcapMode := "light" + postfix
+
 	return resources.SensorResponseModel{
 		UID:                uid,
 		Serial:             "serial" + postfix,
@@ -32,11 +36,11 @@ func GenerateMockedSensorResponseModel(uid string, postfix string) resources.Sen
 		ModelNumber:        "model_number" + postfix,
 		WifiMacAddress:     "wifi_mac_address" + postfix,
 		EthernetMacAddress: "ethernet_mac_address" + postfix,
-		AddressNote:        "address_note" + postfix,
+		AddressNote:        &addressNote,
 		Longitude:          0.0,
 		Latitude:           0.0,
-		Notes:              "notes" + postfix,
-		PCapMode:           "light" + postfix,
+		Notes:              &notes,
+		PCapMode:           &pcapMode,
 	}
 }
 
