@@ -1,7 +1,7 @@
 package util
 
 import (
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func IsRoot(group config_api_client.GroupsGetItem) bool {
