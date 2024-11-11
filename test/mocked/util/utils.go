@@ -327,6 +327,7 @@ func MockUpdateSensor(
 	// body, _ := json.Marshal(request)
 	gock.New("https://test.api.capenetworks.com").
 		Patch("/networking-uxi/v1alpha1/sensors/"+uid).
+		// TODO: uncomment this once the patch endpoint uses correct header and body casing
 		// MatchHeader("Content-Type", "application/merge-patch+json").
 		MatchHeader("Authorization", "mock_token").
 		// BodyString(string(body)).
