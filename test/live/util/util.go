@@ -1,46 +1,13 @@
 package util
 
 import (
-	"context"
-	"os"
+	"fmt"
+	"math"
+	"strconv"
 
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/clientcredentials"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/nbio/st"
 )
-
-var CLIENT_ID = os.Getenv("UXI_CLIENT_ID")
-var CLIENT_SECRET = os.Getenv("UXI_CLIENT_SECRET")
-
-const HOST = "api.staging.capedev.io"
-const TOKEN_URL = "https://sso.common.cloud.hpe.com/as/token.oauth2"
-
-func NewClient() *config_api_client.APIClient {
-	config := &clientcredentials.Config{
-		ClientID:     CLIENT_ID,
-		ClientSecret: CLIENT_SECRET,
-		TokenURL:     TOKEN_URL,
-		AuthStyle:    oauth2.AuthStyleInParams,
-	}
-
-	// Create a context and fetch a token
-	uxiConfiguration := config_api_client.NewConfiguration()
-	uxiConfiguration.Host = HOST
-	uxiConfiguration.Scheme = "https"
-	uxiConfiguration.HTTPClient = config.Client(context.Background())
-
-	return config_api_client.NewAPIClient(uxiConfiguration)
-}
-
-func GetGroupByName(name string) *config_api_client.GroupsGetItem {
-	groups, _, _ := Client.ConfigurationAPI.GroupsGet(context.Background()).Execute()
-	for _, group := range groups.Items {
-		if group.Name == name {
-			return &group
-		}
-	}
-	return nil
-}
 
 func ConditionalProperty(property string, value *string) string {
 	if value == nil {
@@ -49,4 +16,56 @@ func ConditionalProperty(property string, value *string) string {
 	return property + `= "` + *value + `"`
 }
 
-var Client = NewClient()
+func TestOptionalValue(
+	t st.Fatalf,
+	tfResource string,
+	tfKey string,
+	property *string,
+) resource.TestCheckFunc {
+	if property == nil {
+		return resource.TestCheckNoResourceAttr(tfResource, tfKey)
+	}
+
+	return resource.TestCheckResourceAttrWith(
+		tfResource,
+		tfKey,
+		func(value string) error {
+			if value != *property {
+				return fmt.Errorf("have `%s`; but want `%s`", value, *property)
+			}
+			return nil
+		},
+	)
+}
+
+// This is required to do a check against floats since 100% accuracy is not guaranteed for floating
+// point numbers in the terraform plugin framework
+func TestOptionalFloatValue(
+	t st.Fatalf,
+	tfResource string,
+	tfKey string,
+	property *float32,
+) resource.TestCheckFunc {
+
+	if property == nil {
+		return resource.TestCheckNoResourceAttr(tfResource, tfKey)
+	}
+
+	return resource.TestCheckResourceAttrWith(
+		tfResource,
+		tfKey,
+		func(value string) error {
+			have := math.Round(stringToFloat64(value)*1e6) / 1e6
+			want := math.Round(float64(*property*1e6)) / 1e6
+			if have != want {
+				return fmt.Errorf("have `%f`; but want `%f`", have, want)
+			}
+			return nil
+		},
+	)
+}
+
+func stringToFloat64(s string) float64 {
+	val, _ := strconv.ParseFloat(s, 32)
+	return float64(val)
+}
