@@ -3,26 +3,13 @@ package util
 import (
 	"context"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/nbio/st"
 )
 
-type SensorProperties struct {
-	Id                 string
-	Serial             string
-	Name               string
-	ModelNumber        string
-	WifiMacAddress     *string
-	EthernetMacAddress *string
-	Latitude           *float32
-	Longitude          *float32
-	Notes              *string
-	AddressNote        *string
-	PcapMode           *string
-}
-
-func GetSensorProperties(id string) SensorProperties {
+func GetSensorProperties(id string) config_api_client.SensorItem {
 	result, _, err := Client.ConfigurationAPI.
 		SensorsGet(context.Background()).
 		Id(id).
@@ -33,25 +20,13 @@ func GetSensorProperties(id string) SensorProperties {
 	if len(result.Items) != 1 {
 		panic("sensor with id `" + id + "` could not be found")
 	}
-	sensor := result.Items[0]
-	// Read these in, as they may not be always constant with the acceptance test
-	// customer
-	return SensorProperties{
-		Id:                 sensor.Id,
-		Serial:             sensor.Serial,
-		Name:               sensor.Name,
-		ModelNumber:        sensor.ModelNumber,
-		WifiMacAddress:     sensor.WifiMacAddress.Get(),
-		EthernetMacAddress: sensor.EthernetMacAddress.Get(),
-		Latitude:           sensor.Latitude.Get(),
-		Longitude:          sensor.Longitude.Get(),
-		Notes:              sensor.Notes.Get(),
-		AddressNote:        sensor.AddressNote.Get(),
-		PcapMode:           sensor.PcapMode.Get(),
-	}
+	return result.Items[0]
 }
 
-func CheckStateAgainstSensor(t st.Fatalf, sensor SensorProperties) resource.TestCheckFunc {
+func CheckStateAgainstSensor(
+	t st.Fatalf,
+	sensor config_api_client.SensorItem,
+) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", config.SensorUid),
 		resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "serial", sensor.Serial),
@@ -72,18 +47,18 @@ func CheckStateAgainstSensor(t st.Fatalf, sensor SensorProperties) resource.Test
 			t,
 			"data.uxi_sensor.my_sensor",
 			"wifi_mac_address",
-			sensor.WifiMacAddress,
+			sensor.WifiMacAddress.Get(),
 		),
 		TestOptionalValue(
 			t,
 			"data.uxi_sensor.my_sensor",
 			"ethernet_mac_address",
-			sensor.EthernetMacAddress,
+			sensor.EthernetMacAddress.Get(),
 		),
-		TestOptionalValue(t, "data.uxi_sensor.my_sensor", "address_note", sensor.AddressNote),
-		TestOptionalFloatValue(t, "data.uxi_sensor.my_sensor", "latitude", sensor.Latitude),
-		TestOptionalFloatValue(t, "data.uxi_sensor.my_sensor", "longitude", sensor.Longitude),
-		TestOptionalValue(t, "data.uxi_sensor.my_sensor", "notes", sensor.Notes),
-		TestOptionalValue(t, "data.uxi_sensor.my_sensor", "pcap_mode", sensor.PcapMode),
+		TestOptionalValue(t, "data.uxi_sensor.my_sensor", "address_note", sensor.AddressNote.Get()),
+		TestOptionalFloatValue(t, "data.uxi_sensor.my_sensor", "latitude", sensor.Latitude.Get()),
+		TestOptionalFloatValue(t, "data.uxi_sensor.my_sensor", "longitude", sensor.Longitude.Get()),
+		TestOptionalValue(t, "data.uxi_sensor.my_sensor", "notes", sensor.Notes.Get()),
+		TestOptionalValue(t, "data.uxi_sensor.my_sensor", "pcap_mode", sensor.PcapMode.Get()),
 	)
 }

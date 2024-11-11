@@ -2,23 +2,14 @@ package util
 
 import (
 	"context"
+
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/nbio/st"
 )
 
-type AgentProperties struct {
-	Id                 string
-	Serial             string
-	Name               string
-	ModelNumber        *string
-	WifiMacAddress     *string
-	EthernetMacAddress *string
-	Notes              *string
-	PcapMode           *string
-}
-
-func GetAgentProperties(id string) AgentProperties {
+func GetAgentProperties(id string) config_api_client.AgentItem {
 	result, _, err := Client.ConfigurationAPI.
 		AgentsGet(context.Background()).
 		Id(id).
@@ -29,25 +20,14 @@ func GetAgentProperties(id string) AgentProperties {
 	if len(result.Items) != 1 {
 		panic("agent with id `" + id + "` could not be found")
 	}
-	agent := result.Items[0]
-	// Read these in, as they may not be always constant with the acceptance test customer
-	return AgentProperties{
-		Id:                 agent.Id,
-		Serial:             agent.Serial,
-		Name:               agent.Name,
-		ModelNumber:        agent.ModelNumber.Get(),
-		WifiMacAddress:     agent.WifiMacAddress.Get(),
-		EthernetMacAddress: agent.EthernetMacAddress.Get(),
-		Notes:              agent.Notes.Get(),
-		PcapMode:           agent.PcapMode.Get(),
-	}
+	return result.Items[0]
 }
 
-func CheckStateAgainstAgent(t st.Fatalf, agent AgentProperties) resource.TestCheckFunc {
+func CheckStateAgainstAgent(t st.Fatalf, agent config_api_client.AgentItem) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", config.AgentUid),
 		resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "serial", agent.Serial),
-		TestOptionalValue(t, "data.uxi_agent.my_agent", "model_number", agent.ModelNumber),
+		TestOptionalValue(t, "data.uxi_agent.my_agent", "model_number", agent.ModelNumber.Get()),
 		resource.TestCheckResourceAttrWith(
 			"data.uxi_agent.my_agent",
 			"name",
@@ -56,14 +36,19 @@ func CheckStateAgainstAgent(t st.Fatalf, agent AgentProperties) resource.TestChe
 				return nil
 			},
 		),
-		TestOptionalValue(t, "data.uxi_agent.my_agent", "wifi_mac_address", agent.WifiMacAddress),
+		TestOptionalValue(
+			t,
+			"data.uxi_agent.my_agent",
+			"wifi_mac_address",
+			agent.WifiMacAddress.Get(),
+		),
 		TestOptionalValue(
 			t,
 			"data.uxi_agent.my_agent",
 			"ethernet_mac_address",
-			agent.EthernetMacAddress,
+			agent.EthernetMacAddress.Get(),
 		),
-		TestOptionalValue(t, "data.uxi_agent.my_agent", "notes", agent.Notes),
-		TestOptionalValue(t, "data.uxi_agent.my_agent", "pcap_mode", agent.PcapMode),
+		TestOptionalValue(t, "data.uxi_agent.my_agent", "notes", agent.Notes.Get()),
+		TestOptionalValue(t, "data.uxi_agent.my_agent", "pcap_mode", agent.PcapMode.Get()),
 	)
 }

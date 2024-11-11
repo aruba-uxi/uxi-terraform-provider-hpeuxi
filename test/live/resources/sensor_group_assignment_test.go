@@ -27,9 +27,9 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 
 					resource "uxi_sensor" "my_sensor" {
 						name 			= "` + existingSensorProperties.Name + `"
-						` + util.ConditionalProperty("address_note", existingSensorProperties.AddressNote) + `
-						` + util.ConditionalProperty("notes", existingSensorProperties.Notes) + `
-						` + util.ConditionalProperty("pcap_mode", existingSensorProperties.PcapMode) + `
+						` + util.ConditionalProperty("address_note", existingSensorProperties.AddressNote.Get()) + `
+						` + util.ConditionalProperty("notes", existingSensorProperties.Notes.Get()) + `
+						` + util.ConditionalProperty("pcap_mode", existingSensorProperties.PcapMode.Get()) + `
 					}
 
 					import {
@@ -73,9 +73,9 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 
 					resource "uxi_sensor" "my_sensor" {
 						name 			= "` + existingSensorProperties.Name + `"
-						` + util.ConditionalProperty("address_note", existingSensorProperties.AddressNote) + `
-						` + util.ConditionalProperty("notes", existingSensorProperties.Notes) + `
-						` + util.ConditionalProperty("pcap_mode", existingSensorProperties.PcapMode) + `
+						` + util.ConditionalProperty("address_note", existingSensorProperties.AddressNote.Get()) + `
+						` + util.ConditionalProperty("notes", existingSensorProperties.Notes.Get()) + `
+						` + util.ConditionalProperty("pcap_mode", existingSensorProperties.PcapMode.Get()) + `
 					}
 
 					// the new resources we wanna update the assignment to
