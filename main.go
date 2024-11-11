@@ -8,7 +8,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 )
 
@@ -28,7 +28,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		Address: "registry.terraform.io/arubauxi/configuration",
+		Address: "registry.terraform.io/arubauxi/hpeuxi",
 		Debug:   debug,
 	}
 
