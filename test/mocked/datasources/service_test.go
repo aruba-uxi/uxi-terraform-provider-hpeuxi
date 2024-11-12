@@ -45,6 +45,31 @@ func TestServiceTestDataSource(t *testing.T) {
 						"id",
 						"uid",
 					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_service_test.my_service_test",
+						"category",
+						"external",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_service_test.my_service_test",
+						"name",
+						"name",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_service_test.my_service_test",
+						"target",
+						"target",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_service_test.my_service_test",
+						"template",
+						"template",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_service_test.my_service_test",
+						"is_enabled",
+						"true",
+					),
 				),
 			},
 		},
