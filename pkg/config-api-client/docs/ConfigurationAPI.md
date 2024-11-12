@@ -4,6 +4,7 @@ All URIs are relative to *https://api.capenetworks.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**AgentGroupAssignmentDelete**](ConfigurationAPI.md#AgentGroupAssignmentDelete) | **Delete** /networking-uxi/v1alpha1/agent-group-assignments/{uid} | Agent Group Assignment Delete
 [**AgentGroupAssignmentsGet**](ConfigurationAPI.md#AgentGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/agent-group-assignments | Agent Group Assignments Get
 [**AgentGroupAssignmentsPost**](ConfigurationAPI.md#AgentGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/agent-group-assignments | Agent Group Assignments Post
 [**AgentsDelete**](ConfigurationAPI.md#AgentsDelete) | **Delete** /networking-uxi/v1alpha1/agents/{agent_uid} | Agents Delete
@@ -28,6 +29,76 @@ Method | HTTP request | Description
 [**WiredNetworksGet**](ConfigurationAPI.md#WiredNetworksGet) | **Get** /networking-uxi/v1alpha1/wired-networks | Wired Networks Get
 [**WirelessNetworksGet**](ConfigurationAPI.md#WirelessNetworksGet) | **Get** /networking-uxi/v1alpha1/wireless-networks | Wireless Networks Get
 
+
+
+## AgentGroupAssignmentDelete
+
+> interface{} AgentGroupAssignmentDelete(ctx, uid).Execute()
+
+Agent Group Assignment Delete
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+)
+
+func main() {
+	uid := "uid_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.AgentGroupAssignmentDelete(context.Background(), uid).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.AgentGroupAssignmentDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `AgentGroupAssignmentDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.AgentGroupAssignmentDelete`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**uid** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAgentGroupAssignmentDeleteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+**interface{}**
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## AgentGroupAssignmentsGet
