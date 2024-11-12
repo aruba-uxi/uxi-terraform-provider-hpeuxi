@@ -27,30 +27,6 @@ type sensorResourceModel struct {
 	PCapMode    types.String `tfsdk:"pcap_mode"`
 }
 
-// TODO: Switch this to use the Client Model when that becomes available
-type SensorResponseModel struct {
-	UID                string
-	Serial             string
-	Name               string
-	ModelNumber        string
-	WifiMacAddress     string
-	EthernetMacAddress string
-	AddressNote        *string
-	Longitude          float32
-	Latitude           float32
-	Notes              *string
-	PCapMode           *string
-}
-
-// TODO: Switch this to use the Client Model when that becomes available
-type SensorUpdateRequestModel struct {
-	Id          string
-	Name        string
-	AddressNote *string
-	Notes       *string
-	PCapMode    *string
-}
-
 func NewSensorResource() resource.Resource {
 	return &sensorResource{}
 }
@@ -195,21 +171,41 @@ func (r *sensorResource) Update(
 		return
 	}
 
-	// Update existing item
-	response := UpdateSensor(SensorUpdateRequestModel{
-		Id:          plan.ID.ValueString(),
-		Name:        plan.Name.ValueString(),
-		AddressNote: plan.AddressNote.ValueStringPointer(),
-		Notes:       plan.Notes.ValueStringPointer(),
-		PCapMode:    plan.PCapMode.ValueStringPointer(),
-	})
+	patchRequest := config_api_client.NewSensorsPatchRequest()
+	patchRequest.Name = plan.Name.ValueStringPointer()
+	if !plan.AddressNote.IsUnknown() {
+		patchRequest.AddressNote = plan.AddressNote.ValueStringPointer()
+	}
+	if !plan.Notes.IsUnknown() {
+		patchRequest.Notes = plan.Notes.ValueStringPointer()
+	}
+	if !plan.PCapMode.IsUnknown() {
+		patchRequest.PcapMode = plan.PCapMode.ValueStringPointer()
+	}
+	request := r.client.ConfigurationAPI.
+		SensorsPatch(ctx, plan.ID.ValueString()).
+		SensorsPatchRequest(*patchRequest)
+	sensor, response, err := util.RetryFor429(request.Execute)
 
-	// Update resource state with updated items
-	plan.ID = types.StringValue(response.UID)
-	plan.Name = types.StringValue(response.Name)
-	plan.AddressNote = types.StringPointerValue(response.AddressNote)
-	plan.Notes = types.StringPointerValue(response.Notes)
-	plan.PCapMode = types.StringPointerValue(response.PCapMode)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_sensor"), errorDetail)
+		return
+	}
+
+	// Update the state to match the plan (replace with response from client)
+	plan.ID = types.StringValue(sensor.Id)
+	plan.Name = types.StringValue(sensor.Name)
+	if sensor.AddressNote.Get() != nil {
+		plan.AddressNote = types.StringValue(*sensor.AddressNote.Get())
+	}
+	if sensor.Notes.Get() != nil {
+		plan.Notes = types.StringValue(*sensor.Notes.Get())
+	}
+	if sensor.PcapMode.Get() != nil {
+		plan.PCapMode = types.StringValue(*sensor.PcapMode.Get())
+	}
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -240,23 +236,4 @@ func (r *sensorResource) ImportState(
 	resp *resource.ImportStateResponse,
 ) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-// Update the sensor using the configuration-api client
-var UpdateSensor = func(request SensorUpdateRequestModel) SensorResponseModel {
-	// TODO: Query the sensor using the client
-
-	return SensorResponseModel{
-		UID:                request.Id,
-		Serial:             "mock_serial",
-		Name:               request.Name,
-		ModelNumber:        "mock_model_number",
-		WifiMacAddress:     "mock_wifi_mac_address",
-		EthernetMacAddress: "mock_ethernet_mac_address",
-		AddressNote:        request.AddressNote,
-		Longitude:          0.0,
-		Latitude:           0.0,
-		Notes:              request.Notes,
-		PCapMode:           request.PCapMode,
-	}
 }

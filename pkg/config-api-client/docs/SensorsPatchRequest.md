@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | Pointer to **string** |  | [optional] 
-**AddressNote** | Pointer to **NullableString** |  | [optional] 
-**Notes** | Pointer to **NullableString** |  | [optional] 
+**AddressNote** | Pointer to **string** |  | [optional] 
+**Notes** | Pointer to **string** |  | [optional] 
 **PcapMode** | Pointer to **string** |  | [optional] 
 
 ## Methods
@@ -78,16 +78,6 @@ SetAddressNote sets AddressNote field to given value.
 
 HasAddressNote returns a boolean if a field has been set.
 
-### SetAddressNoteNil
-
-`func (o *SensorsPatchRequest) SetAddressNoteNil(b bool)`
-
- SetAddressNoteNil sets the value for AddressNote to be an explicit nil
-
-### UnsetAddressNote
-`func (o *SensorsPatchRequest) UnsetAddressNote()`
-
-UnsetAddressNote ensures that no value is present for AddressNote, not even an explicit nil
 ### GetNotes
 
 `func (o *SensorsPatchRequest) GetNotes() string`
@@ -113,16 +103,6 @@ SetNotes sets Notes field to given value.
 
 HasNotes returns a boolean if a field has been set.
 
-### SetNotesNil
-
-`func (o *SensorsPatchRequest) SetNotesNil(b bool)`
-
- SetNotesNil sets the value for Notes to be an explicit nil
-
-### UnsetNotes
-`func (o *SensorsPatchRequest) UnsetNotes()`
-
-UnsetNotes ensures that no value is present for Notes, not even an explicit nil
 ### GetPcapMode
 
 `func (o *SensorsPatchRequest) GetPcapMode() string`

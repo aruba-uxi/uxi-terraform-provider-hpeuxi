@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 5.6.0
+  version: 5.9.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -159,6 +159,49 @@ paths:
       summary: Agents Delete
       tags:
       - configuration
+    patch:
+      description: Update an existing agent.
+      operationId: agents_patch
+      parameters:
+      - explode: false
+        in: path
+        name: agent_uid
+        required: true
+        schema:
+          title: Agent Uid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/AgentsPatchRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsPatchResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agents Patch
+      tags:
+      - configuration
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/agents:
     get:
       description: Get a list of agents
@@ -254,6 +297,7 @@ paths:
       summary: Groups Delete
       tags:
       - configuration
+      x-stability-level: alpha
     patch:
       description: Update an existing group.
       operationId: groups_patch
@@ -295,6 +339,7 @@ paths:
       summary: Groups Patch
       tags:
       - configuration
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/groups:
     get:
       description: Lists groups matching provided criteria
@@ -715,7 +760,7 @@ paths:
         style: simple
       requestBody:
         content:
-          application/json:
+          application/merge-patch+json:
             schema:
               $ref: '#/components/schemas/SensorsPatchRequest'
         required: true
@@ -743,6 +788,7 @@ paths:
       summary: Sensors Patch
       tags:
       - configuration
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/service-test-group-assignments/{id}:
     delete:
       description: Delete a service test group assignment
@@ -1212,6 +1258,79 @@ components:
       - type
       - wifiMacAddress
       title: AgentItem
+      type: object
+    AgentsPatchRequest:
+      description: |-
+        Request body for patching an agent.
+
+        Fields:
+            name: Optional string
+            notes: Optional string
+            pcap_mode: Optional string
+      properties:
+        name:
+          title: Name
+          type: string
+        notes:
+          title: Notes
+          type: string
+        pcapMode:
+          title: Pcapmode
+          type: string
+      title: AgentsPatchRequest
+      type: object
+    AgentsPatchResponse:
+      example:
+        notes: notes
+        pcapMode: pcapMode
+        serial: serial
+        ethernetMacAddress: ethernetMacAddress
+        name: name
+        modelNumber: modelNumber
+        id: id
+        type: networking-uxi/agent
+        wifiMacAddress: wifiMacAddress
+      properties:
+        id:
+          title: Id
+          type: string
+        serial:
+          title: Serial
+          type: string
+        name:
+          title: Name
+          type: string
+        modelNumber:
+          nullable: true
+          type: string
+        wifiMacAddress:
+          nullable: true
+          type: string
+        ethernetMacAddress:
+          nullable: true
+          type: string
+        notes:
+          nullable: true
+          type: string
+        pcapMode:
+          nullable: true
+          type: string
+        type:
+          enum:
+          - networking-uxi/agent
+          title: Type
+          type: string
+      required:
+      - ethernetMacAddress
+      - id
+      - modelNumber
+      - name
+      - notes
+      - pcapMode
+      - serial
+      - type
+      - wifiMacAddress
+      title: AgentsPatchResponse
       type: object
     AgentsResponse:
       example:
@@ -1832,23 +1951,26 @@ components:
       title: SensorItem
       type: object
     SensorsPatchRequest:
-      example:
-        address_note: address_note
-        notes: notes
-        name: name
-        pcap_mode: pcap_mode
+      description: |-
+        Request body for patching a sensor.
+
+        Fields:
+            name: Optional string
+            address_note: Optional string
+            notes: Optional string
+            pcap_mode: Optional string
       properties:
         name:
           title: Name
           type: string
-        address_note:
-          nullable: true
+        addressNote:
+          title: Addressnote
           type: string
         notes:
-          nullable: true
+          title: Notes
           type: string
-        pcap_mode:
-          title: Pcap Mode
+        pcapMode:
+          title: Pcapmode
           type: string
       title: SensorsPatchRequest
       type: object

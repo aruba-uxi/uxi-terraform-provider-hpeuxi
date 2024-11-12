@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.6.0
+API version: 5.9.0
 Contact: support@capenetworks.com
 */
 
@@ -18,12 +18,12 @@ import (
 // checks if the SensorsPatchRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &SensorsPatchRequest{}
 
-// SensorsPatchRequest struct for SensorsPatchRequest
+// SensorsPatchRequest Request body for patching a sensor.  Fields:     name: Optional string     address_note: Optional string     notes: Optional string     pcap_mode: Optional string
 type SensorsPatchRequest struct {
-	Name        *string        `json:"name,omitempty"`
-	AddressNote NullableString `json:"address_note,omitempty"`
-	Notes       NullableString `json:"notes,omitempty"`
-	PcapMode    *string        `json:"pcap_mode,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	AddressNote *string `json:"addressNote,omitempty"`
+	Notes       *string `json:"notes,omitempty"`
+	PcapMode    *string `json:"pcapMode,omitempty"`
 }
 
 // NewSensorsPatchRequest instantiates a new SensorsPatchRequest object
@@ -75,90 +75,68 @@ func (o *SensorsPatchRequest) SetName(v string) {
 	o.Name = &v
 }
 
-// GetAddressNote returns the AddressNote field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetAddressNote returns the AddressNote field value if set, zero value otherwise.
 func (o *SensorsPatchRequest) GetAddressNote() string {
-	if o == nil || IsNil(o.AddressNote.Get()) {
+	if o == nil || IsNil(o.AddressNote) {
 		var ret string
 		return ret
 	}
-	return *o.AddressNote.Get()
+	return *o.AddressNote
 }
 
 // GetAddressNoteOk returns a tuple with the AddressNote field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *SensorsPatchRequest) GetAddressNoteOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.AddressNote) {
 		return nil, false
 	}
-	return o.AddressNote.Get(), o.AddressNote.IsSet()
+	return o.AddressNote, true
 }
 
 // HasAddressNote returns a boolean if a field has been set.
 func (o *SensorsPatchRequest) HasAddressNote() bool {
-	if o != nil && o.AddressNote.IsSet() {
+	if o != nil && !IsNil(o.AddressNote) {
 		return true
 	}
 
 	return false
 }
 
-// SetAddressNote gets a reference to the given NullableString and assigns it to the AddressNote field.
+// SetAddressNote gets a reference to the given string and assigns it to the AddressNote field.
 func (o *SensorsPatchRequest) SetAddressNote(v string) {
-	o.AddressNote.Set(&v)
+	o.AddressNote = &v
 }
 
-// SetAddressNoteNil sets the value for AddressNote to be an explicit nil
-func (o *SensorsPatchRequest) SetAddressNoteNil() {
-	o.AddressNote.Set(nil)
-}
-
-// UnsetAddressNote ensures that no value is present for AddressNote, not even an explicit nil
-func (o *SensorsPatchRequest) UnsetAddressNote() {
-	o.AddressNote.Unset()
-}
-
-// GetNotes returns the Notes field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetNotes returns the Notes field value if set, zero value otherwise.
 func (o *SensorsPatchRequest) GetNotes() string {
-	if o == nil || IsNil(o.Notes.Get()) {
+	if o == nil || IsNil(o.Notes) {
 		var ret string
 		return ret
 	}
-	return *o.Notes.Get()
+	return *o.Notes
 }
 
 // GetNotesOk returns a tuple with the Notes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *SensorsPatchRequest) GetNotesOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Notes) {
 		return nil, false
 	}
-	return o.Notes.Get(), o.Notes.IsSet()
+	return o.Notes, true
 }
 
 // HasNotes returns a boolean if a field has been set.
 func (o *SensorsPatchRequest) HasNotes() bool {
-	if o != nil && o.Notes.IsSet() {
+	if o != nil && !IsNil(o.Notes) {
 		return true
 	}
 
 	return false
 }
 
-// SetNotes gets a reference to the given NullableString and assigns it to the Notes field.
+// SetNotes gets a reference to the given string and assigns it to the Notes field.
 func (o *SensorsPatchRequest) SetNotes(v string) {
-	o.Notes.Set(&v)
-}
-
-// SetNotesNil sets the value for Notes to be an explicit nil
-func (o *SensorsPatchRequest) SetNotesNil() {
-	o.Notes.Set(nil)
-}
-
-// UnsetNotes ensures that no value is present for Notes, not even an explicit nil
-func (o *SensorsPatchRequest) UnsetNotes() {
-	o.Notes.Unset()
+	o.Notes = &v
 }
 
 // GetPcapMode returns the PcapMode field value if set, zero value otherwise.
@@ -206,14 +184,14 @@ func (o SensorsPatchRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
-	if o.AddressNote.IsSet() {
-		toSerialize["address_note"] = o.AddressNote.Get()
+	if !IsNil(o.AddressNote) {
+		toSerialize["addressNote"] = o.AddressNote
 	}
-	if o.Notes.IsSet() {
-		toSerialize["notes"] = o.Notes.Get()
+	if !IsNil(o.Notes) {
+		toSerialize["notes"] = o.Notes
 	}
 	if !IsNil(o.PcapMode) {
-		toSerialize["pcap_mode"] = o.PcapMode
+		toSerialize["pcapMode"] = o.PcapMode
 	}
 	return toSerialize, nil
 }

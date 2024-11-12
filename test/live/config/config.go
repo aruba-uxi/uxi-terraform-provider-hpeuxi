@@ -5,6 +5,7 @@ package config
 // And therefore the client_id and client_secret used for the acceptance tests must match this
 // customer.
 const AgentUid = "8260f349-5c73-394a-b786-57985d001763"
+const GroupUidRoot = "07422d227c0b"
 const WiredNetworkUid = "ethernet-0ee5b46c2ef0"
 const WiredNetworkName = "tf-provider-acceptance-tests-ethernet-0"
 const WirelessNetworkUid = "ssid-bf704ff37dc0"

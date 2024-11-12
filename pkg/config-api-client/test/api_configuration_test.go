@@ -76,6 +76,56 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
+	t.Run("Test ConfigurationAPI AgentsPatchRequest", func(t *testing.T) {
+		gock.New(configuration.Scheme+"://"+configuration.Host).
+			Patch("/networking-uxi/v1alpha1/agents/uid").
+			MatchHeader("Content-Type", "application/merge-patch+json").
+			JSON(map[string]interface{}{"name": "new_name", "notes": "new_notes", "pcapMode": "off"}).
+			Reply(200).
+			JSON(map[string]interface{}{
+				"id":                 "uid",
+				"serial":             "serial",
+				"name":               "new_name",
+				"modelNumber":        "model_number",
+				"wifiMacAddress":     "wifi_mac_address",
+				"ethernetMacAddress": "ethernet_mac_address",
+				"notes":              "new_notes",
+				"pcapMode":           "off",
+				"type":               "networking-uxi/agent",
+			},
+			)
+		name := "new_name"
+		notes := "new_notes"
+		pcapMode := "off"
+		agentsPatchRequest := config_api_client.AgentsPatchRequest{
+			Name:     &name,
+			Notes:    &notes,
+			PcapMode: &pcapMode,
+		}
+		resp, httpRes, err := apiClient.ConfigurationAPI.
+			AgentsPatch(context.Background(), "uid").
+			AgentsPatchRequest(agentsPatchRequest).
+			Execute()
+
+		wifiMacAddress := "wifi_mac_address"
+		ethernetMacAddress := "ethernet_mac_address"
+		modelNumber := "model_number"
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, resp, &config_api_client.AgentsPatchResponse{
+			Id:                 "uid",
+			Serial:             "serial",
+			Name:               "new_name",
+			ModelNumber:        *config_api_client.NewNullableString(&modelNumber),
+			WifiMacAddress:     *config_api_client.NewNullableString(&wifiMacAddress),
+			EthernetMacAddress: *config_api_client.NewNullableString(&ethernetMacAddress),
+			Notes:              *config_api_client.NewNullableString(&notes),
+			PcapMode:           *config_api_client.NewNullableString(&pcapMode),
+			Type:               "networking-uxi/agent",
+		})
+	})
+
 	t.Run("Test ConfigurationAPI AgentsDelete", func(t *testing.T) {
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Delete("/networking-uxi/v1alpha1/agents/uid").
@@ -271,13 +321,11 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
-	t.Run("Test ConfigurationAPI GroupsPatch", func(t *testing.T) {
-		gock.New(configuration.Scheme + "://" + configuration.Host).
+	t.Run("Test ConfigurationAPI SensorsPatchRequest", func(t *testing.T) {
+		gock.New(configuration.Scheme+"://"+configuration.Host).
 			Patch("/networking-uxi/v1alpha1/sensors/uid").
-			// TODO: uncomment this once spec has been updated to merge-patch+json
-			// MatchHeader("Content-Type", "application/merge-patch+json").
-			// TODO: Change these fields to camelCase once the spec has been updated
-			BodyString(`{"name":"new_name","address_note":"new_address_note","notes":"new_notes","pcap_mode":"off"}`).
+			MatchHeader("Content-Type", "application/merge-patch+json").
+			JSON(map[string]interface{}{"name": "new_name", "addressNote": "new_address_note", "notes": "new_notes", "pcapMode": "off"}).
 			Reply(200).
 			JSON(map[string]interface{}{
 				"id":                 "uid",
@@ -300,8 +348,8 @@ func TestConfigurationAPI(t *testing.T) {
 		pcapMode := "off"
 		sensorsPatchRequest := config_api_client.SensorsPatchRequest{
 			Name:        &name,
-			AddressNote: *config_api_client.NewNullableString(&addressNote),
-			Notes:       *config_api_client.NewNullableString(&notes),
+			AddressNote: &addressNote,
+			Notes:       &notes,
 			PcapMode:    &pcapMode,
 		}
 		resp, httpRes, err := apiClient.ConfigurationAPI.

@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -13,8 +14,6 @@ import (
 type Fetcher interface {
 	FetchData() ([]byte, error)
 }
-
-var rootGroup = util.GetRoot()
 
 func TestGroupResource(t *testing.T) {
 	const groupNameParent = "tf_provider_acceptance_test_parent"
@@ -186,7 +185,7 @@ func TestRootGroupResource(t *testing.T) {
 
 				import {
 					to = uxi_group.my_root_group
-					id = "` + rootGroup.Id + `"
+					id = "` + config.GroupUidRoot + `"
 				}`,
 				ExpectError: regexp.MustCompile(`The root group cannot be used as a resource`),
 			},

@@ -23,20 +23,12 @@ func GenerateSensorResponseModel(uid string, postfix string) map[string]interfac
 		"type":               "networking-uxi/sensor",
 	}
 }
-
-func GenerateMockedSensorResponseModel(uid string, postfix string) resources.SensorResponseModel {
-	return resources.SensorResponseModel{
-		UID:                uid,
-		Serial:             "serial" + postfix,
-		Name:               "name" + postfix,
-		ModelNumber:        "model_number" + postfix,
-		WifiMacAddress:     "wifi_mac_address" + postfix,
-		EthernetMacAddress: "ethernet_mac_address" + postfix,
-		AddressNote:        "address_note" + postfix,
-		Longitude:          0.0,
-		Latitude:           0.0,
-		Notes:              "notes" + postfix,
-		PCapMode:           "light" + postfix,
+func GenerateSensorRequestUpdateModel(postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"name":        "name_2",
+		"addressNote": "address_note" + postfix,
+		"notes":       "notes" + postfix,
+		"pcapMode":    "light" + postfix,
 	}
 }
 
@@ -321,6 +313,24 @@ func MockGetSensor(uid string, response map[string]interface{}, times int) {
 		Get("/networking-uxi/v1alpha1/sensors").
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
+func MockUpdateSensor(
+	uid string,
+	request map[string]interface{},
+	response map[string]interface{},
+	times int,
+) {
+	// body, _ := json.Marshal(request)
+	gock.New("https://test.api.capenetworks.com").
+		Patch("/networking-uxi/v1alpha1/sensors/"+uid).
+		// TODO: uncomment this once the patch endpoint uses correct header and body casing
+		// MatchHeader("Content-Type", "application/merge-patch+json").
+		MatchHeader("Authorization", "mock_token").
+		// BodyString(string(body)).
 		Times(times).
 		Reply(200).
 		JSON(response)
