@@ -29,7 +29,7 @@ type serviceTestDataSourceModel struct {
 	Name      types.String `tfsdk:"name"`
 	Target    types.String `tfsdk:"target"`
 	Template  types.String `tfsdk:"template"`
-	IsEnabled types.String `tfsdk:"is_enabled"`
+	IsEnabled types.Bool   `tfsdk:"is_enabled"`
 	Filter    struct {
 		ServiceTestID types.String `tfsdk:"service_test_id"`
 	} `tfsdk:"filter"`
@@ -65,7 +65,7 @@ func (d *serviceTestDataSource) Schema(
 			"template": schema.StringAttribute{
 				Computed: true,
 			},
-			"is_enabled": schema.StringAttribute{
+			"is_enabled": schema.BoolAttribute{
 				Computed: true,
 			},
 			"filter": schema.SingleNestedAttribute{
@@ -116,7 +116,11 @@ func (d *serviceTestDataSource) Read(
 	serviceTest := serviceTestResponse.Items[0]
 
 	state.Id = types.StringValue(serviceTest.Id)
+	state.Category = types.StringValue(serviceTest.Category)
 	state.Name = types.StringValue(serviceTest.Name)
+	state.Target = types.StringPointerValue(serviceTest.Target.Get())
+	state.Template = types.StringValue(serviceTest.Template)
+	state.IsEnabled = types.BoolValue(serviceTest.IsEnabled)
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)
