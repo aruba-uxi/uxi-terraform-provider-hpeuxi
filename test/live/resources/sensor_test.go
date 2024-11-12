@@ -72,7 +72,11 @@ func TestSensorResource(t *testing.T) {
 					notes 		 = "` + updatedSensor.GetNotes() + `"
 					pcap_mode 	 = "` + updatedSensor.GetPcapMode() + `"
 				}`,
-				Check: util.CheckResourceStateAgainstSensor(t, "uxi_sensor.my_sensor", updatedSensor),
+				Check: util.CheckResourceStateAgainstSensor(
+					t,
+					"uxi_sensor.my_sensor",
+					updatedSensor,
+				),
 			},
 			// Update sensor back to original
 			{
@@ -83,7 +87,11 @@ func TestSensorResource(t *testing.T) {
 					notes 		 = "` + originalSensor.GetNotes() + `"
 					pcap_mode 	 = "` + originalSensor.GetPcapMode() + `"
 				}`,
-				Check: util.CheckResourceStateAgainstSensor(t, "uxi_sensor.my_sensor", originalSensor),
+				Check: util.CheckResourceStateAgainstSensor(
+					t,
+					"uxi_sensor.my_sensor",
+					originalSensor,
+				),
 			},
 			// Deleting a sensor is not allowed
 			{

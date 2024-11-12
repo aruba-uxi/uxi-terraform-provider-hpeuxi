@@ -22,7 +22,11 @@ func TestSensorDataSource(t *testing.T) {
 						}
 					}
 				`,
-				Check: util.CheckDataSourceStateAgainstSensor(t, "data.uxi_sensor.my_sensor", sensor),
+				Check: util.CheckDataSourceStateAgainstSensor(
+					t,
+					"data.uxi_sensor.my_sensor",
+					sensor,
+				),
 			},
 		},
 	})
