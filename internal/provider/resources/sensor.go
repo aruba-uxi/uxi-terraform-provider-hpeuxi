@@ -60,14 +60,17 @@ func (r *sensorResource) Schema(
 			},
 			"address_note": schema.StringAttribute{
 				Optional: true,
+				// computed because goes from nil -> "" when sensor becomes configured
 				Computed: true,
 			},
 			"notes": schema.StringAttribute{
 				Optional: true,
+				// computed because goes from from nil -> "" when sensor becomes configured
 				Computed: true,
 			},
 			"pcap_mode": schema.StringAttribute{
 				Optional: true,
+				// computed because goes from from nil -> "light" when sensor becomes configured
 				Computed: true,
 			},
 		},
