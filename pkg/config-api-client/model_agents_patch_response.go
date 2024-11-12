@@ -17,11 +17,11 @@ import (
 	"fmt"
 )
 
-// checks if the AgentItem type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &AgentItem{}
+// checks if the AgentsPatchResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AgentsPatchResponse{}
 
-// AgentItem struct for AgentItem
-type AgentItem struct {
+// AgentsPatchResponse struct for AgentsPatchResponse
+type AgentsPatchResponse struct {
 	Id                 string         `json:"id"`
 	Serial             string         `json:"serial"`
 	Name               string         `json:"name"`
@@ -33,13 +33,13 @@ type AgentItem struct {
 	Type               string         `json:"type"`
 }
 
-type _AgentItem AgentItem
+type _AgentsPatchResponse AgentsPatchResponse
 
-// NewAgentItem instantiates a new AgentItem object
+// NewAgentsPatchResponse instantiates a new AgentsPatchResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAgentItem(
+func NewAgentsPatchResponse(
 	id string,
 	serial string,
 	name string,
@@ -49,8 +49,8 @@ func NewAgentItem(
 	notes NullableString,
 	pcapMode NullableString,
 	type_ string,
-) *AgentItem {
-	this := AgentItem{}
+) *AgentsPatchResponse {
+	this := AgentsPatchResponse{}
 	this.Id = id
 	this.Serial = serial
 	this.Name = name
@@ -63,16 +63,16 @@ func NewAgentItem(
 	return &this
 }
 
-// NewAgentItemWithDefaults instantiates a new AgentItem object
+// NewAgentsPatchResponseWithDefaults instantiates a new AgentsPatchResponse object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewAgentItemWithDefaults() *AgentItem {
-	this := AgentItem{}
+func NewAgentsPatchResponseWithDefaults() *AgentsPatchResponse {
+	this := AgentsPatchResponse{}
 	return &this
 }
 
 // GetId returns the Id field value
-func (o *AgentItem) GetId() string {
+func (o *AgentsPatchResponse) GetId() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -83,7 +83,7 @@ func (o *AgentItem) GetId() string {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *AgentItem) GetIdOk() (*string, bool) {
+func (o *AgentsPatchResponse) GetIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -91,12 +91,12 @@ func (o *AgentItem) GetIdOk() (*string, bool) {
 }
 
 // SetId sets field value
-func (o *AgentItem) SetId(v string) {
+func (o *AgentsPatchResponse) SetId(v string) {
 	o.Id = v
 }
 
 // GetSerial returns the Serial field value
-func (o *AgentItem) GetSerial() string {
+func (o *AgentsPatchResponse) GetSerial() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -107,7 +107,7 @@ func (o *AgentItem) GetSerial() string {
 
 // GetSerialOk returns a tuple with the Serial field value
 // and a boolean to check if the value has been set.
-func (o *AgentItem) GetSerialOk() (*string, bool) {
+func (o *AgentsPatchResponse) GetSerialOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -115,12 +115,12 @@ func (o *AgentItem) GetSerialOk() (*string, bool) {
 }
 
 // SetSerial sets field value
-func (o *AgentItem) SetSerial(v string) {
+func (o *AgentsPatchResponse) SetSerial(v string) {
 	o.Serial = v
 }
 
 // GetName returns the Name field value
-func (o *AgentItem) GetName() string {
+func (o *AgentsPatchResponse) GetName() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -131,7 +131,7 @@ func (o *AgentItem) GetName() string {
 
 // GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *AgentItem) GetNameOk() (*string, bool) {
+func (o *AgentsPatchResponse) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -139,13 +139,13 @@ func (o *AgentItem) GetNameOk() (*string, bool) {
 }
 
 // SetName sets field value
-func (o *AgentItem) SetName(v string) {
+func (o *AgentsPatchResponse) SetName(v string) {
 	o.Name = v
 }
 
 // GetModelNumber returns the ModelNumber field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *AgentItem) GetModelNumber() string {
+func (o *AgentsPatchResponse) GetModelNumber() string {
 	if o == nil || o.ModelNumber.Get() == nil {
 		var ret string
 		return ret
@@ -157,7 +157,7 @@ func (o *AgentItem) GetModelNumber() string {
 // GetModelNumberOk returns a tuple with the ModelNumber field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AgentItem) GetModelNumberOk() (*string, bool) {
+func (o *AgentsPatchResponse) GetModelNumberOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -165,13 +165,13 @@ func (o *AgentItem) GetModelNumberOk() (*string, bool) {
 }
 
 // SetModelNumber sets field value
-func (o *AgentItem) SetModelNumber(v string) {
+func (o *AgentsPatchResponse) SetModelNumber(v string) {
 	o.ModelNumber.Set(&v)
 }
 
 // GetWifiMacAddress returns the WifiMacAddress field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *AgentItem) GetWifiMacAddress() string {
+func (o *AgentsPatchResponse) GetWifiMacAddress() string {
 	if o == nil || o.WifiMacAddress.Get() == nil {
 		var ret string
 		return ret
@@ -183,7 +183,7 @@ func (o *AgentItem) GetWifiMacAddress() string {
 // GetWifiMacAddressOk returns a tuple with the WifiMacAddress field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AgentItem) GetWifiMacAddressOk() (*string, bool) {
+func (o *AgentsPatchResponse) GetWifiMacAddressOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -191,13 +191,13 @@ func (o *AgentItem) GetWifiMacAddressOk() (*string, bool) {
 }
 
 // SetWifiMacAddress sets field value
-func (o *AgentItem) SetWifiMacAddress(v string) {
+func (o *AgentsPatchResponse) SetWifiMacAddress(v string) {
 	o.WifiMacAddress.Set(&v)
 }
 
 // GetEthernetMacAddress returns the EthernetMacAddress field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *AgentItem) GetEthernetMacAddress() string {
+func (o *AgentsPatchResponse) GetEthernetMacAddress() string {
 	if o == nil || o.EthernetMacAddress.Get() == nil {
 		var ret string
 		return ret
@@ -209,7 +209,7 @@ func (o *AgentItem) GetEthernetMacAddress() string {
 // GetEthernetMacAddressOk returns a tuple with the EthernetMacAddress field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AgentItem) GetEthernetMacAddressOk() (*string, bool) {
+func (o *AgentsPatchResponse) GetEthernetMacAddressOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -217,13 +217,13 @@ func (o *AgentItem) GetEthernetMacAddressOk() (*string, bool) {
 }
 
 // SetEthernetMacAddress sets field value
-func (o *AgentItem) SetEthernetMacAddress(v string) {
+func (o *AgentsPatchResponse) SetEthernetMacAddress(v string) {
 	o.EthernetMacAddress.Set(&v)
 }
 
 // GetNotes returns the Notes field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *AgentItem) GetNotes() string {
+func (o *AgentsPatchResponse) GetNotes() string {
 	if o == nil || o.Notes.Get() == nil {
 		var ret string
 		return ret
@@ -235,7 +235,7 @@ func (o *AgentItem) GetNotes() string {
 // GetNotesOk returns a tuple with the Notes field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AgentItem) GetNotesOk() (*string, bool) {
+func (o *AgentsPatchResponse) GetNotesOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -243,13 +243,13 @@ func (o *AgentItem) GetNotesOk() (*string, bool) {
 }
 
 // SetNotes sets field value
-func (o *AgentItem) SetNotes(v string) {
+func (o *AgentsPatchResponse) SetNotes(v string) {
 	o.Notes.Set(&v)
 }
 
 // GetPcapMode returns the PcapMode field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *AgentItem) GetPcapMode() string {
+func (o *AgentsPatchResponse) GetPcapMode() string {
 	if o == nil || o.PcapMode.Get() == nil {
 		var ret string
 		return ret
@@ -261,7 +261,7 @@ func (o *AgentItem) GetPcapMode() string {
 // GetPcapModeOk returns a tuple with the PcapMode field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AgentItem) GetPcapModeOk() (*string, bool) {
+func (o *AgentsPatchResponse) GetPcapModeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -269,12 +269,12 @@ func (o *AgentItem) GetPcapModeOk() (*string, bool) {
 }
 
 // SetPcapMode sets field value
-func (o *AgentItem) SetPcapMode(v string) {
+func (o *AgentsPatchResponse) SetPcapMode(v string) {
 	o.PcapMode.Set(&v)
 }
 
 // GetType returns the Type field value
-func (o *AgentItem) GetType() string {
+func (o *AgentsPatchResponse) GetType() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -285,7 +285,7 @@ func (o *AgentItem) GetType() string {
 
 // GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
-func (o *AgentItem) GetTypeOk() (*string, bool) {
+func (o *AgentsPatchResponse) GetTypeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -293,11 +293,11 @@ func (o *AgentItem) GetTypeOk() (*string, bool) {
 }
 
 // SetType sets field value
-func (o *AgentItem) SetType(v string) {
+func (o *AgentsPatchResponse) SetType(v string) {
 	o.Type = v
 }
 
-func (o AgentItem) MarshalJSON() ([]byte, error) {
+func (o AgentsPatchResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -305,7 +305,7 @@ func (o AgentItem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o AgentItem) ToMap() (map[string]interface{}, error) {
+func (o AgentsPatchResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["serial"] = o.Serial
@@ -319,7 +319,7 @@ func (o AgentItem) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *AgentItem) UnmarshalJSON(data []byte) (err error) {
+func (o *AgentsPatchResponse) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -349,53 +349,53 @@ func (o *AgentItem) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varAgentItem := _AgentItem{}
+	varAgentsPatchResponse := _AgentsPatchResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAgentItem)
+	err = decoder.Decode(&varAgentsPatchResponse)
 
 	if err != nil {
 		return err
 	}
 
-	*o = AgentItem(varAgentItem)
+	*o = AgentsPatchResponse(varAgentsPatchResponse)
 
 	return err
 }
 
-type NullableAgentItem struct {
-	value *AgentItem
+type NullableAgentsPatchResponse struct {
+	value *AgentsPatchResponse
 	isSet bool
 }
 
-func (v NullableAgentItem) Get() *AgentItem {
+func (v NullableAgentsPatchResponse) Get() *AgentsPatchResponse {
 	return v.value
 }
 
-func (v *NullableAgentItem) Set(val *AgentItem) {
+func (v *NullableAgentsPatchResponse) Set(val *AgentsPatchResponse) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableAgentItem) IsSet() bool {
+func (v NullableAgentsPatchResponse) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableAgentItem) Unset() {
+func (v *NullableAgentsPatchResponse) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableAgentItem(val *AgentItem) *NullableAgentItem {
-	return &NullableAgentItem{value: val, isSet: true}
+func NewNullableAgentsPatchResponse(val *AgentsPatchResponse) *NullableAgentsPatchResponse {
+	return &NullableAgentsPatchResponse{value: val, isSet: true}
 }
 
-func (v NullableAgentItem) MarshalJSON() ([]byte, error) {
+func (v NullableAgentsPatchResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableAgentItem) UnmarshalJSON(src []byte) error {
+func (v *NullableAgentsPatchResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

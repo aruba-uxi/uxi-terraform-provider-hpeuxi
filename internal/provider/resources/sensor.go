@@ -173,10 +173,10 @@ func (r *sensorResource) Update(
 
 	patchRequest := config_api_client.NewSensorsPatchRequest()
 	if !plan.AddressNote.IsUnknown() {
-		patchRequest.AddressNote = *config_api_client.NewNullableString(plan.AddressNote.ValueStringPointer())
+		patchRequest.AddressNote = plan.AddressNote.ValueStringPointer()
 	}
 	if !plan.Notes.IsUnknown() {
-		patchRequest.Notes = *config_api_client.NewNullableString(plan.Notes.ValueStringPointer())
+		patchRequest.Notes = plan.Notes.ValueStringPointer()
 	}
 	if !plan.PCapMode.IsUnknown() {
 		patchRequest.PcapMode = plan.PCapMode.ValueStringPointer()

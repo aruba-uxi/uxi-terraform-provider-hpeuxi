@@ -9,7 +9,7 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 5.6.0
+  version: 5.9.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
@@ -146,8 +146,52 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - agents
+    patch:
+      operationId: agents_patch
+      summary: Agents Patch
+      description: Update an existing agent.
+      parameters:
+        - name: agent_uid
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Agent Uid
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/AgentsPatchRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsPatchResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - agents
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/agents:
     get:
       operationId: agents_get
@@ -243,8 +287,9 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - groups
+      x-stability-level: alpha
     patch:
       operationId: groups_patch
       summary: Groups Patch
@@ -292,8 +337,9 @@ paths:
       tags:
         - api
         - configuration
-        - v1
+        - v1alpha1
         - groups
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/groups:
     get:
       operationId: groups_get
@@ -728,7 +774,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/merge-patch+json:
             schema:
               $ref: '#/components/schemas/SensorsPatchRequest'
       responses:
@@ -757,6 +803,7 @@ paths:
         - configuration
         - v1
         - sensors
+      x-stability-level: alpha
   /networking-uxi/v1alpha1/service-test-group-assignments/{id}:
     delete:
       operationId: service_test_group_assignments_delete
@@ -1202,6 +1249,79 @@ components:
         - pcapMode
         - type
       title: AgentItem
+    AgentsPatchRequest:
+      description: |-
+        Request body for patching an agent.
+
+        Fields:
+            name: Optional string
+            notes: Optional string
+            pcap_mode: Optional string
+      type: object
+      properties:
+        name:
+          type: string
+          title: Name
+        notes:
+          type: string
+          title: Notes
+        pcapMode:
+          type: string
+          title: Pcapmode
+      title: AgentsPatchRequest
+    AgentsPatchResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        serial:
+          type: string
+          title: Serial
+        name:
+          type: string
+          title: Name
+        modelNumber:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Modelnumber
+        wifiMacAddress:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Wifimacaddress
+        ethernetMacAddress:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Ethernetmacaddress
+        notes:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Notes
+        pcapMode:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Pcapmode
+        type:
+          type: string
+          enum:
+            - networking-uxi/agent
+          title: Type
+      required:
+        - id
+        - serial
+        - name
+        - modelNumber
+        - wifiMacAddress
+        - ethernetMacAddress
+        - notes
+        - pcapMode
+        - type
+      title: AgentsPatchResponse
     AgentsResponse:
       type: object
       properties:
@@ -1665,24 +1785,28 @@ components:
         - type
       title: SensorItem
     SensorsPatchRequest:
+      description: |-
+        Request body for patching a sensor.
+
+        Fields:
+            name: Optional string
+            address_note: Optional string
+            notes: Optional string
+            pcap_mode: Optional string
       type: object
       properties:
         name:
           type: string
           title: Name
-        address_note:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Address Note
-        notes:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Notes
-        pcap_mode:
+        addressNote:
           type: string
-          title: Pcap Mode
+          title: Addressnote
+        notes:
+          type: string
+          title: Notes
+        pcapMode:
+          type: string
+          title: Pcapmode
       title: SensorsPatchRequest
     SensorsPatchResponse:
       type: object
