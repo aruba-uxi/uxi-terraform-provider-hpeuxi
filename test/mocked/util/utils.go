@@ -23,6 +23,7 @@ func GenerateSensorResponseModel(uid string, postfix string) map[string]interfac
 		"type":               "networking-uxi/sensor",
 	}
 }
+
 func GenerateSensorRequestUpdateModel(postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"name":        "name_2",
@@ -174,17 +175,6 @@ func GenerateAgentGroupAssignmentResponse(uid string, postfix string) map[string
 		"group": map[string]string{"id": "group_uid" + postfix},
 		"agent": map[string]string{"id": "agent_uid" + postfix},
 		"type":  "networking-uxi/agent-group-assignment",
-	}
-}
-
-func GenerateAgentGroupAssignmentResponseMockedModel(
-	uid string,
-	postfix string,
-) resources.AgentGroupAssignmentResponseModel {
-	return resources.AgentGroupAssignmentResponseModel{
-		UID:      uid,
-		GroupUID: "group_uid" + postfix,
-		AgentUID: "agent_uid" + postfix,
 	}
 }
 
@@ -389,6 +379,14 @@ func MockPostAgentGroupAssignment(
 		JSON(request).
 		Reply(200).
 		JSON(response)
+}
+
+func MockDeleteAgentGroupAssignment(uid string, times int) {
+	gock.New("https://test.api.capenetworks.com").
+		Delete("/networking-uxi/v1alpha1/agent-group-assignments/"+uid).
+		MatchHeader("Authorization", "mock_token").
+		Times(times).
+		Reply(204)
 }
 
 func MockGetSensorGroupAssignment(uid string, response map[string]interface{}, times int) {
