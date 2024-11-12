@@ -30,6 +30,10 @@ func CheckStateAgainstServiceTestGroupAssignment(
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", serviceTestGroupAssignment.Id),
 		resource.TestCheckResourceAttr(entity, "group_id", serviceTestGroupAssignment.Group.Id),
-		resource.TestCheckResourceAttr(entity, "service_test_id", serviceTestGroupAssignment.ServiceTest.Id),
+		resource.TestCheckResourceAttr(
+			entity,
+			"service_test_id",
+			serviceTestGroupAssignment.ServiceTest.Id,
+		),
 	)
 }

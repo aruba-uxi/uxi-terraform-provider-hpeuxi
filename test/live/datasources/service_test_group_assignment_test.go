@@ -49,7 +49,9 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 							t,
 							"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
 							util.GetServiceTestGroupAssignment(rs.Primary.ID),
-						)(s)
+						)(
+							s,
+						)
 					},
 				),
 			},
