@@ -172,6 +172,7 @@ func (r *sensorResource) Update(
 	}
 
 	patchRequest := config_api_client.NewSensorsPatchRequest()
+	patchRequest.Name = plan.Name.ValueStringPointer()
 	if !plan.AddressNote.IsUnknown() {
 		patchRequest.AddressNote = plan.AddressNote.ValueStringPointer()
 	}
