@@ -12,8 +12,15 @@ import (
 )
 
 func TestServiceTestGroupAssignmentResource(t *testing.T) {
-	const groupName = "tf_acceptance_test_service_test_group_assignment"
-	const group2Name = "tf_acceptance_test_service_test_group_assignment_two"
+	const (
+		groupName  = "tf_acceptance_test_service_test_group_assignment"
+		group2Name = "tf_acceptance_test_service_test_group_assignment_two"
+	)
+
+	var (
+		resourceId  string
+		resource2Id string
+	)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -57,6 +64,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
+						resourceId = rs.Primary.ID
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
 							"uxi_service_test_group_assignment.my_service_test_group_assignment",
@@ -112,6 +120,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
+						resource2Id = rs.Primary.ID
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
 							"uxi_service_test_group_assignment.my_service_test_group_assignment",
@@ -131,6 +140,13 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						}
 					}`,
 			},
+		},
+		CheckDestroy: func(s *terraform.State) error {
+			st.Assert(t, util.GetGroupByName(groupName), nil)
+			st.Assert(t, util.GetGroupByName(group2Name), nil)
+			st.Assert(t, util.GetAgentGroupAssignment(resourceId), nil)
+			st.Assert(t, util.GetAgentGroupAssignment(resource2Id), nil)
+			return nil
 		},
 	})
 }

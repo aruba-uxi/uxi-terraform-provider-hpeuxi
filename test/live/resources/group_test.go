@@ -9,6 +9,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/nbio/st"
 )
 
@@ -27,7 +28,7 @@ func TestGroupResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create and Read testing
+			// Create
 			{
 				// Node without parent (attached to root)
 				Config: provider.ProviderConfig + `
@@ -49,7 +50,7 @@ func TestGroupResource(t *testing.T) {
 					resource.TestCheckNoResourceAttr("uxi_group.parent", "parent_group_id"),
 				),
 			},
-			// ImportState testing
+			// ImportState
 			{
 				ResourceName:      "uxi_group.parent",
 				ImportState:       true,
@@ -212,7 +213,20 @@ func TestGroupResource(t *testing.T) {
 					),
 				),
 			},
-			// Deletes happen automatically
+			// Delete
+			{
+				Config:  provider.ProviderConfig,
+				Destroy: true,
+			},
+		},
+		CheckDestroy: func(s *terraform.State) error {
+			st.Assert(t, util.GetGroupByName(groupNameParent), nil)
+			st.Assert(t, util.GetGroupByName(groupNameParentUpdated), nil)
+			st.Assert(t, util.GetGroupByName(groupNameChild), nil)
+			st.Assert(t, util.GetGroupByName(groupNameGrandChild), nil)
+			st.Assert(t, util.GetGroupByName(groupNameGrandChildMovedToParent), nil)
+			st.Assert(t, util.GetGroupByName(groupNameGrandChildMovedToRoot), nil)
+			return nil
 		},
 	})
 }

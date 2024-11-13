@@ -48,7 +48,7 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 						return util.CheckStateAgainstAgentGroupAssignment(
 							t,
 							"data.uxi_agent_group_assignment.my_agent_group_assignment",
-							util.GetAgentGroupAssignment(rs.Primary.ID),
+							*util.GetAgentGroupAssignment(rs.Primary.ID),
 						)(s)
 					},
 				),

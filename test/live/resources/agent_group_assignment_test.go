@@ -12,13 +12,19 @@ import (
 )
 
 func TestAgentGroupAssignmentResource(t *testing.T) {
-	const groupName = "tf_provider_acceptance_test_agent_group_assignment_resource"
-	const group2Name = "tf_provider_acceptance_test_agent_group_assignment_resource_two"
+	const (
+		groupName  = "tf_provider_acceptance_test_agent_group_assignment_resource"
+		group2Name = "tf_provider_acceptance_test_agent_group_assignment_resource_two"
+	)
+	var (
+		resourceId  string
+		resource2Id string
+	)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Creating a agent group assignment
+			// Creating
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
@@ -54,21 +60,22 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_agent_group_assignment.my_agent_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
+						resourceId = rs.Primary.ID
 						return util.CheckStateAgainstAgentGroupAssignment(
 							t,
 							"uxi_agent_group_assignment.my_agent_group_assignment",
-							util.GetAgentGroupAssignment(rs.Primary.ID),
+							*util.GetAgentGroupAssignment(resourceId),
 						)(s)
 					},
 				),
 			},
-			// ImportState testing
+			// ImportState
 			{
 				ResourceName:      "uxi_agent_group_assignment.my_agent_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Update testing
+			// Update
 			{
 				Config: provider.ProviderConfig + `
 					// the original resources
@@ -111,15 +118,26 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_agent_group_assignment.my_agent_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
+						resource2Id = rs.Primary.ID
 						return util.CheckStateAgainstAgentGroupAssignment(
 							t,
 							"uxi_agent_group_assignment.my_agent_group_assignment",
-							util.GetAgentGroupAssignment(rs.Primary.ID),
+							*util.GetAgentGroupAssignment(resource2Id),
 						)(s)
 					},
 				),
 			},
-			// Delete testing happens automatically
+			// Delete
+			{
+				Config: provider.ProviderConfig,
+			},
+		},
+		CheckDestroy: func(s *terraform.State) error {
+			st.Assert(t, util.GetGroupByName(groupName), nil)
+			st.Assert(t, util.GetGroupByName(group2Name), nil)
+			st.Assert(t, util.GetAgentGroupAssignment(resourceId), nil)
+			st.Assert(t, util.GetAgentGroupAssignment(resource2Id), nil)
+			return nil
 		},
 	})
 }

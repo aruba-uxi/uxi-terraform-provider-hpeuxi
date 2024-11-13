@@ -12,14 +12,21 @@ import (
 )
 
 func TestSensorGroupAssignmentResource(t *testing.T) {
-	const groupName = "tf_provider_acceptance_test_sensor_assignment_test"
-	const group2Name = "tf_provider_acceptance_test_sensor_assignment_test_two"
-	existingSensorProperties := util.GetSensorProperties(config.SensorUid)
+	const (
+		groupName  = "tf_provider_acceptance_test_sensor_assignment_test"
+		group2Name = "tf_provider_acceptance_test_sensor_assignment_test_two"
+	)
+
+	var (
+		existingSensorProperties = util.GetSensorProperties(config.SensorUid)
+		resourceId               string
+		resource2Id              string
+	)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Creating a sensor group assignment
+			// Creating
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
@@ -61,21 +68,22 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
+						resourceId = rs.Primary.ID
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
 							"uxi_sensor_group_assignment.my_sensor_group_assignment",
-							util.GetSensorGroupAssignment(rs.Primary.ID),
+							util.GetSensorGroupAssignment(resourceId),
 						)(s)
 					},
 				),
 			},
-			// ImportState testing
+			// ImportState
 			{
 				ResourceName:      "uxi_sensor_group_assignment.my_sensor_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Update and Read testing
+			// Update
 			{
 				Config: provider.ProviderConfig + `
 					// the original resources
@@ -119,10 +127,11 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
+						resource2Id = rs.Primary.ID
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
 							"uxi_sensor_group_assignment.my_sensor_group_assignment",
-							util.GetSensorGroupAssignment(rs.Primary.ID),
+							util.GetSensorGroupAssignment(resource2Id),
 						)(s)
 					},
 				),
@@ -138,6 +147,13 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						}
 					}`,
 			},
+		},
+		CheckDestroy: func(s *terraform.State) error {
+			st.Assert(t, util.GetGroupByName(groupName), nil)
+			st.Assert(t, util.GetGroupByName(group2Name), nil)
+			st.Assert(t, util.GetAgentGroupAssignment(resourceId), nil)
+			st.Assert(t, util.GetAgentGroupAssignment(resource2Id), nil)
+			return nil
 		},
 	})
 }

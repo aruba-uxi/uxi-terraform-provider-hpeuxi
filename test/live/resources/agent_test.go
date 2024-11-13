@@ -9,6 +9,8 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
+	"github.com/nbio/st"
 )
 
 func TestAgentResource(t *testing.T) {
@@ -63,13 +65,13 @@ func TestAgentResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
 				),
 			},
-			// ImportState testing
+			// ImportState
 			{
 				ResourceName:      "uxi_agent.my_agent",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Update testing
+			// Update
 			{
 				Config: provider.ProviderConfig + `
 				resource "uxi_agent" "my_agent" {
@@ -84,7 +86,15 @@ func TestAgentResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "off"),
 				),
 			},
-			// Delete testing happen automatically
+			// Delete
+			{
+				Config:  provider.ProviderConfig,
+				Destroy: true,
+			},
+		},
+		CheckDestroy: func(s *terraform.State) error {
+			st.Assert(t, util.GetAgent(agentUid), nil)
+			return nil
 		},
 	})
 }
