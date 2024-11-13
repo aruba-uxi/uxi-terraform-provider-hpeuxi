@@ -3,7 +3,6 @@ package util
 import (
 	"encoding/json"
 
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
 	"github.com/h2non/gock"
 )
 
