@@ -25,11 +25,6 @@ type sensorGroupAssignmentResourceModel struct {
 	GroupID  types.String `tfsdk:"group_id"`
 }
 
-type SensorGroupAssignmentRequestModel struct {
-	GroupUID  string //  <group_uid:str>,
-	SensorUID string //  <sensor_uid:str>
-}
-
 func NewSensorGroupAssignmentResource() resource.Resource {
 	return &sensorGroupAssignmentResource{}
 }
