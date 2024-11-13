@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &agentGroupAssignmentResource{}
 	_ resource.ResourceWithConfigure = &agentGroupAssignmentResource{}
@@ -23,12 +22,6 @@ type agentGroupAssignmentResourceModel struct {
 	ID      types.String `tfsdk:"id"`
 	AgentID types.String `tfsdk:"agent_id"`
 	GroupID types.String `tfsdk:"group_id"`
-}
-
-type AgentGroupAssignmentResponseModel struct {
-	UID      string //  <assignment_uid>
-	GroupUID string //  <group_uid:str>,
-	AgentUID string //  <agent_uid:str>
 }
 
 func NewAgentGroupAssignmentResource() resource.Resource {
@@ -103,7 +96,6 @@ func (r *agentGroupAssignmentResource) Create(
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	// Retrieve values from plan
 	var plan agentGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -129,12 +121,10 @@ func (r *agentGroupAssignmentResource) Create(
 		return
 	}
 
-	// Update the state to match the plan
 	plan.ID = types.StringValue(agentGroupAssignment.Id)
 	plan.GroupID = types.StringValue(agentGroupAssignment.Group.Id)
 	plan.AgentID = types.StringValue(agentGroupAssignment.Agent.Id)
 
-	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -147,7 +137,6 @@ func (r *agentGroupAssignmentResource) Read(
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	// Get current state
 	var state agentGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -174,12 +163,10 @@ func (r *agentGroupAssignmentResource) Read(
 	}
 	agentGroupAssignment := agentGroupAssignmentResponse.Items[0]
 
-	// Update state from client response
 	state.ID = types.StringValue(agentGroupAssignment.Id)
 	state.GroupID = types.StringValue(agentGroupAssignment.Group.Id)
 	state.AgentID = types.StringValue(agentGroupAssignment.Agent.Id)
 
-	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -192,7 +179,6 @@ func (r *agentGroupAssignmentResource) Update(
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	// Retrieve values from plan
 	var plan agentGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError("operation not supported", "updating an agent group assignment is not supported")
@@ -207,7 +193,6 @@ func (r *agentGroupAssignmentResource) Delete(
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	// Retrieve values from state
 	var state agentGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -215,7 +200,18 @@ func (r *agentGroupAssignmentResource) Delete(
 		return
 	}
 
-	// Delete existing agentGroupAssignment using the plan_id
+	request := r.client.ConfigurationAPI.
+		AgentGroupAssignmentDelete(ctx, state.ID.ValueString())
+	_, response, err := util.RetryFor429(request.Execute)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(
+			util.GenerateErrorSummary("delete", "uxi_agent_group_assignment"),
+			errorDetail,
+		)
+		return
+	}
 }
 
 func (r *agentGroupAssignmentResource) ImportState(
