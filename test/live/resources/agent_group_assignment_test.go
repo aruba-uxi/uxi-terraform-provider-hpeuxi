@@ -27,7 +27,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "` + config.AgentUid + `"
+							agent_id = "` + config.AgentPermanentUid + `"
 						}
 					}
 
@@ -40,7 +40,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
-						config.AgentUid,
+						config.AgentPermanentUid,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_agent_group_assignment.my_agent_group_assignment",
@@ -78,7 +78,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "` + config.AgentUid + `"
+							agent_id = "` + config.AgentPermanentUid + `"
 						}
 					}
 
@@ -97,7 +97,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
-						config.AgentUid,
+						config.AgentPermanentUid,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_agent_group_assignment.my_agent_group_assignment",
