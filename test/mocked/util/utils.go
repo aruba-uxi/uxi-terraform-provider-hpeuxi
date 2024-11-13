@@ -26,10 +26,18 @@ func GenerateSensorResponseModel(uid string, postfix string) map[string]interfac
 
 func GenerateSensorRequestUpdateModel(postfix string) map[string]interface{} {
 	return map[string]interface{}{
-		"name":        "name_2",
+		"name":        "name" + postfix,
 		"addressNote": "address_note" + postfix,
 		"notes":       "notes" + postfix,
 		"pcapMode":    "light" + postfix,
+	}
+}
+
+func GenerateAgentRequestUpdateModel(postfix string) map[string]interface{} {
+	return map[string]interface{}{
+		"name":     "name" + postfix,
+		"notes":    "notes" + postfix,
+		"pcapMode": "light" + postfix,
 	}
 }
 
@@ -44,19 +52,6 @@ func GenerateAgentResponseModel(uid string, postfix string) map[string]interface
 		"notes":              "notes" + postfix,
 		"pcapMode":           "light" + postfix,
 		"type":               "networking-uxi/sensor",
-	}
-}
-
-func GenerateMockedAgentResponseModel(uid string, postfix string) resources.AgentResponseModel {
-	return resources.AgentResponseModel{
-		UID:                uid,
-		Serial:             "serial" + postfix,
-		Name:               "name" + postfix,
-		ModelNumber:        "model_number" + postfix,
-		WifiMacAddress:     "wifi_mac_address" + postfix,
-		EthernetMacAddress: "ethernet_mac_address" + postfix,
-		Notes:              "notes" + postfix,
-		PCapMode:           "light" + postfix,
 	}
 }
 
@@ -252,6 +247,22 @@ func MockDeleteAgent(uid string, times int) {
 		Reply(204)
 }
 
+func MockUpdateAgent(
+	uid string,
+	request map[string]interface{},
+	response map[string]interface{},
+	times int,
+) {
+	gock.New("https://test.api.capenetworks.com").
+		Patch("/networking-uxi/v1alpha1/agents/"+uid).
+		MatchHeader("Content-Type", "application/merge-patch+json").
+		MatchHeader("Authorization", "mock_token").
+		JSON(request).
+		Times(times).
+		Reply(200).
+		JSON(response)
+}
+
 func MockPostGroup(request map[string]interface{}, response map[string]interface{}, times int) {
 	gock.New("https://test.api.capenetworks.com").
 		Post("/networking-uxi/v1alpha1/groups").
@@ -314,13 +325,11 @@ func MockUpdateSensor(
 	response map[string]interface{},
 	times int,
 ) {
-	// body, _ := json.Marshal(request)
 	gock.New("https://test.api.capenetworks.com").
 		Patch("/networking-uxi/v1alpha1/sensors/"+uid).
-		// TODO: uncomment this once the patch endpoint uses correct header and body casing
-		// MatchHeader("Content-Type", "application/merge-patch+json").
+		MatchHeader("Content-Type", "application/merge-patch+json").
 		MatchHeader("Authorization", "mock_token").
-		// BodyString(string(body)).
+		JSON(request).
 		Times(times).
 		Reply(200).
 		JSON(response)

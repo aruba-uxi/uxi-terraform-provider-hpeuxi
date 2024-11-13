@@ -4,7 +4,6 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"github.com/h2non/gock"
@@ -90,9 +89,12 @@ func TestAgentResource(t *testing.T) {
 						),
 						1,
 					)
-					resources.UpdateAgent = func(request resources.AgentUpdateRequestModel) resources.AgentResponseModel {
-						return util.GenerateMockedAgentResponseModel("uid", "_2")
-					}
+					util.MockUpdateAgent(
+						"uid",
+						util.GenerateAgentRequestUpdateModel("_2"),
+						util.GenerateAgentResponseModel("uid", "_2"),
+						1,
+					)
 					// updated
 					util.MockGetAgent(
 						"uid",
@@ -169,6 +171,50 @@ func TestAgentResource429Handling(t *testing.T) {
 
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "uid"),
+					func(s *terraform.State) error {
+						st.Assert(t, request429.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
+			},
+			// Update testing
+			{
+				PreConfig: func() {
+					// original
+					util.MockGetAgent(
+						"uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+						),
+						1,
+					)
+					request429 = gock.New("https://test.api.capenetworks.com").
+						Patch("/networking-uxi/v1alpha1/agents").
+						Reply(429).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockUpdateAgent(
+						"uid",
+						util.GenerateAgentRequestUpdateModel("_2"),
+						util.GenerateAgentResponseModel("uid", "_2"),
+						1,
+					)
+					// updated
+					util.MockGetAgent(
+						"uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "_2")},
+						),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+				resource "uxi_agent" "my_agent" {
+					name = "name_2"
+					notes = "notes_2"
+					pcap_mode = "light_2"
+				}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name_2"),
 					func(s *terraform.State) error {
 						st.Assert(t, request429.Mock.Request().Counter, 0)
 						return nil
@@ -290,6 +336,39 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "uid"),
+				),
+			},
+			// update 4xx
+			{
+				PreConfig: func() {
+					// original
+					util.MockGetAgent(
+						"uid",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+						),
+						1,
+					)
+					// patch agent - with error
+					gock.New("https://test.api.capenetworks.com").
+						Patch("/networking-uxi/v1alpha1/agents/uid").
+						Reply(422).
+						JSON(map[string]interface{}{
+							"httpStatusCode": 422,
+							"errorCode":      "HPE_GL_UXI_INVALID_PCAP_MODE_ERROR",
+							"message":        "Unable to update agent - pcap_mode must be one the following ['light', 'full', 'off'].",
+							"debugId":        "12312-123123-123123-1231212",
+							"type":           "hpe.greenlake.uxi.invalid_pcap_mode",
+						})
+				},
+				Config: provider.ProviderConfig + `
+				resource "uxi_agent" "my_agent" {
+					name = "name_2"
+					notes = "notes_2"
+					pcap_mode = "light_2"
+				}`,
+				ExpectError: regexp.MustCompile(
+					`(?s)Unable to update agent - pcap_mode must be one the following \['light',\s*'full', 'off'\].\s*DebugID: 12312-123123-123123-1231212`,
 				),
 			},
 			// Delete 4xx
