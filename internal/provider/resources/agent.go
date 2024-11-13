@@ -61,9 +61,11 @@ func (r *agentResource) Schema(
 			},
 			"notes": schema.StringAttribute{
 				Optional: true,
+				Computed: true,
 			},
 			"pcap_mode": schema.StringAttribute{
 				Optional: true,
+				Computed: true,
 			},
 		},
 	}

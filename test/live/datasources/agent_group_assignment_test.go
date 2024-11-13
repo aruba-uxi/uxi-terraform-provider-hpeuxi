@@ -25,7 +25,7 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "` + config.AgentUid + `"
+							agent_id = "` + config.AgentPermanentUid + `"
 						}
 					}
 
