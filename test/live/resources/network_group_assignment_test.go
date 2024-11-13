@@ -11,8 +11,8 @@ import (
 )
 
 func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
-	const groupName = "tf_provider_acceptance_test_network_association_test"
-	const group2Name = "tf_provider_acceptance_test_network_association_test_two"
+	const groupName = "tf_provider_acceptance_test_network_assignment_test"
+	const group2Name = "tf_provider_acceptance_test_network_assignment_test_two"
 
 	// Test Wired Network Group Assignment
 	resource.Test(t, resource.TestCase{
@@ -119,8 +119,8 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 }
 
 func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
-	const groupName = "tf_provider_acceptance_test_network_association_test"
-	const group2Name = "tf_provider_acceptance_test_network_association_test_two"
+	const groupName = "tf_provider_acceptance_test_network_assignment_test"
+	const group2Name = "tf_provider_acceptance_test_network_assignment_test_two"
 
 	// Test Wired Network Group Assignment
 	resource.Test(t, resource.TestCase{

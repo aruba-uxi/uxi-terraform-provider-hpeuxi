@@ -23,42 +23,50 @@ func GetSensorProperties(id string) config_api_client.SensorItem {
 	return result.Items[0]
 }
 
-func CheckStateAgainstSensor(
+func CheckDataSourceStateAgainstSensor(
 	t st.Fatalf,
+	entity string,
 	sensor config_api_client.SensorItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
-		resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", config.SensorUid),
-		resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "serial", sensor.Serial),
-		resource.TestCheckResourceAttr(
-			"data.uxi_sensor.my_sensor",
-			"model_number",
-			sensor.ModelNumber,
-		),
+		resource.TestCheckResourceAttr(entity, "id", config.SensorUid),
+		resource.TestCheckResourceAttr(entity, "serial", sensor.Serial),
+		resource.TestCheckResourceAttr(entity, "model_number", sensor.ModelNumber),
 		resource.TestCheckResourceAttrWith(
-			"data.uxi_sensor.my_sensor",
+			entity,
 			"name",
 			func(value string) error {
 				st.Assert(t, value, sensor.Name)
 				return nil
 			},
 		),
-		TestOptionalValue(
-			t,
-			"data.uxi_sensor.my_sensor",
-			"wifi_mac_address",
-			sensor.WifiMacAddress.Get(),
+		TestOptionalValue(t, entity, "wifi_mac_address", sensor.WifiMacAddress.Get()),
+		TestOptionalValue(t, entity, "ethernet_mac_address", sensor.EthernetMacAddress.Get()),
+		TestOptionalValue(t, entity, "address_note", sensor.AddressNote.Get()),
+		TestOptionalFloatValue(t, entity, "latitude", sensor.Latitude.Get()),
+		TestOptionalFloatValue(t, entity, "longitude", sensor.Longitude.Get()),
+		TestOptionalValue(t, entity, "notes", sensor.Notes.Get()),
+		TestOptionalValue(t, entity, "pcap_mode", sensor.PcapMode.Get()),
+	)
+}
+
+func CheckResourceStateAgainstSensor(
+	t st.Fatalf,
+	entity string,
+	sensor config_api_client.SensorItem,
+) resource.TestCheckFunc {
+	return resource.ComposeAggregateTestCheckFunc(
+		resource.TestCheckResourceAttr(entity, "id", config.SensorUid),
+		resource.TestCheckResourceAttrWith(
+			entity,
+			"name",
+			func(value string) error {
+				st.Assert(t, value, sensor.Name)
+				return nil
+			},
 		),
-		TestOptionalValue(
-			t,
-			"data.uxi_sensor.my_sensor",
-			"ethernet_mac_address",
-			sensor.EthernetMacAddress.Get(),
-		),
-		TestOptionalValue(t, "data.uxi_sensor.my_sensor", "address_note", sensor.AddressNote.Get()),
-		TestOptionalFloatValue(t, "data.uxi_sensor.my_sensor", "latitude", sensor.Latitude.Get()),
-		TestOptionalFloatValue(t, "data.uxi_sensor.my_sensor", "longitude", sensor.Longitude.Get()),
-		TestOptionalValue(t, "data.uxi_sensor.my_sensor", "notes", sensor.Notes.Get()),
-		TestOptionalValue(t, "data.uxi_sensor.my_sensor", "pcap_mode", sensor.PcapMode.Get()),
+		TestOptionalValue(t, entity, "address_note", sensor.AddressNote.Get()),
+		TestOptionalValue(t, entity, "notes", sensor.Notes.Get()),
+		TestOptionalValue(t, entity, "pcap_mode", sensor.PcapMode.Get()),
 	)
 }
