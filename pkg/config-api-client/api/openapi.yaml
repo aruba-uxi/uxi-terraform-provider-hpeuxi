@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 5.9.0
+  version: 5.10.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -118,6 +118,45 @@ paths:
       security:
       - HTTPBearer: []
       summary: Agent Group Assignments Post
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/agent-group-assignments/{uid}:
+    delete:
+      description: Delete an agent group assignment.
+      operationId: agent_group_assignment_delete
+      parameters:
+      - explode: false
+        in: path
+        name: uid
+        required: true
+        schema:
+          title: Uid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agent Group Assignment Delete
       tags:
       - configuration
       x-stability-level: alpha
