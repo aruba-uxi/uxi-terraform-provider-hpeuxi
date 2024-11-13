@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &sensorResource{}
 	_ resource.ResourceWithConfigure = &sensorResource{}
@@ -61,12 +60,18 @@ func (r *sensorResource) Schema(
 			},
 			"address_note": schema.StringAttribute{
 				Optional: true,
+				// computed because goes from nil -> "" when sensor becomes configured
+				Computed: true,
 			},
 			"notes": schema.StringAttribute{
 				Optional: true,
+				// computed because goes from from nil -> "" when sensor becomes configured
+				Computed: true,
 			},
 			"pcap_mode": schema.StringAttribute{
 				Optional: true,
+				// computed because goes from from nil -> "light" when sensor becomes configured
+				Computed: true,
 			},
 		},
 	}
@@ -77,8 +82,6 @@ func (r *sensorResource) Configure(
 	req resource.ConfigureRequest,
 	resp *resource.ConfigureResponse,
 ) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}
@@ -101,7 +104,6 @@ func (r *sensorResource) Create(
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	// Retrieve values from plan
 	var plan sensorResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError(
@@ -116,7 +118,6 @@ func (r *sensorResource) Read(
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	// Get current state
 	var state sensorResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -143,14 +144,12 @@ func (r *sensorResource) Read(
 	}
 	sensor := sensorResponse.Items[0]
 
-	// Update state from client response
 	state.ID = types.StringValue(sensor.Id)
 	state.Name = types.StringValue(sensor.Name)
 	state.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
 	state.PCapMode = types.StringPointerValue(sensor.PcapMode.Get())
 
-	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -163,7 +162,6 @@ func (r *sensorResource) Update(
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	// Retrieve values from plan
 	var plan sensorResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -172,15 +170,11 @@ func (r *sensorResource) Update(
 	}
 
 	patchRequest := config_api_client.NewSensorsPatchRequest()
-	if !plan.AddressNote.IsUnknown() {
-		patchRequest.AddressNote = plan.AddressNote.ValueStringPointer()
-	}
-	if !plan.Notes.IsUnknown() {
-		patchRequest.Notes = plan.Notes.ValueStringPointer()
-	}
-	if !plan.PCapMode.IsUnknown() {
-		patchRequest.PcapMode = plan.PCapMode.ValueStringPointer()
-	}
+	patchRequest.Name = plan.Name.ValueStringPointer()
+	patchRequest.AddressNote = plan.AddressNote.ValueStringPointer()
+	patchRequest.Notes = plan.Notes.ValueStringPointer()
+	patchRequest.PcapMode = plan.PCapMode.ValueStringPointer()
+
 	request := r.client.ConfigurationAPI.
 		SensorsPatch(ctx, plan.ID.ValueString()).
 		SensorsPatchRequest(*patchRequest)
@@ -193,20 +187,12 @@ func (r *sensorResource) Update(
 		return
 	}
 
-	// Update the state to match the plan (replace with response from client)
 	plan.ID = types.StringValue(sensor.Id)
 	plan.Name = types.StringValue(sensor.Name)
-	if sensor.AddressNote.Get() != nil {
-		plan.AddressNote = types.StringValue(*sensor.AddressNote.Get())
-	}
-	if sensor.Notes.Get() != nil {
-		plan.Notes = types.StringValue(*sensor.Notes.Get())
-	}
-	if sensor.PcapMode.Get() != nil {
-		plan.PCapMode = types.StringValue(*sensor.PcapMode.Get())
-	}
+	plan.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
+	plan.Notes = types.StringPointerValue(sensor.Notes.Get())
+	plan.PCapMode = types.StringPointerValue(sensor.PcapMode.Get())
 
-	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -219,7 +205,6 @@ func (r *sensorResource) Delete(
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	// Retrieve values from state
 	var state sensorResourceModel
 	diags := req.State.Get(ctx, &state)
 	diags.AddError(
