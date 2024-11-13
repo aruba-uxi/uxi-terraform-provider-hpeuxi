@@ -456,6 +456,19 @@ func TestConfigurationAPI(t *testing.T) {
 		})
 	})
 
+	t.Run("Test ConfigurationAPI AgentGroupAssignmentDelete", func(t *testing.T) {
+		gock.New(configuration.Scheme + "://" + configuration.Host).
+			Delete("/networking-uxi/v1alpha1/agent-group-assignments/uid").
+			Reply(204)
+
+		_, httpRes, err := apiClient.ConfigurationAPI.
+			AgentGroupAssignmentDelete(context.Background(), "uid").
+			Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 204, httpRes.StatusCode)
+	})
+
 	t.Run("Test ConfigurationAPI SensorGroupAssignmentsGet", func(t *testing.T) {
 
 		gock.New(configuration.Scheme + "://" + configuration.Host).
