@@ -7,6 +7,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/nbio/st"
 )
 
@@ -42,6 +43,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						group_id  = uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					// Check configured properties
 					resource.TestCheckResourceAttr(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
@@ -55,6 +57,16 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 							return nil
 						},
 					),
+					// Check properties match what is on backend
+					func(s *terraform.State) error {
+						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
+						rs := s.RootModule().Resources[resourceName]
+						return util.CheckStateAgainstSensorGroupAssignment(
+							t,
+							"uxi_sensor_group_assignment.my_sensor_group_assignment",
+							util.GetSensorGroupAssignment(rs.Primary.ID),
+						)(s)
+					},
 				),
 			},
 			// ImportState testing
@@ -89,6 +101,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						group_id  = uxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					// Check configured properties
 					resource.TestCheckResourceAttr(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
@@ -102,6 +115,16 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 							return nil
 						},
 					),
+					// Check properties match what is on backend
+					func(s *terraform.State) error {
+						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
+						rs := s.RootModule().Resources[resourceName]
+						return util.CheckStateAgainstSensorGroupAssignment(
+							t,
+							"uxi_sensor_group_assignment.my_sensor_group_assignment",
+							util.GetSensorGroupAssignment(rs.Primary.ID),
+						)(s)
+					},
 				),
 			},
 			// Delete sensor-group assignments and remove sensors from state

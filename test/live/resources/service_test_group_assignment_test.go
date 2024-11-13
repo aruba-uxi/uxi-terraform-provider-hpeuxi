@@ -7,6 +7,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/nbio/st"
 )
 
@@ -38,6 +39,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						group_id 		= uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					// Check configured properties
 					resource.TestCheckResourceAttr(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
@@ -51,6 +53,16 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 							return nil
 						},
 					),
+					// Check properties match what is on backend
+					func(s *terraform.State) error {
+						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
+						rs := s.RootModule().Resources[resourceName]
+						return util.CheckStateAgainstServiceTestGroupAssignment(
+							t,
+							"uxi_service_test_group_assignment.my_service_test_group_assignment",
+							util.GetServiceTestGroupAssignment(rs.Primary.ID),
+						)(s)
+					},
 				),
 			},
 			// ImportState testing
@@ -82,6 +94,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						group_id 		= uxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					// Check configured properties
 					resource.TestCheckResourceAttr(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
@@ -95,6 +108,16 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 							return nil
 						},
 					),
+					// Check properties match what is on backend
+					func(s *terraform.State) error {
+						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
+						rs := s.RootModule().Resources[resourceName]
+						return util.CheckStateAgainstServiceTestGroupAssignment(
+							t,
+							"uxi_service_test_group_assignment.my_service_test_group_assignment",
+							util.GetServiceTestGroupAssignment(rs.Primary.ID),
+						)(s)
+					},
 				),
 			},
 			// Remove serviceTests from state

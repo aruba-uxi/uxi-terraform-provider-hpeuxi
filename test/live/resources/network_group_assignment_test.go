@@ -7,6 +7,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/nbio/st"
 )
 
@@ -39,6 +40,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						group_id   = uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					// Check configured properties
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
@@ -52,6 +54,16 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 							return nil
 						},
 					),
+					// Check properties match what is on backend
+					func(s *terraform.State) error {
+						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
+						rs := s.RootModule().Resources[resourceName]
+						return util.CheckStateAgainstNetworkGroupAssignment(
+							t,
+							"uxi_network_group_assignment.my_network_group_assignment",
+							util.GetNetworkGroupAssignment(rs.Primary.ID),
+						)(s)
+					},
 				),
 			},
 			// ImportState testing
@@ -88,6 +100,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						group_id 		 = uxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					// Check configured properties
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
@@ -101,6 +114,16 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 							return nil
 						},
 					),
+					// Check properties match what is on backend
+					func(s *terraform.State) error {
+						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
+						rs := s.RootModule().Resources[resourceName]
+						return util.CheckStateAgainstNetworkGroupAssignment(
+							t,
+							"uxi_network_group_assignment.my_network_group_assignment",
+							util.GetNetworkGroupAssignment(rs.Primary.ID),
+						)(s)
+					},
 				),
 			},
 			// Delete network-group-assignments and remove networks from state
@@ -147,6 +170,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						group_id   = uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					// Check configured properties
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
@@ -160,6 +184,16 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 							return nil
 						},
 					),
+					// Check properties match what is on backend
+					func(s *terraform.State) error {
+						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
+						rs := s.RootModule().Resources[resourceName]
+						return util.CheckStateAgainstNetworkGroupAssignment(
+							t,
+							"uxi_network_group_assignment.my_network_group_assignment",
+							util.GetNetworkGroupAssignment(rs.Primary.ID),
+						)(s)
+					},
 				),
 			},
 			// ImportState testing
@@ -196,6 +230,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						group_id 		 = uxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					// Check configured properties
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
@@ -209,6 +244,16 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 							return nil
 						},
 					),
+					// Check properties match what is on backend
+					func(s *terraform.State) error {
+						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
+						rs := s.RootModule().Resources[resourceName]
+						return util.CheckStateAgainstNetworkGroupAssignment(
+							t,
+							"uxi_network_group_assignment.my_network_group_assignment",
+							util.GetNetworkGroupAssignment(rs.Primary.ID),
+						)(s)
+					},
 				),
 			},
 			// Delete network-group-assignments and remove networks from state

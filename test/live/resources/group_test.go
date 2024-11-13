@@ -9,6 +9,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/nbio/st"
 )
 
 type Fetcher interface {
@@ -34,6 +35,14 @@ func TestGroupResource(t *testing.T) {
 					name = "` + groupNameParent + `"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.parent",
+						"id",
+						func(value string) error {
+							st.Assert(t, value, util.GetGroupByName(groupNameParent).Id)
+							return nil
+						},
+					),
 					resource.TestCheckResourceAttr(
 						"uxi_group.parent", "name", groupNameParent,
 					),
@@ -53,6 +62,14 @@ func TestGroupResource(t *testing.T) {
 						name = "` + groupNameParentUpdated + `"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.parent",
+						"id",
+						func(value string) error {
+							st.Assert(t, value, util.GetGroupByName(groupNameParentUpdated).Id)
+							return nil
+						},
+					),
 					resource.TestCheckResourceAttr(
 						"uxi_group.parent",
 						"name",
@@ -81,6 +98,14 @@ func TestGroupResource(t *testing.T) {
 						parent_group_id = uxi_group.child.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.child",
+						"id",
+						func(value string) error {
+							st.Assert(t, value, util.GetGroupByName(groupNameChild).Id)
+							return nil
+						},
+					),
 					resource.TestCheckResourceAttr(
 						"uxi_group.child",
 						"name",
@@ -91,6 +116,14 @@ func TestGroupResource(t *testing.T) {
 						"parent_group_id",
 						func(parentGroupId string) error {
 							return checkGroupIsChildOfNode(parentGroupId, groupNameParentUpdated)
+						},
+					),
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.grandchild",
+						"id",
+						func(value string) error {
+							st.Assert(t, value, util.GetGroupByName(groupNameGrandChild).Id)
+							return nil
 						},
 					),
 					resource.TestCheckResourceAttr(
@@ -125,6 +158,18 @@ func TestGroupResource(t *testing.T) {
 						parent_group_id = uxi_group.parent.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.grandchild",
+						"id",
+						func(value string) error {
+							st.Assert(
+								t,
+								value,
+								util.GetGroupByName(groupNameGrandChildMovedToParent).Id,
+							)
+							return nil
+						},
+					),
 					resource.TestCheckResourceAttr(
 						"uxi_group.grandchild",
 						"name",

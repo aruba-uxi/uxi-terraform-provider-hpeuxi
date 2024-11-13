@@ -57,10 +57,10 @@ func TestAgentResource(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", agentUid),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", agentName),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", ""),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", agentUid),
 				),
 			},
 			// ImportState testing
