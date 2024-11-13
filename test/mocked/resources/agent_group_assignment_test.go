@@ -9,7 +9,7 @@ import (
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAgentGroupAssignmentResource(t *testing.T) {
@@ -444,7 +444,7 @@ func TestAgentGroupAssignmentResource429Handling(t *testing.T) {
 						"agent_group_assignment_uid",
 					),
 					func(s *terraform.State) error {
-						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						assert.Equal(t, mock429.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -473,7 +473,7 @@ func TestAgentGroupAssignmentResource429Handling(t *testing.T) {
 				ImportState:       true,
 				ImportStateVerify: true,
 				Check: func(s *terraform.State) error {
-					st.Assert(t, mock429.Mock.Request().Counter, 0)
+					assert.Equal(t, mock429.Mock.Request().Counter, 0)
 					return nil
 				},
 			},
@@ -520,7 +520,7 @@ func TestAgentGroupAssignmentResource429Handling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig,
 				Check: func(s *terraform.State) error {
-					st.Assert(t, mock429.Mock.Request().Counter, 0)
+					assert.Equal(t, mock429.Mock.Request().Counter, 0)
 					return nil
 				},
 			},

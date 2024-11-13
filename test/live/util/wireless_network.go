@@ -3,11 +3,12 @@ package util
 import (
 	"context"
 	"strconv"
+	"testing"
 
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func GetWirelessNetwork(id string) config_api_client.WirelessNetworksItem {
@@ -25,7 +26,7 @@ func GetWirelessNetwork(id string) config_api_client.WirelessNetworksItem {
 }
 
 func CheckStateAgainstWirelessNetwork(
-	t st.Fatalf,
+	t *testing.T,
 	wireless_network config_api_client.WirelessNetworksItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
@@ -43,7 +44,7 @@ func CheckStateAgainstWirelessNetwork(
 			"data.uxi_wireless_network.my_wireless_network",
 			"name",
 			func(value string) error {
-				st.Assert(t, value, wireless_network.Name)
+				assert.Equal(t, value, wireless_network.Name)
 				return nil
 			},
 		),

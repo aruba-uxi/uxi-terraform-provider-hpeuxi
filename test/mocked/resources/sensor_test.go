@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSensorResource(t *testing.T) {
@@ -192,7 +192,7 @@ func TestSensorResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						assert.Equal(t, request429.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -231,7 +231,7 @@ func TestSensorResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						assert.Equal(t, request429.Mock.Request().Counter, 0)
 						return nil
 					},
 				),

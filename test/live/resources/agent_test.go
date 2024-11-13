@@ -10,7 +10,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAgentResource(t *testing.T) {
@@ -93,7 +93,7 @@ func TestAgentResource(t *testing.T) {
 			},
 		},
 		CheckDestroy: func(s *terraform.State) error {
-			st.Assert(t, util.GetAgent(agentUid), nil)
+			assert.Equal(t, util.GetAgent(agentUid), nil)
 			return nil
 		},
 	})

@@ -10,7 +10,6 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -45,7 +44,7 @@ func TestGroupResource(t *testing.T) {
 						"uxi_group.parent",
 						"id",
 						func(value string) error {
-							st.Assert(t, value, util.GetGroupByName(groupNameParent).Id)
+							assert.Equal(t, value, util.GetGroupByName(groupNameParent).Id)
 							return nil
 						},
 					),
@@ -72,7 +71,7 @@ func TestGroupResource(t *testing.T) {
 						"uxi_group.parent",
 						"id",
 						func(value string) error {
-							st.Assert(t, value, util.GetGroupByName(groupNameParentUpdated).Id)
+							assert.Equal(t, value, util.GetGroupByName(groupNameParentUpdated).Id)
 							return nil
 						},
 					),
@@ -108,7 +107,7 @@ func TestGroupResource(t *testing.T) {
 						"uxi_group.child",
 						"id",
 						func(value string) error {
-							st.Assert(t, value, util.GetGroupByName(groupNameChild).Id)
+							assert.Equal(t, value, util.GetGroupByName(groupNameChild).Id)
 							return nil
 						},
 					),
@@ -131,7 +130,7 @@ func TestGroupResource(t *testing.T) {
 							resourceIdBeforeRecreateBeforeRecreate = util.GetGroupByName(
 								groupNameGrandChild,
 							).Id
-							st.Assert(t, value, resourceIdBeforeRecreateBeforeRecreate)
+							assert.Equal(t, value, resourceIdBeforeRecreateBeforeRecreate)
 							return nil
 						},
 					),
@@ -171,7 +170,7 @@ func TestGroupResource(t *testing.T) {
 						"uxi_group.grandchild",
 						"id",
 						func(value string) error {
-							st.Assert(
+							assert.Equal(
 								t,
 								value,
 								util.GetGroupByName(groupNameGrandChildMovedToParent).Id,
@@ -237,12 +236,12 @@ func TestGroupResource(t *testing.T) {
 			},
 		},
 		CheckDestroy: func(s *terraform.State) error {
-			st.Assert(t, util.GetGroupByName(groupNameParent), nil)
-			st.Assert(t, util.GetGroupByName(groupNameParentUpdated), nil)
-			st.Assert(t, util.GetGroupByName(groupNameChild), nil)
-			st.Assert(t, util.GetGroupByName(groupNameGrandChild), nil)
-			st.Assert(t, util.GetGroupByName(groupNameGrandChildMovedToParent), nil)
-			st.Assert(t, util.GetGroupByName(groupNameGrandChildMovedToRoot), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameParent), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameParentUpdated), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameChild), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameGrandChild), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameGrandChildMovedToParent), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameGrandChildMovedToRoot), nil)
 			return nil
 		},
 	})

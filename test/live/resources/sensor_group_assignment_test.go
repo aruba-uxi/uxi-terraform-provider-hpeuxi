@@ -8,7 +8,6 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -61,7 +60,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"group_id",
 						func(value string) error {
-							st.Assert(t, value, util.GetGroupByName(groupName).Id)
+							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
 							return nil
 						},
 					),
@@ -120,7 +119,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"group_id",
 						func(value string) error {
-							st.Assert(t, value, util.GetGroupByName(group2Name).Id)
+							assert.Equal(t, value, util.GetGroupByName(group2Name).Id)
 							return nil
 						},
 					),
@@ -159,10 +158,10 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			},
 		},
 		CheckDestroy: func(s *terraform.State) error {
-			st.Assert(t, util.GetGroupByName(groupName), nil)
-			st.Assert(t, util.GetGroupByName(group2Name), nil)
-			st.Assert(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
-			st.Assert(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+			assert.Equal(t, util.GetGroupByName(groupName), nil)
+			assert.Equal(t, util.GetGroupByName(group2Name), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
 			return nil
 		},
 	})

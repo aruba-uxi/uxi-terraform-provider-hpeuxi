@@ -11,7 +11,6 @@ require (
 	github.com/hashicorp/terraform-plugin-framework v1.10.0
 	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-testing v1.10.0
-	github.com/nbio/st v0.0.0-20140626010706-e9e8d9816f32
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/oauth2 v0.17.0
 )

@@ -3,11 +3,11 @@ package util
 import (
 	"context"
 	"strconv"
+	"testing"
 
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/nbio/st"
 )
 
 func GetServiceTest(id string) config_api_client.ServiceTestsListItem {
@@ -25,7 +25,7 @@ func GetServiceTest(id string) config_api_client.ServiceTestsListItem {
 }
 
 func CheckStateAgainstServiceTest(
-	t st.Fatalf,
+	t *testing.T,
 	serviceTest config_api_client.ServiceTestsListItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(

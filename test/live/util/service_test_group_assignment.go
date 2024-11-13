@@ -2,10 +2,10 @@ package util
 
 import (
 	"context"
+	"testing"
 
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/nbio/st"
 )
 
 func GetServiceTestGroupAssignment(id string) config_api_client.ServiceTestGroupAssignmentsItem {
@@ -23,7 +23,7 @@ func GetServiceTestGroupAssignment(id string) config_api_client.ServiceTestGroup
 }
 
 func CheckStateAgainstServiceTestGroupAssignment(
-	t st.Fatalf,
+	t *testing.T,
 	entity string,
 	serviceTestGroupAssignment config_api_client.ServiceTestGroupAssignmentsItem,
 ) resource.TestCheckFunc {

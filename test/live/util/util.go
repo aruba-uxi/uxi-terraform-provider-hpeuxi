@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/nbio/st"
 )
 
 func ConditionalProperty(property string, value *string) string {
@@ -17,7 +17,7 @@ func ConditionalProperty(property string, value *string) string {
 }
 
 func TestOptionalValue(
-	t st.Fatalf,
+	t *testing.T,
 	tfResource string,
 	tfKey string,
 	property *string,
@@ -41,7 +41,7 @@ func TestOptionalValue(
 // This is required to do a check against floats since 100% accuracy is not guaranteed for floating
 // point numbers in the terraform plugin framework
 func TestOptionalFloatValue(
-	t st.Fatalf,
+	t *testing.T,
 	tfResource string,
 	tfKey string,
 	property *float32,

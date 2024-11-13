@@ -8,7 +8,6 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -58,7 +57,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						func(group_id string) error {
-							st.Assert(t, group_id, util.GetGroupByName(groupName).Id)
+							assert.Equal(t, group_id, util.GetGroupByName(groupName).Id)
 							return nil
 						},
 					),
@@ -119,7 +118,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						func(group_id string) error {
-							st.Assert(t, group_id, util.GetGroupByName(group2Name).Id)
+							assert.Equal(t, group_id, util.GetGroupByName(group2Name).Id)
 							return nil
 						},
 					),
@@ -158,10 +157,10 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 			},
 		},
 		CheckDestroy: func(s *terraform.State) error {
-			st.Assert(t, util.GetGroupByName(groupName), nil)
-			st.Assert(t, util.GetGroupByName(group2Name), nil)
-			st.Assert(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
-			st.Assert(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+			assert.Equal(t, util.GetGroupByName(groupName), nil)
+			assert.Equal(t, util.GetGroupByName(group2Name), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
 			return nil
 		},
 	})
@@ -213,7 +212,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						func(group_id string) error {
-							st.Assert(t, group_id, util.GetGroupByName(groupName).Id)
+							assert.Equal(t, group_id, util.GetGroupByName(groupName).Id)
 							return nil
 						},
 					),
@@ -274,7 +273,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						func(group_id string) error {
-							st.Assert(t, group_id, util.GetGroupByName(group2Name).Id)
+							assert.Equal(t, group_id, util.GetGroupByName(group2Name).Id)
 							return nil
 						},
 					),
@@ -313,10 +312,10 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 			},
 		},
 		CheckDestroy: func(s *terraform.State) error {
-			st.Assert(t, util.GetGroupByName(groupName), nil)
-			st.Assert(t, util.GetGroupByName(group2Name), nil)
-			st.Assert(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
-			st.Assert(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+			assert.Equal(t, util.GetGroupByName(groupName), nil)
+			assert.Equal(t, util.GetGroupByName(group2Name), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
 			return nil
 		},
 	})

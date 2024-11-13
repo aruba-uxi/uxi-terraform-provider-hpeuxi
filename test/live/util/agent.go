@@ -8,12 +8,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"testing"
 
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func GetAgentProperties(id string) config_api_client.AgentItem {
@@ -30,7 +31,10 @@ func GetAgentProperties(id string) config_api_client.AgentItem {
 	return result.Items[0]
 }
 
-func CheckStateAgainstAgent(t st.Fatalf, agent config_api_client.AgentItem) resource.TestCheckFunc {
+func CheckStateAgainstAgent(
+	t *testing.T,
+	agent config_api_client.AgentItem,
+) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", config.AgentPermanentUid),
 		resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "serial", agent.Serial),
@@ -39,7 +43,7 @@ func CheckStateAgainstAgent(t st.Fatalf, agent config_api_client.AgentItem) reso
 			"data.uxi_agent.my_agent",
 			"name",
 			func(value string) error {
-				st.Assert(t, value, agent.Name)
+				assert.Equal(t, value, agent.Name)
 				return nil
 			},
 		),

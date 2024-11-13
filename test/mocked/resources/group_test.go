@@ -10,7 +10,7 @@ import (
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 type Fetcher interface {
@@ -373,7 +373,7 @@ func TestGroupResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						assert.Equal(t, request429.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -426,7 +426,7 @@ func TestGroupResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
 					func(s *terraform.State) error {
-						st.Assert(t, update429.Mock.Request().Counter, 0)
+						assert.Equal(t, update429.Mock.Request().Counter, 0)
 						return nil
 					},
 				),

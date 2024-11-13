@@ -8,7 +8,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGroupDataSource(t *testing.T) {
@@ -45,7 +45,7 @@ func TestGroupDataSource(t *testing.T) {
 						"data.uxi_group.my_group",
 						"id",
 						func(value string) error {
-							st.Assert(t, value, util.GetGroupByName(groupName).Id)
+							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
 							return nil
 						},
 					),
@@ -54,7 +54,7 @@ func TestGroupDataSource(t *testing.T) {
 						"data.uxi_group.my_group",
 						"path",
 						func(value string) error {
-							st.Assert(t, value, util.GetGroupByName(groupName).Path)
+							assert.Equal(t, value, util.GetGroupByName(groupName).Path)
 							return nil
 						},
 					),

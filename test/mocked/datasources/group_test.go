@@ -10,7 +10,7 @@ import (
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGroupDataSource(t *testing.T) {
@@ -113,7 +113,7 @@ func TestGroupDataSource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "uid"),
 					func(s *terraform.State) error {
-						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						assert.Equal(t, mock429.Mock.Request().Counter, 0)
 						return nil
 					},
 				),

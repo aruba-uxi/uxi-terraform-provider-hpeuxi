@@ -9,7 +9,7 @@ import (
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestServiceTestDataSource(t *testing.T) {
@@ -118,7 +118,7 @@ func TestServiceTestDataSource429Handling(t *testing.T) {
 						"uid",
 					),
 					func(s *terraform.State) error {
-						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						assert.Equal(t, mock429.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
