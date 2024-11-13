@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestServiceTestGroupAssignmentResource(t *testing.T) {
@@ -18,14 +19,14 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 	)
 
 	var (
-		resourceId  string
-		resource2Id string
+		resourceIdBeforeRecreate string
+		resourceIdAfterRecreate  string
 	)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Creating a serviceTest group assignment
+			// Creating
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
@@ -64,7 +65,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceId = rs.Primary.ID
+						resourceIdBeforeRecreate = rs.Primary.ID
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
 							"uxi_service_test_group_assignment.my_service_test_group_assignment",
@@ -73,13 +74,13 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					},
 				),
 			},
-			// ImportState testing
+			// ImportState
 			{
 				ResourceName:      "uxi_service_test_group_assignment.my_service_test_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Update and Read testing
+			// Update
 			{
 				Config: provider.ProviderConfig + `
 					// the original resources
@@ -120,13 +121,22 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resource2Id = rs.Primary.ID
+						resourceIdAfterRecreate = rs.Primary.ID
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
 							"uxi_service_test_group_assignment.my_service_test_group_assignment",
 							util.GetServiceTestGroupAssignment(rs.Primary.ID),
 						)(s)
 					},
+					// Check that resource has been recreated
+					resource.TestCheckResourceAttrWith(
+						"uxi_network_group_assignment.my_network_group_assignment",
+						"id",
+						func(value string) error {
+							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+							return nil
+						},
+					),
 				),
 			},
 			// Remove serviceTests from state
@@ -144,8 +154,8 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 		CheckDestroy: func(s *terraform.State) error {
 			st.Assert(t, util.GetGroupByName(groupName), nil)
 			st.Assert(t, util.GetGroupByName(group2Name), nil)
-			st.Assert(t, util.GetAgentGroupAssignment(resourceId), nil)
-			st.Assert(t, util.GetAgentGroupAssignment(resource2Id), nil)
+			st.Assert(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
+			st.Assert(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
 			return nil
 		},
 	})

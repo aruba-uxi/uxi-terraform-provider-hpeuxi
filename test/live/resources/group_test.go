@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 type Fetcher interface {
@@ -18,12 +19,16 @@ type Fetcher interface {
 }
 
 func TestGroupResource(t *testing.T) {
-	const groupNameParent = "tf_provider_acceptance_test_parent"
-	const groupNameParentUpdated = groupNameParent + "_updated"
-	const groupNameChild = "tf_provider_acceptance_test_child"
-	const groupNameGrandChild = "tf_provider_acceptance_test_grandchild"
-	const groupNameGrandChildMovedToParent = groupNameGrandChild + "_moved_to_parent"
-	const groupNameGrandChildMovedToRoot = groupNameGrandChild + "_moved_to_root"
+	const (
+		groupNameParent                  = "tf_provider_acceptance_test_parent"
+		groupNameParentUpdated           = groupNameParent + "_updated"
+		groupNameChild                   = "tf_provider_acceptance_test_child"
+		groupNameGrandChild              = "tf_provider_acceptance_test_grandchild"
+		groupNameGrandChildMovedToParent = groupNameGrandChild + "_moved_to_parent"
+		groupNameGrandChildMovedToRoot   = groupNameGrandChild + "_moved_to_root"
+	)
+
+	var resourceIdBeforeRecreateBeforeRecreate string
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -123,7 +128,10 @@ func TestGroupResource(t *testing.T) {
 						"uxi_group.grandchild",
 						"id",
 						func(value string) error {
-							st.Assert(t, value, util.GetGroupByName(groupNameGrandChild).Id)
+							resourceIdBeforeRecreateBeforeRecreate = util.GetGroupByName(
+								groupNameGrandChild,
+							).Id
+							st.Assert(t, value, resourceIdBeforeRecreateBeforeRecreate)
 							return nil
 						},
 					),
@@ -181,6 +189,15 @@ func TestGroupResource(t *testing.T) {
 						"parent_group_id",
 						func(parentGroupId string) error {
 							return checkGroupIsChildOfNode(parentGroupId, groupNameParentUpdated)
+						},
+					),
+					// Check that resource has been recreated
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.grandchild",
+						"id",
+						func(value string) error {
+							assert.NotEqual(t, value, resourceIdBeforeRecreateBeforeRecreate)
+							return nil
 						},
 					),
 				),

@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSensorGroupAssignmentResource(t *testing.T) {
@@ -19,8 +20,8 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 
 	var (
 		existingSensorProperties = util.GetSensorProperties(config.SensorUid)
-		resourceId               string
-		resource2Id              string
+		resourceIdBeforeRecreate string
+		resourceIdAfterRecreate  string
 	)
 
 	resource.Test(t, resource.TestCase{
@@ -68,11 +69,11 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceId = rs.Primary.ID
+						resourceIdBeforeRecreate = rs.Primary.ID
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
 							"uxi_sensor_group_assignment.my_sensor_group_assignment",
-							util.GetSensorGroupAssignment(resourceId),
+							util.GetSensorGroupAssignment(resourceIdBeforeRecreate),
 						)(s)
 					},
 				),
@@ -127,13 +128,22 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resource2Id = rs.Primary.ID
+						resourceIdAfterRecreate = rs.Primary.ID
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
 							"uxi_sensor_group_assignment.my_sensor_group_assignment",
-							util.GetSensorGroupAssignment(resource2Id),
+							util.GetSensorGroupAssignment(resourceIdAfterRecreate),
 						)(s)
 					},
+					// Check that resource has been recreated
+					resource.TestCheckResourceAttrWith(
+						"uxi_network_group_assignment.my_network_group_assignment",
+						"id",
+						func(value string) error {
+							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+							return nil
+						},
+					),
 				),
 			},
 			// Delete sensor-group assignments and remove sensors from state
@@ -151,8 +161,8 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 		CheckDestroy: func(s *terraform.State) error {
 			st.Assert(t, util.GetGroupByName(groupName), nil)
 			st.Assert(t, util.GetGroupByName(group2Name), nil)
-			st.Assert(t, util.GetAgentGroupAssignment(resourceId), nil)
-			st.Assert(t, util.GetAgentGroupAssignment(resource2Id), nil)
+			st.Assert(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
+			st.Assert(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
 			return nil
 		},
 	})
