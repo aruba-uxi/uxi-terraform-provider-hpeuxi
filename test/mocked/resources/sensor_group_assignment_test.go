@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -544,9 +545,9 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for sensor group assignment create
 					gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/sensor-group-assignments").
-						Reply(400).
+						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 400,
+							"httpStatusCode": http.StatusBadRequest,
 							"errorCode":      "HPE_GL_ERROR_BAD_REQUEST",
 							"message":        "Validation error - bad request",
 							"debugId":        "12312-123123-123123-1231212",
@@ -679,9 +680,9 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for sensor group assignment read
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/sensor-group-assignments").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -833,9 +834,9 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					gock.New("https://test.api.capenetworks.com").
 						Delete("/networking-uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_uid").
-						Reply(400).
+						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 400,
+							"httpStatusCode": http.StatusBadRequest,
 							"errorCode":      "HPE_GL_ERROR_BAD_REQUEST",
 							"message":        "Validation error - bad request",
 							"debugId":        "12312-123123-123123-1231212",

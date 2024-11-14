@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -492,9 +493,9 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for serviceTest group assignment create
 					gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/service-test-group-assignments").
-						Reply(400).
+						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 400,
+							"httpStatusCode": http.StatusBadRequest,
 							"errorCode":      "HPE_GL_ERROR_BAD_REQUEST",
 							"message":        "Validation error - bad request",
 							"debugId":        "12312-123123-123123-1231212",

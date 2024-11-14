@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -264,9 +265,9 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/agents").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -352,9 +353,9 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					// patch agent - with error
 					gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/agents/uid").
-						Reply(422).
+						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 422,
+							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_UXI_INVALID_PCAP_MODE_ERROR",
 							"message":        "Unable to update agent - pcap_mode must be one the following ['light', 'full', 'off'].",
 							"debugId":        "12312-123123-123123-1231212",
@@ -382,9 +383,9 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					// delete agent - with error
 					gock.New("https://test.api.capenetworks.com").
 						Delete("/networking-uxi/v1alpha1/agents/uid").
-						Reply(422).
+						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 422,
+							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_NETWORKING_UXI_HARDWARE_SENSOR_DELETION_FORBIDDEN",
 							"message":        "Cant delete sensor - hardware sensor deletion is forbidden",
 							"debugId":        "12312-123123-123123-1231212",

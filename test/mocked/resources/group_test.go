@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -463,9 +464,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/groups").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -514,9 +515,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/groups").
-						Reply(400).
+						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 400,
+							"httpStatusCode": http.StatusBadRequest,
 							"errorCode":      "HPE_GL_ERROR_BAD_REQUEST",
 							"message":        "Validation error - bad request",
 							"debugId":        "12312-123123-123123-1231212",
@@ -582,9 +583,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					// new group - with error
 					gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/groups/uid").
-						Reply(422).
+						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 422,
+							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_UXI_DUPLICATE_SIBLING_GROUP_NAME",
 							"message":        "Unable to create group - a sibling group already has the specified name",
 							"debugId":        "12312-123123-123123-1231212",
@@ -613,9 +614,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					// delete group - with error
 					gock.New("https://test.api.capenetworks.com").
 						Delete("/networking-uxi/v1alpha1/groups/uid").
-						Reply(422).
+						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 422,
+							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_UXI_GROUP_CANNOT_BE_DELETED",
 							"message":        "Unable to delete group",
 							"debugId":        "12312-123123-123123-1231212",

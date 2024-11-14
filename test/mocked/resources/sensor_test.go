@@ -1,10 +1,12 @@
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"net/http"
 	"regexp"
 	"testing"
+
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -269,9 +271,9 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/sensors").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -362,9 +364,9 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					// patch sensor - with error
 					gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/sensors/uid").
-						Reply(422).
+						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 422,
+							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_UXI_INVALID_PCAP_MODE_ERROR",
 							"message":        "Unable to update sensor - pcap_mode must be one the following ['light', 'full', 'off'].",
 							"debugId":        "12312-123123-123123-1231212",

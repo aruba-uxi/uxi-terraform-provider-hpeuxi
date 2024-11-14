@@ -6,8 +6,8 @@ package config
 // customer.
 const AgentPermanentUid = "8260f349-5c73-394a-b786-57985d001763"
 const AgentCreateSerial = "56fb38331f19d278"
-const CustomerUid = "9c16d493-7649-40bc-975b-07422d227c0b"
-const GroupUidRoot = "07422d227c0b"
+const CustomerUid = "9c16d493-7649-40bc-975b-07http.StatusUnprocessableEntityd227c0b"
+const GroupUidRoot = "07http.StatusUnprocessableEntityd227c0b"
 const WiredNetworkUid = "ethernet-0ee5b46c2ef0"
 const WiredNetworkName = "tf-provider-acceptance-tests-ethernet-0"
 const WirelessNetworkUid = "ssid-bf704ff37dc0"
