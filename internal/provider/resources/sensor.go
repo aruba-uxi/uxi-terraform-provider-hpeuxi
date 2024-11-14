@@ -169,11 +169,20 @@ func (r *sensorResource) Update(
 		return
 	}
 
+	errorSummary := util.GenerateErrorSummary("update", "uxi_sensor")
 	patchRequest := config_api_client.NewSensorsPatchRequest()
 	patchRequest.Name = plan.Name.ValueStringPointer()
 	patchRequest.AddressNote = plan.AddressNote.ValueStringPointer()
 	patchRequest.Notes = plan.Notes.ValueStringPointer()
-	patchRequest.PcapMode = plan.PCapMode.ValueStringPointer()
+	plannedPcapMode := plan.PCapMode.ValueStringPointer()
+	if !plan.PCapMode.IsUnknown() && plannedPcapMode != nil {
+		pcapMode, err := config_api_client.NewPcapModeFromValue(*plannedPcapMode)
+		if err != nil {
+			resp.Diagnostics.AddError(errorSummary, err.Error())
+			return
+		}
+		patchRequest.PcapMode = pcapMode
+	}
 
 	request := r.client.ConfigurationAPI.
 		SensorsPatch(ctx, plan.ID.ValueString()).
@@ -183,7 +192,7 @@ func (r *sensorResource) Update(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_sensor"), errorDetail)
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
 		return
 	}
 
@@ -191,7 +200,9 @@ func (r *sensorResource) Update(
 	plan.Name = types.StringValue(sensor.Name)
 	plan.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
 	plan.Notes = types.StringPointerValue(sensor.Notes.Get())
-	plan.PCapMode = types.StringPointerValue(sensor.PcapMode.Get())
+	if sensor.PcapMode.Get() != nil {
+		plan.PCapMode = types.StringValue(string(*sensor.PcapMode.Get()))
+	}
 
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)

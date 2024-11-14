@@ -110,7 +110,7 @@ func TestSensorResource(t *testing.T) {
 					name = "name_2"
 					address_note = "address_note_2"
 					notes = "notes_2"
-					pcap_mode = "light_2"
+					pcap_mode = "light"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
@@ -120,7 +120,7 @@ func TestSensorResource(t *testing.T) {
 						"address_note_2",
 					),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes_2"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light_2"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
 				),
 			},
@@ -228,7 +228,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 					name = "name_2"
 					address_note = "address_note_2"
 					notes = "notes_2"
-					pcap_mode = "light_2"
+					pcap_mode = "light"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
@@ -378,7 +378,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					name = "name_2"
 					address_note = "address_note_2"
 					notes = "notes_2"
-					pcap_mode = "light_2"
+					pcap_mode = "light"
 				}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Unable to update sensor - pcap_mode must be one the following \['light',\s*'full', 'off'\].\s*DebugID: 12312-123123-123123-1231212`,

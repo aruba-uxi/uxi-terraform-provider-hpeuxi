@@ -19,7 +19,7 @@ func GenerateSensorResponseModel(id string, postfix string) map[string]interface
 		"longitude":          0.0,
 		"latitude":           0.0,
 		"notes":              "notes" + postfix,
-		"pcapMode":           "light" + postfix,
+		"pcapMode":           "light",
 		"type":               "networking-uxi/sensor",
 	}
 }
@@ -29,7 +29,7 @@ func GenerateSensorRequestUpdateModel(postfix string) map[string]interface{} {
 		"name":        "name" + postfix,
 		"addressNote": "address_note" + postfix,
 		"notes":       "notes" + postfix,
-		"pcapMode":    "light" + postfix,
+		"pcapMode":    "light",
 	}
 }
 
@@ -37,7 +37,7 @@ func GenerateAgentRequestUpdateModel(postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"name":     "name" + postfix,
 		"notes":    "notes" + postfix,
-		"pcapMode": "light" + postfix,
+		"pcapMode": "light",
 	}
 }
 
@@ -50,7 +50,7 @@ func GenerateAgentResponseModel(id string, postfix string) map[string]interface{
 		"wifiMacAddress":     "wifi_mac_address" + postfix,
 		"ethernetMacAddress": "ethernet_mac_address" + postfix,
 		"notes":              "notes" + postfix,
-		"pcapMode":           "light" + postfix,
+		"pcapMode":           "light",
 		"type":               "networking-uxi/sensor",
 	}
 }
