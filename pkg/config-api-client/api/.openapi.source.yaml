@@ -9,7 +9,7 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 5.10.0
+  version: 5.13.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
@@ -636,6 +636,8 @@ paths:
           schema:
             type: integer
             default: 50
+            maximum: 100
+            minimum: 0
             title: Limit
       responses:
         '200':
@@ -1121,6 +1123,8 @@ paths:
           schema:
             type: integer
             default: 50
+            maximum: 100
+            minimum: 0
             title: Limit
       responses:
         '200':
@@ -1296,18 +1300,18 @@ components:
         Fields:
             name: Optional string
             notes: Optional string
-            pcap_mode: Optional string
+            pcap_mode: Optional PcapMode
       type: object
       properties:
         name:
           type: string
+          maxLength: 100
           title: Name
         notes:
           type: string
           title: Notes
         pcapMode:
-          type: string
-          title: Pcapmode
+          $ref: '#/components/schemas/PcapMode'
       title: AgentsPatchRequest
     AgentsPatchResponse:
       type: object
@@ -1343,9 +1347,8 @@ components:
           title: Notes
         pcapMode:
           anyOf:
-            - type: string
+            - $ref: '#/components/schemas/PcapMode'
           nullable: true
-          title: Pcapmode
         type:
           type: string
           enum:
@@ -1670,6 +1673,13 @@ components:
       required:
         - id
       title: Parent
+    PcapMode:
+      type: string
+      enum:
+        - light
+        - full
+        - 'off'
+      title: PcapMode
     Sensor:
       type: object
       properties:
@@ -1832,11 +1842,12 @@ components:
             name: Optional string
             address_note: Optional string
             notes: Optional string
-            pcap_mode: Optional string
+            pcap_mode: Optional PcapMode
       type: object
       properties:
         name:
           type: string
+          maxLength: 100
           title: Name
         addressNote:
           type: string
@@ -1845,8 +1856,7 @@ components:
           type: string
           title: Notes
         pcapMode:
-          type: string
-          title: Pcapmode
+          $ref: '#/components/schemas/PcapMode'
       title: SensorsPatchRequest
     SensorsPatchResponse:
       type: object
@@ -1895,9 +1905,8 @@ components:
           title: Notes
         pcapMode:
           anyOf:
-            - type: string
+            - $ref: '#/components/schemas/PcapMode'
           nullable: true
-          title: Pcapmode
         type:
           type: string
           enum:

@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.10.0
+API version: 5.13.0
 Contact: support@capenetworks.com
 */
 
@@ -18,11 +18,11 @@ import (
 // checks if the AgentsPatchRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &AgentsPatchRequest{}
 
-// AgentsPatchRequest Request body for patching an agent.  Fields:     name: Optional string     notes: Optional string     pcap_mode: Optional string
+// AgentsPatchRequest Request body for patching an agent.  Fields:     name: Optional string     notes: Optional string     pcap_mode: Optional PcapMode
 type AgentsPatchRequest struct {
-	Name     *string `json:"name,omitempty"`
-	Notes    *string `json:"notes,omitempty"`
-	PcapMode *string `json:"pcapMode,omitempty"`
+	Name     *string   `json:"name,omitempty"`
+	Notes    *string   `json:"notes,omitempty"`
+	PcapMode *PcapMode `json:"pcapMode,omitempty"`
 }
 
 // NewAgentsPatchRequest instantiates a new AgentsPatchRequest object
@@ -107,9 +107,9 @@ func (o *AgentsPatchRequest) SetNotes(v string) {
 }
 
 // GetPcapMode returns the PcapMode field value if set, zero value otherwise.
-func (o *AgentsPatchRequest) GetPcapMode() string {
+func (o *AgentsPatchRequest) GetPcapMode() PcapMode {
 	if o == nil || IsNil(o.PcapMode) {
-		var ret string
+		var ret PcapMode
 		return ret
 	}
 	return *o.PcapMode
@@ -117,7 +117,7 @@ func (o *AgentsPatchRequest) GetPcapMode() string {
 
 // GetPcapModeOk returns a tuple with the PcapMode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AgentsPatchRequest) GetPcapModeOk() (*string, bool) {
+func (o *AgentsPatchRequest) GetPcapModeOk() (*PcapMode, bool) {
 	if o == nil || IsNil(o.PcapMode) {
 		return nil, false
 	}
@@ -133,8 +133,8 @@ func (o *AgentsPatchRequest) HasPcapMode() bool {
 	return false
 }
 
-// SetPcapMode gets a reference to the given string and assigns it to the PcapMode field.
-func (o *AgentsPatchRequest) SetPcapMode(v string) {
+// SetPcapMode gets a reference to the given PcapMode and assigns it to the PcapMode field.
+func (o *AgentsPatchRequest) SetPcapMode(v PcapMode) {
 	o.PcapMode = &v
 }
 

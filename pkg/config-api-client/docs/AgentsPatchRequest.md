@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | Pointer to **string** |  | [optional] 
 **Notes** | Pointer to **string** |  | [optional] 
-**PcapMode** | Pointer to **string** |  | [optional] 
+**PcapMode** | Pointer to [**PcapMode**](PcapMode.md) |  | [optional] 
 
 ## Methods
 
@@ -79,20 +79,20 @@ HasNotes returns a boolean if a field has been set.
 
 ### GetPcapMode
 
-`func (o *AgentsPatchRequest) GetPcapMode() string`
+`func (o *AgentsPatchRequest) GetPcapMode() PcapMode`
 
 GetPcapMode returns the PcapMode field if non-nil, zero value otherwise.
 
 ### GetPcapModeOk
 
-`func (o *AgentsPatchRequest) GetPcapModeOk() (*string, bool)`
+`func (o *AgentsPatchRequest) GetPcapModeOk() (*PcapMode, bool)`
 
 GetPcapModeOk returns a tuple with the PcapMode field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPcapMode
 
-`func (o *AgentsPatchRequest) SetPcapMode(v string)`
+`func (o *AgentsPatchRequest) SetPcapMode(v PcapMode)`
 
 SetPcapMode sets PcapMode field to given value.
 

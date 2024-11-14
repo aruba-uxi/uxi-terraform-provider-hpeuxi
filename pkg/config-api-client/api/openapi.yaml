@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 5.10.0
+  version: 5.13.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -626,6 +626,8 @@ paths:
         required: false
         schema:
           default: 50
+          maximum: 100
+          minimum: 0
           title: Limit
           type: integer
         style: form
@@ -1097,6 +1099,8 @@ paths:
         required: false
         schema:
           default: 50
+          maximum: 100
+          minimum: 0
           title: Limit
           type: integer
         style: form
@@ -1305,23 +1309,23 @@ components:
         Fields:
             name: Optional string
             notes: Optional string
-            pcap_mode: Optional string
+            pcap_mode: Optional PcapMode
       properties:
         name:
+          maxLength: 100
           title: Name
           type: string
         notes:
           title: Notes
           type: string
         pcapMode:
-          title: Pcapmode
-          type: string
+          $ref: '#/components/schemas/PcapMode'
       title: AgentsPatchRequest
       type: object
     AgentsPatchResponse:
       example:
         notes: notes
-        pcapMode: pcapMode
+        pcapMode: light
         serial: serial
         ethernetMacAddress: ethernetMacAddress
         name: name
@@ -1352,8 +1356,7 @@ components:
           nullable: true
           type: string
         pcapMode:
-          nullable: true
-          type: string
+          $ref: '#/components/schemas/PcapMode'
         type:
           enum:
           - networking-uxi/agent
@@ -1803,6 +1806,13 @@ components:
       - id
       title: Parent
       type: object
+    PcapMode:
+      enum:
+      - light
+      - full
+      - "off"
+      title: PcapMode
+      type: string
     Sensor:
       example:
         id: id
@@ -1997,9 +2007,10 @@ components:
             name: Optional string
             address_note: Optional string
             notes: Optional string
-            pcap_mode: Optional string
+            pcap_mode: Optional PcapMode
       properties:
         name:
+          maxLength: 100
           title: Name
           type: string
         addressNote:
@@ -2009,15 +2020,14 @@ components:
           title: Notes
           type: string
         pcapMode:
-          title: Pcapmode
-          type: string
+          $ref: '#/components/schemas/PcapMode'
       title: SensorsPatchRequest
       type: object
     SensorsPatchResponse:
       example:
         addressNote: addressNote
         notes: notes
-        pcapMode: pcapMode
+        pcapMode: light
         serial: serial
         ethernetMacAddress: ethernetMacAddress
         latitude: 6.027456183070403
@@ -2059,8 +2069,7 @@ components:
           nullable: true
           type: string
         pcapMode:
-          nullable: true
-          type: string
+          $ref: '#/components/schemas/PcapMode'
         type:
           enum:
           - networking-uxi/sensor

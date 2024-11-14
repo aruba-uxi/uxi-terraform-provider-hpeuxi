@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.10.0
+API version: 5.13.0
 Contact: support@capenetworks.com
 */
 
@@ -22,18 +22,18 @@ var _ MappedNullable = &SensorsPatchResponse{}
 
 // SensorsPatchResponse struct for SensorsPatchResponse
 type SensorsPatchResponse struct {
-	Id                 string          `json:"id"`
-	Serial             string          `json:"serial"`
-	Name               string          `json:"name"`
-	ModelNumber        string          `json:"modelNumber"`
-	WifiMacAddress     NullableString  `json:"wifiMacAddress"`
-	EthernetMacAddress NullableString  `json:"ethernetMacAddress"`
-	AddressNote        NullableString  `json:"addressNote"`
-	Longitude          NullableFloat32 `json:"longitude"`
-	Latitude           NullableFloat32 `json:"latitude"`
-	Notes              NullableString  `json:"notes"`
-	PcapMode           NullableString  `json:"pcapMode"`
-	Type               string          `json:"type"`
+	Id                 string           `json:"id"`
+	Serial             string           `json:"serial"`
+	Name               string           `json:"name"`
+	ModelNumber        string           `json:"modelNumber"`
+	WifiMacAddress     NullableString   `json:"wifiMacAddress"`
+	EthernetMacAddress NullableString   `json:"ethernetMacAddress"`
+	AddressNote        NullableString   `json:"addressNote"`
+	Longitude          NullableFloat32  `json:"longitude"`
+	Latitude           NullableFloat32  `json:"latitude"`
+	Notes              NullableString   `json:"notes"`
+	PcapMode           NullablePcapMode `json:"pcapMode"`
+	Type               string           `json:"type"`
 }
 
 type _SensorsPatchResponse SensorsPatchResponse
@@ -53,7 +53,7 @@ func NewSensorsPatchResponse(
 	longitude NullableFloat32,
 	latitude NullableFloat32,
 	notes NullableString,
-	pcapMode NullableString,
+	pcapMode NullablePcapMode,
 	type_ string,
 ) *SensorsPatchResponse {
 	this := SensorsPatchResponse{}
@@ -333,10 +333,10 @@ func (o *SensorsPatchResponse) SetNotes(v string) {
 }
 
 // GetPcapMode returns the PcapMode field value
-// If the value is explicit nil, the zero value for string will be returned
-func (o *SensorsPatchResponse) GetPcapMode() string {
+// If the value is explicit nil, the zero value for PcapMode will be returned
+func (o *SensorsPatchResponse) GetPcapMode() PcapMode {
 	if o == nil || o.PcapMode.Get() == nil {
-		var ret string
+		var ret PcapMode
 		return ret
 	}
 
@@ -346,7 +346,7 @@ func (o *SensorsPatchResponse) GetPcapMode() string {
 // GetPcapModeOk returns a tuple with the PcapMode field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SensorsPatchResponse) GetPcapModeOk() (*string, bool) {
+func (o *SensorsPatchResponse) GetPcapModeOk() (*PcapMode, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -354,7 +354,7 @@ func (o *SensorsPatchResponse) GetPcapModeOk() (*string, bool) {
 }
 
 // SetPcapMode sets field value
-func (o *SensorsPatchResponse) SetPcapMode(v string) {
+func (o *SensorsPatchResponse) SetPcapMode(v PcapMode) {
 	o.PcapMode.Set(&v)
 }
 
