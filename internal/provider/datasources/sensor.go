@@ -3,8 +3,8 @@ package datasources
 import (
 	"context"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -118,7 +118,7 @@ func (d *sensorDataSource) Read(
 		SensorsGet(ctx).
 		Id(state.Filter.SensorID.ValueString())
 
-	sensorResponse, response, err := util.RetryFor429(request.Execute)
+	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor")
@@ -137,12 +137,13 @@ func (d *sensorDataSource) Read(
 
 	state.Id = types.StringValue(sensor.Id)
 	state.Name = types.StringValue(sensor.Name)
+	state.Serial = types.StringValue(sensor.Serial)
 	state.ModelNumber = types.StringValue(sensor.ModelNumber)
 	state.WifiMacAddress = types.StringPointerValue(sensor.WifiMacAddress.Get())
 	state.EthernetMacAddress = types.StringPointerValue(sensor.EthernetMacAddress.Get())
 	state.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
-	state.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	state.Latitude = types.Float32PointerValue(sensor.Latitude.Get())
+	state.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
 	state.PcapMode = types.StringPointerValue(sensor.PcapMode.Get())
 

@@ -3,8 +3,8 @@ package datasources
 import (
 	"context"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -119,7 +119,7 @@ func (d *wirelessNetworkDataSource) Read(
 	request := d.client.ConfigurationAPI.
 		WirelessNetworksGet(ctx).
 		Id(state.Filter.WirelessNetworkID)
-	networkResponse, response, err := util.RetryFor429(request.Execute)
+	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_wireless_network")
@@ -139,10 +139,10 @@ func (d *wirelessNetworkDataSource) Read(
 	state.Ssid = types.StringValue(network.Ssid)
 	state.Name = types.StringValue(network.Name)
 	state.IpVersion = types.StringValue(network.IpVersion)
-	state.Security = types.StringValue(*network.Security.Get())
+	state.Security = types.StringPointerValue(network.Security.Get())
 	state.Hidden = types.BoolValue(network.Hidden)
 	state.BandLocking = types.StringValue(network.BandLocking)
-	state.DnsLookupDomain = types.StringValue(*network.DnsLookupDomain.Get())
+	state.DnsLookupDomain = types.StringPointerValue(network.DnsLookupDomain.Get())
 	state.DisableEdns = types.BoolValue(network.DisableEdns)
 	state.UseDns64 = types.BoolValue(network.UseDns64)
 	state.ExternalConnectivity = types.BoolValue(network.ExternalConnectivity)

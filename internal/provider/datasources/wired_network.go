@@ -3,8 +3,8 @@ package datasources
 import (
 	"context"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -33,7 +33,7 @@ type wiredNetworkDataSourceModel struct {
 	DisableEdns          types.Bool   `tfsdk:"disable_edns"`
 	UseDns64             types.Bool   `tfsdk:"use_dns64"`
 	ExternalConnectivity types.Bool   `tfsdk:"external_connectivity"`
-	VlanId               types.Int64  `tfsdk:"vlan_id"`
+	VlanId               types.Int32  `tfsdk:"vlan_id"`
 
 	Filter struct {
 		WiredNetworkID string `tfsdk:"wired_network_id"`
@@ -79,7 +79,7 @@ func (d *wiredNetworkDataSource) Schema(
 			"external_connectivity": schema.BoolAttribute{
 				Computed: true,
 			},
-			"vlan_id": schema.Int64Attribute{
+			"vlan_id": schema.Int32Attribute{
 				Computed: true,
 			},
 			"filter": schema.SingleNestedAttribute{
@@ -111,7 +111,7 @@ func (d *wiredNetworkDataSource) Read(
 	request := d.client.ConfigurationAPI.
 		WiredNetworksGet(ctx).
 		Id(state.Filter.WiredNetworkID)
-	networkResponse, response, err := util.RetryFor429(request.Execute)
+	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_wired_network")
@@ -130,12 +130,12 @@ func (d *wiredNetworkDataSource) Read(
 	state.ID = types.StringValue(network.Id)
 	state.Name = types.StringValue(network.Name)
 	state.IpVersion = types.StringValue(network.IpVersion)
-	state.Security = types.StringValue(*network.Security.Get())
-	state.DnsLookupDomain = types.StringValue(*network.DnsLookupDomain.Get())
+	state.Security = types.StringPointerValue(network.Security.Get())
+	state.DnsLookupDomain = types.StringPointerValue(network.DnsLookupDomain.Get())
 	state.DisableEdns = types.BoolValue(network.DisableEdns)
 	state.UseDns64 = types.BoolValue(network.UseDns64)
 	state.ExternalConnectivity = types.BoolValue(network.ExternalConnectivity)
-	state.VlanId = types.Int64Value(int64(*network.VLanId.Get()))
+	state.VlanId = types.Int32PointerValue(network.VLanId.Get())
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)

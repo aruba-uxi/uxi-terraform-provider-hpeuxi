@@ -1,11 +1,12 @@
 package data_source_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"github.com/nbio/st"
 
 	"github.com/h2non/gock"
@@ -13,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
-func TestWiredNetworkDataSource(t *testing.T) {
+func TestWirelessNetworkDataSource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
@@ -23,66 +24,78 @@ func TestWiredNetworkDataSource(t *testing.T) {
 			// Read testing
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
-						"uid",
+					util.MockGetWirelessNetwork(
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("id", ""),
+							},
 						),
 						3,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wired_network" "my_wired_network" {
+					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wired_network_id = "uid"
+							wireless_network_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"data.uxi_wired_network.my_wired_network",
+						"data.uxi_wireless_network.my_wireless_network",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_wired_network.my_wired_network",
+						"data.uxi_wireless_network.my_wireless_network",
+						"ssid",
+						"ssid",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
 						"name",
 						"name",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_wired_network.my_wired_network",
+						"data.uxi_wireless_network.my_wireless_network",
 						"ip_version",
 						"ip_version",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_wired_network.my_wired_network",
+						"data.uxi_wireless_network.my_wireless_network",
 						"security",
 						"security",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_wired_network.my_wired_network",
+						"data.uxi_wireless_network.my_wireless_network",
+						"hidden",
+						"false",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
+						"band_locking",
+						"band_locking",
+					),
+					resource.TestCheckResourceAttr(
+						"data.uxi_wireless_network.my_wireless_network",
 						"dns_lookup_domain",
 						"dns_lookup_domain",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_wired_network.my_wired_network",
+						"data.uxi_wireless_network.my_wireless_network",
 						"disable_edns",
 						"false",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_wired_network.my_wired_network",
+						"data.uxi_wireless_network.my_wireless_network",
 						"use_dns64",
 						"false",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_wired_network.my_wired_network",
+						"data.uxi_wireless_network.my_wireless_network",
 						"external_connectivity",
 						"false",
-					),
-					resource.TestCheckResourceAttr(
-						"data.uxi_wired_network.my_wired_network",
-						"vlan_id",
-						"123",
 					),
 				),
 			},
@@ -92,10 +105,10 @@ func TestWiredNetworkDataSource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestWiredNetworkDataSource429Handling(t *testing.T) {
+func TestWirelessNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var mock429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -103,33 +116,35 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 			// Read testing
 			{
 				PreConfig: func() {
-					mock429 = gock.New("https://test.api.capenetworks.com").
-						Get("/networking-uxi/v1alpha1/wired-networks").
-						Reply(429).
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+						Get("/networking-uxi/v1alpha1/wireless-networks").
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetWiredNetwork(
-						"uid",
+					util.MockGetWirelessNetwork(
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{
+								util.GenerateWirelessNetworkResponse("id", ""),
+							},
 						),
 						3,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wired_network" "my_wired_network" {
+					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wired_network_id = "uid"
+							wireless_network_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"data.uxi_wired_network.my_wired_network",
+						"data.uxi_wireless_network.my_wireless_network",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
-						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -140,7 +155,7 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
+func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	resource.Test(t, resource.TestCase{
@@ -149,19 +164,19 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/networking-uxi/v1alpha1/wired-networks").
-						Reply(500).
+						Get("/networking-uxi/v1alpha1/wireless-networks").
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wired_network" "my_wired_network" {
+					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wired_network_id = "uid"
+							wireless_network_id = "id"
 						}
 					}
 				`,
@@ -171,16 +186,16 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
-						"uid",
+					util.MockGetWirelessNetwork(
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wired_network" "my_wired_network" {
+					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wired_network_id = "uid"
+							wireless_network_id = "id"
 						}
 					}
 				`,

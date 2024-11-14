@@ -2,9 +2,9 @@ package resources
 
 import (
 	"context"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -115,7 +115,7 @@ func (r *serviceTestResource) Read(
 	request := r.client.ConfigurationAPI.
 		ServiceTestsGet(ctx).
 		Id(state.ID.ValueString())
-	sensorResponse, response, err := util.RetryFor429(request.Execute)
+	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")

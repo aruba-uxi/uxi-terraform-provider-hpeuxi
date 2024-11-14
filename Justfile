@@ -23,7 +23,7 @@ generate-config-api-client: retrieve-config-api-openapi-spec
   --output /local/{{ CONFIG_API_CLIENT_DIR }} \
   --package-name config_api_client \
   --git-user-id aruba-uxi \
-  --git-repo-id terraform-provider-configuration-api/{{ CONFIG_API_CLIENT_DIR }} \
+  --git-repo-id terraform-provider-hpeuxi/{{ CONFIG_API_CLIENT_DIR }} \
   --openapi-normalizer SET_TAGS_FOR_ALL_OPERATIONS=configuration
   just tidy-client
   just fmt-client

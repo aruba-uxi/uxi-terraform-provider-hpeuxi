@@ -3,8 +3,8 @@ package resources
 import (
 	"context"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -23,11 +23,6 @@ type sensorGroupAssignmentResourceModel struct {
 	ID       types.String `tfsdk:"id"`
 	SensorID types.String `tfsdk:"sensor_id"`
 	GroupID  types.String `tfsdk:"group_id"`
-}
-
-type SensorGroupAssignmentRequestModel struct {
-	GroupUID  string //  <group_uid:str>,
-	SensorUID string //  <sensor_uid:str>
 }
 
 func NewSensorGroupAssignmentResource() resource.Resource {
@@ -120,7 +115,7 @@ func (r *sensorGroupAssignmentResource) Create(
 	request := r.client.ConfigurationAPI.
 		SensorGroupAssignmentsPost(ctx).
 		SensorGroupAssignmentsPostRequest(*postRequest)
-	sensorGroupAssignment, response, err := util.RetryFor429(request.Execute)
+	sensorGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -158,7 +153,7 @@ func (r *sensorGroupAssignmentResource) Read(
 	request := r.client.ConfigurationAPI.
 		SensorGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
-	sensorGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("create", "uxi_sensor_group_assignment")
@@ -219,7 +214,7 @@ func (r *sensorGroupAssignmentResource) Delete(
 	// Delete existing sensorGroupAssignment using the plan_id
 	request := r.client.ConfigurationAPI.
 		SensorGroupAssignmentsDelete(ctx, state.ID.ValueString())
-	_, response, err := util.RetryFor429(request.Execute)
+	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {

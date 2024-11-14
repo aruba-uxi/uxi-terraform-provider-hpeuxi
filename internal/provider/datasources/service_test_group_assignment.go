@@ -3,8 +3,8 @@ package datasources
 import (
 	"context"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -84,7 +84,9 @@ func (d *serviceTestGroupAssignmentDataSource) Read(
 	request := d.client.ConfigurationAPI.
 		ServiceTestGroupAssignmentsGet(ctx).
 		Id(state.Filter.ServiceTestGroupAssignmentID)
-	serviceTestGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	serviceTestGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(
+		request.Execute,
+	)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")

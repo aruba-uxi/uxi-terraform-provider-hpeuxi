@@ -1,60 +1,64 @@
 package data_source_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/nbio/st"
 )
 
-func TestSensorGroupAssignmentDataSource(t *testing.T) {
+func TestAgentDataSource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Read testing
+			// Test Read
 			{
 				PreConfig: func() {
-					util.MockGetSensorGroupAssignment(
-						"uid",
+					util.MockGetAgent(
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse("uid", ""),
-							},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
 						),
 						3,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+					data "uxi_agent" "my_agent" {
 						filter = {
-							sensor_group_assignment_id = "uid"
+							agent_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "id"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "name", "name"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "serial", "serial"),
 					resource.TestCheckResourceAttr(
-						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
-						"id",
-						"uid",
+						"data.uxi_agent.my_agent",
+						"model_number",
+						"model_number",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
-						"group_id",
-						"group_uid",
+						"data.uxi_agent.my_agent",
+						"wifi_mac_address",
+						"wifi_mac_address",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
-						"sensor_id",
-						"sensor_uid",
+						"data.uxi_agent.my_agent",
+						"ethernet_mac_address",
+						"ethernet_mac_address",
 					),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "notes", "notes"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "pcap_mode", "light"),
 				),
 			},
 		},
@@ -63,46 +67,41 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestSensorGroupAssignmentDataSource429Handling(t *testing.T) {
+func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var mock429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Read testing
+
+			// Test Read
 			{
 				PreConfig: func() {
-					mock429 = gock.New("https://test.api.capenetworks.com").
-						Get("/networking-uxi/v1alpha1/sensor-group-assignments").
-						Reply(429).
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+						Get("/networking-uxi/v1alpha1/agents").
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetSensorGroupAssignment(
-						"uid",
+					util.MockGetAgent(
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse("uid", ""),
-							},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
 						),
 						3,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+					data "uxi_agent" "my_agent" {
 						filter = {
-							sensor_group_assignment_id = "uid"
+							agent_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(
-						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
-						"id",
-						"uid",
-					),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "id"),
 					func(s *terraform.State) error {
-						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -112,28 +111,30 @@ func TestSensorGroupAssignmentDataSource429Handling(t *testing.T) {
 
 	mockOAuth.Mock.Disable()
 }
-func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
+
+func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
+			// 5xx error
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
-						Get("/networking-uxi/v1alpha1/sensor-group-assignments").
-						Reply(500).
+						Get("/networking-uxi/v1alpha1/agents").
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+					data "uxi_agent" "my_agent" {
 						filter = {
-							sensor_group_assignment_id = "uid"
+							agent_id = "id"
 						}
 					}
 				`,
@@ -141,18 +142,19 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
 				),
 			},
+			// Not found error
 			{
 				PreConfig: func() {
-					util.MockGetSensorGroupAssignment(
-						"uid",
+					util.MockGetAgent(
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+					data "uxi_agent" "my_agent" {
 						filter = {
-							sensor_group_assignment_id = "uid"
+							agent_id = "id"
 						}
 					}
 				`,

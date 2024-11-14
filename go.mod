@@ -1,11 +1,11 @@
-module github.com/aruba-uxi/terraform-provider-configuration
+module github.com/aruba-uxi/terraform-provider-hpeuxi
 
 go 1.21
 
 toolchain go1.22.5
 
 require (
-	github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client v0.0.0-00010101000000-000000000000
+	github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client v0.0.0-00010101000000-000000000000
 	github.com/h2non/gock v1.2.0
 	github.com/hashicorp/terraform-plugin-framework v1.10.0
 	github.com/hashicorp/terraform-plugin-go v0.23.0
@@ -22,6 +22,7 @@ require (
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/h2non/parth v0.0.0-20190131123155-b4df798d6542 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-checkpoint v0.5.0 // indirect
@@ -68,4 +69,4 @@ require (
 	google.golang.org/protobuf v1.34.0 // indirect
 )
 
-replace github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client => ./pkg/config-api-client
+replace github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client => ./pkg/config-api-client

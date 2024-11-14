@@ -2,8 +2,8 @@ package resources
 
 import (
 	"context"
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &sensorResource{}
 	_ resource.ResourceWithConfigure = &sensorResource{}
@@ -25,29 +24,6 @@ type sensorResourceModel struct {
 	AddressNote types.String `tfsdk:"address_note"`
 	Notes       types.String `tfsdk:"notes"`
 	PCapMode    types.String `tfsdk:"pcap_mode"`
-}
-
-// TODO: Switch this to use the Client Model when that becomes available
-type SensorResponseModel struct {
-	UID                string
-	Serial             string
-	Name               string
-	ModelNumber        string
-	WifiMacAddress     string
-	EthernetMacAddress string
-	AddressNote        string
-	Longitude          float32
-	Latitude           float32
-	Notes              string
-	PCapMode           string
-}
-
-// TODO: Switch this to use the Client Model when that becomes available
-type SensorUpdateRequestModel struct {
-	Name        string
-	AddressNote string
-	Notes       string
-	PCapMode    string
 }
 
 func NewSensorResource() resource.Resource {
@@ -84,12 +60,18 @@ func (r *sensorResource) Schema(
 			},
 			"address_note": schema.StringAttribute{
 				Optional: true,
+				// computed because goes from nil -> "" when sensor becomes configured
+				Computed: true,
 			},
 			"notes": schema.StringAttribute{
 				Optional: true,
+				// computed because goes from from nil -> "" when sensor becomes configured
+				Computed: true,
 			},
 			"pcap_mode": schema.StringAttribute{
 				Optional: true,
+				// computed because goes from from nil -> "light" when sensor becomes configured
+				Computed: true,
 			},
 		},
 	}
@@ -100,8 +82,6 @@ func (r *sensorResource) Configure(
 	req resource.ConfigureRequest,
 	resp *resource.ConfigureResponse,
 ) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}
@@ -124,7 +104,6 @@ func (r *sensorResource) Create(
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	// Retrieve values from plan
 	var plan sensorResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError(
@@ -139,7 +118,6 @@ func (r *sensorResource) Read(
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	// Get current state
 	var state sensorResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -150,7 +128,7 @@ func (r *sensorResource) Read(
 	request := r.client.ConfigurationAPI.
 		SensorsGet(ctx).
 		Id(state.ID.ValueString())
-	sensorResponse, response, err := util.RetryFor429(request.Execute)
+	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor")
@@ -166,14 +144,12 @@ func (r *sensorResource) Read(
 	}
 	sensor := sensorResponse.Items[0]
 
-	// Update state from client response
 	state.ID = types.StringValue(sensor.Id)
 	state.Name = types.StringValue(sensor.Name)
 	state.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
 	state.PCapMode = types.StringPointerValue(sensor.PcapMode.Get())
 
-	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -186,7 +162,6 @@ func (r *sensorResource) Update(
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	// Retrieve values from plan
 	var plan sensorResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -194,22 +169,30 @@ func (r *sensorResource) Update(
 		return
 	}
 
-	// Update existing item
-	response := UpdateSensor(SensorUpdateRequestModel{
-		Name:        plan.Name.ValueString(),
-		AddressNote: plan.AddressNote.ValueString(),
-		Notes:       plan.Notes.ValueString(),
-		PCapMode:    plan.PCapMode.ValueString(),
-	})
+	patchRequest := config_api_client.NewSensorsPatchRequest()
+	patchRequest.Name = plan.Name.ValueStringPointer()
+	patchRequest.AddressNote = plan.AddressNote.ValueStringPointer()
+	patchRequest.Notes = plan.Notes.ValueStringPointer()
+	patchRequest.PcapMode = plan.PCapMode.ValueStringPointer()
 
-	// Update resource state with updated items
-	plan.ID = types.StringValue(response.UID)
-	plan.Name = types.StringValue(response.Name)
-	plan.AddressNote = types.StringValue(response.AddressNote)
-	plan.Notes = types.StringValue(response.Notes)
-	plan.PCapMode = types.StringValue(response.PCapMode)
+	request := r.client.ConfigurationAPI.
+		SensorsPatch(ctx, plan.ID.ValueString()).
+		SensorsPatchRequest(*patchRequest)
+	sensor, response, err := util.RetryForTooManyRequests(request.Execute)
 
-	// Set state to fully populated data
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_sensor"), errorDetail)
+		return
+	}
+
+	plan.ID = types.StringValue(sensor.Id)
+	plan.Name = types.StringValue(sensor.Name)
+	plan.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
+	plan.Notes = types.StringPointerValue(sensor.Notes.Get())
+	plan.PCapMode = types.StringPointerValue(sensor.PcapMode.Get())
+
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -222,7 +205,6 @@ func (r *sensorResource) Delete(
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	// Retrieve values from state
 	var state sensorResourceModel
 	diags := req.State.Get(ctx, &state)
 	diags.AddError(
@@ -238,23 +220,4 @@ func (r *sensorResource) ImportState(
 	resp *resource.ImportStateResponse,
 ) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-// Update the sensor using the configuration-api client
-var UpdateSensor = func(request SensorUpdateRequestModel) SensorResponseModel {
-	// TODO: Query the sensor using the client
-
-	return SensorResponseModel{
-		UID:                "mock_uid",
-		Serial:             "mock_serial",
-		Name:               request.Name,
-		ModelNumber:        "mock_model_number",
-		WifiMacAddress:     "mock_wifi_mac_address",
-		EthernetMacAddress: "mock_ethernet_mac_address",
-		AddressNote:        request.AddressNote,
-		Longitude:          0.0,
-		Latitude:           0.0,
-		Notes:              request.Notes,
-		PCapMode:           request.PCapMode,
-	}
 }

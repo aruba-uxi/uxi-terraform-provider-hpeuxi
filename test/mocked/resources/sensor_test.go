@@ -1,11 +1,12 @@
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/resources"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
+	"net/http"
 	"regexp"
 	"testing"
+
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -42,8 +43,8 @@ func TestSensorResource(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+					util.MockGetSensor("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
 						2,
 					)
 				},
@@ -57,7 +58,7 @@ func TestSensorResource(t *testing.T) {
 
 					import {
 						to = uxi_sensor.my_sensor
-						id = "uid"
+						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -69,14 +70,14 @@ func TestSensorResource(t *testing.T) {
 					),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
 				),
 			},
 			// ImportState testing
 			{
 				PreConfig: func() {
-					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+					util.MockGetSensor("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
 						1,
 					)
 				},
@@ -88,16 +89,19 @@ func TestSensorResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing sensor
-					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+					util.MockGetSensor("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
 						1,
 					)
-					resources.UpdateSensor = func(request resources.SensorUpdateRequestModel) resources.SensorResponseModel {
-						return util.GenerateMockedSensorResponseModel("uid", "_2")
-					}
+					util.MockUpdateSensor(
+						"id",
+						util.GenerateSensorRequestUpdateModel("_2"),
+						util.GenerateSensorResponseModel("id", "_2"),
+						1,
+					)
 					// updated sensor
-					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "_2")}),
+					util.MockGetSensor("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "_2")}),
 						1,
 					)
 				},
@@ -117,14 +121,14 @@ func TestSensorResource(t *testing.T) {
 					),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes_2"),
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light_2"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
 				),
 			},
 			// Deleting a sensor is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "_2")}),
+					util.MockGetSensor("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "_2")}),
 						1,
 					)
 				},
@@ -150,10 +154,10 @@ func TestSensorResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestSensorResource429Handling(t *testing.T) {
+func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var request429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -165,12 +169,12 @@ func TestSensorResource429Handling(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/sensors").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
+					util.MockGetSensor("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
 						2,
 					)
 				},
@@ -184,13 +188,52 @@ func TestSensorResource429Handling(t *testing.T) {
 
 					import {
 						to = uxi_sensor.my_sensor
-						id = "uid"
+						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
+			},
+			// Update and Read testing
+			{
+				PreConfig: func() {
+					// existing sensor
+					util.MockGetSensor("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
+						1,
+					)
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+						Patch("/networking-uxi/v1alpha1/sensors/id").
+						Reply(http.StatusTooManyRequests).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockUpdateSensor(
+						"id",
+						util.GenerateSensorRequestUpdateModel("_2"),
+						util.GenerateSensorResponseModel("id", "_2"),
+						1,
+					)
+					// updated sensor
+					util.MockGetSensor("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "_2")}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+				resource "uxi_sensor" "my_sensor" {
+					name = "name_2"
+					address_note = "address_note_2"
+					notes = "notes_2"
+					pcap_mode = "light_2"
+				}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
+					func(s *terraform.State) error {
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -228,9 +271,9 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/sensors").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -246,7 +289,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 
 					import {
 						to = uxi_sensor.my_sensor
-						id = "uid"
+						id = "id"
 					}`,
 
 				ExpectError: regexp.MustCompile(
@@ -257,7 +300,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -272,10 +315,85 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 
 					import {
 						to = uxi_sensor.my_sensor
-						id = "uid"
+						id = "id"
 					}`,
 
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
+			},
+			// Actually import a sensor for subsequent testing
+			{
+				PreConfig: func() {
+					util.MockGetSensor("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
+						2,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_sensor" "my_sensor" {
+						name = "name"
+						address_note = "address_note"
+						notes = "notes"
+						pcap_mode = "light"
+					}
+
+					import {
+						to = uxi_sensor.my_sensor
+						id = "id"
+					}`,
+
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name"),
+					resource.TestCheckResourceAttr(
+						"uxi_sensor.my_sensor",
+						"address_note",
+						"address_note",
+					),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light"),
+					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
+				),
+			},
+			// Update 4xx
+			{
+				PreConfig: func() {
+					// existing sensor
+					util.MockGetSensor("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
+						1,
+					)
+					// patch sensor - with error
+					gock.New("https://test.api.capenetworks.com").
+						Patch("/networking-uxi/v1alpha1/sensors/id").
+						Reply(http.StatusUnprocessableEntity).
+						JSON(map[string]interface{}{
+							"httpStatusCode": http.StatusUnprocessableEntity,
+							"errorCode":      "HPE_GL_UXI_INVALID_PCAP_MODE_ERROR",
+							"message":        "Unable to update sensor - pcap_mode must be one the following ['light', 'full', 'off'].",
+							"debugId":        "12312-123123-123123-1231212",
+							"type":           "hpe.greenlake.uxi.invalid_pcap_mode",
+						})
+				},
+				Config: provider.ProviderConfig + `
+				resource "uxi_sensor" "my_sensor" {
+					name = "name_2"
+					address_note = "address_note_2"
+					notes = "notes_2"
+					pcap_mode = "light_2"
+				}`,
+				ExpectError: regexp.MustCompile(
+					`(?s)Unable to update sensor - pcap_mode must be one the following \['light',\s*'full', 'off'\].\s*DebugID: 12312-123123-123123-1231212`,
+				),
+			},
+			// Remove sensor from state
+			{
+				Config: provider.ProviderConfig + `
+					removed {
+						from = uxi_sensor.my_sensor
+
+						lifecycle {
+							destroy = false
+						}
+					}`,
 			},
 		},
 	})

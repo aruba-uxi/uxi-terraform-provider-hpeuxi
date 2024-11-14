@@ -9,6 +9,8 @@ docs/AgentGroupAssignmentsItem.md
 docs/AgentGroupAssignmentsPostRequest.md
 docs/AgentGroupAssignmentsResponse.md
 docs/AgentItem.md
+docs/AgentsPatchRequest.md
+docs/AgentsPatchResponse.md
 docs/AgentsResponse.md
 docs/ConfigurationAPI.md
 docs/ErrorDetail.md
@@ -56,6 +58,8 @@ model_agent_group_assignments_item.go
 model_agent_group_assignments_post_request.go
 model_agent_group_assignments_response.go
 model_agent_item.go
+model_agents_patch_request.go
+model_agents_patch_response.go
 model_agents_response.go
 model_error_detail.go
 model_error_response.go

@@ -3,8 +3,8 @@ package resources
 import (
 	"context"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -25,25 +25,6 @@ type agentResourceModel struct {
 	Name     types.String `tfsdk:"name"`
 	Notes    types.String `tfsdk:"notes"`
 	PCapMode types.String `tfsdk:"pcap_mode"`
-}
-
-// TODO: Switch this to use the Client Model when that becomes available
-type AgentResponseModel struct {
-	UID                string
-	Serial             string
-	Name               string
-	ModelNumber        string
-	WifiMacAddress     string
-	EthernetMacAddress string
-	Notes              string
-	PCapMode           string
-}
-
-// TODO: Switch this to use the Client Model when that becomes available
-type AgentUpdateRequestModel struct {
-	Name     string
-	Notes    string
-	PCapMode string
 }
 
 func NewAgentResource() resource.Resource {
@@ -80,9 +61,11 @@ func (r *agentResource) Schema(
 			},
 			"notes": schema.StringAttribute{
 				Optional: true,
+				Computed: true,
 			},
 			"pcap_mode": schema.StringAttribute{
 				Optional: true,
+				Computed: true,
 			},
 		},
 	}
@@ -142,7 +125,7 @@ func (r *agentResource) Read(
 	request := r.client.ConfigurationAPI.
 		AgentsGet(ctx).
 		Id(state.ID.ValueString())
-	sensorResponse, response, err := util.RetryFor429(request.Execute)
+	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent")
@@ -152,16 +135,16 @@ func (r *agentResource) Read(
 		return
 	}
 
-	if len(sensorResponse.Items) != 1 {
+	if len(agentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
 		return
 	}
-	sensor := sensorResponse.Items[0]
+	agent := agentResponse.Items[0]
 
-	state.ID = types.StringValue(sensor.Id)
-	state.Name = types.StringValue(sensor.Name)
-	state.Notes = types.StringPointerValue(sensor.Notes.Get())
-	state.PCapMode = types.StringPointerValue(sensor.PcapMode.Get())
+	state.ID = types.StringValue(agent.Id)
+	state.Name = types.StringValue(agent.Name)
+	state.Notes = types.StringPointerValue(agent.Notes.Get())
+	state.PCapMode = types.StringPointerValue(agent.PcapMode.Get())
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -183,18 +166,35 @@ func (r *agentResource) Update(
 		return
 	}
 
-	// Update existing item
-	response := UpdateAgent(AgentUpdateRequestModel{
-		Name:     plan.Name.ValueString(),
-		Notes:    plan.Notes.ValueString(),
-		PCapMode: plan.PCapMode.ValueString(),
-	})
+	patchRequest := config_api_client.NewAgentsPatchRequest()
+	patchRequest.Name = plan.Name.ValueStringPointer()
+	if !plan.Notes.IsUnknown() {
+		patchRequest.Notes = plan.Notes.ValueStringPointer()
+	}
+	if !plan.PCapMode.IsUnknown() {
+		patchRequest.PcapMode = plan.PCapMode.ValueStringPointer()
+	}
+	request := r.client.ConfigurationAPI.
+		AgentsPatch(ctx, plan.ID.ValueString()).
+		AgentsPatchRequest(*patchRequest)
+	agent, response, err := util.RetryForTooManyRequests(request.Execute)
 
-	// Update resource state with updated items
-	plan.ID = types.StringValue(response.UID)
-	plan.Name = types.StringValue(response.Name)
-	plan.Notes = types.StringValue(response.Notes)
-	plan.PCapMode = types.StringValue(response.PCapMode)
+	errorPresent, errorDetail := util.RaiseForStatus(response, err)
+
+	if errorPresent {
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_agent"), errorDetail)
+		return
+	}
+
+	// Update the state to match the plan (replace with response from client)
+	plan.ID = types.StringValue(agent.Id)
+	plan.Name = types.StringValue(agent.Name)
+	if agent.Notes.Get() != nil {
+		plan.Notes = types.StringValue(*agent.Notes.Get())
+	}
+	if agent.PcapMode.Get() != nil {
+		plan.PCapMode = types.StringValue(*agent.PcapMode.Get())
+	}
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -219,7 +219,7 @@ func (r *agentResource) Delete(
 
 	request := r.client.ConfigurationAPI.AgentsDelete(ctx, state.ID.ValueString())
 
-	_, response, err := util.RetryFor429(request.Execute)
+	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -234,20 +234,4 @@ func (r *agentResource) ImportState(
 	resp *resource.ImportStateResponse,
 ) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-// Update the agent using the configuration-api client
-var UpdateAgent = func(request AgentUpdateRequestModel) AgentResponseModel {
-	// TODO: Query the agent using the client
-
-	return AgentResponseModel{
-		UID:                "mock_uid",
-		Serial:             "mock_serial",
-		Name:               request.Name,
-		ModelNumber:        "mock_model_number",
-		WifiMacAddress:     "mock_wifi_mac_address",
-		EthernetMacAddress: "mock_ethernet_mac_address",
-		Notes:              request.Notes,
-		PCapMode:           request.PCapMode,
-	}
 }

@@ -4,10 +4,12 @@ All URIs are relative to *https://api.capenetworks.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**AgentGroupAssignmentDelete**](ConfigurationAPI.md#AgentGroupAssignmentDelete) | **Delete** /networking-uxi/v1alpha1/agent-group-assignments/{uid} | Agent Group Assignment Delete
 [**AgentGroupAssignmentsGet**](ConfigurationAPI.md#AgentGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/agent-group-assignments | Agent Group Assignments Get
 [**AgentGroupAssignmentsPost**](ConfigurationAPI.md#AgentGroupAssignmentsPost) | **Post** /networking-uxi/v1alpha1/agent-group-assignments | Agent Group Assignments Post
 [**AgentsDelete**](ConfigurationAPI.md#AgentsDelete) | **Delete** /networking-uxi/v1alpha1/agents/{agent_uid} | Agents Delete
 [**AgentsGet**](ConfigurationAPI.md#AgentsGet) | **Get** /networking-uxi/v1alpha1/agents | Agents Get
+[**AgentsPatch**](ConfigurationAPI.md#AgentsPatch) | **Patch** /networking-uxi/v1alpha1/agents/{agent_uid} | Agents Patch
 [**GroupsDelete**](ConfigurationAPI.md#GroupsDelete) | **Delete** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Delete
 [**GroupsGet**](ConfigurationAPI.md#GroupsGet) | **Get** /networking-uxi/v1alpha1/groups | Groups Get
 [**GroupsPatch**](ConfigurationAPI.md#GroupsPatch) | **Patch** /networking-uxi/v1alpha1/groups/{group_uid} | Groups Patch
@@ -29,6 +31,76 @@ Method | HTTP request | Description
 
 
 
+## AgentGroupAssignmentDelete
+
+> interface{} AgentGroupAssignmentDelete(ctx, uid).Execute()
+
+Agent Group Assignment Delete
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+)
+
+func main() {
+	uid := "uid_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.AgentGroupAssignmentDelete(context.Background(), uid).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.AgentGroupAssignmentDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `AgentGroupAssignmentDelete`: interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.AgentGroupAssignmentDelete`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**uid** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAgentGroupAssignmentDeleteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+**interface{}**
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## AgentGroupAssignmentsGet
 
 > AgentGroupAssignmentsResponse AgentGroupAssignmentsGet(ctx).Id(id).Next(next).Limit(limit).Execute()
@@ -46,7 +118,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -116,7 +188,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -182,7 +254,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -252,7 +324,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -305,6 +377,78 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## AgentsPatch
+
+> AgentsPatchResponse AgentsPatch(ctx, agentUid).AgentsPatchRequest(agentsPatchRequest).Execute()
+
+Agents Patch
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+)
+
+func main() {
+	agentUid := "agentUid_example" // string | 
+	agentsPatchRequest := *openapiclient.NewAgentsPatchRequest() // AgentsPatchRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ConfigurationAPI.AgentsPatch(context.Background(), agentUid).AgentsPatchRequest(agentsPatchRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.AgentsPatch``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `AgentsPatch`: AgentsPatchResponse
+	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.AgentsPatch`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**agentUid** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAgentsPatchRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **agentsPatchRequest** | [**AgentsPatchRequest**](AgentsPatchRequest.md) |  | 
+
+### Return type
+
+[**AgentsPatchResponse**](AgentsPatchResponse.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/merge-patch+json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GroupsDelete
 
 > interface{} GroupsDelete(ctx, groupUid).Execute()
@@ -322,7 +466,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -392,7 +536,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -462,7 +606,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -534,7 +678,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -600,7 +744,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -670,7 +814,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -740,7 +884,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -806,7 +950,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -876,7 +1020,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -946,7 +1090,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -1012,7 +1156,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -1082,7 +1226,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -1129,7 +1273,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
+- **Content-Type**: application/merge-patch+json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -1154,7 +1298,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -1224,7 +1368,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -1294,7 +1438,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -1360,7 +1504,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -1430,7 +1574,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {
@@ -1500,7 +1644,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
+	openapiclient "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func main() {

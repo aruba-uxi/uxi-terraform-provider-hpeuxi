@@ -3,8 +3,8 @@ package resources
 import (
 	"context"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -115,7 +115,7 @@ func (r *groupResource) Create(
 	request := r.client.ConfigurationAPI.
 		GroupsPost(ctx).
 		GroupsPostRequest(*groups_post_request)
-	group, response, err := util.RetryFor429(request.Execute)
+	group, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -207,7 +207,7 @@ func (r *groupResource) Update(
 	request := r.client.ConfigurationAPI.
 		GroupsPatch(ctx, plan.ID.ValueString()).
 		GroupsPatchRequest(*patchRequest)
-	group, response, err := util.RetryFor429(request.Execute)
+	group, response, err := util.RetryForTooManyRequests(request.Execute)
 
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -249,7 +249,7 @@ func (r *groupResource) Delete(
 	// Delete existing group using the plan_id
 	request := r.client.ConfigurationAPI.GroupsDelete(ctx, state.ID.ValueString())
 
-	_, response, err := util.RetryFor429(request.Execute)
+	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -271,7 +271,7 @@ func (r *groupResource) getGroup(
 	id string,
 ) (*config_api_client.GroupsGetItem, *string) {
 	request := r.client.ConfigurationAPI.GroupsGet(ctx).Id(id)
-	groupResponse, response, err := util.RetryFor429(request.Execute)
+	groupResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {

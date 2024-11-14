@@ -3,8 +3,8 @@ package datasources
 import (
 	"context"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -84,7 +84,7 @@ func (d *agentGroupAssignmentDataSource) Read(
 	request := d.client.ConfigurationAPI.
 		AgentGroupAssignmentsGet(ctx).
 		Id(state.Filter.AgentGroupAssignmentID)
-	agentGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	agentGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent_group_assignment")

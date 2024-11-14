@@ -1,5 +1,5 @@
 package config
 
 const (
-	MaxRetriesFor429 = 10
+	MaxRetriesForTooManyRequests = 10
 )

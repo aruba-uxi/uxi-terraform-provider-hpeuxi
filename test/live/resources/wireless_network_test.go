@@ -1,8 +1,8 @@
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-configuration/test/live/config"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/live/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"regexp"
 	"testing"
 
@@ -38,7 +38,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 
 					import {
 						to = uxi_wireless_network.wireless_network_0
-						id = "` + config.WirelessNetworkUid + `"
+						id = "` + config.WirelessNetworkId + `"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -50,7 +50,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_wireless_network.wireless_network_0",
 						"id",
-						config.WirelessNetworkUid,
+						config.WirelessNetworkId,
 					),
 				),
 			},

@@ -2,8 +2,8 @@ package resources
 
 import (
 	"context"
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -112,7 +112,7 @@ func (r *networkGroupAssignmentResource) Create(
 	request := r.client.ConfigurationAPI.
 		NetworkGroupAssignmentsPost(ctx).
 		NetworkGroupAssignmentsPostRequest(*postRequest)
-	networkGroupAssignment, response, err := util.RetryFor429(request.Execute)
+	networkGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -152,7 +152,7 @@ func (r *networkGroupAssignmentResource) Read(
 	request := r.client.ConfigurationAPI.
 		NetworkGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
-	networkGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
@@ -214,7 +214,7 @@ func (r *networkGroupAssignmentResource) Delete(
 
 	request := r.client.ConfigurationAPI.
 		NetworkGroupAssignmentsDelete(ctx, state.ID.ValueString())
-	_, response, err := util.RetryFor429(request.Execute)
+	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {

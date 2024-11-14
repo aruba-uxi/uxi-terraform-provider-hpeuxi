@@ -1,8 +1,8 @@
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-configuration/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"regexp"
 	"testing"
 
@@ -37,10 +37,10 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTest(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("uid", ""),
+								util.GenerateServiceTestResponseModel("id", ""),
 							},
 						),
 						2,
@@ -53,7 +53,7 @@ func TestServiceTestResource(t *testing.T) {
 
 					import {
 						to = uxi_service_test.my_service_test
-						id = "uid"
+						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -62,17 +62,17 @@ func TestServiceTestResource(t *testing.T) {
 						"name",
 						"name",
 					),
-					resource.TestCheckResourceAttr("uxi_service_test.my_service_test", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_service_test.my_service_test", "id", "id"),
 				),
 			},
 			// ImportState testing
 			{
 				PreConfig: func() {
 					util.MockGetServiceTest(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("uid", ""),
+								util.GenerateServiceTestResponseModel("id", ""),
 							},
 						),
 						1,
@@ -86,10 +86,10 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTest(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("uid", ""),
+								util.GenerateServiceTestResponseModel("id", ""),
 							},
 						),
 						1,
@@ -107,10 +107,10 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTest(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("uid", ""),
+								util.GenerateServiceTestResponseModel("id", ""),
 							},
 						),
 						1,

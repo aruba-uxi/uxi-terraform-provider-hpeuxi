@@ -3,8 +3,8 @@ package resources
 import (
 	"context"
 
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -115,7 +115,7 @@ func (r *wiredNetworkResource) Read(
 	request := r.client.ConfigurationAPI.
 		WiredNetworksGet(ctx).
 		Id(state.ID.ValueString())
-	networkResponse, response, err := util.RetryFor429(request.Execute)
+	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_wired_network")

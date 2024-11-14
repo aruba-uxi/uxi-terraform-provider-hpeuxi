@@ -2,8 +2,8 @@ package resources
 
 import (
 	"context"
-	"github.com/aruba-uxi/terraform-provider-configuration-api/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-configuration/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -112,7 +112,7 @@ func (r *serviceTestGroupAssignmentResource) Create(
 	request := r.client.ConfigurationAPI.
 		ServiceTestGroupAssignmentsPost(ctx).
 		ServiceTestGroupAssignmentsPostRequest(*postRequest)
-	serviceTestGroupAssignment, response, err := util.RetryFor429(request.Execute)
+	serviceTestGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -152,7 +152,9 @@ func (r *serviceTestGroupAssignmentResource) Read(
 	request := r.client.ConfigurationAPI.
 		ServiceTestGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
-	serviceTestGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	serviceTestGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(
+		request.Execute,
+	)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
@@ -215,7 +217,7 @@ func (r *serviceTestGroupAssignmentResource) Delete(
 	request := r.client.ConfigurationAPI.
 		ServiceTestGroupAssignmentsDelete(ctx, state.ID.ValueString())
 
-	_, response, err := util.RetryFor429(request.Execute)
+	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
