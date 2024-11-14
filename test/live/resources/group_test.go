@@ -231,8 +231,7 @@ func TestGroupResource(t *testing.T) {
 			},
 			// Delete
 			{
-				Config:  provider.ProviderConfig,
-				Destroy: true,
+				Config: provider.ProviderConfig,
 			},
 		},
 		CheckDestroy: func(s *terraform.State) error {
