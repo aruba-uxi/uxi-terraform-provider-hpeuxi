@@ -39,10 +39,10 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("uid", ""),
+								util.GenerateWirelessNetworkResponse("id", ""),
 							},
 						),
 						2,
@@ -55,7 +55,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 
 					import {
 						to = uxi_wireless_network.my_wireless_network
-						id = "uid"
+						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -67,7 +67,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_wireless_network.my_wireless_network",
 						"id",
-						"uid",
+						"id",
 					),
 				),
 			},
@@ -75,10 +75,10 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("uid", ""),
+								util.GenerateWirelessNetworkResponse("id", ""),
 							},
 						),
 						1,
@@ -92,10 +92,10 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("uid", ""),
+								util.GenerateWirelessNetworkResponse("id", ""),
 							},
 						),
 						1,
@@ -113,10 +113,10 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("uid", ""),
+								util.GenerateWirelessNetworkResponse("id", ""),
 							},
 						),
 						1,
@@ -131,10 +131,10 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("uid", ""),
+								util.GenerateWirelessNetworkResponse("id", ""),
 							},
 						),
 						1,
@@ -169,7 +169,7 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -181,7 +181,7 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 
 					import {
 						to = uxi_wireless_network.my_wireless_network
-						id = "uid"
+						id = "id"
 					}`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
@@ -204,7 +204,7 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 
 					import {
 						to = uxi_wireless_network.my_wireless_network
-						id = "uid"
+						id = "id"
 					}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,

@@ -24,10 +24,10 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetNetworkGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNetworkGroupAssignmentResponse("uid", ""),
+								util.GenerateNetworkGroupAssignmentResponse("id", ""),
 							},
 						),
 						3,
@@ -36,7 +36,7 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_network_group_assignment" "my_network_group_assignment" {
 						filter = {
-							network_group_assignment_id = "uid"
+							network_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -44,17 +44,17 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_network_group_assignment.my_network_group_assignment",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
-						"group_uid",
+						"group_id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
-						"network_uid",
+						"network_id",
 					),
 				),
 			},
@@ -80,10 +80,10 @@ func TestNetworkGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetNetworkGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNetworkGroupAssignmentResponse("uid", ""),
+								util.GenerateNetworkGroupAssignmentResponse("id", ""),
 							},
 						),
 						3,
@@ -92,7 +92,7 @@ func TestNetworkGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_network_group_assignment" "my_network_group_assignment" {
 						filter = {
-							network_group_assignment_id = "uid"
+							network_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -100,7 +100,7 @@ func TestNetworkGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_network_group_assignment.my_network_group_assignment",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
 						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
@@ -135,7 +135,7 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_network_group_assignment" "my_network_group_assignment" {
 						filter = {
-							network_group_assignment_id = "uid"
+							network_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -146,7 +146,7 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetNetworkGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -154,7 +154,7 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_network_group_assignment" "my_network_group_assignment" {
 						filter = {
-							network_group_assignment_id = "uid"
+							network_group_assignment_id = "id"
 						}
 					}
 				`,

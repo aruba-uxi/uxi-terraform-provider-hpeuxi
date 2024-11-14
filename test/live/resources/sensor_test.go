@@ -13,12 +13,12 @@ import (
 )
 
 func TestSensorResource(t *testing.T) {
-	originalSensor := util.GetSensorProperties(config.SensorUid)
+	originalSensor := util.GetSensorProperties(config.SensorId)
 	updatedNotes := "tf_provider_acceptance_test_update_notes"
 	updatedAddressNote := "tf_provider_acceptance_test_update_address_note"
 	updatedPcapMode := "off"
 	updatedSensor := config_api_client.SensorItem{
-		Id:          config.SensorUid,
+		Id:          config.SensorId,
 		Name:        "tf_provider_acceptance_test_update_name",
 		Notes:       *config_api_client.NewNullableString(&updatedNotes),
 		AddressNote: *config_api_client.NewNullableString(&updatedAddressNote),
@@ -52,7 +52,7 @@ func TestSensorResource(t *testing.T) {
 
 					import {
 						to = uxi_sensor.my_sensor
-						id = "` + config.SensorUid + `"
+						id = "` + config.SensorId + `"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(),

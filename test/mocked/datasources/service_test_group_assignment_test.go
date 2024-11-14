@@ -24,10 +24,10 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTestGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestGroupAssignmentResponse("uid", ""),
+								util.GenerateServiceTestGroupAssignmentResponse("id", ""),
 							},
 						),
 						3,
@@ -36,7 +36,7 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
-							service_test_group_assignment_id = "uid"
+							service_test_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -44,17 +44,17 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
-						"group_uid",
+						"group_id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
-						"service_test_uid",
+						"service_test_id",
 					),
 				),
 			},
@@ -80,10 +80,10 @@ func TestServiceTestGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetServiceTestGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestGroupAssignmentResponse("uid", ""),
+								util.GenerateServiceTestGroupAssignmentResponse("id", ""),
 							},
 						),
 						3,
@@ -92,7 +92,7 @@ func TestServiceTestGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
-							service_test_group_assignment_id = "uid"
+							service_test_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -100,7 +100,7 @@ func TestServiceTestGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
 						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
@@ -134,7 +134,7 @@ func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
-							service_test_group_assignment_id = "uid"
+							service_test_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -145,7 +145,7 @@ func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTestGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -153,7 +153,7 @@ func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
-							service_test_group_assignment_id = "uid"
+							service_test_group_assignment_id = "id"
 						}
 					}
 				`,

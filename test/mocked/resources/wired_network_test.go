@@ -39,9 +39,9 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
 						),
 						2,
 					)
@@ -53,7 +53,7 @@ func TestWiredNetworkResource(t *testing.T) {
 
 					import {
 						to = uxi_wired_network.my_wired_network
-						id = "uid"
+						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -65,7 +65,7 @@ func TestWiredNetworkResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_wired_network.my_wired_network",
 						"id",
-						"uid",
+						"id",
 					),
 				),
 			},
@@ -73,9 +73,9 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
 						),
 						1,
 					)
@@ -88,9 +88,9 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
 						),
 						1,
 					)
@@ -107,9 +107,9 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
 						),
 						2,
 					)
@@ -150,7 +150,7 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -162,7 +162,7 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 
 					import {
 						to = uxi_wired_network.my_wired_network
-						id = "uid"
+						id = "id"
 					}`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
@@ -185,7 +185,7 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 
 					import {
 						to = uxi_wired_network.my_wired_network
-						id = "uid"
+						id = "id"
 					}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,

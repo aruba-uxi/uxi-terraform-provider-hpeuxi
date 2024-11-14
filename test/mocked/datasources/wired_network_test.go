@@ -25,9 +25,9 @@ func TestWiredNetworkDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
 						),
 						3,
 					)
@@ -35,7 +35,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "uid"
+							wired_network_id = "id"
 						}
 					}
 				`,
@@ -43,7 +43,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_wired_network.my_wired_network",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_wired_network.my_wired_network",
@@ -109,9 +109,9 @@ func TestWiredNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
 						),
 						3,
 					)
@@ -119,7 +119,7 @@ func TestWiredNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "uid"
+							wired_network_id = "id"
 						}
 					}
 				`,
@@ -127,7 +127,7 @@ func TestWiredNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_wired_network.my_wired_network",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
 						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
@@ -162,7 +162,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "uid"
+							wired_network_id = "id"
 						}
 					}
 				`,
@@ -173,7 +173,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -181,7 +181,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "uid"
+							wired_network_id = "id"
 						}
 					}
 				`,

@@ -24,9 +24,9 @@ func TestSensorDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")},
 						),
 						3,
 					)
@@ -34,12 +34,12 @@ func TestSensorDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "id"),
 					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "name", "name"),
 					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "serial", "serial"),
 					resource.TestCheckResourceAttr(
@@ -95,9 +95,9 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensor(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")},
 						),
 						3,
 					)
@@ -105,12 +105,12 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "id"),
 					func(s *terraform.State) error {
 						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
@@ -145,7 +145,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,
@@ -157,7 +157,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -165,7 +165,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,

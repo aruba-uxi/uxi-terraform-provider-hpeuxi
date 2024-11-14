@@ -24,10 +24,10 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensorGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse("uid", ""),
+								util.GenerateSensorGroupAssignmentResponse("id", ""),
 							},
 						),
 						3,
@@ -36,7 +36,7 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
-							sensor_group_assignment_id = "uid"
+							sensor_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -44,17 +44,17 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"group_id",
-						"group_uid",
+						"group_id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
-						"sensor_uid",
+						"sensor_id",
 					),
 				),
 			},
@@ -80,10 +80,10 @@ func TestSensorGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensorGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse("uid", ""),
+								util.GenerateSensorGroupAssignmentResponse("id", ""),
 							},
 						),
 						3,
@@ -92,7 +92,7 @@ func TestSensorGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
-							sensor_group_assignment_id = "uid"
+							sensor_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -100,7 +100,7 @@ func TestSensorGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
 						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
@@ -134,7 +134,7 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
-							sensor_group_assignment_id = "uid"
+							sensor_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -145,7 +145,7 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensorGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -153,7 +153,7 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
-							sensor_group_assignment_id = "uid"
+							sensor_group_assignment_id = "id"
 						}
 					}
 				`,

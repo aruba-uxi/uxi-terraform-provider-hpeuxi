@@ -24,9 +24,9 @@ func TestAgentDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
 						),
 						3,
 					)
@@ -34,12 +34,12 @@ func TestAgentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "uid"
+							agent_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "id"),
 					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "name", "name"),
 					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "serial", "serial"),
 					resource.TestCheckResourceAttr(
@@ -84,9 +84,9 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
 						),
 						3,
 					)
@@ -94,12 +94,12 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "uid"
+							agent_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "id"),
 					func(s *terraform.State) error {
 						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
@@ -134,7 +134,7 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "uid"
+							agent_id = "id"
 						}
 					}
 				`,
@@ -146,7 +146,7 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -154,7 +154,7 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "uid"
+							agent_id = "id"
 						}
 					}
 				`,

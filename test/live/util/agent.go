@@ -32,7 +32,7 @@ func GetAgentProperties(id string) config_api_client.AgentItem {
 
 func CheckStateAgainstAgent(t st.Fatalf, agent config_api_client.AgentItem) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
-		resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", config.AgentPermanentUid),
+		resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", config.AgentPermanentId),
 		resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "serial", agent.Serial),
 		TestOptionalValue(t, "data.uxi_agent.my_agent", "model_number", agent.ModelNumber.Get()),
 		resource.TestCheckResourceAttrWith(
@@ -61,7 +61,7 @@ func CheckStateAgainstAgent(t st.Fatalf, agent config_api_client.AgentItem) reso
 }
 
 type ProvisionAgent struct {
-	CustomerUid       string
+	CustomerId        string
 	ProvisionToken    string
 	DeviceSerial      string
 	DeviceGatewayHost string
@@ -77,49 +77,49 @@ type provisionAgentRequest struct {
 
 func (p ProvisionAgent) Provision() (string, error) {
 	url := p.DeviceGatewayHost + "/provision-zebra-device"
-	uid, err := p.generateUid()
+	id, err := p.generateId()
 	if err != nil {
-		return uid, err
+		return id, err
 	}
 
 	request := provisionAgentRequest{
-		Uid:            uid,
-		CustomerUid:    p.CustomerUid,
+		Uid:            id,
+		CustomerUid:    p.CustomerId,
 		ProvisionToken: p.ProvisionToken,
 		PlatformName:   "zebra",
 		DeviceSerial:   p.DeviceSerial,
 	}
 	jsonData, err := json.Marshal(request)
 	if err != nil {
-		return uid, err
+		return id, err
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
-		return uid, err
+		return id, err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return uid, err
+		return id, err
 	}
 	defer resp.Body.Close()
 
 	body, _ := io.ReadAll(resp.Body)
 	if resp.StatusCode != http.StatusCreated {
-		return uid, fmt.Errorf(
+		return id, fmt.Errorf(
 			"unexpected status code returned: %d\nresponse: %s",
 			resp.StatusCode,
 			string(body),
 		)
 	}
 
-	return uid, nil
+	return id, nil
 }
 
-func (p ProvisionAgent) generateUid() (string, error) {
+func (p ProvisionAgent) generateId() (string, error) {
 	// Create an MD5 hash of the serial string
 	hasher := md5.New()
 	hasher.Write([]byte(p.DeviceSerial))

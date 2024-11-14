@@ -18,8 +18,8 @@ func TestAgentResource(t *testing.T) {
 	)
 
 	// we provision an agent here so that we have something to delete later on
-	agentUid, err := util.ProvisionAgent{
-		CustomerUid:       config.CustomerUid,
+	agentId, err := util.ProvisionAgent{
+		CustomerId:        config.CustomerId,
 		ProvisionToken:    os.Getenv("UXI_PROVISION_TOKEN"),
 		DeviceSerial:      config.AgentCreateSerial,
 		DeviceGatewayHost: config.DeviceGatewayHost,
@@ -53,14 +53,14 @@ func TestAgentResource(t *testing.T) {
 
 					import {
 						to = uxi_agent.my_agent
-						id = "` + agentUid + `"
+						id = "` + agentId + `"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", agentName),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", ""),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", agentUid),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", agentId),
 				),
 			},
 			// ImportState testing
@@ -78,7 +78,7 @@ func TestAgentResource(t *testing.T) {
 					pcap_mode = "off"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", agentUid),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", agentId),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", agentNameUpdated),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes"),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "off"),

@@ -38,7 +38,7 @@ func TestWiredNetworkResource(t *testing.T) {
 
 					import {
 						to = uxi_wired_network.wired_network_0
-						id = "` + config.WiredNetworkUid + `"
+						id = "` + config.WiredNetworkId + `"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -50,7 +50,7 @@ func TestWiredNetworkResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_wired_network.wired_network_0",
 						"id",
-						config.WiredNetworkUid,
+						config.WiredNetworkId,
 					),
 				),
 			},
@@ -64,7 +64,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 				resource "uxi_wired_network" "wired_network_0" {
-					name = "` + config.WiredNetworkUid + `-updated-name"
+					name = "` + config.WiredNetworkId + `-updated-name"
 				}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)updating a wired_network is not supported; wired_networks can only be updated\s*through the dashboard`,

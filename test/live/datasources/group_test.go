@@ -21,7 +21,7 @@ func TestGroupDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "` + config.GroupUidRoot + `"
+							group_id = "` + config.GroupIdRoot + `"
 						}
 					}
 				`,
@@ -61,7 +61,7 @@ func TestGroupDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_group.my_group",
 						"parent_group_id",
-						config.GroupUidRoot,
+						config.GroupIdRoot,
 					),
 				),
 			},

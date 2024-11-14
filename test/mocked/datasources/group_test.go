@@ -26,10 +26,10 @@ func TestGroupDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("id", "", ""),
 							},
 						),
 						3,
@@ -38,26 +38,26 @@ func TestGroupDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "uid"
+							group_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "id"),
 				),
 			},
 			// TODO: Test retrieving the root group
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
-						"my_root_group_uid",
+						"my_root_group_id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
 								util.StructToMap(config_api_client.GroupsGetItem{
-									Id:     "my_root_group_uid",
+									Id:     "my_root_group_id",
 									Name:   "root",
 									Parent: *config_api_client.NewNullableParent(nil),
-									Path:   "my_root_group_uid",
+									Path:   "my_root_group_id",
 								}),
 							},
 						),
@@ -67,7 +67,7 @@ func TestGroupDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "my_root_group_uid"
+							group_id = "my_root_group_id"
 						}
 					}
 				`,
@@ -96,10 +96,10 @@ func TestGroupDataSourceTooManyRequestsHandling(t *testing.T) {
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("id", "", ""),
 							},
 						),
 						3,
@@ -108,12 +108,12 @@ func TestGroupDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "uid"
+							group_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
 						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
@@ -148,7 +148,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "uid"
+							group_id = "id"
 						}
 					}
 				`,
@@ -160,7 +160,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -168,7 +168,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "uid"
+							group_id = "id"
 						}
 					}
 				`,
