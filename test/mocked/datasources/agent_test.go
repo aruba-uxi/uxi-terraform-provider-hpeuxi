@@ -10,7 +10,7 @@ import (
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAgentDataSource(t *testing.T) {
@@ -101,7 +101,7 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "id"),
 					func(s *terraform.State) error {
-						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),

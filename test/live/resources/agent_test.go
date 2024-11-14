@@ -9,6 +9,8 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAgentResource(t *testing.T) {
@@ -57,19 +59,19 @@ func TestAgentResource(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", agentId),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", agentName),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", ""),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", agentId),
 				),
 			},
-			// ImportState testing
+			// ImportState
 			{
 				ResourceName:      "uxi_agent.my_agent",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Update testing
+			// Update
 			{
 				Config: provider.ProviderConfig + `
 				resource "uxi_agent" "my_agent" {
@@ -84,7 +86,14 @@ func TestAgentResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "off"),
 				),
 			},
-			// Delete testing happen automatically
+			// Delete
+			{
+				Config: provider.ProviderConfig,
+			},
+		},
+		CheckDestroy: func(s *terraform.State) error {
+			assert.Equal(t, util.GetAgent(agentId), nil)
+			return nil
 		},
 	})
 }

@@ -7,18 +7,26 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/nbio/st"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSensorGroupAssignmentResource(t *testing.T) {
-	const groupName = "tf_provider_acceptance_test_sensor_assignment_test"
-	const group2Name = "tf_provider_acceptance_test_sensor_assignment_test_two"
-	existingSensorProperties := util.GetSensorProperties(config.SensorId)
+	const (
+		groupName  = "tf_provider_acceptance_test_sensor_assignment_resource"
+		group2Name = "tf_provider_acceptance_test_sensor_assignment_resource_two"
+	)
+
+	var (
+		existingSensorProperties = util.GetSensorProperties(config.SensorId)
+		resourceIdBeforeRecreate string
+		resourceIdAfterRecreate  string
+	)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Creating a sensor group assignment
+			// Creating
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
@@ -42,6 +50,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						group_id  = uxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					// Check configured properties
 					resource.TestCheckResourceAttr(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
@@ -51,19 +60,30 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"group_id",
 						func(value string) error {
-							st.Assert(t, value, util.GetGroupByName(groupName).Id)
+							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
 							return nil
 						},
 					),
+					// Check properties match what is on backend
+					func(s *terraform.State) error {
+						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
+						rs := s.RootModule().Resources[resourceName]
+						resourceIdBeforeRecreate = rs.Primary.ID
+						return util.CheckStateAgainstSensorGroupAssignment(
+							t,
+							"uxi_sensor_group_assignment.my_sensor_group_assignment",
+							util.GetSensorGroupAssignment(resourceIdBeforeRecreate),
+						)(s)
+					},
 				),
 			},
-			// ImportState testing
+			// ImportState
 			{
 				ResourceName:      "uxi_sensor_group_assignment.my_sensor_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Update and Read testing
+			// Update
 			{
 				Config: provider.ProviderConfig + `
 					// the original resources
@@ -89,6 +109,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						group_id  = uxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					// Check configured properties
 					resource.TestCheckResourceAttr(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
@@ -98,10 +119,21 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"group_id",
 						func(value string) error {
-							st.Assert(t, value, util.GetGroupByName(group2Name).Id)
+							assert.Equal(t, value, util.GetGroupByName(group2Name).Id)
 							return nil
 						},
 					),
+					// Check properties match what is on backend
+					func(s *terraform.State) error {
+						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
+						rs := s.RootModule().Resources[resourceName]
+						resourceIdAfterRecreate = rs.Primary.ID
+						return util.CheckStateAgainstSensorGroupAssignment(
+							t,
+							"uxi_sensor_group_assignment.my_sensor_group_assignment",
+							util.GetSensorGroupAssignment(resourceIdAfterRecreate),
+						)(s)
+					},
 				),
 			},
 			// Delete sensor-group assignments and remove sensors from state
@@ -115,6 +147,13 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						}
 					}`,
 			},
+		},
+		CheckDestroy: func(s *terraform.State) error {
+			assert.Equal(t, util.GetGroupByName(groupName), nil)
+			assert.Equal(t, util.GetGroupByName(group2Name), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+			return nil
 		},
 	})
 }

@@ -9,6 +9,8 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
+	"github.com/stretchr/testify/assert"
 )
 
 type Fetcher interface {
@@ -16,17 +18,21 @@ type Fetcher interface {
 }
 
 func TestGroupResource(t *testing.T) {
-	const groupNameParent = "tf_provider_acceptance_test_parent"
-	const groupNameParentUpdated = groupNameParent + "_updated"
-	const groupNameChild = "tf_provider_acceptance_test_child"
-	const groupNameGrandChild = "tf_provider_acceptance_test_grandchild"
-	const groupNameGrandChildMovedToParent = groupNameGrandChild + "_moved_to_parent"
-	const groupNameGrandChildMovedToRoot = groupNameGrandChild + "_moved_to_root"
+	const (
+		groupNameParent                  = "tf_provider_acceptance_test_group_resource_parent"
+		groupNameParentUpdated           = groupNameParent + "_updated"
+		groupNameChild                   = "tf_provider_acceptance_test_group_resource__child"
+		groupNameGrandChild              = "tf_provider_acceptance_test_group_resource__grandchild"
+		groupNameGrandChildMovedToParent = groupNameGrandChild + "_moved_to_parent"
+		groupNameGrandChildMovedToRoot   = groupNameGrandChild + "_moved_to_root"
+	)
+
+	var resourceIdBeforeRecreate string
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create and Read testing
+			// Create
 			{
 				// Node without parent (attached to root)
 				Config: provider.ProviderConfig + `
@@ -34,13 +40,21 @@ func TestGroupResource(t *testing.T) {
 					name = "` + groupNameParent + `"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.parent",
+						"id",
+						func(value string) error {
+							assert.Equal(t, value, util.GetGroupByName(groupNameParent).Id)
+							return nil
+						},
+					),
 					resource.TestCheckResourceAttr(
 						"uxi_group.parent", "name", groupNameParent,
 					),
 					resource.TestCheckNoResourceAttr("uxi_group.parent", "parent_group_id"),
 				),
 			},
-			// ImportState testing
+			// ImportState
 			{
 				ResourceName:      "uxi_group.parent",
 				ImportState:       true,
@@ -53,6 +67,14 @@ func TestGroupResource(t *testing.T) {
 						name = "` + groupNameParentUpdated + `"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.parent",
+						"id",
+						func(value string) error {
+							assert.Equal(t, value, util.GetGroupByName(groupNameParentUpdated).Id)
+							return nil
+						},
+					),
 					resource.TestCheckResourceAttr(
 						"uxi_group.parent",
 						"name",
@@ -81,6 +103,14 @@ func TestGroupResource(t *testing.T) {
 						parent_group_id = uxi_group.child.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.child",
+						"id",
+						func(value string) error {
+							assert.Equal(t, value, util.GetGroupByName(groupNameChild).Id)
+							return nil
+						},
+					),
 					resource.TestCheckResourceAttr(
 						"uxi_group.child",
 						"name",
@@ -91,6 +121,17 @@ func TestGroupResource(t *testing.T) {
 						"parent_group_id",
 						func(parentGroupId string) error {
 							return checkGroupIsChildOfNode(parentGroupId, groupNameParentUpdated)
+						},
+					),
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.grandchild",
+						"id",
+						func(value string) error {
+							resourceIdBeforeRecreate = util.GetGroupByName(
+								groupNameGrandChild,
+							).Id
+							assert.Equal(t, value, resourceIdBeforeRecreate)
+							return nil
 						},
 					),
 					resource.TestCheckResourceAttr(
@@ -125,6 +166,18 @@ func TestGroupResource(t *testing.T) {
 						parent_group_id = uxi_group.parent.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.grandchild",
+						"id",
+						func(value string) error {
+							assert.Equal(
+								t,
+								value,
+								util.GetGroupByName(groupNameGrandChildMovedToParent).Id,
+							)
+							return nil
+						},
+					),
 					resource.TestCheckResourceAttr(
 						"uxi_group.grandchild",
 						"name",
@@ -135,6 +188,15 @@ func TestGroupResource(t *testing.T) {
 						"parent_group_id",
 						func(parentGroupId string) error {
 							return checkGroupIsChildOfNode(parentGroupId, groupNameParentUpdated)
+						},
+					),
+					// Check that resource has been recreated
+					resource.TestCheckResourceAttrWith(
+						"uxi_group.grandchild",
+						"id",
+						func(value string) error {
+							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+							return nil
 						},
 					),
 				),
@@ -167,7 +229,19 @@ func TestGroupResource(t *testing.T) {
 					),
 				),
 			},
-			// Deletes happen automatically
+			// Delete
+			{
+				Config: provider.ProviderConfig,
+			},
+		},
+		CheckDestroy: func(s *terraform.State) error {
+			assert.Equal(t, util.GetGroupByName(groupNameParent), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameParentUpdated), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameChild), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameGrandChild), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameGrandChildMovedToParent), nil)
+			assert.Equal(t, util.GetGroupByName(groupNameGrandChildMovedToRoot), nil)
+			return nil
 		},
 	})
 }

@@ -101,7 +101,13 @@ acceptance-tests +ARGS='':
   echo
   if [[ $REPLY =~ ^[Yy]$ ]]
   then
-    TF_ACC=1 go test -v ./test/live/... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
+    # we run these seperately so that they do not interfere with each other since GoLang executes
+    # tests in different directories at the same time
+    for dir in "datasources" "resources"
+    do
+        echo "Running tests in $dir..."
+        TF_ACC=1 go test -v ./test/live/$dir/... -race {{ ARGS }}
+    done
   fi
 
 
