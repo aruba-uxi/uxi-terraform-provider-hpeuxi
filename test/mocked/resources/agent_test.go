@@ -134,10 +134,10 @@ func TestAgentResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestAgentResource429Handling(t *testing.T) {
+func TestAgentResourcemockTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var request429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -149,9 +149,9 @@ func TestAgentResource429Handling(t *testing.T) {
 			// Importing a agent
 			{
 				PreConfig: func() {
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/agents").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
@@ -173,7 +173,7 @@ func TestAgentResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "uid"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -189,9 +189,9 @@ func TestAgentResource429Handling(t *testing.T) {
 						),
 						1,
 					)
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/agents").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateAgent(
 						"uid",
@@ -217,7 +217,7 @@ func TestAgentResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name_2"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -229,16 +229,16 @@ func TestAgentResource429Handling(t *testing.T) {
 						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
 						1,
 					)
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Delete("/networking-uxi/v1alpha1/agents/uid").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockDeleteAgent("uid", 1)
 				},
 				Config: provider.ProviderConfig,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),

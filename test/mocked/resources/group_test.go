@@ -325,11 +325,11 @@ func TestRootGroupResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestGroupResource429Handling(t *testing.T) {
+func TestGroupResourcemockTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var request429 *gock.Response
-	var update429 *gock.Response
+	var mockTooManyRequests *gock.Response
+	var updateTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -337,9 +337,9 @@ func TestGroupResource429Handling(t *testing.T) {
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/groups").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("uid", "", ""),
@@ -374,7 +374,7 @@ func TestGroupResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -391,9 +391,9 @@ func TestGroupResource429Handling(t *testing.T) {
 						1,
 					)
 					// new group
-					update429 = gock.New("https://test.api.capenetworks.com").
+					updateTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/groups/uid").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateGroup(
 						"uid",
@@ -427,7 +427,7 @@ func TestGroupResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
 					func(s *terraform.State) error {
-						st.Assert(t, update429.Mock.Request().Counter, 0)
+						st.Assert(t, updateTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),

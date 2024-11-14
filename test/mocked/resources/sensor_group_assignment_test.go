@@ -342,10 +342,10 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
+func TestSensorGroupAssignmentResourcemockTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var mock429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -381,9 +381,9 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 					)
 
 					// required for sensor group assignment create
-					mock429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/sensor-group-assignments").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostSensorGroupAssignment(
 						util.GenerateSensorGroupAssignmentRequest(
@@ -439,7 +439,7 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 						"sensor_group_assignment_uid",
 					),
 					func(s *terraform.State) error {
-						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -470,9 +470,9 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 					)
 
 					util.MockDeleteGroup("group_uid", 1)
-					mock429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Delete("/networking-uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_uid").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockDeleteSensorGroupAssignment("sensor_group_assignment_uid", 1)
 				},
@@ -494,7 +494,7 @@ func TestSensorGroupAssignmentResource429Handling(t *testing.T) {
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					func(s *terraform.State) error {
-						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),

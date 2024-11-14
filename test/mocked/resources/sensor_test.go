@@ -154,10 +154,10 @@ func TestSensorResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestSensorResource429Handling(t *testing.T) {
+func TestSensorResourcemockTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var request429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -169,9 +169,9 @@ func TestSensorResource429Handling(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/sensors").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensor("uid", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
@@ -194,7 +194,7 @@ func TestSensorResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "uid"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -207,9 +207,9 @@ func TestSensorResource429Handling(t *testing.T) {
 						[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")}),
 						1,
 					)
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/sensors/uid").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateSensor(
 						"uid",
@@ -233,7 +233,7 @@ func TestSensorResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
