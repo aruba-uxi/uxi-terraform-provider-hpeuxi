@@ -115,7 +115,7 @@ func (r *wirelessNetworkResource) Read(
 	request := r.client.ConfigurationAPI.
 		WirelessNetworksGet(ctx).
 		Id(state.ID.ValueString())
-	networkResponse, response, err := util.RetryFor429(request.Execute)
+	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_wireless_network")

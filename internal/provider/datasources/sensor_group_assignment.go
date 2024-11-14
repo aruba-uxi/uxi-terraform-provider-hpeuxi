@@ -86,7 +86,7 @@ func (d *sensorGroupAssignmentDataSource) Read(
 	request := d.client.ConfigurationAPI.
 		SensorGroupAssignmentsGet(ctx).
 		Id(state.Filter.SensorGroupAssignmentID)
-	sensorGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("create", "uxi_sensor_group_assignment")

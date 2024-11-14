@@ -84,7 +84,7 @@ func (d *networkGroupAssignmentDataSource) Read(
 	request := d.client.ConfigurationAPI.
 		NetworkGroupAssignmentsGet(ctx).
 		Id(state.Filter.NetworkGroupAssignmentID)
-	networkGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")

@@ -90,7 +90,7 @@ func (d *groupDataSource) Read(
 		GroupsGet(ctx).
 		Id(*state.Filter.GroupID)
 
-	groupResponse, response, err := util.RetryFor429(request.Execute)
+	groupResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_group")

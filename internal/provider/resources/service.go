@@ -115,7 +115,7 @@ func (r *serviceTestResource) Read(
 	request := r.client.ConfigurationAPI.
 		ServiceTestsGet(ctx).
 		Id(state.ID.ValueString())
-	sensorResponse, response, err := util.RetryFor429(request.Execute)
+	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")

@@ -84,7 +84,9 @@ func (d *serviceTestGroupAssignmentDataSource) Read(
 	request := d.client.ConfigurationAPI.
 		ServiceTestGroupAssignmentsGet(ctx).
 		Id(state.Filter.ServiceTestGroupAssignmentID)
-	serviceTestGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	serviceTestGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(
+		request.Execute,
+	)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
