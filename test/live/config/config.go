@@ -4,16 +4,16 @@ package config
 // Configuration-API Acceptance Testing (844457745a1111ef880836000a52e73e)
 // And therefore the client_id and client_secret used for the acceptance tests must match this
 // customer.
-const AgentPermanentUid = "8260f349-5c73-394a-b786-57985d001763"
+const AgentPermanentId = "8260f349-5c73-394a-b786-57985d001763"
 const AgentCreateSerial = "56fb38331f19d278"
-const CustomerUid = "9c16d493-7649-40bc-975b-07422d227c0b"
-const GroupUidRoot = "07422d227c0b"
-const WiredNetworkUid = "ethernet-0ee5b46c2ef0"
+const CustomerId = "9c16d493-7649-40bc-975b-07422d227c0b"
+const GroupIdRoot = "07422d227c0b"
+const WiredNetworkId = "ethernet-0ee5b46c2ef0"
 const WiredNetworkName = "tf-provider-acceptance-tests-ethernet-0"
-const WirelessNetworkUid = "ssid-bf704ff37dc0"
+const WirelessNetworkId = "ssid-bf704ff37dc0"
 const WirelessNetworkName = "tf-provider-acceptance-tests-ssid-0"
-const ServiceTestUid = "6f81e43d-76f1-4a15-aafe-4ce2371d918a"
+const ServiceTestId = "6f81e43d-76f1-4a15-aafe-4ce2371d918a"
 const ServiceTestName = "tf-provider-acceptance-test-0"
-const SensorUid = "4b031caf-cea8-411d-8928-79f518163dae"
+const SensorId = "4b031caf-cea8-411d-8928-79f518163dae"
 
 const DeviceGatewayHost = "https://device-gateway.staging.capedev.io"

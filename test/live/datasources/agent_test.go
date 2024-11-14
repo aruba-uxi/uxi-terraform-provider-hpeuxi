@@ -10,7 +10,7 @@ import (
 )
 
 func TestAgentDataSource(t *testing.T) {
-	agent := util.GetAgentProperties(config.AgentPermanentUid)
+	agent := util.GetAgentProperties(config.AgentPermanentId)
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -18,7 +18,7 @@ func TestAgentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "` + config.AgentPermanentUid + `"
+							agent_id = "` + config.AgentPermanentId + `"
 						}
 					}
 				`,

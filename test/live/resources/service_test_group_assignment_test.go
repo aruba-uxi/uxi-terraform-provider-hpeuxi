@@ -30,7 +30,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 
 					import {
 						to = uxi_service_test.my_service_test
-						id = "` + config.ServiceTestUid + `"
+						id = "` + config.ServiceTestId + `"
 					}
 
 					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
@@ -41,7 +41,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
-						config.ServiceTestUid,
+						config.ServiceTestId,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
@@ -85,7 +85,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
-						config.ServiceTestUid,
+						config.ServiceTestId,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",

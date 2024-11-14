@@ -24,10 +24,10 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("uid", ""),
+								util.GenerateWirelessNetworkResponse("id", ""),
 							},
 						),
 						3,
@@ -36,7 +36,7 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wireless_network_id = "uid"
+							wireless_network_id = "id"
 						}
 					}
 				`,
@@ -44,7 +44,7 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_wireless_network.my_wireless_network",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_wireless_network.my_wireless_network",
@@ -120,10 +120,10 @@ func TestWirelessNetworkDataSource429Handling(t *testing.T) {
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetWirelessNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("uid", ""),
+								util.GenerateWirelessNetworkResponse("id", ""),
 							},
 						),
 						3,
@@ -132,7 +132,7 @@ func TestWirelessNetworkDataSource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wireless_network_id = "uid"
+							wireless_network_id = "id"
 						}
 					}
 				`,
@@ -140,7 +140,7 @@ func TestWirelessNetworkDataSource429Handling(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_wireless_network.my_wireless_network",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
@@ -175,7 +175,7 @@ func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wireless_network_id = "uid"
+							wireless_network_id = "id"
 						}
 					}
 				`,
@@ -186,7 +186,7 @@ func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -194,7 +194,7 @@ func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wireless_network_id = "uid"
+							wireless_network_id = "id"
 						}
 					}
 				`,

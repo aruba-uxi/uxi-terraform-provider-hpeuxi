@@ -28,24 +28,24 @@ func TestGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockPostGroup(
-						util.GenerateGroupRequestModel("uid", "", ""),
-						util.StructToMap(util.GenerateNonRootGroupResponseModel("uid", "", "")),
+						util.GenerateGroupRequestModel("id", "", ""),
+						util.StructToMap(util.GenerateNonRootGroupResponseModel("id", "", "")),
 						1,
 					)
-					util.MockGetGroup("uid",
+					util.MockGetGroup("id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("id", "", ""),
 							},
 						),
 						2,
 					)
 					// to indicate the group has a parent
 					util.MockGetGroup(
-						"parent_uid",
+						"parent_id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("parent_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("parent_id", "", ""),
 							},
 						),
 						1,
@@ -54,36 +54,36 @@ func TestGroupResource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 				resource "uxi_group" "my_group" {
 					name            = "name"
-					parent_group_id = "parent_uid"
+					parent_group_id = "parent_id"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
 					resource.TestCheckResourceAttr(
 						"uxi_group.my_group",
 						"parent_group_id",
-						"parent_uid",
+						"parent_id",
 					),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 				),
 			},
 			// ImportState testing
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("id", "", ""),
 							},
 						),
 						1,
 					)
 					// to indicate the group has a parent
 					util.MockGetGroup(
-						"parent_uid",
+						"parent_id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("parent_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("parent_id", "", ""),
 							},
 						),
 						1,
@@ -97,32 +97,32 @@ func TestGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("uid", "", ""),
+							util.GenerateNonRootGroupResponseModel("id", "", ""),
 						},
 					),
 						1,
 					)
 					// updated group
 					util.MockUpdateGroup(
-						"uid",
+						"id",
 						map[string]interface{}{"name": "name_2"},
-						util.GenerateNonRootGroupResponseModel("uid", "_2", ""),
+						util.GenerateNonRootGroupResponseModel("id", "_2", ""),
 						1,
 					)
-					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("uid", "_2", ""),
+							util.GenerateNonRootGroupResponseModel("id", "_2", ""),
 						},
 					),
 						3,
 					)
 					util.MockGetGroup(
-						"parent_uid",
+						"parent_id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("parent_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("parent_id", "", ""),
 							},
 						),
 						1,
@@ -131,71 +131,71 @@ func TestGroupResource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
 						name            = "name_2"
-						parent_group_id = "parent_uid"
+						parent_group_id = "parent_id"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
 					resource.TestCheckResourceAttr(
 						"uxi_group.my_group",
 						"parent_group_id",
-						"parent_uid",
+						"parent_id",
 					),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 				),
 			},
 			// Update that does trigger a recreate
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("uid", "", ""),
+							util.GenerateNonRootGroupResponseModel("id", "", ""),
 						},
 					),
 						1,
 					)
 					// new group (replacement)
 					util.MockPostGroup(
-						util.GenerateGroupRequestModel("new_uid", "", "_2"),
-						util.GenerateNonRootGroupResponseModel("new_uid", "", "_2"),
+						util.GenerateGroupRequestModel("new_id", "", "_2"),
+						util.GenerateNonRootGroupResponseModel("new_id", "", "_2"),
 						1,
 					)
-					util.MockGetGroup("new_uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("new_id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("new_uid", "", "_2"),
+							util.GenerateNonRootGroupResponseModel("new_id", "", "_2"),
 						},
 					),
 						1,
 					)
 					// delete old group (being replaced)
-					util.MockDeleteGroup("uid", 1)
+					util.MockDeleteGroup("id", 1)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
 						name            = "name"
-						parent_group_id = "parent_uid_2"
+						parent_group_id = "parent_id_2"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
 					resource.TestCheckResourceAttr(
 						"uxi_group.my_group",
 						"parent_group_id",
-						"parent_uid_2",
+						"parent_id_2",
 					),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "new_uid"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "new_id"),
 				),
 			},
 			// Delete testing
 			{
 				PreConfig: func() {
-					util.MockGetGroup("new_uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("new_id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("new_uid", "", "_2"),
+							util.GenerateNonRootGroupResponseModel("new_id", "", "_2"),
 						},
 					),
 						1,
 					)
-					util.MockDeleteGroup("new_uid", 1)
+					util.MockDeleteGroup("new_id", 1)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -216,13 +216,13 @@ func TestRootGroupResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
-						"my_root_group_uid",
+						"my_root_group_id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{
 							{
-								"id":     "my_root_group_uid",
+								"id":     "my_root_group_id",
 								"name":   "root",
 								"parent": *config_api_client.NewNullableParent(nil),
-								"path":   "my_root_group_uid",
+								"path":   "my_root_group_id",
 								"type":   "networking-uxi/group",
 							},
 						}),
@@ -236,7 +236,7 @@ func TestRootGroupResource(t *testing.T) {
 
 				import {
 					to = uxi_group.my_root_group
-					id = "my_root_group_uid"
+					id = "my_root_group_id"
 				}`,
 				ExpectError: regexp.MustCompile(`The root group cannot be used as a resource`),
 			},
@@ -246,23 +246,23 @@ func TestRootGroupResource(t *testing.T) {
 					util.MockPostGroup(
 						map[string]interface{}{"name": "name"},
 						map[string]interface{}{
-							"id":     "uid",
+							"id":     "id",
 							"name":   "name",
 							"parent": map[string]interface{}{"id": "root"},
-							"path":   "uid",
+							"path":   "id",
 							"type":   "networking-uxi/group",
 						},
 						1,
 					)
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
 								{
-									"id":     "uid",
+									"id":     "id",
 									"name":   "name",
 									"parent": map[string]interface{}{"id": "root"},
-									"path":   "uid",
+									"path":   "id",
 									"type":   "networking-uxi/group",
 								},
 							},
@@ -290,7 +290,7 @@ func TestRootGroupResource(t *testing.T) {
 					name = "name"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
 					resource.TestCheckNoResourceAttr("uxi_group.my_group", "parent_group_id"),
 				),
@@ -300,21 +300,21 @@ func TestRootGroupResource(t *testing.T) {
 				PreConfig: func() {
 					// existing group
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
 								{
-									"id":     "uid",
+									"id":     "id",
 									"name":   "name",
 									"parent": map[string]interface{}{"id": "root"},
-									"path":   "uid",
+									"path":   "id",
 									"type":   "networking-uxi/group",
 								},
 							},
 						),
 						1,
 					)
-					util.MockDeleteGroup("uid", 1)
+					util.MockDeleteGroup("id", 1)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -341,25 +341,25 @@ func TestGroupResource429Handling(t *testing.T) {
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostGroup(
-						util.GenerateGroupRequestModel("uid", "", ""),
-						util.GenerateNonRootGroupResponseModel("uid", "", ""),
+						util.GenerateGroupRequestModel("id", "", ""),
+						util.GenerateNonRootGroupResponseModel("id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("id", "", ""),
 							},
 						),
 						2,
 					)
 					// to indicate the group has a parent
 					util.MockGetGroup(
-						"parent_uid",
+						"parent_id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("parent_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("parent_id", "", ""),
 							},
 						),
 						1,
@@ -368,10 +368,10 @@ func TestGroupResource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 				resource "uxi_group" "my_group" {
 					name            = "name"
-					parent_group_id = "parent_uid"
+					parent_group_id = "parent_id"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
 						st.Assert(t, request429.Mock.Request().Counter, 0)
 						return nil
@@ -382,37 +382,37 @@ func TestGroupResource429Handling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("uid", "", ""),
+							util.GenerateNonRootGroupResponseModel("id", "", ""),
 						},
 					),
 						1,
 					)
 					// new group
 					update429 = gock.New("https://test.api.capenetworks.com").
-						Patch("/networking-uxi/v1alpha1/groups/uid").
+						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateGroup(
-						"uid",
+						"id",
 						map[string]interface{}{"name": "name_2"},
-						util.GenerateNonRootGroupResponseModel("uid", "_2", ""),
+						util.GenerateNonRootGroupResponseModel("id", "_2", ""),
 						1,
 					)
-					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("uid", "_2", ""),
+							util.GenerateNonRootGroupResponseModel("id", "_2", ""),
 						},
 					),
 						3,
 					)
 					// to indicate the group has a parent
 					util.MockGetGroup(
-						"parent_uid",
+						"parent_id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("parent_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("parent_id", "", ""),
 							},
 						),
 						1,
@@ -421,7 +421,7 @@ func TestGroupResource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
 						name            = "name_2"
-						parent_group_id = "parent_uid"
+						parent_group_id = "parent_id"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
@@ -434,14 +434,14 @@ func TestGroupResource429Handling(t *testing.T) {
 			// Delete testing
 			{
 				PreConfig: func() {
-					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("uid", "", ""),
+							util.GenerateNonRootGroupResponseModel("id", "", ""),
 						},
 					),
 						1,
 					)
-					util.MockDeleteGroup("uid", 1)
+					util.MockDeleteGroup("id", 1)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -474,12 +474,12 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
 						name            = "name"
-						parent_group_id = "parent_uid"
+						parent_group_id = "parent_id"
 					}
 
 					import {
 						to = uxi_group.my_group
-						id = "uid"
+						id = "id"
 					}
 				`,
 				ExpectError: regexp.MustCompile(
@@ -490,7 +490,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -498,12 +498,12 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
 						name            = "name"
-						parent_group_id = "parent_uid"
+						parent_group_id = "parent_id"
 					}
 
 					import {
 						to = uxi_group.my_group
-						id = "uid"
+						id = "id"
 					}
 				`,
 
@@ -525,7 +525,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 				resource "uxi_group" "my_group" {
 					name            = "name"
-					parent_group_id = "parent_uid"
+					parent_group_id = "parent_id"
 				}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
@@ -535,25 +535,25 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockPostGroup(
-						util.GenerateGroupRequestModel("uid", "", ""),
-						util.GenerateNonRootGroupResponseModel("uid", "", ""),
+						util.GenerateGroupRequestModel("id", "", ""),
+						util.GenerateNonRootGroupResponseModel("id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("id", "", ""),
 							},
 						),
 						2,
 					)
 					// to indicate the group has a parent
 					util.MockGetGroup(
-						"parent_uid",
+						"parent_id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("parent_uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("parent_id", "", ""),
 							},
 						),
 						1,
@@ -562,26 +562,26 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 				resource "uxi_group" "my_group" {
 					name            = "name"
-					parent_group_id = "parent_uid"
+					parent_group_id = "parent_id"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 				),
 			},
 			// Update 4xx
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("uid", "", ""),
+							util.GenerateNonRootGroupResponseModel("id", "", ""),
 						},
 					),
 						1,
 					)
 					// new group - with error
 					gock.New("https://test.api.capenetworks.com").
-						Patch("/networking-uxi/v1alpha1/groups/uid").
+						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(422).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 422,
@@ -593,7 +593,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
 						name            = "name_2"
-						parent_group_id = "parent_uid"
+						parent_group_id = "parent_id"
 					}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Unable to create group - a sibling group already has the specified name\s*DebugID: 12312-123123-123123-1231212`,
@@ -603,16 +603,16 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("uid", "", ""),
+							util.GenerateNonRootGroupResponseModel("id", "", ""),
 						},
 					),
 						1,
 					)
 					// delete group - with error
 					gock.New("https://test.api.capenetworks.com").
-						Delete("/networking-uxi/v1alpha1/groups/uid").
+						Delete("/networking-uxi/v1alpha1/groups/id").
 						Reply(422).
 						JSON(map[string]interface{}{
 							"httpStatusCode": 422,
@@ -630,15 +630,15 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetGroup("uid", util.GeneratePaginatedResponse(
+					util.MockGetGroup("id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponseModel("uid", "", ""),
+							util.GenerateNonRootGroupResponseModel("id", "", ""),
 						},
 					),
 						1,
 					)
 					// delete group
-					util.MockDeleteGroup("uid", 1)
+					util.MockDeleteGroup("id", 1)
 				},
 				Config: provider.ProviderConfig,
 			},

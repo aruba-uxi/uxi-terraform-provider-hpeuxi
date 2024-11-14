@@ -23,10 +23,10 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgentGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateAgentGroupAssignmentResponse("uid", ""),
+								util.GenerateAgentGroupAssignmentResponse("id", ""),
 							},
 						),
 						3,
@@ -35,7 +35,7 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
-							agent_group_assignment_id = "uid"
+							agent_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -43,17 +43,17 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_agent_group_assignment.my_agent_group_assignment",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_agent_group_assignment.my_agent_group_assignment",
 						"group_id",
-						"group_uid",
+						"group_id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
-						"agent_uid",
+						"agent_id",
 					),
 				),
 			},
@@ -79,10 +79,10 @@ func TestAgentGroupAssignmentDataSource429Handling(t *testing.T) {
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetAgentGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateAgentGroupAssignmentResponse("uid", ""),
+								util.GenerateAgentGroupAssignmentResponse("id", ""),
 							},
 						),
 						3,
@@ -91,7 +91,7 @@ func TestAgentGroupAssignmentDataSource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
-							agent_group_assignment_id = "uid"
+							agent_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -99,7 +99,7 @@ func TestAgentGroupAssignmentDataSource429Handling(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_agent_group_assignment.my_agent_group_assignment",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
@@ -134,7 +134,7 @@ func TestAgentGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
-							agent_group_assignment_id = "uid"
+							agent_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -145,7 +145,7 @@ func TestAgentGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgentGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -153,7 +153,7 @@ func TestAgentGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
-							agent_group_assignment_id = "uid"
+							agent_group_assignment_id = "id"
 						}
 					}
 				`,

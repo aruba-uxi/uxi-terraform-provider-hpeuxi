@@ -32,7 +32,7 @@ func CheckStateAgainstWirelessNetwork(
 		resource.TestCheckResourceAttr(
 			"data.uxi_wireless_network.my_wireless_network",
 			"id",
-			config.WirelessNetworkUid,
+			config.WirelessNetworkId,
 		),
 		resource.TestCheckResourceAttr(
 			"data.uxi_wireless_network.my_wireless_network",

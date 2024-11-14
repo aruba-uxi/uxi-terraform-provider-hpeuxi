@@ -31,7 +31,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 
 					import {
 						to = uxi_wired_network.my_network
-						id = "` + config.WiredNetworkUid + `"
+						id = "` + config.WiredNetworkId + `"
 					}
 
 					resource "uxi_network_group_assignment" "my_network_group_assignment" {
@@ -42,7 +42,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
-						config.WiredNetworkUid,
+						config.WiredNetworkId,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_network_group_assignment.my_network_group_assignment",
@@ -74,7 +74,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 
 					import {
 						to = uxi_wired_network.my_network
-						id = "` + config.WiredNetworkUid + `"
+						id = "` + config.WiredNetworkId + `"
 					}
 
 					// the new resources we wanna update the assignment to
@@ -91,7 +91,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
-						config.WiredNetworkUid,
+						config.WiredNetworkId,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_network_group_assignment.my_network_group_assignment",
@@ -139,7 +139,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 
 					import {
 						to = uxi_wireless_network.my_network
-						id = "` + config.WirelessNetworkUid + `"
+						id = "` + config.WirelessNetworkId + `"
 					}
 
 					resource "uxi_network_group_assignment" "my_network_group_assignment" {
@@ -150,7 +150,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
-						config.WirelessNetworkUid,
+						config.WirelessNetworkId,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_network_group_assignment.my_network_group_assignment",
@@ -182,7 +182,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 
 					import {
 						to = uxi_wireless_network.my_network
-						id = "` + config.WirelessNetworkUid + `"
+						id = "` + config.WirelessNetworkId + `"
 					}
 
 					// the new resources we wanna update the assignment to
@@ -199,7 +199,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
-						config.WirelessNetworkUid,
+						config.WirelessNetworkId,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_network_group_assignment.my_network_group_assignment",

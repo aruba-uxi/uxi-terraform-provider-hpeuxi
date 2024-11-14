@@ -29,7 +29,7 @@ func CheckDataSourceStateAgainstSensor(
 	sensor config_api_client.SensorItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
-		resource.TestCheckResourceAttr(entity, "id", config.SensorUid),
+		resource.TestCheckResourceAttr(entity, "id", config.SensorId),
 		resource.TestCheckResourceAttr(entity, "serial", sensor.Serial),
 		resource.TestCheckResourceAttr(entity, "model_number", sensor.ModelNumber),
 		resource.TestCheckResourceAttrWith(
@@ -56,7 +56,7 @@ func CheckResourceStateAgainstSensor(
 	sensor config_api_client.SensorItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
-		resource.TestCheckResourceAttr(entity, "id", config.SensorUid),
+		resource.TestCheckResourceAttr(entity, "id", config.SensorId),
 		resource.TestCheckResourceAttrWith(
 			entity,
 			"name",

@@ -23,9 +23,9 @@ func TestSensorDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")},
 						),
 						3,
 					)
@@ -33,12 +33,12 @@ func TestSensorDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "id"),
 					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "name", "name"),
 					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "serial", "serial"),
 					resource.TestCheckResourceAttr(
@@ -94,9 +94,9 @@ func TestSensorDataSource429Handling(t *testing.T) {
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensor(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")},
 						),
 						3,
 					)
@@ -104,12 +104,12 @@ func TestSensorDataSource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "id"),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
 						return nil
@@ -144,7 +144,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,
@@ -156,7 +156,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -164,7 +164,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,

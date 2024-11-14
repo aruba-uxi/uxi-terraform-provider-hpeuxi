@@ -23,10 +23,10 @@ func TestServiceTestDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTest(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("uid", ""),
+								util.GenerateServiceTestResponseModel("id", ""),
 							},
 						),
 						3,
@@ -35,7 +35,7 @@ func TestServiceTestDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "uid"
+							service_test_id = "id"
 						}
 					}
 				`,
@@ -43,7 +43,7 @@ func TestServiceTestDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test.my_service_test",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test.my_service_test",
@@ -95,10 +95,10 @@ func TestServiceTestDataSource429Handling(t *testing.T) {
 						Reply(429).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetServiceTest(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("uid", ""),
+								util.GenerateServiceTestResponseModel("id", ""),
 							},
 						),
 						3,
@@ -107,7 +107,7 @@ func TestServiceTestDataSource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "uid"
+							service_test_id = "id"
 						}
 					}
 				`,
@@ -115,7 +115,7 @@ func TestServiceTestDataSource429Handling(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test.my_service_test",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
 						st.Assert(t, mock429.Mock.Request().Counter, 0)
@@ -151,7 +151,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "uid"
+							service_test_id = "id"
 						}
 					}
 				`,
@@ -163,7 +163,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTest(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -171,7 +171,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "uid"
+							service_test_id = "id"
 						}
 					}
 				`,
