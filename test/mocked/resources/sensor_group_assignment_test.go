@@ -342,7 +342,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestSensorGroupAssignmentResourcemockTooManyRequestsHandling(t *testing.T) {
+func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
@@ -470,7 +470,7 @@ func TestSensorGroupAssignmentResourcemockTooManyRequestsHandling(t *testing.T) 
 					)
 
 					util.MockDeleteGroup("group_id", 1)
-					mock429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Delete("/networking-uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)

@@ -134,7 +134,7 @@ func TestAgentResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestAgentResourcemockTooManyRequestsHandling(t *testing.T) {
+func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
@@ -229,7 +229,7 @@ func TestAgentResourcemockTooManyRequestsHandling(t *testing.T) {
 						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
 						1,
 					)
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Delete("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)

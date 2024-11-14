@@ -313,7 +313,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestServiceTestGroupAssignmentResourcemockTooManyRequestsHandling(t *testing.T) {
+func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response

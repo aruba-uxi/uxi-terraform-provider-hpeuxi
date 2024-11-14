@@ -325,11 +325,10 @@ func TestRootGroupResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestGroupResourcemockTooManyRequestsHandling(t *testing.T) {
+func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
-	var updateTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -391,7 +390,7 @@ func TestGroupResourcemockTooManyRequestsHandling(t *testing.T) {
 						1,
 					)
 					// new group
-					update429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -427,7 +426,7 @@ func TestGroupResourcemockTooManyRequestsHandling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
 					func(s *terraform.State) error {
-						st.Assert(t, updateTooManyRequests.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),

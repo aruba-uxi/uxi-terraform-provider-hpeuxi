@@ -154,7 +154,7 @@ func TestSensorResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestSensorResourcemockTooManyRequestsHandling(t *testing.T) {
+func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
@@ -207,7 +207,7 @@ func TestSensorResourcemockTooManyRequestsHandling(t *testing.T) {
 						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
 						1,
 					)
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/sensors/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
