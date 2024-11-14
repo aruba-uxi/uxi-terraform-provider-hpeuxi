@@ -2,6 +2,7 @@ package util
 
 import (
 	"encoding/json"
+	"net/http"
 
 	"github.com/h2non/gock"
 )
@@ -219,7 +220,7 @@ func MockOAuth() *gock.Response {
 		Post("/as/token.oauth2").
 		MatchHeader("Content-Type", "application/x-www-form-urlencoded").
 		Persist().
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(map[string]interface{}{
 			"access_token": "mock_token",
 			"token_type":   "bearer",
@@ -234,7 +235,7 @@ func MockGetAgent(uid string, response map[string]interface{}, times int) {
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -243,7 +244,7 @@ func MockDeleteAgent(uid string, times int) {
 		Delete("/networking-uxi/v1alpha1/agents/"+uid).
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
-		Reply(204)
+		Reply(http.StatusNoContent)
 }
 
 func MockUpdateAgent(
@@ -258,7 +259,7 @@ func MockUpdateAgent(
 		MatchHeader("Authorization", "mock_token").
 		JSON(request).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -269,7 +270,7 @@ func MockPostGroup(request map[string]interface{}, response map[string]interface
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
 		JSON(request).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -279,7 +280,7 @@ func MockGetGroup(uid string, response map[string]interface{}, times int) {
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -296,7 +297,7 @@ func MockUpdateGroup(
 		MatchHeader("Content-Type", "application/merge-patch+json").
 		BodyString(string(body)).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -305,7 +306,7 @@ func MockDeleteGroup(uid string, times int) {
 		Delete("/networking-uxi/v1alpha1/groups/"+uid).
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
-		Reply(204)
+		Reply(http.StatusNoContent)
 }
 
 func MockGetSensor(uid string, response map[string]interface{}, times int) {
@@ -314,7 +315,7 @@ func MockGetSensor(uid string, response map[string]interface{}, times int) {
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -330,7 +331,7 @@ func MockUpdateSensor(
 		MatchHeader("Authorization", "mock_token").
 		JSON(request).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -340,7 +341,7 @@ func MockGetWiredNetwork(uid string, response map[string]interface{}, times int)
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -350,7 +351,7 @@ func MockGetWirelessNetwork(uid string, response map[string]interface{}, times i
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -360,7 +361,7 @@ func MockGetServiceTest(uid string, response map[string]interface{}, times int) 
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -370,7 +371,7 @@ func MockGetAgentGroupAssignment(uid string, response map[string]interface{}, ti
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -385,7 +386,7 @@ func MockPostAgentGroupAssignment(
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
 		JSON(request).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -394,7 +395,7 @@ func MockDeleteAgentGroupAssignment(uid string, times int) {
 		Delete("/networking-uxi/v1alpha1/agent-group-assignments/"+uid).
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
-		Reply(204)
+		Reply(http.StatusNoContent)
 }
 
 func MockGetSensorGroupAssignment(uid string, response map[string]interface{}, times int) {
@@ -403,7 +404,7 @@ func MockGetSensorGroupAssignment(uid string, response map[string]interface{}, t
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -418,7 +419,7 @@ func MockPostSensorGroupAssignment(
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
 		JSON(request).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -427,7 +428,7 @@ func MockDeleteSensorGroupAssignment(uid string, times int) {
 		Delete("/networking-uxi/v1alpha1/sensor-group-assignments/"+uid).
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
-		Reply(204)
+		Reply(http.StatusNoContent)
 }
 
 func MockGetNetworkGroupAssignment(uid string, response map[string]interface{}, times int) {
@@ -436,7 +437,7 @@ func MockGetNetworkGroupAssignment(uid string, response map[string]interface{}, 
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -451,7 +452,7 @@ func MockPostNetworkGroupAssignment(
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
 		JSON(request).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -460,7 +461,7 @@ func MockDeleteNetworkGroupAssignment(uid string, times int) {
 		Delete("/networking-uxi/v1alpha1/network-group-assignments/"+uid).
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
-		Reply(204)
+		Reply(http.StatusNoContent)
 }
 
 func MockGetServiceTestGroupAssignment(uid string, response map[string]interface{}, times int) {
@@ -469,7 +470,7 @@ func MockGetServiceTestGroupAssignment(uid string, response map[string]interface
 		MatchHeader("Authorization", "mock_token").
 		MatchParam("id", uid).
 		Times(times).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -484,7 +485,7 @@ func MockPostServiceTestGroupAssignment(
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
 		JSON(request).
-		Reply(200).
+		Reply(http.StatusOK).
 		JSON(response)
 }
 
@@ -493,7 +494,7 @@ func MockDeleteServiceTestGroupAssignment(uid string, times int) {
 		Delete("/networking-uxi/v1alpha1/service-test-group-assignments/"+uid).
 		MatchHeader("Authorization", "mock_token").
 		Times(times).
-		Reply(204)
+		Reply(http.StatusNoContent)
 }
 
 var RateLimitingHeaders = map[string]string{

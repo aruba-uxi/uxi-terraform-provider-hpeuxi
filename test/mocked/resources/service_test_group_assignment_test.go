@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -312,10 +313,10 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
+func TestServiceTestGroupAssignmentResourcemockTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var mock429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -351,9 +352,9 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 					)
 
 					// required for serviceTest group assignment create
-					mock429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/service-test-group-assignments").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 
 					util.MockPostServiceTestGroupAssignment(
@@ -404,7 +405,7 @@ func TestServiceTestGroupAssignmentResource429Handling(t *testing.T) {
 						"service_test_group_assignment_uid",
 					),
 					func(s *terraform.State) error {
-						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -492,9 +493,9 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for serviceTest group assignment create
 					gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/service-test-group-assignments").
-						Reply(400).
+						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 400,
+							"httpStatusCode": http.StatusBadRequest,
 							"errorCode":      "HPE_GL_ERROR_BAD_REQUEST",
 							"message":        "Validation error - bad request",
 							"debugId":        "12312-123123-123123-1231212",

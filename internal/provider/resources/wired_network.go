@@ -115,7 +115,7 @@ func (r *wiredNetworkResource) Read(
 	request := r.client.ConfigurationAPI.
 		WiredNetworksGet(ctx).
 		Id(state.ID.ValueString())
-	networkResponse, response, err := util.RetryFor429(request.Execute)
+	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_wired_network")

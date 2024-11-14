@@ -128,7 +128,7 @@ func (r *sensorResource) Read(
 	request := r.client.ConfigurationAPI.
 		SensorsGet(ctx).
 		Id(state.ID.ValueString())
-	sensorResponse, response, err := util.RetryFor429(request.Execute)
+	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor")
@@ -178,7 +178,7 @@ func (r *sensorResource) Update(
 	request := r.client.ConfigurationAPI.
 		SensorsPatch(ctx, plan.ID.ValueString()).
 		SensorsPatchRequest(*patchRequest)
-	sensor, response, err := util.RetryFor429(request.Execute)
+	sensor, response, err := util.RetryForTooManyRequests(request.Execute)
 
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
