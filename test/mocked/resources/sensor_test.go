@@ -1,10 +1,12 @@
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"net/http"
 	"regexp"
 	"testing"
+
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -152,10 +154,10 @@ func TestSensorResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestSensorResource429Handling(t *testing.T) {
+func TestSensorResourcemockTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var request429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -167,9 +169,9 @@ func TestSensorResource429Handling(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/sensors").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
 						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
@@ -192,7 +194,7 @@ func TestSensorResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -207,7 +209,7 @@ func TestSensorResource429Handling(t *testing.T) {
 					)
 					request429 = gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/sensors/id").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateSensor(
 						"id",
@@ -231,7 +233,7 @@ func TestSensorResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -269,9 +271,9 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/sensors").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -362,9 +364,9 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					// patch sensor - with error
 					gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/sensors/id").
-						Reply(422).
+						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 422,
+							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_UXI_INVALID_PCAP_MODE_ERROR",
 							"message":        "Unable to update sensor - pcap_mode must be one the following ['light', 'full', 'off'].",
 							"debugId":        "12312-123123-123123-1231212",

@@ -106,7 +106,7 @@ func (d *agentDataSource) Read(
 		AgentsGet(ctx).
 		Id(state.Filter.AgentID.ValueString())
 
-	agentResponse, response, err := util.RetryFor429(request.Execute)
+	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent")

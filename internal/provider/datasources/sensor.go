@@ -118,7 +118,7 @@ func (d *sensorDataSource) Read(
 		SensorsGet(ctx).
 		Id(state.Filter.SensorID.ValueString())
 
-	sensorResponse, response, err := util.RetryFor429(request.Execute)
+	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor")

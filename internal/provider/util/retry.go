@@ -9,15 +9,17 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
 )
 
-func RetryFor429[T any](f func() (T, *http.Response, error)) (T, *http.Response, error) {
+func RetryForTooManyRequests[T any](
+	f func() (T, *http.Response, error),
+) (T, *http.Response, error) {
 	var result T
 	var err error
 	var httpResponse *http.Response
 
-	for i := 0; i < config.MaxRetriesFor429; i++ {
+	for i := 0; i < config.MaxRetriesForTooManyRequests; i++ {
 		result, httpResponse, err = f()
 
-		if httpResponse == nil || httpResponse.StatusCode != 429 {
+		if httpResponse == nil || httpResponse.StatusCode != http.StatusTooManyRequests {
 			return result, httpResponse, err
 		}
 

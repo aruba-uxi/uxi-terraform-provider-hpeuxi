@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -717,10 +718,10 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestNetworkGroupAssignmentResource429Handling(t *testing.T) {
+func TestNetworkGroupAssignmentResourcemockTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var mock429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -755,9 +756,9 @@ func TestNetworkGroupAssignmentResource429Handling(t *testing.T) {
 					)
 
 					// required for network group assignment create
-					mock429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/network-group-assignments").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostNetworkGroupAssignment(
 						util.GenerateNetworkGroupAssignmentRequest(
@@ -810,7 +811,7 @@ func TestNetworkGroupAssignmentResource429Handling(t *testing.T) {
 						"network_id",
 					),
 					func(s *terraform.State) error {
-						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -850,7 +851,7 @@ func TestNetworkGroupAssignmentResource429Handling(t *testing.T) {
 					util.MockDeleteGroup("group_id", 1)
 					mock429 = gock.New("https://test.api.capenetworks.com").
 						Delete("/networking-uxi/v1alpha1/network-group-assignments/network_group_assignment_id").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockDeleteNetworkGroupAssignment("network_group_assignment_id", 1)
 				},
@@ -864,7 +865,7 @@ func TestNetworkGroupAssignmentResource429Handling(t *testing.T) {
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					func(s *terraform.State) error {
-						st.Assert(t, mock429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -914,9 +915,9 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// network group assignment create
 					gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/network-group-assignments").
-						Reply(400).
+						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 400,
+							"httpStatusCode": http.StatusBadRequest,
 							"errorCode":      "HPE_GL_ERROR_BAD_REQUEST",
 							"message":        "Validation error - bad request",
 							"debugId":        "12312-123123-123123-1231212",
@@ -1041,9 +1042,9 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// network group assignment read
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/network-group-assignments").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -1196,9 +1197,9 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// network group assignment create
 					gock.New("https://test.api.capenetworks.com").
 						Delete("/networking-uxi/v1alpha1/network-group-assignments").
-						Reply(403).
+						Reply(http.StatusForbidden).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 403,
+							"httpStatusCode": http.StatusForbidden,
 							"errorCode":      "HPE_GL_ERROR_FORBIDDEN",
 							"message":        "Forbidden - user has insufficient permissions to complete the request",
 							"debugId":        "12312-123123-123123-1231212",

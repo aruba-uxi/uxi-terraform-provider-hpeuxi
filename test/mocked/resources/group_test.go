@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -324,11 +325,11 @@ func TestRootGroupResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestGroupResource429Handling(t *testing.T) {
+func TestGroupResourcemockTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var request429 *gock.Response
-	var update429 *gock.Response
+	var mockTooManyRequests *gock.Response
+	var updateTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -336,9 +337,9 @@ func TestGroupResource429Handling(t *testing.T) {
 			// Create and Read testing
 			{
 				PreConfig: func() {
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/groups").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostGroup(
 						util.GenerateGroupRequestModel("id", "", ""),
@@ -373,7 +374,7 @@ func TestGroupResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
-						st.Assert(t, request429.Mock.Request().Counter, 0)
+						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -392,7 +393,7 @@ func TestGroupResource429Handling(t *testing.T) {
 					// new group
 					update429 = gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/groups/id").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateGroup(
 						"id",
@@ -426,7 +427,7 @@ func TestGroupResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
 					func(s *terraform.State) error {
-						st.Assert(t, update429.Mock.Request().Counter, 0)
+						st.Assert(t, updateTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -463,9 +464,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/groups").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -514,9 +515,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Post("/networking-uxi/v1alpha1/groups").
-						Reply(400).
+						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 400,
+							"httpStatusCode": http.StatusBadRequest,
 							"errorCode":      "HPE_GL_ERROR_BAD_REQUEST",
 							"message":        "Validation error - bad request",
 							"debugId":        "12312-123123-123123-1231212",
@@ -582,9 +583,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					// new group - with error
 					gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/groups/id").
-						Reply(422).
+						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 422,
+							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_UXI_DUPLICATE_SIBLING_GROUP_NAME",
 							"message":        "Unable to create group - a sibling group already has the specified name",
 							"debugId":        "12312-123123-123123-1231212",
@@ -613,9 +614,9 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					// delete group - with error
 					gock.New("https://test.api.capenetworks.com").
 						Delete("/networking-uxi/v1alpha1/groups/id").
-						Reply(422).
+						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 422,
+							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_UXI_GROUP_CANNOT_BE_DELETED",
 							"message":        "Unable to delete group",
 							"debugId":        "12312-123123-123123-1231212",

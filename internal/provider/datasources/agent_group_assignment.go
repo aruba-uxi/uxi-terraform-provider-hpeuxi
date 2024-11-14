@@ -84,7 +84,7 @@ func (d *agentGroupAssignmentDataSource) Read(
 	request := d.client.ConfigurationAPI.
 		AgentGroupAssignmentsGet(ctx).
 		Id(state.Filter.AgentGroupAssignmentID)
-	agentGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	agentGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent_group_assignment")
