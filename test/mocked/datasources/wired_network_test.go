@@ -1,6 +1,7 @@
 package data_source_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -23,9 +24,9 @@ func TestWiredNetworkDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
 						),
 						3,
 					)
@@ -33,7 +34,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "uid"
+							wired_network_id = "id"
 						}
 					}
 				`,
@@ -41,7 +42,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_wired_network.my_wired_network",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_wired_network.my_wired_network",
@@ -91,10 +92,10 @@ func TestWiredNetworkDataSource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestWiredNetworkDataSource429Handling(t *testing.T) {
+func TestWiredNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var mock429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -102,14 +103,14 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 			// Read testing
 			{
 				PreConfig: func() {
-					mock429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/wired-networks").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("uid", "")},
+							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
 						),
 						3,
 					)
@@ -117,7 +118,7 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "uid"
+							wired_network_id = "id"
 						}
 					}
 				`,
@@ -125,10 +126,10 @@ func TestWiredNetworkDataSource429Handling(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_wired_network.my_wired_network",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
-						assert.Equal(t, mock429.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -149,9 +150,9 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/wired-networks").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -160,7 +161,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "uid"
+							wired_network_id = "id"
 						}
 					}
 				`,
@@ -171,7 +172,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -179,7 +180,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "uid"
+							wired_network_id = "id"
 						}
 					}
 				`,

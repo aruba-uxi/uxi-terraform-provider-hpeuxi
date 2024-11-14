@@ -1,6 +1,7 @@
 package data_source_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -23,10 +24,10 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTestGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestGroupAssignmentResponse("uid", ""),
+								util.GenerateServiceTestGroupAssignmentResponse("id", ""),
 							},
 						),
 						3,
@@ -35,7 +36,7 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
-							service_test_group_assignment_id = "uid"
+							service_test_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -43,17 +44,17 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
-						"group_uid",
+						"group_id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
-						"service_test_uid",
+						"service_test_id",
 					),
 				),
 			},
@@ -63,10 +64,10 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestServiceTestGroupAssignmentDataSource429Handling(t *testing.T) {
+func TestServiceTestGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var mock429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -74,15 +75,15 @@ func TestServiceTestGroupAssignmentDataSource429Handling(t *testing.T) {
 			// Read testing
 			{
 				PreConfig: func() {
-					mock429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/service-test-group-assignments").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetServiceTestGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestGroupAssignmentResponse("uid", ""),
+								util.GenerateServiceTestGroupAssignmentResponse("id", ""),
 							},
 						),
 						3,
@@ -91,7 +92,7 @@ func TestServiceTestGroupAssignmentDataSource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
-							service_test_group_assignment_id = "uid"
+							service_test_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -99,10 +100,10 @@ func TestServiceTestGroupAssignmentDataSource429Handling(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
-						assert.Equal(t, mock429.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -122,9 +123,9 @@ func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/service-test-group-assignments").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -133,7 +134,7 @@ func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
-							service_test_group_assignment_id = "uid"
+							service_test_group_assignment_id = "id"
 						}
 					}
 				`,
@@ -144,7 +145,7 @@ func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTestGroupAssignment(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -152,7 +153,7 @@ func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
-							service_test_group_assignment_id = "uid"
+							service_test_group_assignment_id = "id"
 						}
 					}
 				`,

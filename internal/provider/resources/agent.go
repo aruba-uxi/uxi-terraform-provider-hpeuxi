@@ -126,7 +126,7 @@ func (r *agentResource) Read(
 	request := r.client.ConfigurationAPI.
 		AgentsGet(ctx).
 		Id(state.ID.ValueString())
-	agentResponse, response, err := util.RetryFor429(request.Execute)
+	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent")
@@ -178,7 +178,7 @@ func (r *agentResource) Update(
 	request := r.client.ConfigurationAPI.
 		AgentsPatch(ctx, plan.ID.ValueString()).
 		AgentsPatchRequest(*patchRequest)
-	agent, response, err := util.RetryFor429(request.Execute)
+	agent, response, err := util.RetryForTooManyRequests(request.Execute)
 
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -220,7 +220,7 @@ func (r *agentResource) Delete(
 
 	request := r.client.ConfigurationAPI.AgentsDelete(ctx, state.ID.ValueString())
 
-	_, response, err := util.RetryFor429(request.Execute)
+	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {

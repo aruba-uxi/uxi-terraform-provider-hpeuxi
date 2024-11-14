@@ -1,6 +1,7 @@
 package data_source_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -23,10 +24,10 @@ func TestServiceTestDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTest(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("uid", ""),
+								util.GenerateServiceTestResponseModel("id", ""),
 							},
 						),
 						3,
@@ -35,7 +36,7 @@ func TestServiceTestDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "uid"
+							service_test_id = "id"
 						}
 					}
 				`,
@@ -43,7 +44,7 @@ func TestServiceTestDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test.my_service_test",
 						"id",
-						"uid",
+						"id",
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test.my_service_test",
@@ -78,10 +79,10 @@ func TestServiceTestDataSource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestServiceTestDataSource429Handling(t *testing.T) {
+func TestServiceTestDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var mock429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -90,15 +91,15 @@ func TestServiceTestDataSource429Handling(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					mock429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/service-tests").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetServiceTest(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("uid", ""),
+								util.GenerateServiceTestResponseModel("id", ""),
 							},
 						),
 						3,
@@ -107,7 +108,7 @@ func TestServiceTestDataSource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "uid"
+							service_test_id = "id"
 						}
 					}
 				`,
@@ -115,10 +116,10 @@ func TestServiceTestDataSource429Handling(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.uxi_service_test.my_service_test",
 						"id",
-						"uid",
+						"id",
 					),
 					func(s *terraform.State) error {
-						assert.Equal(t, mock429.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -140,9 +141,9 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/service-tests").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -151,7 +152,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "uid"
+							service_test_id = "id"
 						}
 					}
 				`,
@@ -163,7 +164,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetServiceTest(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -171,7 +172,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "uid"
+							service_test_id = "id"
 						}
 					}
 				`,

@@ -1,6 +1,7 @@
 package resource_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -37,9 +38,9 @@ func TestAgentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
 						),
 						2,
 					)
@@ -53,23 +54,23 @@ func TestAgentResource(t *testing.T) {
 
 					import {
 						to = uxi_agent.my_agent
-						id = "uid"
+						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name"),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes"),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "id"),
 				),
 			},
 			// ImportState testing
 			{
 				PreConfig: func() {
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
 						),
 						1,
 					)
@@ -83,23 +84,23 @@ func TestAgentResource(t *testing.T) {
 				PreConfig: func() {
 					// original
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
 						),
 						1,
 					)
 					util.MockUpdateAgent(
-						"uid",
+						"id",
 						util.GenerateAgentRequestUpdateModel("_2"),
-						util.GenerateAgentResponseModel("uid", "_2"),
+						util.GenerateAgentResponseModel("id", "_2"),
 						1,
 					)
 					// updated
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "_2")},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "_2")},
 						),
 						1,
 					)
@@ -119,11 +120,11 @@ func TestAgentResource(t *testing.T) {
 			// Delete testing
 			{
 				PreConfig: func() {
-					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+					util.MockGetAgent("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
 						1,
 					)
-					util.MockDeleteAgent("uid", 1)
+					util.MockDeleteAgent("id", 1)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -133,10 +134,10 @@ func TestAgentResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestAgentResource429Handling(t *testing.T) {
+func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var request429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -148,12 +149,12 @@ func TestAgentResource429Handling(t *testing.T) {
 			// Importing a agent
 			{
 				PreConfig: func() {
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/agents").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+					util.MockGetAgent("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
 						2,
 					)
 				},
@@ -166,13 +167,13 @@ func TestAgentResource429Handling(t *testing.T) {
 
 					import {
 						to = uxi_agent.my_agent
-						id = "uid"
+						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "id"),
 					func(s *terraform.State) error {
-						assert.Equal(t, request429.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -182,27 +183,27 @@ func TestAgentResource429Handling(t *testing.T) {
 				PreConfig: func() {
 					// original
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
 						),
 						1,
 					)
-					request429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Patch("/networking-uxi/v1alpha1/agents").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateAgent(
-						"uid",
+						"id",
 						util.GenerateAgentRequestUpdateModel("_2"),
-						util.GenerateAgentResponseModel("uid", "_2"),
+						util.GenerateAgentResponseModel("id", "_2"),
 						1,
 					)
 					// updated
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "_2")},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "_2")},
 						),
 						1,
 					)
@@ -216,7 +217,7 @@ func TestAgentResource429Handling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name_2"),
 					func(s *terraform.State) error {
-						assert.Equal(t, request429.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -224,20 +225,20 @@ func TestAgentResource429Handling(t *testing.T) {
 			// Delete testing
 			{
 				PreConfig: func() {
-					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+					util.MockGetAgent("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
 						1,
 					)
-					request429 = gock.New("https://test.api.capenetworks.com").
-						Delete("/networking-uxi/v1alpha1/agents/uid").
-						Reply(429).
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+						Delete("/networking-uxi/v1alpha1/agents/id").
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockDeleteAgent("uid", 1)
+					util.MockDeleteAgent("id", 1)
 				},
 				Config: provider.ProviderConfig,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					func(s *terraform.State) error {
-						assert.Equal(t, request429.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -264,9 +265,9 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/agents").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -281,7 +282,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 
 					import {
 						to = uxi_agent.my_agent
-						id = "uid"
+						id = "id"
 					}`,
 
 				ExpectError: regexp.MustCompile(
@@ -292,7 +293,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -306,7 +307,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 
 					import {
 						to = uxi_agent.my_agent
-						id = "uid"
+						id = "id"
 					}`,
 
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
@@ -315,9 +316,9 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
 						),
 						2,
 					)
@@ -331,11 +332,11 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 
 					import {
 						to = uxi_agent.my_agent
-						id = "uid"
+						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "uid"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "id"),
 				),
 			},
 			// update 4xx
@@ -343,18 +344,18 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					// original
 					util.MockGetAgent(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
 						),
 						1,
 					)
 					// patch agent - with error
 					gock.New("https://test.api.capenetworks.com").
-						Patch("/networking-uxi/v1alpha1/agents/uid").
-						Reply(422).
+						Patch("/networking-uxi/v1alpha1/agents/id").
+						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 422,
+							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_UXI_INVALID_PCAP_MODE_ERROR",
 							"message":        "Unable to update agent - pcap_mode must be one the following ['light', 'full', 'off'].",
 							"debugId":        "12312-123123-123123-1231212",
@@ -375,16 +376,16 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing agent
-					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+					util.MockGetAgent("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
 						1,
 					)
 					// delete agent - with error
 					gock.New("https://test.api.capenetworks.com").
-						Delete("/networking-uxi/v1alpha1/agents/uid").
-						Reply(422).
+						Delete("/networking-uxi/v1alpha1/agents/id").
+						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 422,
+							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_NETWORKING_UXI_HARDWARE_SENSOR_DELETION_FORBIDDEN",
 							"message":        "Cant delete sensor - hardware sensor deletion is forbidden",
 							"debugId":        "12312-123123-123123-1231212",
@@ -399,12 +400,12 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetAgent("uid", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponseModel("uid", "")}),
+					util.MockGetAgent("id", util.GeneratePaginatedResponse(
+						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
 						1,
 					)
 					// delete group
-					util.MockDeleteAgent("uid", 1)
+					util.MockDeleteAgent("id", 1)
 				},
 				Config: provider.ProviderConfig,
 			},

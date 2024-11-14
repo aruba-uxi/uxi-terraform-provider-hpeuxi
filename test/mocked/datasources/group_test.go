@@ -1,9 +1,11 @@
 package data_source_test
 
 import (
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	"net/http"
 	"regexp"
 	"testing"
+
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
@@ -24,10 +26,10 @@ func TestGroupDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("id", "", ""),
 							},
 						),
 						3,
@@ -36,26 +38,26 @@ func TestGroupDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "uid"
+							group_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "id"),
 				),
 			},
 			// TODO: Test retrieving the root group
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
-						"my_root_group_uid",
+						"my_root_group_id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
 								util.StructToMap(config_api_client.GroupsGetItem{
-									Id:     "my_root_group_uid",
+									Id:     "my_root_group_id",
 									Name:   "root",
 									Parent: *config_api_client.NewNullableParent(nil),
-									Path:   "my_root_group_uid",
+									Path:   "my_root_group_id",
 								}),
 							},
 						),
@@ -65,7 +67,7 @@ func TestGroupDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "my_root_group_uid"
+							group_id = "my_root_group_id"
 						}
 					}
 				`,
@@ -77,10 +79,10 @@ func TestGroupDataSource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestGroupDataSource429Handling(t *testing.T) {
+func TestGroupDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var mock429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -89,15 +91,15 @@ func TestGroupDataSource429Handling(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					mock429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/groups").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("uid", "", ""),
+								util.GenerateNonRootGroupResponseModel("id", "", ""),
 							},
 						),
 						3,
@@ -106,14 +108,14 @@ func TestGroupDataSource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "uid"
+							group_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
-						assert.Equal(t, mock429.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -135,9 +137,9 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/groups").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -146,7 +148,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "uid"
+							group_id = "id"
 						}
 					}
 				`,
@@ -158,7 +160,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -166,7 +168,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "uid"
+							group_id = "id"
 						}
 					}
 				`,

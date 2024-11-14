@@ -18,7 +18,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 	)
 
 	var (
-		existingSensorProperties = util.GetSensorProperties(config.SensorUid)
+		existingSensorProperties = util.GetSensorProperties(config.SensorId)
 		resourceIdBeforeRecreate string
 		resourceIdAfterRecreate  string
 	)
@@ -42,7 +42,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 
 					import {
 						to = uxi_sensor.my_sensor
-						id = "` + config.SensorUid + `"
+						id = "` + config.SensorId + `"
 					}
 
 					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
@@ -54,7 +54,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
-						config.SensorUid,
+						config.SensorId,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
@@ -113,7 +113,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
-						config.SensorUid,
+						config.SensorId,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",

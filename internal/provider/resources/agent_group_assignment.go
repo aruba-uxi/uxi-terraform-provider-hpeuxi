@@ -112,7 +112,7 @@ func (r *agentGroupAssignmentResource) Create(
 	request := r.client.ConfigurationAPI.
 		AgentGroupAssignmentsPost(ctx).
 		AgentGroupAssignmentsPostRequest(*postRequest)
-	agentGroupAssignment, response, err := util.RetryFor429(request.Execute)
+	agentGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -149,7 +149,7 @@ func (r *agentGroupAssignmentResource) Read(
 	request := r.client.ConfigurationAPI.
 		AgentGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
-	agentGroupAssignmentResponse, response, err := util.RetryFor429(request.Execute)
+	agentGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent_group_assignment")
@@ -204,7 +204,7 @@ func (r *agentGroupAssignmentResource) Delete(
 
 	request := r.client.ConfigurationAPI.
 		AgentGroupAssignmentDelete(ctx, state.ID.ValueString())
-	_, response, err := util.RetryFor429(request.Execute)
+	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {

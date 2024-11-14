@@ -38,7 +38,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 
 					import {
 						to = uxi_wireless_network.wireless_network_0
-						id = "` + config.WirelessNetworkUid + `"
+						id = "` + config.WirelessNetworkId + `"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -50,7 +50,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_wireless_network.wireless_network_0",
 						"id",
-						config.WirelessNetworkUid,
+						config.WirelessNetworkId,
 					),
 				),
 			},

@@ -25,7 +25,7 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "` + config.SensorUid + `"
+							sensor_id = "` + config.SensorId + `"
 						}
 					}
 

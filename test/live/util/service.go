@@ -32,7 +32,7 @@ func CheckStateAgainstServiceTest(
 		resource.TestCheckResourceAttr(
 			"data.uxi_service_test.my_service_test",
 			"id",
-			config.ServiceTestUid,
+			config.ServiceTestId,
 		),
 		resource.TestCheckResourceAttr(
 			"data.uxi_service_test.my_service_test",

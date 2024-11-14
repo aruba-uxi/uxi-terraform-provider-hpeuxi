@@ -98,7 +98,7 @@ func (d *serviceTestDataSource) Read(
 		ServiceTestsGet(ctx).
 		Id(state.Filter.ServiceTestID.ValueString())
 
-	serviceTestResponse, response, err := util.RetryFor429(request.Execute)
+	serviceTestResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")

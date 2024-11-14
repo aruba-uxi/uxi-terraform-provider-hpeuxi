@@ -259,7 +259,7 @@ func TestRootGroupResource(t *testing.T) {
 
 				import {
 					to = uxi_group.my_root_group
-					id = "` + config.GroupUidRoot + `"
+					id = "` + config.GroupIdRoot + `"
 				}`,
 				ExpectError: regexp.MustCompile(`The root group cannot be used as a resource`),
 			},

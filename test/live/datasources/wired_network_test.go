@@ -10,7 +10,7 @@ import (
 )
 
 func TestWiredNetworkDataSource(t *testing.T) {
-	wired_network := util.GetWiredNetwork(config.WiredNetworkUid)
+	wired_network := util.GetWiredNetwork(config.WiredNetworkId)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -19,7 +19,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "` + config.WiredNetworkUid + `"
+							wired_network_id = "` + config.WiredNetworkId + `"
 						}
 					}
 				`,

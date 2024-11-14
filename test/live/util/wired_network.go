@@ -33,7 +33,7 @@ func CheckStateAgainstWiredNetwork(
 		resource.TestCheckResourceAttr(
 			"data.uxi_wired_network.my_wired_network",
 			"id",
-			config.WiredNetworkUid,
+			config.WiredNetworkId,
 		),
 		resource.TestCheckResourceAttrWith(
 			"data.uxi_wired_network.my_wired_network",

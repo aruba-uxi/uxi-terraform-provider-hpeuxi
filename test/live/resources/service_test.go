@@ -38,7 +38,7 @@ func TestServiceTestResource(t *testing.T) {
 
 					import {
 						to = uxi_service_test.my_service_test
-						id = "` + config.ServiceTestUid + `"
+						id = "` + config.ServiceTestId + `"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -50,7 +50,7 @@ func TestServiceTestResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_service_test.my_service_test",
 						"id",
-						config.ServiceTestUid,
+						config.ServiceTestId,
 					),
 				),
 			},

@@ -1,6 +1,7 @@
 package data_source_test
 
 import (
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -23,9 +24,9 @@ func TestSensorDataSource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")},
 						),
 						3,
 					)
@@ -33,12 +34,12 @@ func TestSensorDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "id"),
 					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "name", "name"),
 					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "serial", "serial"),
 					resource.TestCheckResourceAttr(
@@ -77,10 +78,10 @@ func TestSensorDataSource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestSensorDataSource429Handling(t *testing.T) {
+func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	var mock429 *gock.Response
+	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -89,14 +90,14 @@ func TestSensorDataSource429Handling(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					mock429 = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/sensors").
-						Reply(429).
+						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensor(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateSensorResponseModel("uid", "")},
+							[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")},
 						),
 						3,
 					)
@@ -104,14 +105,14 @@ func TestSensorDataSource429Handling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "uid"),
+					resource.TestCheckResourceAttr("data.uxi_sensor.my_sensor", "id", "id"),
 					func(s *terraform.State) error {
-						assert.Equal(t, mock429.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -133,9 +134,9 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
 						Get("/networking-uxi/v1alpha1/sensors").
-						Reply(500).
+						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
-							"httpStatusCode": 500,
+							"httpStatusCode": http.StatusInternalServerError,
 							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
 							"message":        "Current request cannot be processed due to unknown issue",
 							"debugId":        "12312-123123-123123-1231212",
@@ -144,7 +145,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,
@@ -156,7 +157,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor(
-						"uid",
+						"id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
 						1,
 					)
@@ -164,7 +165,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "uid"
+							sensor_id = "id"
 						}
 					}
 				`,
