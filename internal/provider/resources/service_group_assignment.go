@@ -221,7 +221,6 @@ func (r *serviceTestGroupAssignmentResource) Delete(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		// deleting a group will cascade delete assignments, so this resource will no longer exist
 		if response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
 			return
