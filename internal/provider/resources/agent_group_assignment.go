@@ -2,6 +2,8 @@ package resources
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 
@@ -206,6 +208,11 @@ func (r *agentGroupAssignmentResource) Delete(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
+		// deleting a group will cascade delete assignments, so this resource will no longer exist
+		if response.StatusCode == http.StatusNotFound {
+			resp.State.RemoveResource(ctx)
+			return
+		}
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("delete", "uxi_agent_group_assignment"),
 			errorDetail,

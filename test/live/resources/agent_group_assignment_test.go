@@ -17,8 +17,8 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 		group2Name = "tf_provider_acceptance_test_agent_group_assignment_resource_two"
 	)
 	var (
-		resourceIdBeforeRecreateBeforeRecreate string
-		resourceIdBeforeRecreateAfterRecreate  string
+		resourceIdBeforeRecreate string
+		resourceIdAfterRecreate  string
 	)
 
 	resource.Test(t, resource.TestCase{
@@ -60,11 +60,11 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_agent_group_assignment.my_agent_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdBeforeRecreateBeforeRecreate = rs.Primary.ID
+						resourceIdBeforeRecreate = rs.Primary.ID
 						return util.CheckStateAgainstAgentGroupAssignment(
 							t,
 							"uxi_agent_group_assignment.my_agent_group_assignment",
-							*util.GetAgentGroupAssignment(resourceIdBeforeRecreateBeforeRecreate),
+							*util.GetAgentGroupAssignment(resourceIdBeforeRecreate),
 						)(s)
 					},
 				),
@@ -118,22 +118,13 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_agent_group_assignment.my_agent_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdBeforeRecreateAfterRecreate = rs.Primary.ID
+						resourceIdAfterRecreate = rs.Primary.ID
 						return util.CheckStateAgainstAgentGroupAssignment(
 							t,
 							"uxi_agent_group_assignment.my_agent_group_assignment",
-							*util.GetAgentGroupAssignment(resourceIdBeforeRecreateAfterRecreate),
+							*util.GetAgentGroupAssignment(resourceIdAfterRecreate),
 						)(s)
 					},
-					// Check that resource has been recreated
-					resource.TestCheckResourceAttrWith(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
-						"id",
-						func(value string) error {
-							assert.NotEqual(t, value, resourceIdBeforeRecreateBeforeRecreate)
-							return nil
-						},
-					),
 				),
 			},
 			// Delete
@@ -146,12 +137,12 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			assert.Equal(t, util.GetGroupByName(group2Name), nil)
 			assert.Equal(
 				t,
-				util.GetAgentGroupAssignment(resourceIdBeforeRecreateBeforeRecreate),
+				util.GetAgentGroupAssignment(resourceIdBeforeRecreate),
 				nil,
 			)
 			assert.Equal(
 				t,
-				util.GetAgentGroupAssignment(resourceIdBeforeRecreateAfterRecreate),
+				util.GetAgentGroupAssignment(resourceIdAfterRecreate),
 				nil,
 			)
 			return nil

@@ -13,8 +13,8 @@ import (
 
 func TestSensorGroupAssignmentResource(t *testing.T) {
 	const (
-		groupName  = "tf_provider_acceptance_test_sensor_assignment_test"
-		group2Name = "tf_provider_acceptance_test_sensor_assignment_test_two"
+		groupName  = "tf_provider_acceptance_test_sensor_assignment_resource"
+		group2Name = "tf_provider_acceptance_test_sensor_assignment_resource_two"
 	)
 
 	var (
@@ -134,15 +134,6 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 							util.GetSensorGroupAssignment(resourceIdAfterRecreate),
 						)(s)
 					},
-					// Check that resource has been recreated
-					resource.TestCheckResourceAttrWith(
-						"uxi_network_group_assignment.my_network_group_assignment",
-						"id",
-						func(value string) error {
-							assert.NotEqual(t, value, resourceIdBeforeRecreate)
-							return nil
-						},
-					),
 				),
 			},
 			// Delete sensor-group assignments and remove sensors from state

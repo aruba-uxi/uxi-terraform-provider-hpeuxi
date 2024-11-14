@@ -19,15 +19,15 @@ type Fetcher interface {
 
 func TestGroupResource(t *testing.T) {
 	const (
-		groupNameParent                  = "tf_provider_acceptance_test_parent"
+		groupNameParent                  = "tf_provider_acceptance_test_group_resource_parent"
 		groupNameParentUpdated           = groupNameParent + "_updated"
-		groupNameChild                   = "tf_provider_acceptance_test_child"
-		groupNameGrandChild              = "tf_provider_acceptance_test_grandchild"
+		groupNameChild                   = "tf_provider_acceptance_test_group_resource__child"
+		groupNameGrandChild              = "tf_provider_acceptance_test_group_resource__grandchild"
 		groupNameGrandChildMovedToParent = groupNameGrandChild + "_moved_to_parent"
 		groupNameGrandChildMovedToRoot   = groupNameGrandChild + "_moved_to_root"
 	)
 
-	var resourceIdBeforeRecreateBeforeRecreate string
+	var resourceIdBeforeRecreate string
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -127,10 +127,10 @@ func TestGroupResource(t *testing.T) {
 						"uxi_group.grandchild",
 						"id",
 						func(value string) error {
-							resourceIdBeforeRecreateBeforeRecreate = util.GetGroupByName(
+							resourceIdBeforeRecreate = util.GetGroupByName(
 								groupNameGrandChild,
 							).Id
-							assert.Equal(t, value, resourceIdBeforeRecreateBeforeRecreate)
+							assert.Equal(t, value, resourceIdBeforeRecreate)
 							return nil
 						},
 					),
@@ -195,7 +195,7 @@ func TestGroupResource(t *testing.T) {
 						"uxi_group.grandchild",
 						"id",
 						func(value string) error {
-							assert.NotEqual(t, value, resourceIdBeforeRecreateBeforeRecreate)
+							assert.NotEqual(t, value, resourceIdBeforeRecreate)
 							return nil
 						},
 					),

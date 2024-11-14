@@ -13,8 +13,8 @@ import (
 
 func TestServiceTestGroupAssignmentResource(t *testing.T) {
 	const (
-		groupName  = "tf_acceptance_test_service_test_group_assignment"
-		group2Name = "tf_acceptance_test_service_test_group_assignment_two"
+		groupName  = "tf_acceptance_test_service_test_group_assignment_resource"
+		group2Name = "tf_acceptance_test_service_test_group_assignment_resource_two"
 	)
 
 	var (
@@ -129,7 +129,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					},
 					// Check that resource has been recreated
 					resource.TestCheckResourceAttrWith(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
 						func(value string) error {
 							assert.NotEqual(t, value, resourceIdBeforeRecreate)

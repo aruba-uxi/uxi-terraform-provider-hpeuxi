@@ -13,8 +13,8 @@ import (
 
 func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 	const (
-		groupName  = "tf_provider_acceptance_test_network_assignment_test"
-		group2Name = "tf_provider_acceptance_test_network_assignment_test_two"
+		groupName  = "tf_provider_acceptance_test_network_assignment_resource"
+		group2Name = "tf_provider_acceptance_test_network_assignment_resource_two"
 	)
 
 	var (
