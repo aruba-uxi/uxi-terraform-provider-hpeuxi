@@ -71,7 +71,10 @@ lint:
 
   golangci-lint run
 
+  python -m tools.lint-attribution lint
+
 fmt:
+  python -m tools.lint-attribution format
   gofmt -w .
   golines -w .
 

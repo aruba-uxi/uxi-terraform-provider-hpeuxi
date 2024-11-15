@@ -1,3 +1,7 @@
+/*
+Copyright 2024 Hewlett Packard Enterprise Development LP.
+*/
+
 package config
 
 // These constants are from the customer:
