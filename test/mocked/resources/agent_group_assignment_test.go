@@ -245,7 +245,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					resource "uxi_agent" "my_agent_2" {
 						name 			= "name_2"
 						notes 			= "notes_2"
-						pcap_mode 		= "light_2"
+						pcap_mode 		= "light"
 					}
 
 					import {

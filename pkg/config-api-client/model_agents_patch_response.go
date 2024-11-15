@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.10.0
+API version: 5.13.0
 Contact: support@capenetworks.com
 */
 
@@ -22,15 +22,15 @@ var _ MappedNullable = &AgentsPatchResponse{}
 
 // AgentsPatchResponse struct for AgentsPatchResponse
 type AgentsPatchResponse struct {
-	Id                 string         `json:"id"`
-	Serial             string         `json:"serial"`
-	Name               string         `json:"name"`
-	ModelNumber        NullableString `json:"modelNumber"`
-	WifiMacAddress     NullableString `json:"wifiMacAddress"`
-	EthernetMacAddress NullableString `json:"ethernetMacAddress"`
-	Notes              NullableString `json:"notes"`
-	PcapMode           NullableString `json:"pcapMode"`
-	Type               string         `json:"type"`
+	Id                 string           `json:"id"`
+	Serial             string           `json:"serial"`
+	Name               string           `json:"name"`
+	ModelNumber        NullableString   `json:"modelNumber"`
+	WifiMacAddress     NullableString   `json:"wifiMacAddress"`
+	EthernetMacAddress NullableString   `json:"ethernetMacAddress"`
+	Notes              NullableString   `json:"notes"`
+	PcapMode           NullablePcapMode `json:"pcapMode"`
+	Type               string           `json:"type"`
 }
 
 type _AgentsPatchResponse AgentsPatchResponse
@@ -47,7 +47,7 @@ func NewAgentsPatchResponse(
 	wifiMacAddress NullableString,
 	ethernetMacAddress NullableString,
 	notes NullableString,
-	pcapMode NullableString,
+	pcapMode NullablePcapMode,
 	type_ string,
 ) *AgentsPatchResponse {
 	this := AgentsPatchResponse{}
@@ -248,10 +248,10 @@ func (o *AgentsPatchResponse) SetNotes(v string) {
 }
 
 // GetPcapMode returns the PcapMode field value
-// If the value is explicit nil, the zero value for string will be returned
-func (o *AgentsPatchResponse) GetPcapMode() string {
+// If the value is explicit nil, the zero value for PcapMode will be returned
+func (o *AgentsPatchResponse) GetPcapMode() PcapMode {
 	if o == nil || o.PcapMode.Get() == nil {
-		var ret string
+		var ret PcapMode
 		return ret
 	}
 
@@ -261,7 +261,7 @@ func (o *AgentsPatchResponse) GetPcapMode() string {
 // GetPcapModeOk returns a tuple with the PcapMode field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AgentsPatchResponse) GetPcapModeOk() (*string, bool) {
+func (o *AgentsPatchResponse) GetPcapModeOk() (*PcapMode, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -269,7 +269,7 @@ func (o *AgentsPatchResponse) GetPcapModeOk() (*string, bool) {
 }
 
 // SetPcapMode sets field value
-func (o *AgentsPatchResponse) SetPcapMode(v string) {
+func (o *AgentsPatchResponse) SetPcapMode(v PcapMode) {
 	o.PcapMode.Set(&v)
 }
 

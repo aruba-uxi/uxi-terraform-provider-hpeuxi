@@ -250,7 +250,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						name 			= "name_2"
 						address_note 	= "address_note_2"
 						notes 			= "notes_2"
-						pcap_mode 		= "light_2"
+						pcap_mode 		= "light"
 					}
 
 					import {

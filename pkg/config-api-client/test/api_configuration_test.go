@@ -97,7 +97,7 @@ func TestConfigurationAPI(t *testing.T) {
 			)
 		name := "new_name"
 		notes := "new_notes"
-		pcapMode := "off"
+		pcapMode := config_api_client.OFF
 		agentsPatchRequest := config_api_client.AgentsPatchRequest{
 			Name:     &name,
 			Notes:    &notes,
@@ -122,7 +122,7 @@ func TestConfigurationAPI(t *testing.T) {
 			WifiMacAddress:     *config_api_client.NewNullableString(&wifiMacAddress),
 			EthernetMacAddress: *config_api_client.NewNullableString(&ethernetMacAddress),
 			Notes:              *config_api_client.NewNullableString(&notes),
-			PcapMode:           *config_api_client.NewNullableString(&pcapMode),
+			PcapMode:           *config_api_client.NewNullablePcapMode(&pcapMode),
 			Type:               "networking-uxi/agent",
 		})
 	})
@@ -275,7 +275,7 @@ func TestConfigurationAPI(t *testing.T) {
 						"longitude":          0.0,
 						"latitude":           0.0,
 						"notes":              "notes",
-						"pcapMode":           "pcap_mode",
+						"pcapMode":           "light",
 						"type":               "networking-uxi/sensor",
 					},
 				},
@@ -296,7 +296,7 @@ func TestConfigurationAPI(t *testing.T) {
 		var Longitude float32 = 0.0
 		var Latitude float32 = 0.0
 		Notes := "notes"
-		PcapMode := "pcap_mode"
+		pcapMode := "light"
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -313,7 +313,7 @@ func TestConfigurationAPI(t *testing.T) {
 					Longitude:          *config_api_client.NewNullableFloat32(&Longitude),
 					Latitude:           *config_api_client.NewNullableFloat32(&Latitude),
 					Notes:              *config_api_client.NewNullableString(&Notes),
-					PcapMode:           *config_api_client.NewNullableString(&PcapMode),
+					PcapMode:           *config_api_client.NewNullableString(&pcapMode),
 					Type:               "networking-uxi/sensor",
 				},
 			},
@@ -346,7 +346,7 @@ func TestConfigurationAPI(t *testing.T) {
 		name := "new_name"
 		addressNote := "new_address_note"
 		notes := "new_notes"
-		pcapMode := "off"
+		pcapMode := config_api_client.OFF
 		sensorsPatchRequest := config_api_client.SensorsPatchRequest{
 			Name:        &name,
 			AddressNote: &addressNote,
@@ -376,7 +376,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Longitude:          *config_api_client.NewNullableFloat32(&longitude),
 			Latitude:           *config_api_client.NewNullableFloat32(&latitude),
 			Notes:              *config_api_client.NewNullableString(&notes),
-			PcapMode:           *config_api_client.NewNullableString(&pcapMode),
+			PcapMode:           *config_api_client.NewNullablePcapMode(&pcapMode),
 			Type:               "networking-uxi/sensor",
 		})
 	})

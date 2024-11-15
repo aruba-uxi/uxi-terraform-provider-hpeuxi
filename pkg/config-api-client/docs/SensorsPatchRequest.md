@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Name** | Pointer to **string** |  | [optional] 
 **AddressNote** | Pointer to **string** |  | [optional] 
 **Notes** | Pointer to **string** |  | [optional] 
-**PcapMode** | Pointer to **string** |  | [optional] 
+**PcapMode** | Pointer to [**PcapMode**](PcapMode.md) |  | [optional] 
 
 ## Methods
 
@@ -105,20 +105,20 @@ HasNotes returns a boolean if a field has been set.
 
 ### GetPcapMode
 
-`func (o *SensorsPatchRequest) GetPcapMode() string`
+`func (o *SensorsPatchRequest) GetPcapMode() PcapMode`
 
 GetPcapMode returns the PcapMode field if non-nil, zero value otherwise.
 
 ### GetPcapModeOk
 
-`func (o *SensorsPatchRequest) GetPcapModeOk() (*string, bool)`
+`func (o *SensorsPatchRequest) GetPcapModeOk() (*PcapMode, bool)`
 
 GetPcapModeOk returns a tuple with the PcapMode field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPcapMode
 
-`func (o *SensorsPatchRequest) SetPcapMode(v string)`
+`func (o *SensorsPatchRequest) SetPcapMode(v PcapMode)`
 
 SetPcapMode sets PcapMode field to given value.
 

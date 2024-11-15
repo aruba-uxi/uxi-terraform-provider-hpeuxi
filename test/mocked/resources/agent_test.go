@@ -109,12 +109,12 @@ func TestAgentResource(t *testing.T) {
 				resource "uxi_agent" "my_agent" {
 					name = "name_2"
 					notes = "notes_2"
-					pcap_mode = "light_2"
+					pcap_mode = "light"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name_2"),
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes_2"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light_2"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
 				),
 			},
 			// Delete testing
@@ -212,7 +212,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 				resource "uxi_agent" "my_agent" {
 					name = "name_2"
 					notes = "notes_2"
-					pcap_mode = "light_2"
+					pcap_mode = "light"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name_2"),
@@ -366,7 +366,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 				resource "uxi_agent" "my_agent" {
 					name = "name_2"
 					notes = "notes_2"
-					pcap_mode = "light_2"
+					pcap_mode = "light"
 				}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Unable to update agent - pcap_mode must be one the following \['light',\s*'full', 'off'\].\s*DebugID: 12312-123123-123123-1231212`,

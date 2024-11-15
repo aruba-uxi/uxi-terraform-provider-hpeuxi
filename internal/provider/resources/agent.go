@@ -167,13 +167,20 @@ func (r *agentResource) Update(
 		return
 	}
 
+	errorSummary := util.GenerateErrorSummary("update", "uxi_agent")
 	patchRequest := config_api_client.NewAgentsPatchRequest()
 	patchRequest.Name = plan.Name.ValueStringPointer()
 	if !plan.Notes.IsUnknown() {
 		patchRequest.Notes = plan.Notes.ValueStringPointer()
 	}
-	if !plan.PCapMode.IsUnknown() {
-		patchRequest.PcapMode = plan.PCapMode.ValueStringPointer()
+	plannedPcapMode := plan.PCapMode.ValueStringPointer()
+	if !plan.PCapMode.IsUnknown() && plannedPcapMode != nil {
+		pcapMode, err := config_api_client.NewPcapModeFromValue(*plannedPcapMode)
+		if err != nil {
+			resp.Diagnostics.AddError(errorSummary, err.Error())
+			return
+		}
+		patchRequest.PcapMode = pcapMode
 	}
 	request := r.client.ConfigurationAPI.
 		AgentsPatch(ctx, plan.ID.ValueString()).
@@ -183,7 +190,7 @@ func (r *agentResource) Update(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_agent"), errorDetail)
+		resp.Diagnostics.AddError(errorSummary, errorDetail)
 		return
 	}
 
@@ -194,7 +201,7 @@ func (r *agentResource) Update(
 		plan.Notes = types.StringValue(*agent.Notes.Get())
 	}
 	if agent.PcapMode.Get() != nil {
-		plan.PCapMode = types.StringValue(*agent.PcapMode.Get())
+		plan.PCapMode = types.StringValue(string(*agent.PcapMode.Get()))
 	}
 
 	// Set state to fully populated data

@@ -3,7 +3,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.10.0
+API version: 5.13.0
 Contact: support@capenetworks.com
 */
 
@@ -18,12 +18,12 @@ import (
 // checks if the SensorsPatchRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &SensorsPatchRequest{}
 
-// SensorsPatchRequest Request body for patching a sensor.  Fields:     name: Optional string     address_note: Optional string     notes: Optional string     pcap_mode: Optional string
+// SensorsPatchRequest Request body for patching a sensor.  Fields:     name: Optional string     address_note: Optional string     notes: Optional string     pcap_mode: Optional PcapMode
 type SensorsPatchRequest struct {
-	Name        *string `json:"name,omitempty"`
-	AddressNote *string `json:"addressNote,omitempty"`
-	Notes       *string `json:"notes,omitempty"`
-	PcapMode    *string `json:"pcapMode,omitempty"`
+	Name        *string   `json:"name,omitempty"`
+	AddressNote *string   `json:"addressNote,omitempty"`
+	Notes       *string   `json:"notes,omitempty"`
+	PcapMode    *PcapMode `json:"pcapMode,omitempty"`
 }
 
 // NewSensorsPatchRequest instantiates a new SensorsPatchRequest object
@@ -140,9 +140,9 @@ func (o *SensorsPatchRequest) SetNotes(v string) {
 }
 
 // GetPcapMode returns the PcapMode field value if set, zero value otherwise.
-func (o *SensorsPatchRequest) GetPcapMode() string {
+func (o *SensorsPatchRequest) GetPcapMode() PcapMode {
 	if o == nil || IsNil(o.PcapMode) {
-		var ret string
+		var ret PcapMode
 		return ret
 	}
 	return *o.PcapMode
@@ -150,7 +150,7 @@ func (o *SensorsPatchRequest) GetPcapMode() string {
 
 // GetPcapModeOk returns a tuple with the PcapMode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SensorsPatchRequest) GetPcapModeOk() (*string, bool) {
+func (o *SensorsPatchRequest) GetPcapModeOk() (*PcapMode, bool) {
 	if o == nil || IsNil(o.PcapMode) {
 		return nil, false
 	}
@@ -166,8 +166,8 @@ func (o *SensorsPatchRequest) HasPcapMode() bool {
 	return false
 }
 
-// SetPcapMode gets a reference to the given string and assigns it to the PcapMode field.
-func (o *SensorsPatchRequest) SetPcapMode(v string) {
+// SetPcapMode gets a reference to the given PcapMode and assigns it to the PcapMode field.
+func (o *SensorsPatchRequest) SetPcapMode(v PcapMode) {
 	o.PcapMode = &v
 }
 

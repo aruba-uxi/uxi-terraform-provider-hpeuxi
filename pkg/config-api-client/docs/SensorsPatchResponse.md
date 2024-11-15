@@ -14,14 +14,14 @@ Name | Type | Description | Notes
 **Longitude** | **NullableFloat32** |  | 
 **Latitude** | **NullableFloat32** |  | 
 **Notes** | **NullableString** |  | 
-**PcapMode** | **NullableString** |  | 
+**PcapMode** | [**NullablePcapMode**](PcapMode.md) |  | 
 **Type** | **string** |  | 
 
 ## Methods
 
 ### NewSensorsPatchResponse
 
-`func NewSensorsPatchResponse(id string, serial string, name string, modelNumber string, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableString, type_ string, ) *SensorsPatchResponse`
+`func NewSensorsPatchResponse(id string, serial string, name string, modelNumber string, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullablePcapMode, type_ string, ) *SensorsPatchResponse`
 
 NewSensorsPatchResponse instantiates a new SensorsPatchResponse object
 This constructor will assign default values to properties that have it defined,
@@ -298,20 +298,20 @@ SetNotes sets Notes field to given value.
 UnsetNotes ensures that no value is present for Notes, not even an explicit nil
 ### GetPcapMode
 
-`func (o *SensorsPatchResponse) GetPcapMode() string`
+`func (o *SensorsPatchResponse) GetPcapMode() PcapMode`
 
 GetPcapMode returns the PcapMode field if non-nil, zero value otherwise.
 
 ### GetPcapModeOk
 
-`func (o *SensorsPatchResponse) GetPcapModeOk() (*string, bool)`
+`func (o *SensorsPatchResponse) GetPcapModeOk() (*PcapMode, bool)`
 
 GetPcapModeOk returns a tuple with the PcapMode field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPcapMode
 
-`func (o *SensorsPatchResponse) SetPcapMode(v string)`
+`func (o *SensorsPatchResponse) SetPcapMode(v PcapMode)`
 
 SetPcapMode sets PcapMode field to given value.
 

@@ -11,14 +11,14 @@ Name | Type | Description | Notes
 **WifiMacAddress** | **NullableString** |  | 
 **EthernetMacAddress** | **NullableString** |  | 
 **Notes** | **NullableString** |  | 
-**PcapMode** | **NullableString** |  | 
+**PcapMode** | [**NullablePcapMode**](PcapMode.md) |  | 
 **Type** | **string** |  | 
 
 ## Methods
 
 ### NewAgentsPatchResponse
 
-`func NewAgentsPatchResponse(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, notes NullableString, pcapMode NullableString, type_ string, ) *AgentsPatchResponse`
+`func NewAgentsPatchResponse(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, notes NullableString, pcapMode NullablePcapMode, type_ string, ) *AgentsPatchResponse`
 
 NewAgentsPatchResponse instantiates a new AgentsPatchResponse object
 This constructor will assign default values to properties that have it defined,
@@ -215,20 +215,20 @@ SetNotes sets Notes field to given value.
 UnsetNotes ensures that no value is present for Notes, not even an explicit nil
 ### GetPcapMode
 
-`func (o *AgentsPatchResponse) GetPcapMode() string`
+`func (o *AgentsPatchResponse) GetPcapMode() PcapMode`
 
 GetPcapMode returns the PcapMode field if non-nil, zero value otherwise.
 
 ### GetPcapModeOk
 
-`func (o *AgentsPatchResponse) GetPcapModeOk() (*string, bool)`
+`func (o *AgentsPatchResponse) GetPcapModeOk() (*PcapMode, bool)`
 
 GetPcapModeOk returns a tuple with the PcapMode field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPcapMode
 
-`func (o *AgentsPatchResponse) SetPcapMode(v string)`
+`func (o *AgentsPatchResponse) SetPcapMode(v PcapMode)`
 
 SetPcapMode sets PcapMode field to given value.
 
