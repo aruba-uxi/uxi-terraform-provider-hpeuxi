@@ -37,6 +37,6 @@ func RetryForTooManyRequests[T any](
 
 	return result, httpResponse, errors.Join(
 		err,
-		errors.New("number of retries exceeded for 429 retries"),
+		errors.New("number of retries exceeded"),
 	)
 }
