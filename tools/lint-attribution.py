@@ -1,8 +1,12 @@
 import glob
 import sys
+from datetime import datetime
 
-notice = """/*
-Copyright 2024 Hewlett Packard Enterprise Development LP.
+current_year = datetime.now().year
+
+notice = f"""
+/*
+Copyright {current_year} Hewlett Packard Enterprise Development LP.
 */
 """
 
@@ -36,9 +40,9 @@ def main():
     directory = sys.argv[2] if len(sys.argv) > 2 else '.'
 
     if command == 'lint':
-        check_files_for_word(directory, 'Copyright 2024 Hewlett Packard Enterprise Development LP.')
+        check_files_for_word(directory, 'Hewlett Packard Enterprise Development LP.')
     elif command == 'format':
-        check_and_add_copyright(directory, 'Copyright 2024 Hewlett Packard Enterprise Development LP.')
+        check_and_add_copyright(directory, 'Hewlett Packard Enterprise Development LP.')
     else:
         print("Invalid command. Use 'lint' or 'format'.")
         sys.exit(1)
