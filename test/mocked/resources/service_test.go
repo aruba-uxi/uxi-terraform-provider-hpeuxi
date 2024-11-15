@@ -40,7 +40,7 @@ func TestServiceTestResource(t *testing.T) {
 						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("id", ""),
+								util.GenerateServiceTestResponse("id", ""),
 							},
 						),
 						2,
@@ -72,7 +72,7 @@ func TestServiceTestResource(t *testing.T) {
 						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("id", ""),
+								util.GenerateServiceTestResponse("id", ""),
 							},
 						),
 						1,
@@ -89,7 +89,7 @@ func TestServiceTestResource(t *testing.T) {
 						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("id", ""),
+								util.GenerateServiceTestResponse("id", ""),
 							},
 						),
 						1,
@@ -110,7 +110,7 @@ func TestServiceTestResource(t *testing.T) {
 						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("id", ""),
+								util.GenerateServiceTestResponse("id", ""),
 							},
 						),
 						1,

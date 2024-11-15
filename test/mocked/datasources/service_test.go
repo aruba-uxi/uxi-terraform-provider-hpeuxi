@@ -27,7 +27,7 @@ func TestServiceTestDataSource(t *testing.T) {
 						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("id", ""),
+								util.GenerateServiceTestResponse("id", ""),
 							},
 						),
 						3,
@@ -99,7 +99,7 @@ func TestServiceTestDataSourceTooManyRequestsHandling(t *testing.T) {
 						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("id", ""),
+								util.GenerateServiceTestResponse("id", ""),
 							},
 						),
 						3,
