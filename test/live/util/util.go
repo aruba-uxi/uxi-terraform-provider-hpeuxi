@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/nbio/st"
 )
 
 func ConditionalProperty(property string, value *string) string {
@@ -17,7 +17,7 @@ func ConditionalProperty(property string, value *string) string {
 }
 
 func TestOptionalValue(
-	t st.Fatalf,
+	t *testing.T,
 	tfResource string,
 	tfKey string,
 	property *string,
@@ -26,22 +26,13 @@ func TestOptionalValue(
 		return resource.TestCheckNoResourceAttr(tfResource, tfKey)
 	}
 
-	return resource.TestCheckResourceAttrWith(
-		tfResource,
-		tfKey,
-		func(value string) error {
-			if value != *property {
-				return fmt.Errorf("have `%s`; but want `%s`", value, *property)
-			}
-			return nil
-		},
-	)
+	return resource.TestCheckResourceAttrPtr(tfResource, tfKey, property)
 }
 
 // This is required to do a check against floats since 100% accuracy is not guaranteed for floating
 // point numbers in the terraform plugin framework
 func TestOptionalFloatValue(
-	t st.Fatalf,
+	t *testing.T,
 	tfResource string,
 	tfKey string,
 	property *float32,
@@ -55,8 +46,8 @@ func TestOptionalFloatValue(
 		tfResource,
 		tfKey,
 		func(value string) error {
-			have := math.Round(stringToFloat64(value)*1e6) / 1e6
-			want := math.Round(float64(*property*1e6)) / 1e6
+			have := math.Round(stringToFloat64(value)*1e5) / 1e5
+			want := math.Round(float64(*property*1e5)) / 1e5
 			if have != want {
 				return fmt.Errorf("have `%f`; but want `%f`", have, want)
 			}

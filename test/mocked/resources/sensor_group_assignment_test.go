@@ -10,7 +10,7 @@ import (
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSensorGroupAssignmentResource(t *testing.T) {
@@ -439,7 +439,7 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						"sensor_group_assignment_id",
 					),
 					func(s *terraform.State) error {
-						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -494,7 +494,7 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					func(s *terraform.State) error {
-						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),

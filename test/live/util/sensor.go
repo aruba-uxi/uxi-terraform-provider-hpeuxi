@@ -2,11 +2,12 @@ package util
 
 import (
 	"context"
+	"testing"
 
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func GetSensorProperties(id string) config_api_client.SensorItem {
@@ -24,7 +25,7 @@ func GetSensorProperties(id string) config_api_client.SensorItem {
 }
 
 func CheckDataSourceStateAgainstSensor(
-	t st.Fatalf,
+	t *testing.T,
 	entity string,
 	sensor config_api_client.SensorItem,
 ) resource.TestCheckFunc {
@@ -36,7 +37,7 @@ func CheckDataSourceStateAgainstSensor(
 			entity,
 			"name",
 			func(value string) error {
-				st.Assert(t, value, sensor.Name)
+				assert.Equal(t, value, sensor.Name)
 				return nil
 			},
 		),
@@ -51,7 +52,7 @@ func CheckDataSourceStateAgainstSensor(
 }
 
 func CheckResourceStateAgainstSensor(
-	t st.Fatalf,
+	t *testing.T,
 	entity string,
 	sensor config_api_client.SensorItem,
 ) resource.TestCheckFunc {
@@ -61,7 +62,7 @@ func CheckResourceStateAgainstSensor(
 			entity,
 			"name",
 			func(value string) error {
-				st.Assert(t, value, sensor.Name)
+				assert.Equal(t, value, sensor.Name)
 				return nil
 			},
 		),

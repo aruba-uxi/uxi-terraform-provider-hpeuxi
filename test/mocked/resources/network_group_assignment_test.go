@@ -10,7 +10,7 @@ import (
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
@@ -811,7 +811,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						"network_id",
 					),
 					func(s *terraform.State) error {
-						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
@@ -865,7 +865,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					func(s *terraform.State) error {
-						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),

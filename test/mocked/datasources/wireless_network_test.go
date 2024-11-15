@@ -7,11 +7,10 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
-	"github.com/nbio/st"
-
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestWirelessNetworkDataSource(t *testing.T) {
@@ -144,7 +143,7 @@ func TestWirelessNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 						"id",
 					),
 					func(s *terraform.State) error {
-						st.Assert(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
 					},
 				),
