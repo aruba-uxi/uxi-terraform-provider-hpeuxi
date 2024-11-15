@@ -500,5 +500,5 @@ func MockDeleteServiceTestGroupAssignment(id string, times int) {
 var RateLimitingHeaders = map[string]string{
 	"X-RateLimit-Limit":     "100",
 	"X-RateLimit-Remaining": "0",
-	"X-RateLimit-Reset":     "1",
+	"X-RateLimit-Reset":     "0.01",
 }
