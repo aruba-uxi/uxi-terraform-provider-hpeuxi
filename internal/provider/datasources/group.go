@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -79,7 +79,6 @@ func (d *groupDataSource) Read(
 ) {
 	var state groupDataSourceModel
 
-	// Read configuration from request
 	diags := req.Config.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -116,7 +115,6 @@ func (d *groupDataSource) Read(
 	state.Path = types.StringValue(group.Path)
 	state.ParentGroupID = types.StringValue(group.Parent.Get().Id)
 
-	// Set state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -129,8 +127,6 @@ func (d *groupDataSource) Configure(
 	req datasource.ConfigureRequest,
 	resp *datasource.ConfigureResponse,
 ) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}

@@ -2,32 +2,29 @@ package provider
 
 import (
 	"context"
+	"net/http"
 	"os"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/datasources"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
-
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"net/http"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ provider.Provider = &uxiConfigurationProvider{}
 )
 
 const tokenURLDefault = "https://sso.common.cloud.hpe.com/as/token.oauth2"
 
-// New is a helper function to simplify provider server and testing implementation.
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
 		return &uxiConfigurationProvider{
@@ -36,7 +33,6 @@ func New(version string) func() provider.Provider {
 	}
 }
 
-// maps provider schema data to a Go type.
 type uxiProviderModel struct {
 	Host         types.String `tfsdk:"host"`
 	ClientID     types.String `tfsdk:"client_id"`
@@ -51,7 +47,6 @@ type uxiConfigurationProvider struct {
 	version string
 }
 
-// Metadata returns the provider type name.
 func (p *uxiConfigurationProvider) Metadata(
 	_ context.Context,
 	_ provider.MetadataRequest,
@@ -61,7 +56,6 @@ func (p *uxiConfigurationProvider) Metadata(
 	resp.Version = p.version
 }
 
-// Schema defines the provider-level schema for configuration data.
 func (p *uxiConfigurationProvider) Schema(
 	_ context.Context,
 	_ provider.SchemaRequest,
@@ -75,13 +69,11 @@ func (p *uxiConfigurationProvider) Schema(
 	}}
 }
 
-// Configure prepares a Configuration API client for data sources and resources.
 func (p *uxiConfigurationProvider) Configure(
 	ctx context.Context,
 	req provider.ConfigureRequest,
 	resp *provider.ConfigureResponse,
 ) {
-	// Init
 	var config uxiProviderModel
 	diags := req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
@@ -109,9 +101,6 @@ func (p *uxiConfigurationProvider) Configure(
 	if !config.TokenURL.IsNull() {
 		tokenURL = config.TokenURL.ValueString()
 	}
-
-	// If any of the expected configurations are missing, return
-	// errors with provider-specific guidance.
 
 	if host == "" {
 		resp.Diagnostics.AddAttributeError(
@@ -151,19 +140,16 @@ func (p *uxiConfigurationProvider) Configure(
 		return
 	}
 
-	// initialise client
 	uxiConfiguration := config_api_client.NewConfiguration()
 	uxiConfiguration.Host = host
 	uxiConfiguration.Scheme = "https"
 	uxiConfiguration.HTTPClient = getHttpClient(clientID, clientSecret, tokenURL)
 	uxiClient := config_api_client.NewAPIClient(uxiConfiguration)
 
-	// Make the client available during DataSource and Resource type Configure methods.
 	resp.DataSourceData = uxiClient
 	resp.ResourceData = uxiClient
 }
 
-// DataSources defines the data sources implemented in the provider.
 func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		datasources.NewAgentDataSource,
@@ -179,7 +165,6 @@ func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datas
 	}
 }
 
-// Resources defines the resources implemented in the provider.
 func (p *uxiConfigurationProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		resources.NewAgentGroupAssignmentResource,
@@ -196,7 +181,6 @@ func (p *uxiConfigurationProvider) Resources(_ context.Context) []func() resourc
 }
 
 func getHttpClient(clientID string, clientSecret string, tokenURL string) *http.Client {
-	// Set up the client credentials config
 	config := &clientcredentials.Config{
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
@@ -204,6 +188,5 @@ func getHttpClient(clientID string, clientSecret string, tokenURL string) *http.
 		AuthStyle:    oauth2.AuthStyleInParams,
 	}
 
-	// Create a context and fetch a token
 	return config.Client(context.Background())
 }

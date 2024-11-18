@@ -6,7 +6,6 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
-
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -15,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &serviceTestGroupAssignmentResource{}
 	_ resource.ResourceWithConfigure = &serviceTestGroupAssignmentResource{}
@@ -99,7 +97,6 @@ func (r *serviceTestGroupAssignmentResource) Create(
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	// Retrieve values from plan
 	var plan serviceTestGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -125,12 +122,10 @@ func (r *serviceTestGroupAssignmentResource) Create(
 		return
 	}
 
-	// Update the state to match the plan
 	plan.ID = types.StringValue(serviceTestGroupAssignment.Id)
 	plan.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
 	plan.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTest.Id)
 
-	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -143,7 +138,6 @@ func (r *serviceTestGroupAssignmentResource) Read(
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	// Get current state
 	var state serviceTestGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -172,12 +166,10 @@ func (r *serviceTestGroupAssignmentResource) Read(
 	}
 	serviceTestGroupAssignment := serviceTestGroupAssignmentResponse.Items[0]
 
-	// Update state from client response
 	state.ID = types.StringValue(serviceTestGroupAssignment.Id)
 	state.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
 	state.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTest.Id)
 
-	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -190,7 +182,6 @@ func (r *serviceTestGroupAssignmentResource) Update(
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	// Retrieve values from plan
 	var plan serviceTestGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError(
@@ -208,7 +199,6 @@ func (r *serviceTestGroupAssignmentResource) Delete(
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	// Retrieve values from state
 	var state serviceTestGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
