@@ -260,7 +260,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			tfversion.RequireAbove(tfversion.Version1_7_0),
 		},
 		Steps: []resource.TestStep{
-			// Read 5xx error
+			// Read HTTP error
 			{
 				PreConfig: func() {
 					gock.New("https://test.api.capenetworks.com").
@@ -339,7 +339,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "id"),
 				),
 			},
-			// update 4xx
+			// Update HTTP error
 			{
 				PreConfig: func() {
 					// original
@@ -372,7 +372,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					`(?s)Unable to update agent - pcap_mode must be one the following \['light',\s*'full', 'off'\].\s*DebugID: 12312-123123-123123-1231212`,
 				),
 			},
-			// Delete 4xx
+			// Delete HTTP error
 			{
 				PreConfig: func() {
 					// existing agent
@@ -396,7 +396,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					`(?s)Cant delete sensor - hardware sensor deletion is forbidden\s*DebugID: 12312-123123-123123-1231212`,
 				),
 			},
-			// Actually delete group for cleanup reasons
+			// Actually delete agent for cleanup reasons
 			{
 				PreConfig: func() {
 					// existing group

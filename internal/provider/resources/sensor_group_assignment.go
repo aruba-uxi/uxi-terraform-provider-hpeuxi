@@ -152,7 +152,7 @@ func (r *sensorGroupAssignmentResource) Read(
 	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	errorSummary := util.GenerateErrorSummary("create", "uxi_sensor_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
@@ -160,7 +160,7 @@ func (r *sensorGroupAssignmentResource) Read(
 	}
 
 	if len(sensorGroupAssignmentResponse.Items) != 1 {
-		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 
@@ -209,7 +209,7 @@ func (r *sensorGroupAssignmentResource) Delete(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		if response.StatusCode == http.StatusNotFound {
+		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
 			return
 		}

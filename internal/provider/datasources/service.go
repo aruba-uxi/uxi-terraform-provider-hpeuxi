@@ -109,6 +109,7 @@ func (d *serviceTestDataSource) Read(
 
 	if len(serviceTestResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 
