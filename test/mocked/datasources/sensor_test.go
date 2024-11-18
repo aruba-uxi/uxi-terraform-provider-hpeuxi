@@ -26,7 +26,7 @@ func TestSensorDataSource(t *testing.T) {
 					util.MockGetSensor(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")},
+							[]map[string]interface{}{util.GenerateSensorResponse("id", "")},
 						),
 						3,
 					)
@@ -97,7 +97,7 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetSensor(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")},
+							[]map[string]interface{}{util.GenerateSensorResponse("id", "")},
 						),
 						3,
 					)

@@ -75,7 +75,6 @@ func (p *uxiConfigurationProvider) Schema(
 	}}
 }
 
-// TODO: Obtain a greenlake access token
 // Configure prepares a Configuration API client for data sources and resources.
 func (p *uxiConfigurationProvider) Configure(
 	ctx context.Context,
