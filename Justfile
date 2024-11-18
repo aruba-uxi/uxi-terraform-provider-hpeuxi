@@ -46,6 +46,7 @@ coverage-client:
   cd {{ CONFIG_API_CLIENT_DIR }} && go tool cover -html=.coverage -o=.coverage.html
 
 fmt-client:
+  python -m tools.lint-attribution format
   gofmt -w {{ CONFIG_API_CLIENT_DIR }}
   golines -w {{ CONFIG_API_CLIENT_DIR }}
 
