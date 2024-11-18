@@ -165,7 +165,7 @@ func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateServiceTestResponseModel("id", ""),
+								util.GenerateServiceTestResponse("id", ""),
 							},
 						),
 						2,
