@@ -11,7 +11,7 @@ import (
 	"github.com/h2non/gock"
 )
 
-func GenerateSensorResponseModel(id string, postfix string) map[string]interface{} {
+func GenerateSensorResponse(id string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"id":                 id,
 		"serial":             "serial" + postfix,
@@ -28,7 +28,7 @@ func GenerateSensorResponseModel(id string, postfix string) map[string]interface
 	}
 }
 
-func GenerateSensorRequestUpdateModel(postfix string) map[string]interface{} {
+func GenerateSensorUpdateRequest(postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"name":        "name" + postfix,
 		"addressNote": "address_note" + postfix,
@@ -37,7 +37,7 @@ func GenerateSensorRequestUpdateModel(postfix string) map[string]interface{} {
 	}
 }
 
-func GenerateAgentRequestUpdateModel(postfix string) map[string]interface{} {
+func GenerateAgentUpdateRequest(postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"name":     "name" + postfix,
 		"notes":    "notes" + postfix,
@@ -45,7 +45,7 @@ func GenerateAgentRequestUpdateModel(postfix string) map[string]interface{} {
 	}
 }
 
-func GenerateAgentResponseModel(id string, postfix string) map[string]interface{} {
+func GenerateAgentResponse(id string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"id":                 id,
 		"serial":             "serial" + postfix,
@@ -59,7 +59,7 @@ func GenerateAgentResponseModel(id string, postfix string) map[string]interface{
 	}
 }
 
-func GenerateNonRootGroupResponseModel(
+func GenerateNonRootGroupResponse(
 	id string,
 	nonReplacementFieldPostfix string,
 	replacementFieldPostfix string,
@@ -75,7 +75,7 @@ func GenerateNonRootGroupResponseModel(
 	}
 }
 
-func GenerateGroupRequestModel(
+func GenerateGroupRequest(
 	id string,
 	nonReplacementFieldPostfix string,
 	replacementFieldPostfix string,
@@ -94,7 +94,7 @@ func GeneratePaginatedResponse(items []map[string]interface{}) map[string]interf
 	}
 }
 
-func GenerateServiceTestResponseModel(
+func GenerateServiceTestResponse(
 	id string,
 	postfix string,
 ) map[string]interface{} {
@@ -207,16 +207,6 @@ func GenerateServiceTestGroupAssignmentRequest(id string, postfix string) map[st
 		"groupId":       "group_id" + postfix,
 		"serviceTestId": "service_test_id" + postfix,
 	}
-}
-
-// Converts a struct to a map while maintaining the json name as keys
-func StructToMap(obj interface{}) map[string]interface{} {
-	data, _ := json.Marshal(obj) // Convert to a json string
-
-	newMap := map[string]interface{}{}
-
-	_ = json.Unmarshal(data, &newMap) // Convert to a map
-	return newMap
 }
 
 func MockOAuth() *gock.Response {
@@ -504,5 +494,5 @@ func MockDeleteServiceTestGroupAssignment(id string, times int) {
 var RateLimitingHeaders = map[string]string{
 	"X-RateLimit-Limit":     "100",
 	"X-RateLimit-Remaining": "0",
-	"X-RateLimit-Reset":     "1",
+	"X-RateLimit-Reset":     "0.01",
 }

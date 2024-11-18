@@ -117,6 +117,7 @@ func TestSensorGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 
 	mockOAuth.Mock.Disable()
 }
+
 func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()

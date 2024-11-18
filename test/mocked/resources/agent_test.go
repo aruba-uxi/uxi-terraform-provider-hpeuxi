@@ -44,7 +44,7 @@ func TestAgentResource(t *testing.T) {
 					util.MockGetAgent(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
+							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
 						),
 						2,
 					)
@@ -74,7 +74,7 @@ func TestAgentResource(t *testing.T) {
 					util.MockGetAgent(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
+							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
 						),
 						1,
 					)
@@ -90,21 +90,21 @@ func TestAgentResource(t *testing.T) {
 					util.MockGetAgent(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
+							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
 						),
 						1,
 					)
 					util.MockUpdateAgent(
 						"id",
-						util.GenerateAgentRequestUpdateModel("_2"),
-						util.GenerateAgentResponseModel("id", "_2"),
+						util.GenerateAgentUpdateRequest("_2"),
+						util.GenerateAgentResponse("id", "_2"),
 						1,
 					)
 					// updated
 					util.MockGetAgent(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "_2")},
+							[]map[string]interface{}{util.GenerateAgentResponse("id", "_2")},
 						),
 						1,
 					)
@@ -125,7 +125,7 @@ func TestAgentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
 						1,
 					)
 					util.MockDeleteAgent("id", 1)
@@ -158,7 +158,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetAgent("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
 						2,
 					)
 				},
@@ -189,7 +189,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetAgent(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
+							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
 						),
 						1,
 					)
@@ -199,15 +199,15 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateAgent(
 						"id",
-						util.GenerateAgentRequestUpdateModel("_2"),
-						util.GenerateAgentResponseModel("id", "_2"),
+						util.GenerateAgentUpdateRequest("_2"),
+						util.GenerateAgentResponse("id", "_2"),
 						1,
 					)
 					// updated
 					util.MockGetAgent(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "_2")},
+							[]map[string]interface{}{util.GenerateAgentResponse("id", "_2")},
 						),
 						1,
 					)
@@ -230,7 +230,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
 						1,
 					)
 					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
@@ -322,7 +322,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					util.MockGetAgent(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
+							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
 						),
 						2,
 					)
@@ -350,7 +350,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					util.MockGetAgent(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
+							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
 						),
 						1,
 					)
@@ -381,7 +381,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					// existing agent
 					util.MockGetAgent("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
 						1,
 					)
 					// delete agent - with error
@@ -405,7 +405,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					// existing group
 					util.MockGetAgent("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
 						1,
 					)
 					// delete group

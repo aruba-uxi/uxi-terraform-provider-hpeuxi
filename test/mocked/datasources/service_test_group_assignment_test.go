@@ -117,6 +117,7 @@ func TestServiceTestGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.
 
 	mockOAuth.Mock.Disable()
 }
+
 func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
