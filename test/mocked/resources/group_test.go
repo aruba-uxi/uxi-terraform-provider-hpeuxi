@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"testing"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"github.com/h2non/gock"

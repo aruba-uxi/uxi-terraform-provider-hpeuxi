@@ -226,7 +226,6 @@ func MockOAuth() *gock.Response {
 			"token_type":   "bearer",
 			"expires_in":   3600,
 		})
-
 }
 
 func MockGetAgent(id string, response map[string]interface{}, times int) {
