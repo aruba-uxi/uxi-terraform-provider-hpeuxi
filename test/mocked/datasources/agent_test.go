@@ -26,7 +26,7 @@ func TestAgentDataSource(t *testing.T) {
 					util.MockGetAgent(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
+							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
 						),
 						3,
 					)
@@ -86,7 +86,7 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetAgent(
 						"id",
 						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponseModel("id", "")},
+							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
 						),
 						3,
 					)

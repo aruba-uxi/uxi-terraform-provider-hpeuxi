@@ -44,7 +44,7 @@ func TestSensorResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
 						2,
 					)
 				},
@@ -77,7 +77,7 @@ func TestSensorResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
 						1,
 					)
 				},
@@ -90,18 +90,18 @@ func TestSensorResource(t *testing.T) {
 				PreConfig: func() {
 					// existing sensor
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
 						1,
 					)
 					util.MockUpdateSensor(
 						"id",
-						util.GenerateSensorRequestUpdateModel("_2"),
-						util.GenerateSensorResponseModel("id", "_2"),
+						util.GenerateSensorUpdateRequest("_2"),
+						util.GenerateSensorResponse("id", "_2"),
 						1,
 					)
 					// updated sensor
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "_2")}),
+						[]map[string]interface{}{util.GenerateSensorResponse("id", "_2")}),
 						1,
 					)
 				},
@@ -128,7 +128,7 @@ func TestSensorResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "_2")}),
+						[]map[string]interface{}{util.GenerateSensorResponse("id", "_2")}),
 						1,
 					)
 				},
@@ -174,7 +174,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
 						2,
 					)
 				},
@@ -204,7 +204,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 				PreConfig: func() {
 					// existing sensor
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
 						1,
 					)
 					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
@@ -213,13 +213,13 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateSensor(
 						"id",
-						util.GenerateSensorRequestUpdateModel("_2"),
-						util.GenerateSensorResponseModel("id", "_2"),
+						util.GenerateSensorUpdateRequest("_2"),
+						util.GenerateSensorResponse("id", "_2"),
 						1,
 					)
 					// updated sensor
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "_2")}),
+						[]map[string]interface{}{util.GenerateSensorResponse("id", "_2")}),
 						1,
 					)
 				},
@@ -324,7 +324,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
 						2,
 					)
 				},
@@ -358,7 +358,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					// existing sensor
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponseModel("id", "")}),
+						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
 						1,
 					)
 					// patch sensor - with error

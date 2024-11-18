@@ -5,8 +5,6 @@ import (
 	"regexp"
 	"testing"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
-
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"github.com/h2non/gock"
@@ -29,7 +27,7 @@ func TestGroupDataSource(t *testing.T) {
 						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("id", "", ""),
+								util.GenerateNonRootGroupResponse("id", "", ""),
 							},
 						),
 						3,
@@ -46,19 +44,19 @@ func TestGroupDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "id"),
 				),
 			},
-			// TODO: Test retrieving the root group
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
 						"my_root_group_id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.StructToMap(config_api_client.GroupsGetItem{
-									Id:     "my_root_group_id",
-									Name:   "root",
-									Parent: *config_api_client.NewNullableParent(nil),
-									Path:   "my_root_group_id",
-								}),
+								{
+									"id":     "my_root_group_id",
+									"name":   "root",
+									"parent": nil,
+									"path":   "my_root_group_id",
+									"type":   "networking-uxi/group",
+								},
 							},
 						),
 						1,
@@ -99,7 +97,7 @@ func TestGroupDataSourceTooManyRequestsHandling(t *testing.T) {
 						"id",
 						util.GeneratePaginatedResponse(
 							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponseModel("id", "", ""),
+								util.GenerateNonRootGroupResponse("id", "", ""),
 							},
 						),
 						3,
