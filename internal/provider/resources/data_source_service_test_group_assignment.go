@@ -2,7 +2,7 @@
 Copyright 2024 Hewlett Packard Enterprise Development LP.
 */
 
-package datasources
+package resources
 
 import (
 	"context"
@@ -15,36 +15,36 @@ import (
 )
 
 var (
-	_ datasource.DataSource              = &networkGroupAssignmentDataSource{}
-	_ datasource.DataSourceWithConfigure = &networkGroupAssignmentDataSource{}
+	_ datasource.DataSource              = &serviceTestGroupAssignmentDataSource{}
+	_ datasource.DataSourceWithConfigure = &serviceTestGroupAssignmentDataSource{}
 )
 
-func NewNetworkGroupAssignmentDataSource() datasource.DataSource {
-	return &networkGroupAssignmentDataSource{}
+func NewServiceTestGroupAssignmentDataSource() datasource.DataSource {
+	return &serviceTestGroupAssignmentDataSource{}
 }
 
-type networkGroupAssignmentDataSource struct {
+type serviceTestGroupAssignmentDataSource struct {
 	client *config_api_client.APIClient
 }
 
-type networkGroupAssignmentDataSourceModel struct {
-	ID        types.String `tfsdk:"id"`
-	NetworkID types.String `tfsdk:"network_id"`
-	GroupID   types.String `tfsdk:"group_id"`
-	Filter    struct {
-		NetworkGroupAssignmentID string `tfsdk:"network_group_assignment_id"`
+type serviceTestGroupAssignmentDataSourceModel struct {
+	ID            types.String `tfsdk:"id"`
+	ServiceTestID types.String `tfsdk:"service_test_id"`
+	GroupID       types.String `tfsdk:"group_id"`
+	Filter        struct {
+		ServiceTestGroupAssignmentID string `tfsdk:"service_test_group_assignment_id"`
 	} `tfsdk:"filter"`
 }
 
-func (d *networkGroupAssignmentDataSource) Metadata(
+func (d *serviceTestGroupAssignmentDataSource) Metadata(
 	_ context.Context,
 	req datasource.MetadataRequest,
 	resp *datasource.MetadataResponse,
 ) {
-	resp.TypeName = req.ProviderTypeName + "_network_group_assignment"
+	resp.TypeName = req.ProviderTypeName + "_service_test_group_assignment"
 }
 
-func (d *networkGroupAssignmentDataSource) Schema(
+func (d *serviceTestGroupAssignmentDataSource) Schema(
 	_ context.Context,
 	_ datasource.SchemaRequest,
 	resp *datasource.SchemaResponse,
@@ -54,7 +54,7 @@ func (d *networkGroupAssignmentDataSource) Schema(
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
-			"network_id": schema.StringAttribute{
+			"service_test_id": schema.StringAttribute{
 				Computed: true,
 			},
 			"group_id": schema.StringAttribute{
@@ -63,7 +63,7 @@ func (d *networkGroupAssignmentDataSource) Schema(
 			"filter": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"network_group_assignment_id": schema.StringAttribute{
+					"service_test_group_assignment_id": schema.StringAttribute{
 						Required: true,
 					},
 				},
@@ -72,12 +72,12 @@ func (d *networkGroupAssignmentDataSource) Schema(
 	}
 }
 
-func (d *networkGroupAssignmentDataSource) Read(
+func (d *serviceTestGroupAssignmentDataSource) Read(
 	ctx context.Context,
 	req datasource.ReadRequest,
 	resp *datasource.ReadResponse,
 ) {
-	var state networkGroupAssignmentDataSourceModel
+	var state serviceTestGroupAssignmentDataSourceModel
 
 	diags := req.Config.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -86,28 +86,30 @@ func (d *networkGroupAssignmentDataSource) Read(
 	}
 
 	request := d.client.ConfigurationAPI.
-		NetworkGroupAssignmentsGet(ctx).
-		Id(state.Filter.NetworkGroupAssignmentID)
-	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
+		ServiceTestGroupAssignmentsGet(ctx).
+		Id(state.Filter.ServiceTestGroupAssignmentID)
+	serviceTestGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(
+		request.Execute,
+	)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
 		return
 	}
 
-	if len(networkGroupAssignmentResponse.Items) != 1 {
+	if len(serviceTestGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
 		return
 	}
 
-	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
-	state.ID = types.StringValue(networkGroupAssignment.Id)
-	state.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
-	state.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
+	serviceTestGroupAssignment := serviceTestGroupAssignmentResponse.Items[0]
+	state.ID = types.StringValue(serviceTestGroupAssignment.Id)
+	state.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTest.Id)
+	state.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -116,7 +118,7 @@ func (d *networkGroupAssignmentDataSource) Read(
 	}
 }
 
-func (d *networkGroupAssignmentDataSource) Configure(
+func (d *serviceTestGroupAssignmentDataSource) Configure(
 	_ context.Context,
 	req datasource.ConfigureRequest,
 	resp *datasource.ConfigureResponse,
@@ -130,7 +132,7 @@ func (d *networkGroupAssignmentDataSource) Configure(
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			"Data Source type: Network Group Assignment. Please report this issue to the provider developers.",
+			"Data Source type: ServiceTest Group Assignment. Please report this issue to the provider developers.",
 		)
 		return
 	}
