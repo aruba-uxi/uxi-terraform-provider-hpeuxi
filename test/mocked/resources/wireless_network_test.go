@@ -173,10 +173,10 @@ func TestWirelessNetworkResourceTooManyRequestsHandling(t *testing.T) {
 			tfversion.RequireAbove(tfversion.Version1_7_0),
 		},
 		Steps: []resource.TestStep{
-			// Importing a service_test
+			// Read
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/wireless-networks").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -212,7 +212,7 @@ func TestWirelessNetworkResourceTooManyRequestsHandling(t *testing.T) {
 					},
 				),
 			},
-			// Remove service_test from state
+			// Cleanup
 			{
 				Config: provider.ProviderConfig + `
 					removed {
@@ -240,6 +240,7 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 			tfversion.RequireAbove(tfversion.Version1_7_0),
 		},
 		Steps: []resource.TestStep{
+			// Read not found
 			{
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
@@ -259,9 +260,10 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 					}`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
+			// Read HTTP error
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/wireless-networks").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{

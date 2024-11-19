@@ -8,7 +8,7 @@ import (
 	"context"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -100,6 +100,7 @@ func (d *agentGroupAssignmentDataSource) Read(
 
 	if len(agentGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 

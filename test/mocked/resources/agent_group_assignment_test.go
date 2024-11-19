@@ -376,7 +376,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					// required for agent group assignment create
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/agent-group-assignments").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -451,7 +451,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/agent-group-assignments").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -511,7 +511,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 					util.MockDeleteGroup("group_id", 1)
 					util.MockDeleteAgent("agent_id", 1)
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Delete("/networking-uxi/v1alpha1/agent-group-assignments/agent_group_assignment_id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -564,7 +564,7 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// agent group assignment create
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/agent-group-assignments").
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
@@ -663,7 +663,7 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
-			// Read 5xx error
+			// Read HTTP error
 			{
 				PreConfig: func() {
 					util.MockGetAgent(
@@ -691,7 +691,7 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// agent group assignment read
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/agent-group-assignments").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -849,7 +849,7 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// agent group assignment create
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Delete("/networking-uxi/v1alpha1/agent-group-assignments").
 						Reply(http.StatusForbidden).
 						JSON(map[string]interface{}{

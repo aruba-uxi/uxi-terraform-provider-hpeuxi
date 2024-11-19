@@ -10,7 +10,6 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
-
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -19,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &networkGroupAssignmentResource{}
 	_ resource.ResourceWithConfigure = &networkGroupAssignmentResource{}
@@ -103,7 +101,6 @@ func (r *networkGroupAssignmentResource) Create(
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	// Retrieve values from plan
 	var plan networkGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -129,12 +126,10 @@ func (r *networkGroupAssignmentResource) Create(
 		return
 	}
 
-	// Update the state to match the plan
 	plan.ID = types.StringValue(networkGroupAssignment.Id)
 	plan.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
 	plan.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
 
-	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -147,7 +142,6 @@ func (r *networkGroupAssignmentResource) Read(
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	// Get current state
 	var state networkGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -174,12 +168,10 @@ func (r *networkGroupAssignmentResource) Read(
 	}
 	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
 
-	// Update state from client response
 	state.ID = types.StringValue(networkGroupAssignment.Id)
 	state.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
 	state.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
 
-	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -192,7 +184,6 @@ func (r *networkGroupAssignmentResource) Update(
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	// Retrieve values from plan
 	var plan networkGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError(
@@ -210,7 +201,6 @@ func (r *networkGroupAssignmentResource) Delete(
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	// Retrieve values from state
 	var state networkGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -224,7 +214,7 @@ func (r *networkGroupAssignmentResource) Delete(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		if response.StatusCode == http.StatusNotFound {
+		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
 			return
 		}

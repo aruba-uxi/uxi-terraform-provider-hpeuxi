@@ -94,7 +94,7 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/sensors").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -133,10 +133,10 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// 5xx error
+			// HTTP error
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/sensors").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{

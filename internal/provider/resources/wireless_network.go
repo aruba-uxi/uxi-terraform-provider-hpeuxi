@@ -17,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &wirelessNetworkResource{}
 	_ resource.ResourceWithConfigure = &wirelessNetworkResource{}
@@ -69,8 +68,6 @@ func (r *wirelessNetworkResource) Configure(
 	req resource.ConfigureRequest,
 	resp *resource.ConfigureResponse,
 ) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}
@@ -93,7 +90,6 @@ func (r *wirelessNetworkResource) Create(
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	// Retrieve values from plan
 	var plan wirelessNetworkResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError(
@@ -108,7 +104,6 @@ func (r *wirelessNetworkResource) Read(
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	// Get current state
 	var state wirelessNetworkResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -136,11 +131,9 @@ func (r *wirelessNetworkResource) Read(
 
 	network := networkResponse.Items[0]
 
-	// Update state from client response
 	state.ID = types.StringValue(network.Id)
 	state.Name = types.StringValue(network.Name)
 
-	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -153,7 +146,6 @@ func (r *wirelessNetworkResource) Update(
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	// Retrieve values from plan
 	var plan wirelessNetworkResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError(
@@ -168,7 +160,6 @@ func (r *wirelessNetworkResource) Delete(
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	// Retrieve values from state
 	var state wirelessNetworkResourceModel
 	diags := req.State.Get(ctx, &state)
 	diags.AddError(

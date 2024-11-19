@@ -722,7 +722,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Creating a network group assignment
+			// Create
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
@@ -750,7 +750,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					// required for network group assignment create
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/network-group-assignments").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -810,7 +810,37 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					},
 				),
 			},
-			// Delete network-group assignment and remove networks from state
+			// Read
+			{
+				PreConfig: func() {
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+						Get("/networking-uxi/v1alpha1/network-group-assignments").
+						Reply(http.StatusTooManyRequests).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockGetNetworkGroupAssignment(
+						"network_group_assignment_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateNetworkGroupAssignmentResponse(
+									"network_group_assignment_id",
+									"",
+								),
+							},
+						),
+						1,
+					)
+				},
+				ResourceName:      "uxi_network_group_assignment.my_network_group_assignment",
+				ImportState:       true,
+				ImportStateVerify: true,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					func(s *terraform.State) error {
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
+			},
+			// Delete
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
@@ -843,7 +873,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					util.MockDeleteGroup("group_id", 1)
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Delete("/networking-uxi/v1alpha1/network-group-assignments/network_group_assignment_id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -905,7 +935,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// network group assignment create
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/network-group-assignments").
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
@@ -1000,7 +1030,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
-			// Read 5xx error
+			// Read HTTP error
 			{
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
@@ -1028,7 +1058,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// network group assignment read
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/network-group-assignments").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -1181,7 +1211,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// network group assignment create
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Delete("/networking-uxi/v1alpha1/network-group-assignments").
 						Reply(http.StatusForbidden).
 						JSON(map[string]interface{}{

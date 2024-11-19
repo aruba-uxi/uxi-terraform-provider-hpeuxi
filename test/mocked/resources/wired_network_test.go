@@ -154,10 +154,10 @@ func TestWiredNetworkResourceTooManyRequestsHandling(t *testing.T) {
 			tfversion.RequireAbove(tfversion.Version1_7_0),
 		},
 		Steps: []resource.TestStep{
-			// Importing a service_test
+			// Read
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/wired-networks").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -193,7 +193,7 @@ func TestWiredNetworkResourceTooManyRequestsHandling(t *testing.T) {
 					},
 				),
 			},
-			// Remove service_test from state
+			// Cleanup
 			{
 				Config: provider.ProviderConfig + `
 					removed {
@@ -242,7 +242,7 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/wired-networks").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{

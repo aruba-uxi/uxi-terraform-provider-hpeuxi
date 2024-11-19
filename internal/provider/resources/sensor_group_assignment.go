@@ -9,7 +9,7 @@ import (
 	"net/http"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &sensorGroupAssignmentResource{}
 	_ resource.ResourceWithConfigure = &sensorGroupAssignmentResource{}
@@ -80,8 +79,6 @@ func (r *sensorGroupAssignmentResource) Configure(
 	req resource.ConfigureRequest,
 	resp *resource.ConfigureResponse,
 ) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}
@@ -105,7 +102,6 @@ func (r *sensorGroupAssignmentResource) Create(
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	// Retrieve values from plan
 	var plan sensorGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -147,7 +143,6 @@ func (r *sensorGroupAssignmentResource) Read(
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	// Get current state
 	var state sensorGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -161,7 +156,7 @@ func (r *sensorGroupAssignmentResource) Read(
 	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	errorSummary := util.GenerateErrorSummary("create", "uxi_sensor_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
@@ -169,18 +164,16 @@ func (r *sensorGroupAssignmentResource) Read(
 	}
 
 	if len(sensorGroupAssignmentResponse.Items) != 1 {
-		resp.Diagnostics.AddError(errorSummary, "Could not find specified resource")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 
 	sensorGroupAssignment := sensorGroupAssignmentResponse.Items[0]
 
-	// Update state from client response
 	state.ID = types.StringValue(sensorGroupAssignment.Id)
 	state.GroupID = types.StringValue(sensorGroupAssignment.Group.Id)
 	state.SensorID = types.StringValue(sensorGroupAssignment.Sensor.Id)
 
-	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -193,7 +186,6 @@ func (r *sensorGroupAssignmentResource) Update(
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	// Retrieve values from plan
 	var plan sensorGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError("operation not supported", "updating a sensor group assignment is not supported")
@@ -208,7 +200,6 @@ func (r *sensorGroupAssignmentResource) Delete(
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	// Retrieve values from state
 	var state sensorGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -216,14 +207,13 @@ func (r *sensorGroupAssignmentResource) Delete(
 		return
 	}
 
-	// Delete existing sensorGroupAssignment using the plan_id
 	request := r.client.ConfigurationAPI.
 		SensorGroupAssignmentsDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		if response.StatusCode == http.StatusNotFound {
+		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
 			return
 		}

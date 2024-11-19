@@ -8,7 +8,7 @@ package config
 // Configuration-API Acceptance Testing (844457745a1111ef880836000a52e73e)
 // And therefore the client_id and client_secret used for the acceptance tests must match this
 // customer.
-const AgentPermanentId = "55277822-c65a-35f7-8b21-d4a9893ec0bb"
+const AgentPermanentId = "abeac07d-3c28-31be-b9e7-30002c753ed4"
 const AgentCreateSerial = "56fb38331f19d278"
 const CustomerId = "9c16d493-7649-40bc-975b-07422d227c0b"
 const GroupIdRoot = "07422d227c0b"

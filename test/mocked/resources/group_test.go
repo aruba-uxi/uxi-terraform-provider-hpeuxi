@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"testing"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"github.com/h2non/gock"
@@ -29,7 +29,7 @@ func TestGroupResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create and Read testing
+			// Create
 			{
 				PreConfig: func() {
 					util.MockPostGroup(
@@ -71,7 +71,7 @@ func TestGroupResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 				),
 			},
-			// ImportState testing
+			// ImportState
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
@@ -190,7 +190,7 @@ func TestGroupResource(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "new_id"),
 				),
 			},
-			// Delete testing
+			// Delete
 			{
 				PreConfig: func() {
 					util.MockGetGroup("new_id", util.GeneratePaginatedResponse(
@@ -337,10 +337,10 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create and Read testing
+			// Create
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -382,7 +382,45 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					},
 				),
 			},
-			// Update that does not trigger a recreate
+			// Read
+			{
+				PreConfig: func() {
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+						Post("/networking-uxi/v1alpha1/groups").
+						Reply(http.StatusTooManyRequests).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockGetGroup(
+						"id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateNonRootGroupResponse("id", "", ""),
+							},
+						),
+						1,
+					)
+					// to indicate the group has a parent
+					util.MockGetGroup(
+						"parent_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateNonRootGroupResponse("parent_id", "", ""),
+							},
+						),
+						1,
+					)
+				},
+				ResourceName:      "uxi_group.my_group",
+				ImportState:       true,
+				ImportStateVerify: true,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
+					func(s *terraform.State) error {
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
+			},
+			// Update
 			{
 				PreConfig: func() {
 					// existing group
@@ -394,7 +432,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 						1,
 					)
 					// new group
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -435,7 +473,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					},
 				),
 			},
-			// Delete testing
+			// Delete
 			{
 				PreConfig: func() {
 					util.MockGetGroup("id", util.GeneratePaginatedResponse(
@@ -462,10 +500,10 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// read 5xx error
+			// read HTTP error
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -513,10 +551,10 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
-			// Create 4xx
+			// Create HTTP error
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
@@ -572,7 +610,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 				),
 			},
-			// Update 4xx
+			// Update HTTP error
 			{
 				PreConfig: func() {
 					// existing group
@@ -584,7 +622,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// new group - with error
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
@@ -603,7 +641,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					`(?s)Unable to create group - a sibling group already has the specified name\s*DebugID: 12312-123123-123123-1231212`,
 				),
 			},
-			// Delete 4xx
+			// Delete HTTP error
 			{
 				PreConfig: func() {
 					// existing group
@@ -615,7 +653,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// delete group - with error
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Delete("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{

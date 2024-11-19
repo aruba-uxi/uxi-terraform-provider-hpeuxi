@@ -6,10 +6,10 @@ package resources
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
-
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -18,9 +18,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const groupNotFoundErrorString = "not found"
+const groupNotFoundError = "not found"
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &groupResource{}
 	_ resource.ResourceWithConfigure = &groupResource{}
@@ -80,8 +79,6 @@ func (r *groupResource) Configure(
 	req resource.ConfigureRequest,
 	resp *resource.ConfigureResponse,
 ) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}
@@ -104,7 +101,6 @@ func (r *groupResource) Create(
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	// Retrieve values from plan
 	var plan groupResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -127,7 +123,6 @@ func (r *groupResource) Create(
 		return
 	}
 
-	// Update the state to match the plan (replace with response from client)
 	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
 	// only update parent if not attached to root node (else leave it as null)
@@ -136,7 +131,6 @@ func (r *groupResource) Create(
 		plan.ParentGroupId = types.StringValue(group.Parent.Id)
 	}
 
-	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -149,7 +143,6 @@ func (r *groupResource) Read(
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	// Get current state
 	var state groupResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -162,7 +155,7 @@ func (r *groupResource) Read(
 	errorSummary := util.GenerateErrorSummary("read", "uxi_group")
 
 	if errorDetail != nil {
-		if *errorDetail == groupNotFoundErrorString {
+		if *errorDetail == groupNotFoundError {
 			resp.State.RemoveResource(ctx)
 			return
 		}
@@ -175,16 +168,13 @@ func (r *groupResource) Read(
 		return
 	}
 
-	// Update state from client response
 	state.ID = types.StringValue(group.Id)
 	state.Name = types.StringValue(group.Name)
-	// only update parent if not attached to root node (else leave it as null)
 	parentGroup, _ := r.getGroup(ctx, group.Parent.Get().Id)
 	if parentGroup != nil && !util.IsRoot(*parentGroup) {
 		state.ParentGroupId = types.StringValue(group.Parent.Get().Id)
 	}
 
-	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -197,7 +187,6 @@ func (r *groupResource) Update(
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	// Retrieve values from plan
 	var plan, state groupResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -220,7 +209,6 @@ func (r *groupResource) Update(
 		return
 	}
 
-	// Update the state to match the plan (replace with response from client)
 	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
 	// only update parent if not attached to root node (else leave it as null)
@@ -229,7 +217,6 @@ func (r *groupResource) Update(
 		state.ParentGroupId = types.StringValue(group.Parent.Id)
 	}
 
-	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -242,7 +229,6 @@ func (r *groupResource) Delete(
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	// Retrieve values from state
 	var state groupResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -250,13 +236,16 @@ func (r *groupResource) Delete(
 		return
 	}
 
-	// Delete existing group using the plan_id
 	request := r.client.ConfigurationAPI.GroupsDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
+		if response != nil && response.StatusCode == http.StatusNotFound {
+			resp.State.RemoveResource(ctx)
+			return
+		}
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_group"), errorDetail)
 		return
 	}
@@ -283,7 +272,7 @@ func (r *groupResource) getGroup(
 	}
 
 	if len(groupResponse.Items) != 1 {
-		notFound := groupNotFoundErrorString
+		notFound := groupNotFoundError
 		return nil, &notFound
 	}
 

@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"net/url"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func GenerateErrorSummary(actionName string, entityName string) string {

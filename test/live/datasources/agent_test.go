@@ -16,6 +16,7 @@ import (
 func TestAgentDataSource(t *testing.T) {
 	agent := util.GetAgentProperties(config.AgentPermanentId)
 	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() {},
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{

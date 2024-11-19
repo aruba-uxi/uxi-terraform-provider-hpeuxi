@@ -8,13 +8,12 @@ import (
 	"context"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ datasource.DataSource              = &wirelessNetworkDataSource{}
 	_ datasource.DataSourceWithConfigure = &wirelessNetworkDataSource{}
@@ -113,7 +112,6 @@ func (d *wirelessNetworkDataSource) Read(
 ) {
 	var state wirelessNetworkDataSourceModel
 
-	// Read configuration from request
 	diags := req.Config.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -135,6 +133,7 @@ func (d *wirelessNetworkDataSource) Read(
 
 	if len(networkResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 
@@ -151,7 +150,6 @@ func (d *wirelessNetworkDataSource) Read(
 	state.UseDns64 = types.BoolValue(network.UseDns64)
 	state.ExternalConnectivity = types.BoolValue(network.ExternalConnectivity)
 
-	// Set state
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -164,8 +162,6 @@ func (d *wirelessNetworkDataSource) Configure(
 	req datasource.ConfigureRequest,
 	resp *datasource.ConfigureResponse,
 ) {
-	// Add a nil check when handling ProviderData because Terraform
-	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
 		return
 	}
