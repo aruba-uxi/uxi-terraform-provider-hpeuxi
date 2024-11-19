@@ -17,13 +17,13 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific service test group assignment by id. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `group_id` (String)
-- `id` (String) The ID of this resource.
-- `service_test_id` (String)
+- `group_id` (String) The identifier of the assigned group.
+- `id` (String) The identifier of the service test group assignment.
+- `service_test_id` (String) The identifier of the assigned service test.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`

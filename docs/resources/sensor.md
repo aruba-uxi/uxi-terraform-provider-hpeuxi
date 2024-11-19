@@ -17,14 +17,14 @@ description: |-
 
 ### Required
 
-- `name` (String)
+- `name` (String) The name of the sensor.
 
 ### Optional
 
-- `address_note` (String)
-- `notes` (String)
-- `pcap_mode` (String)
+- `address_note` (String) The address notes of the sensor.
+- `notes` (String) The address notes of the sensor.
+- `pcap_mode` (String) The packet capture mode of the agent.
 
 ### Read-Only
 
-- `id` (String) The ID of this resource.
+- `id` (String) The identifier of the sensor.

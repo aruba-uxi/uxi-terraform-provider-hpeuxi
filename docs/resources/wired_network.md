@@ -17,8 +17,8 @@ description: |-
 
 ### Required
 
-- `name` (String)
+- `name` (String) The name of the wired network.
 
 ### Read-Only
 
-- `id` (String) The ID of this resource.
+- `id` (String) The identifier of the wired network.

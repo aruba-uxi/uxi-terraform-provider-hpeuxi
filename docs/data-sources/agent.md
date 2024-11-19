@@ -17,18 +17,18 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific agent by id. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `ethernet_mac_address` (String)
-- `id` (String) The ID of this resource.
-- `model_number` (String)
-- `name` (String)
-- `notes` (String)
-- `pcap_mode` (String)
-- `serial` (String)
-- `wifi_mac_address` (String)
+- `ethernet_mac_address` (String) The ethernet mac address of the agent.
+- `id` (String) The identifier of the agent.
+- `model_number` (String) The model number of the agent.
+- `name` (String) The name of the agent.
+- `notes` (String) The notes of the agent.
+- `pcap_mode` (String) The packet capture mode of the agent.
+- `serial` (String) The serial of the agent.
+- `wifi_mac_address` (String) The wifi mac address of the agent.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`

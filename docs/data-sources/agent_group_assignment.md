@@ -17,13 +17,13 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific agent group assignment by id. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `agent_id` (String)
-- `group_id` (String)
-- `id` (String) The ID of this resource.
+- `agent_id` (String) The identifier of the assigned agent.
+- `group_id` (String) The identifier of the assigned group.
+- `id` (String) The identifier of the agent group assignment.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`

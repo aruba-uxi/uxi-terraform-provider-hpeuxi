@@ -17,13 +17,13 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific sensor group assignment by id. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `group_id` (String)
-- `id` (String) The ID of this resource.
-- `sensor_id` (String)
+- `group_id` (String) The identifier of the assigned group.
+- `id` (String) The identifier of the network group assignment.
+- `sensor_id` (String) The identifier of the assigned sensor.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`

@@ -17,14 +17,14 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific group by id. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `id` (String) The ID of this resource.
-- `name` (String)
-- `parent_group_id` (String)
-- `path` (String)
+- `id` (String) The identifier of the group.
+- `name` (String) The name of the group.
+- `parent_group_id` (String) The identifier of the parent of the group.
+- `path` (String) The path of the group.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`

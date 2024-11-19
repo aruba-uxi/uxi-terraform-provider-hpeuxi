@@ -17,13 +17,13 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific network group assignment by id. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `group_id` (String)
-- `id` (String) The ID of this resource.
-- `network_id` (String)
+- `group_id` (String) The identifier of the assigned group.
+- `id` (String) The identifier of the network group assignment.
+- `network_id` (String) The identifier of the assigned wired or wireless network.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`
