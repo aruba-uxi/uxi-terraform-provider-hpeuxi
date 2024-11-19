@@ -7,6 +7,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -75,8 +76,8 @@ func TestNetworkGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 			// Read testing
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/network-group-assignments").
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
+						Get(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetNetworkGroupAssignment(
@@ -122,8 +123,8 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				PreConfig: func() {
-					gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/network-group-assignments").
+					gock.New(util.MockUxiUrl).
+						Get(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusInternalServerError,

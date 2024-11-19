@@ -7,6 +7,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -746,8 +747,8 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					// required for network group assignment create
-					mockTooManyRequests = gock.New(util.MockUrl).
-						Post("/networking-uxi/v1alpha1/network-group-assignments").
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
+						Post(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostNetworkGroupAssignment(
@@ -839,7 +840,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					util.MockDeleteGroup("group_id", 1)
-					mockTooManyRequests = gock.New(util.MockUrl).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Delete("/networking-uxi/v1alpha1/network-group-assignments/network_group_assignment_id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -901,8 +902,8 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// network group assignment create
-					gock.New(util.MockUrl).
-						Post("/networking-uxi/v1alpha1/network-group-assignments").
+					gock.New(util.MockUxiUrl).
+						Post(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusBadRequest,
@@ -1024,8 +1025,8 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// network group assignment read
-					gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/network-group-assignments").
+					gock.New(util.MockUxiUrl).
+						Get(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusInternalServerError,
@@ -1177,8 +1178,8 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// network group assignment create
-					gock.New(util.MockUrl).
-						Delete("/networking-uxi/v1alpha1/network-group-assignments").
+					gock.New(util.MockUxiUrl).
+						Delete(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusForbidden).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusForbidden,

@@ -7,7 +7,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
-
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -352,8 +352,8 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 					)
 
 					// required for serviceTest group assignment create
-					mockTooManyRequests = gock.New(util.MockUrl).
-						Post("/networking-uxi/v1alpha1/service-test-group-assignments").
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
+						Post(shared.ServiceTestGroupAssignmentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 
@@ -491,8 +491,8 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// required for serviceTest group assignment create
-					gock.New(util.MockUrl).
-						Post("/networking-uxi/v1alpha1/service-test-group-assignments").
+					gock.New(util.MockUxiUrl).
+						Post(shared.ServiceTestGroupAssignmentPath).
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusBadRequest,

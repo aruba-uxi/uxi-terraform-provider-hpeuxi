@@ -7,6 +7,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -149,8 +150,8 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 			// Importing a agent
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/agents").
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
+						Get(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetAgent("id", util.GeneratePaginatedResponse(
@@ -189,8 +190,8 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 						),
 						1,
 					)
-					mockTooManyRequests = gock.New(util.MockUrl).
-						Patch("/networking-uxi/v1alpha1/agents").
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
+						Patch(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateAgent(
@@ -229,7 +230,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
 						1,
 					)
-					mockTooManyRequests = gock.New(util.MockUrl).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Delete("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -263,8 +264,8 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			// Read 5xx error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/agents").
+					gock.New(util.MockUxiUrl).
+						Get(shared.AgentPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusInternalServerError,
@@ -351,7 +352,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// patch agent - with error
-					gock.New(util.MockUrl).
+					gock.New(util.MockUxiUrl).
 						Patch("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
@@ -381,7 +382,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// delete agent - with error
-					gock.New(util.MockUrl).
+					gock.New(util.MockUxiUrl).
 						Delete("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{

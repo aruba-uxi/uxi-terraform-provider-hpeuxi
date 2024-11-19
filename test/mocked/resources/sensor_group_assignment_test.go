@@ -7,6 +7,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -375,8 +376,8 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					// required for sensor group assignment create
-					mockTooManyRequests = gock.New(util.MockUrl).
-						Post("/networking-uxi/v1alpha1/sensor-group-assignments").
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
+						Post(shared.SensorGroupAssignmentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostSensorGroupAssignment(
@@ -464,7 +465,7 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					util.MockDeleteGroup("group_id", 1)
-					mockTooManyRequests = gock.New(util.MockUrl).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Delete("/networking-uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -535,8 +536,8 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// required for sensor group assignment create
-					gock.New(util.MockUrl).
-						Post("/networking-uxi/v1alpha1/sensor-group-assignments").
+					gock.New(util.MockUxiUrl).
+						Post(shared.SensorGroupAssignmentPath).
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusBadRequest,
@@ -666,8 +667,8 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// required for sensor group assignment read
-					gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/sensor-group-assignments").
+					gock.New(util.MockUxiUrl).
+						Get(shared.SensorGroupAssignmentPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusInternalServerError,
@@ -818,7 +819,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 
-					gock.New(util.MockUrl).
+					gock.New(util.MockUxiUrl).
 						Delete("/networking-uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_id").
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
