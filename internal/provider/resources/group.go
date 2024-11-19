@@ -59,9 +59,11 @@ func (r *groupResource) Schema(
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				Description: "The identifier of the group.",
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: "The name of the group.",
 			},
 			"parent_group_id": schema.StringAttribute{
 				Optional: true,
@@ -69,6 +71,9 @@ func (r *groupResource) Schema(
 					// UXI business logic does not permit moving of groups
 					stringplanmodifier.RequiresReplace(),
 				},
+				Description: "The identifier of the parent of this group. " +
+					"Use uxi_group resource or datasource id for this attribute. " +
+					"Alternatively leave blank to set group to highest level configurable node.",
 			},
 		},
 	}

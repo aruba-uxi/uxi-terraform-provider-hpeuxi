@@ -52,13 +52,16 @@ func (d *sensorGroupAssignmentDataSource) Schema(
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the network group assignment.",
 			},
 			"sensor_id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the assigned sensor.",
 			},
 			"group_id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the assigned group.",
 			},
 			"filter": schema.SingleNestedAttribute{
 				Required: true,
@@ -67,6 +70,7 @@ func (d *sensorGroupAssignmentDataSource) Schema(
 						Required: true,
 					},
 				},
+				Description: "The filter used to filter the specific sensor group assignment by id.",
 			},
 		},
 	}

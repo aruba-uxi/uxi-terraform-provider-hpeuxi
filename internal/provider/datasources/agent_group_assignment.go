@@ -52,13 +52,16 @@ func (d *agentGroupAssignmentDataSource) Schema(
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the agent group assignment.",
 			},
 			"agent_id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the assigned agent.",
 			},
 			"group_id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the assigned group.",
 			},
 			"filter": schema.SingleNestedAttribute{
 				Required: true,
@@ -67,6 +70,7 @@ func (d *agentGroupAssignmentDataSource) Schema(
 						Required: true,
 					},
 				},
+				Description: "The filter used to filter the specific agent group assignment by id.",
 			},
 		},
 	}

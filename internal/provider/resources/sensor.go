@@ -58,24 +58,29 @@ func (r *sensorResource) Schema(
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				Description: "The identifier of the sensor.",
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: "The name of the sensor.",
 			},
 			"address_note": schema.StringAttribute{
 				Optional: true,
 				// computed because goes from nil -> "" when sensor becomes configured
-				Computed: true,
+				Computed:    true,
+				Description: "The address notes of the sensor.",
 			},
 			"notes": schema.StringAttribute{
 				Optional: true,
 				// computed because goes from from nil -> "" when sensor becomes configured
-				Computed: true,
+				Computed:    true,
+				Description: "The address notes of the sensor.",
 			},
 			"pcap_mode": schema.StringAttribute{
 				Optional: true,
 				// computed because goes from from nil -> "light" when sensor becomes configured
-				Computed: true,
+				Computed:    true,
+				Description: "The packet capture mode of the agent.",
 			},
 		},
 	}

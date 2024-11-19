@@ -60,37 +60,48 @@ func (d *sensorDataSource) Schema(
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the sensor.",
 			},
 			"serial": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The serial of the sensor.",
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The name of the sensor.",
 			},
 			"model_number": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The model number of the sensor.",
 			},
 			"wifi_mac_address": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The wifi mac address of the sensor.",
 			},
 			"ethernet_mac_address": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The ethernet mac address of the sensor.",
 			},
 			"address_note": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The address note of the sensor.",
 			},
 			"longitude": schema.Float32Attribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The geolocation longitude of the sensor.",
 			},
 			"latitude": schema.Float32Attribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The geolocation latitude of the sensor.",
 			},
 			"notes": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The notes of the sensor.",
 			},
 			"pcap_mode": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The packet capture mode of the sensor.",
 			},
 			"filter": schema.SingleNestedAttribute{
 				Required: true,
@@ -99,6 +110,7 @@ func (d *sensorDataSource) Schema(
 						Required: true,
 					},
 				},
+				Description: "The filter used to filter the specific sensor by id.",
 			},
 		},
 	}

@@ -55,9 +55,11 @@ func (r *serviceTestResource) Schema(
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				Description: "The identifier of the service test.",
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: "The name of the service test.",
 			},
 		},
 	}

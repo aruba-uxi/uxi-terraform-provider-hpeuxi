@@ -61,37 +61,48 @@ func (d *wirelessNetworkDataSource) Schema(
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the wireless network.",
 			},
 			"ssid": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The SSID of the wireless network.",
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The name of the wireless network.",
 			},
 			"ip_version": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The IP version of the wireless network.",
 			},
 			"security": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The security protocol of the wireless network.",
 			},
 			"hidden": schema.BoolAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "Whether the wireless network is hidden.",
 			},
 			"band_locking": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The frequency band the wireless network is locked to.",
 			},
 			"dns_lookup_domain": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The DNS lookup domain of the wireless network.",
 			},
 			"disable_edns": schema.BoolAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "Whether EDNS is disabled on the wireless network.",
 			},
 			"use_dns64": schema.BoolAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "Whether the wireless network is configured to use DNS64.",
 			},
 			"external_connectivity": schema.BoolAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "Whether the wireless network has external connectivity.",
 			},
 			"filter": schema.SingleNestedAttribute{
 				Required: true,
@@ -100,6 +111,7 @@ func (d *wirelessNetworkDataSource) Schema(
 						Required: true,
 					},
 				},
+				Description: "The filter used to filter the specific wired network by id.",
 			},
 		},
 	}

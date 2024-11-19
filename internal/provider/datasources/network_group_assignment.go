@@ -52,13 +52,16 @@ func (d *networkGroupAssignmentDataSource) Schema(
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the network group assignment.",
 			},
 			"network_id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the assigned wired or wireless network.",
 			},
 			"group_id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the assigned group.",
 			},
 			"filter": schema.SingleNestedAttribute{
 				Required: true,
@@ -67,6 +70,7 @@ func (d *networkGroupAssignmentDataSource) Schema(
 						Required: true,
 					},
 				},
+				Description: "The filter used to filter the specific network group assignment by id.",
 			},
 		},
 	}

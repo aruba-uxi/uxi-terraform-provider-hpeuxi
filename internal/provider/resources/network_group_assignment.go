@@ -57,18 +57,30 @@ func (r *networkGroupAssignmentResource) Schema(
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				Description: "The identifier of the network group assignment",
 			},
 			"network_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+				Description: "The identifier of the network to be assigned. " +
+					"Use wired network id; " +
+					"uxi_wired_network resource id field; " +
+					"uxi_wired_network datasource id field; " +
+					"wireless network id; " +
+					"uxi_wireless_network resource id field or " +
+					"uxi_wireless_network datasource id field here.",
 			},
 			"group_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+				Description: "The identifier of the group to be assigned to. " +
+					"Use group id; " +
+					"uxi_group resource id field or " +
+					"uxi_group datasource id field here.",
 			},
 		},
 	}

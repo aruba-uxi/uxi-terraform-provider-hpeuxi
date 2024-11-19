@@ -59,31 +59,40 @@ func (d *wiredNetworkDataSource) Schema(
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the wired network.",
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The name of the wired network.",
 			},
 			"ip_version": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The ip version of the wired network.",
 			},
 			"security": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The security protocol of the wired network.",
 			},
 			"dns_lookup_domain": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The DNS lookup domain of the wired network.",
 			},
 			"disable_edns": schema.BoolAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "Whether EDNS is disabled on the wired network.",
 			},
 			"use_dns64": schema.BoolAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "Whether the wired network is configured to use DNS64.",
 			},
 			"external_connectivity": schema.BoolAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "Whether the wired network has external connectivity.",
 			},
 			"vlan_id": schema.Int32Attribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The VLAN identifier of the wired network.",
 			},
 			"filter": schema.SingleNestedAttribute{
 				Required: true,
@@ -92,6 +101,7 @@ func (d *wiredNetworkDataSource) Schema(
 						Required: true,
 					},
 				},
+				Description: "The filter used to filter the specific wired network by id.",
 			},
 		},
 	}

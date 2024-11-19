@@ -55,22 +55,28 @@ func (d *serviceTestDataSource) Schema(
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The identifier of the service test.",
 			},
 			"category": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The category of the service test.",
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The name of the service test.",
 			},
 			"target": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The target of the service test.",
 			},
 			"template": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The template of the service test.",
 			},
 			"is_enabled": schema.BoolAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "Whether the service test is enabled or not.",
 			},
 			"filter": schema.SingleNestedAttribute{
 				Required: true,
@@ -79,6 +85,7 @@ func (d *serviceTestDataSource) Schema(
 						Required: true,
 					},
 				},
+				Description: "The filter used to filter the specific service test by id.",
 			},
 		},
 	}
