@@ -56,38 +56,38 @@ func (d *serviceTestDataSource) Schema(
 		Description: "Retrieves a specific service test.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed:    true,
 				Description: "The identifier of the service test.",
+				Computed:    true,
 			},
 			"category": schema.StringAttribute{
-				Computed:    true,
 				Description: "The category of the service test.",
+				Computed:    true,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Description: "The name of the service test.",
+				Computed:    true,
 			},
 			"target": schema.StringAttribute{
-				Computed:    true,
 				Description: "The target of the service test.",
+				Computed:    true,
 			},
 			"template": schema.StringAttribute{
-				Computed:    true,
 				Description: "The template of the service test.",
+				Computed:    true,
 			},
 			"is_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Description: "Whether the service test is enabled or not.",
+				Computed:    true,
 			},
 			"filter": schema.SingleNestedAttribute{
-				Required: true,
+				Description: "The filter used to filter the specific service test.",
+				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"service_test_id": schema.StringAttribute{
-						Required:    true,
 						Description: "The identifier of the service test.",
+						Required:    true,
 					},
 				},
-				Description: "The filter used to filter the specific service test.",
 			},
 		},
 	}

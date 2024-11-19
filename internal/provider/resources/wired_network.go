@@ -52,15 +52,15 @@ func (r *wiredNetworkResource) Schema(
 		Description: "Manages a wired network.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the wired network.",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Description: "The identifier of the wired network.",
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
 				Description: "The name of the wired network.",
+				Required:    true,
 			},
 		},
 	}

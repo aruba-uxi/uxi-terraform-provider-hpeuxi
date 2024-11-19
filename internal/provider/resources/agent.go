@@ -55,25 +55,25 @@ func (r *agentResource) Schema(
 		Description: "Manages an agent.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the agent.",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Description: "The identifier of the agent.",
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
 				Description: "The name of the agent.",
+				Required:    true,
 			},
 			"notes": schema.StringAttribute{
+				Description: "The notes of the agent.",
 				Optional:    true,
 				Computed:    true,
-				Description: "The notes of the agent.",
 			},
 			"pcap_mode": schema.StringAttribute{
+				Description: "The packet capture mode of the agent.",
 				Optional:    true,
 				Computed:    true,
-				Description: "The packet capture mode of the agent.",
 			},
 		},
 	}

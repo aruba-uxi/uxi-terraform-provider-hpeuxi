@@ -52,15 +52,15 @@ func (r *wirelessNetworkResource) Schema(
 		Description: "Manages a wireless network.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the wireless network.",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Description: "The identifier of the wireless network.",
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
 				Description: "The name of the wireless network.",
+				Required:    true,
 			},
 		},
 	}

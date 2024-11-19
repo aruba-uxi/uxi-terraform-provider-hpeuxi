@@ -58,46 +58,46 @@ func (d *agentDataSource) Schema(
 		Description: "Retrieves a specific agent.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed:    true,
 				Description: "The identifier of the agent.",
+				Computed:    true,
 			},
 			"serial": schema.StringAttribute{
-				Computed:    true,
 				Description: "The serial of the agent.",
+				Computed:    true,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Description: "The name of the agent.",
+				Computed:    true,
 			},
 			"model_number": schema.StringAttribute{
-				Computed:    true,
 				Description: "The model number of the agent.",
+				Computed:    true,
 			},
 			"wifi_mac_address": schema.StringAttribute{
-				Computed:    true,
 				Description: "The wifi mac address of the agent.",
+				Computed:    true,
 			},
 			"ethernet_mac_address": schema.StringAttribute{
-				Computed:    true,
 				Description: "The ethernet mac address of the agent.",
+				Computed:    true,
 			},
 			"notes": schema.StringAttribute{
-				Computed:    true,
 				Description: "The notes of the agent.",
+				Computed:    true,
 			},
 			"pcap_mode": schema.StringAttribute{
-				Computed:    true,
 				Description: "The packet capture mode of the agent.",
+				Computed:    true,
 			},
 			"filter": schema.SingleNestedAttribute{
-				Required: true,
+				Description: "The filter used to filter the specific agent.",
+				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"agent_id": schema.StringAttribute{
-						Required:    true,
 						Description: "The identifier of the agent.",
+						Required:    true,
 					},
 				},
-				Description: "The filter used to filter the specific agent.",
 			},
 		},
 	}

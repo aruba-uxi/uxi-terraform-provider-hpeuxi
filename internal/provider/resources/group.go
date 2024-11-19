@@ -56,25 +56,25 @@ func (r *groupResource) Schema(
 		Description: "Manages a group.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the group.",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Description: "The identifier of the group.",
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
 				Description: "The name of the group.",
+				Required:    true,
 			},
 			"parent_group_id": schema.StringAttribute{
+				Description: "The identifier of the parent of this group. " +
+					"Use uxi_group resource or datasource id for this attribute. " +
+					"Alternatively leave blank to set group to highest level configurable node.",
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					// UXI business logic does not permit moving of groups
 					stringplanmodifier.RequiresReplace(),
 				},
-				Description: "The identifier of the parent of this group. " +
-					"Use uxi_group resource or datasource id for this attribute. " +
-					"Alternatively leave blank to set group to highest level configurable node.",
 			},
 		},
 	}

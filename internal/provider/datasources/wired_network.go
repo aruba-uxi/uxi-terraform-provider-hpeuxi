@@ -60,50 +60,50 @@ func (d *wiredNetworkDataSource) Schema(
 		Description: "Retrieves a specific wired network.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed:    true,
 				Description: "The identifier of the wired network.",
+				Computed:    true,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Description: "The name of the wired network.",
+				Computed:    true,
 			},
 			"ip_version": schema.StringAttribute{
-				Computed:    true,
 				Description: "The ip version of the wired network.",
+				Computed:    true,
 			},
 			"security": schema.StringAttribute{
-				Computed:    true,
 				Description: "The security protocol of the wired network.",
+				Computed:    true,
 			},
 			"dns_lookup_domain": schema.StringAttribute{
-				Computed:    true,
 				Description: "The DNS lookup domain of the wired network.",
+				Computed:    true,
 			},
 			"disable_edns": schema.BoolAttribute{
-				Computed:    true,
 				Description: "Whether EDNS is disabled on the wired network.",
+				Computed:    true,
 			},
 			"use_dns64": schema.BoolAttribute{
-				Computed:    true,
 				Description: "Whether the wired network is configured to use DNS64.",
+				Computed:    true,
 			},
 			"external_connectivity": schema.BoolAttribute{
-				Computed:    true,
 				Description: "Whether the wired network has external connectivity.",
+				Computed:    true,
 			},
 			"vlan_id": schema.Int32Attribute{
-				Computed:    true,
 				Description: "The VLAN identifier of the wired network.",
+				Computed:    true,
 			},
 			"filter": schema.SingleNestedAttribute{
-				Required: true,
+				Description: "The filter used to filter the specific wired network.",
+				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"wired_network_id": schema.StringAttribute{
-						Required:    true,
 						Description: "The identifier of the wired network.",
+						Required:    true,
 					},
 				},
-				Description: "The filter used to filter the specific wired network.",
 			},
 		},
 	}

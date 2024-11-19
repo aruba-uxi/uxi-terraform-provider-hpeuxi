@@ -61,17 +61,23 @@ func (p *uxiConfigurationProvider) Schema(
 	_ provider.SchemaRequest,
 	resp *provider.SchemaResponse,
 ) {
-	resp.Schema = schema.Schema{Attributes: map[string]schema.Attribute{
-		"client_id": schema.StringAttribute{
-			Optional:    true,
-			Description: "The Client ID as obtained from HPE GreenLake API client credentials",
-		},
-		"client_secret": schema.StringAttribute{
-			Optional:    true,
-			Sensitive:   true,
-			Description: "The Client Secret as obtained from HPE GreenLake API client credentials",
-		},
-	}}
+	resp.Schema = schema.Schema{
+		Description: "Interact with HPE Aruba Network UXI Configuration.",
+		Attributes: map[string]schema.Attribute{
+			"client_id": schema.StringAttribute{
+				Description: "The Client ID as obtained from HPE GreenLake API client credentials. " +
+					"It is strongly preferred that this configuration is left blank and " +
+					"the Client ID is exported as the GREENLAKE_UXI_CLIENT_ID environment variable.",
+				Optional: true,
+			},
+			"client_secret": schema.StringAttribute{
+				Description: "The Client Secret as obtained from HPE GreenLake API client credentials. " +
+					"It is strongly preferred that this configuration is left blank and " +
+					"the Client Secret is exported as the GREENLAKE_UXI_CLIENT_SECRET environment variable.",
+				Optional:  true,
+				Sensitive: true,
+			},
+		}}
 }
 
 func (p *uxiConfigurationProvider) Configure(

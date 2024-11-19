@@ -54,31 +54,31 @@ func (r *serviceTestGroupAssignmentResource) Schema(
 		Description: "Manages a service test group assignment.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the service test group assignment",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				Description: "The identifier of the service test group assignment",
 			},
 			"service_test_id": schema.StringAttribute{
-				Required: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
 				Description: "The identifier of the service test to be assigned. " +
 					"Use service test id; " +
 					"uxi_service_test resource id field or " +
 					"uxi_service_test datasource id field here.",
-			},
-			"group_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+			},
+			"group_id": schema.StringAttribute{
 				Description: "The identifier of the group to be assigned to. " +
 					"Use group id; " +
 					"uxi_group resource id field or " +
 					"uxi_group datasource id field here.",
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 		},
 	}
