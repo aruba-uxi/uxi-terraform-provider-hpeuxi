@@ -67,13 +67,13 @@ func (p *uxiConfigurationProvider) Schema(
 			"client_id": schema.StringAttribute{
 				Description: "The Client ID as obtained from HPE GreenLake API client credentials. " +
 					"It is recommended that this configuration is left blank and the Client ID " +
-					"is exported as the GREENLAKE_UXI_CLIENT_ID environment variable instead.",
+					"is exported as the `GREENLAKE_UXI_CLIENT_ID` environment variable instead.",
 				Optional: true,
 			},
 			"client_secret": schema.StringAttribute{
 				Description: "The Client Secret as obtained from HPE GreenLake API client credentials. " +
 					"It is recommended that this configuration is left blank and the Client Secret " +
-					"is exported as the GREENLAKE_UXI_CLIENT_SECRET environment variable instead.",
+					"is exported as the `GREENLAKE_UXI_CLIENT_SECRET` environment variable instead.",
 				Optional:  true,
 				Sensitive: true,
 			},
