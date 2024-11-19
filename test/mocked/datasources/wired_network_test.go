@@ -11,6 +11,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -107,8 +108,8 @@ func TestWiredNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 			// Read testing
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/wired-networks").
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
+						Get(shared.WiredNetworkPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetWiredNetwork(
@@ -152,8 +153,8 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				PreConfig: func() {
-					gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/wired-networks").
+					gock.New(util.MockUxiUrl).
+						Get(shared.WiredNetworkPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusInternalServerError,

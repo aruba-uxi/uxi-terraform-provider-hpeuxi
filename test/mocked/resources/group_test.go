@@ -12,6 +12,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -228,7 +229,7 @@ func TestRootGroupResource(t *testing.T) {
 								"name":   "root",
 								"parent": *config_api_client.NewNullableParent(nil),
 								"path":   "my_root_group_id",
-								"type":   "networking-uxi/group",
+								"type":   shared.GroupType,
 							},
 						}),
 						1,
@@ -255,7 +256,7 @@ func TestRootGroupResource(t *testing.T) {
 							"name":   "name",
 							"parent": map[string]interface{}{"id": "root"},
 							"path":   "id",
-							"type":   "networking-uxi/group",
+							"type":   shared.GroupType,
 						},
 						1,
 					)
@@ -268,7 +269,7 @@ func TestRootGroupResource(t *testing.T) {
 									"name":   "name",
 									"parent": map[string]interface{}{"id": "root"},
 									"path":   "id",
-									"type":   "networking-uxi/group",
+									"type":   shared.GroupType,
 								},
 							},
 						),
@@ -283,7 +284,7 @@ func TestRootGroupResource(t *testing.T) {
 									"id":   "root",
 									"name": "root",
 									"path": "root",
-									"type": "networking-uxi/group",
+									"type": shared.GroupType,
 								},
 							},
 						),
@@ -313,7 +314,7 @@ func TestRootGroupResource(t *testing.T) {
 									"name":   "name",
 									"parent": map[string]interface{}{"id": "root"},
 									"path":   "id",
-									"type":   "networking-uxi/group",
+									"type":   shared.GroupType,
 								},
 							},
 						),
@@ -340,7 +341,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUrl).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Post("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -432,7 +433,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 						1,
 					)
 					// new group
-					mockTooManyRequests = gock.New(util.MockUrl).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -503,7 +504,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			// read HTTP error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUrl).
+					gock.New(util.MockUxiUrl).
 						Get("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -554,7 +555,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			// Create HTTP error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUrl).
+					gock.New(util.MockUxiUrl).
 						Post("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
@@ -622,7 +623,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// new group - with error
-					gock.New(util.MockUrl).
+					gock.New(util.MockUxiUrl).
 						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
@@ -653,7 +654,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// delete group - with error
-					gock.New(util.MockUrl).
+					gock.New(util.MockUxiUrl).
 						Delete("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{

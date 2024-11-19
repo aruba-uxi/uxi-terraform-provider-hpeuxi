@@ -11,7 +11,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
-
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -173,8 +173,8 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/sensors").
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
+						Get(shared.SensorPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensor("id", util.GeneratePaginatedResponse(
@@ -211,7 +211,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
 						1,
 					)
-					mockTooManyRequests = gock.New(util.MockUrl).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Patch("/networking-uxi/v1alpha1/sensors/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -273,8 +273,8 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			// Read HTTP error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/sensors").
+					gock.New(util.MockUxiUrl).
+						Get(shared.SensorPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusInternalServerError,
@@ -366,7 +366,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// patch sensor - with error
-					gock.New(util.MockUrl).
+					gock.New(util.MockUxiUrl).
 						Patch("/networking-uxi/v1alpha1/sensors/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{

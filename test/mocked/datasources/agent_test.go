@@ -11,6 +11,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -83,8 +84,8 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/agents").
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
+						Get(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetAgent(
@@ -125,8 +126,8 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 			// HTTP error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUrl).
-						Get("/networking-uxi/v1alpha1/agents").
+					gock.New(util.MockUxiUrl).
+						Get(shared.AgentPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
 							"httpStatusCode": http.StatusInternalServerError,
