@@ -3,12 +3,12 @@
 page_title: "uxi_group Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a group.
 ---
 
 # uxi_group (Resource)
 
-
+Manages a group.
 
 
 

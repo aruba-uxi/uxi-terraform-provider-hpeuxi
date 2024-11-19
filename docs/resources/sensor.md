@@ -3,12 +3,12 @@
 page_title: "uxi_sensor Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a sensor.
 ---
 
 # uxi_sensor (Resource)
 
-
+Manages a sensor.
 
 
 

@@ -3,12 +3,12 @@
 page_title: "uxi_agent Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages an agent.
 ---
 
 # uxi_agent (Resource)
 
-
+Manages an agent.
 
 
 

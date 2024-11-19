@@ -3,12 +3,12 @@
 page_title: "uxi_agent_group_assignment Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages an agent group assignment.
 ---
 
 # uxi_agent_group_assignment (Resource)
 
-
+Manages an agent group assignment.
 
 
 

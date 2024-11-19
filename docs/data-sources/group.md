@@ -3,12 +3,12 @@
 page_title: "uxi_group Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific group.
 ---
 
 # uxi_group (Data Source)
 
-
+Retrieves a specific group.
 
 
 

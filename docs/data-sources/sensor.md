@@ -3,12 +3,12 @@
 page_title: "uxi_sensor Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific sensor.
 ---
 
 # uxi_sensor (Data Source)
 
-
+Retrieves a specific sensor.
 
 
 

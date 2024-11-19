@@ -3,12 +3,12 @@
 page_title: "uxi_service_test_group_assignment Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a service test group assignment.
 ---
 
 # uxi_service_test_group_assignment (Resource)
 
-
+Manages a service test group assignment.
 
 
 

@@ -3,12 +3,12 @@
 page_title: "uxi_wired_network Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific wired network.
 ---
 
 # uxi_wired_network (Data Source)
 
-
+Retrieves a specific wired network.
 
 
 

@@ -3,12 +3,12 @@
 page_title: "uxi_service_test Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a service test.
 ---
 
 # uxi_service_test (Resource)
 
-
+Manages a service test.
 
 
 

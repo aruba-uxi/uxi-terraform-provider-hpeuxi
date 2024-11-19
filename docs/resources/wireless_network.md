@@ -3,12 +3,12 @@
 page_title: "uxi_wireless_network Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a wireless network.
 ---
 
 # uxi_wireless_network (Resource)
 
-
+Manages a wireless network.
 
 
 

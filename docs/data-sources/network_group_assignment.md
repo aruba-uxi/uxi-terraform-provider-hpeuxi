@@ -3,12 +3,12 @@
 page_title: "uxi_network_group_assignment Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific network group assignment.
 ---
 
 # uxi_network_group_assignment (Data Source)
 
-
+Retrieves a specific network group assignment.
 
 
 

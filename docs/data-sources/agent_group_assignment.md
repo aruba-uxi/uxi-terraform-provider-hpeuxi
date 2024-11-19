@@ -3,12 +3,12 @@
 page_title: "uxi_agent_group_assignment Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific agent group assignment.
 ---
 
 # uxi_agent_group_assignment (Data Source)
 
-
+Retrieves a specific agent group assignment.
 
 
 

@@ -3,12 +3,12 @@
 page_title: "uxi_service_test Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific service test.
 ---
 
 # uxi_service_test (Data Source)
 
-
+Retrieves a specific service test.
 
 
 

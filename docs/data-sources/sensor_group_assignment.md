@@ -3,12 +3,12 @@
 page_title: "uxi_sensor_group_assignment Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific sensor group assignment.
 ---
 
 # uxi_sensor_group_assignment (Data Source)
 
-
+Retrieves a specific sensor group assignment.
 
 
 

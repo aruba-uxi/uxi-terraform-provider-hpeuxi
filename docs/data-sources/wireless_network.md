@@ -3,12 +3,12 @@
 page_title: "uxi_wireless_network Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific wireless network.
 ---
 
 # uxi_wireless_network (Data Source)
 
-
+Retrieves a specific wireless network.
 
 
 

@@ -3,12 +3,12 @@
 page_title: "uxi_network_group_assignment Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a network group assignment.
 ---
 
 # uxi_network_group_assignment (Resource)
 
-
+Manages a network group assignment.
 
 
 

@@ -3,12 +3,12 @@
 page_title: "uxi_service_test_group_assignment Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific service test group assignment.
 ---
 
 # uxi_service_test_group_assignment (Data Source)
 
-
+Retrieves a specific service test group assignment.
 
 
 

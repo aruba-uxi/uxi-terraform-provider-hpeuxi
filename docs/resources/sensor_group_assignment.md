@@ -3,12 +3,12 @@
 page_title: "uxi_sensor_group_assignment Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a sensor group assignment.
 ---
 
 # uxi_sensor_group_assignment (Resource)
 
-
+Manages a sensor group assignment.
 
 
 

@@ -3,12 +3,12 @@
 page_title: "uxi_agent Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific agent.
 ---
 
 # uxi_agent (Data Source)
 
-
+Retrieves a specific agent.
 
 
 

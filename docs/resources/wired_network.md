@@ -3,12 +3,12 @@
 page_title: "uxi_wired_network Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a wired network.
 ---
 
 # uxi_wired_network (Resource)
 
-
+Manages a wired network.
 
 
 
