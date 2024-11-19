@@ -150,7 +150,7 @@ func TestWiredNetworkResourceTooManyRequestsHandling(t *testing.T) {
 			tfversion.RequireAbove(tfversion.Version1_7_0),
 		},
 		Steps: []resource.TestStep{
-			// Importing a service_test
+			// Read
 			{
 				PreConfig: func() {
 					mockTooManyRequests = gock.New(util.MockUrl).
@@ -189,7 +189,7 @@ func TestWiredNetworkResourceTooManyRequestsHandling(t *testing.T) {
 					},
 				),
 			},
-			// Remove service_test from state
+			// Cleanup
 			{
 				Config: provider.ProviderConfig + `
 					removed {

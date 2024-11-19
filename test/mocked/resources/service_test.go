@@ -154,7 +154,7 @@ func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 			tfversion.RequireAbove(tfversion.Version1_7_0),
 		},
 		Steps: []resource.TestStep{
-			// Importing a service_test
+			// Read
 			{
 				PreConfig: func() {
 					mockTooManyRequests = gock.New(util.MockUrl).
@@ -189,7 +189,7 @@ func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 					},
 				),
 			},
-			// Remove service_test from state
+			// Cleanup
 			{
 				Config: provider.ProviderConfig + `
 					removed {
@@ -217,6 +217,7 @@ func TestServiceTestResourceHttpErrorHandling(t *testing.T) {
 			tfversion.RequireAbove(tfversion.Version1_7_0),
 		},
 		Steps: []resource.TestStep{
+			// Read not found
 			{
 				PreConfig: func() {
 					util.MockGetServiceTest(
@@ -236,6 +237,7 @@ func TestServiceTestResourceHttpErrorHandling(t *testing.T) {
 					}`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
+			// Read HTTP error
 			{
 				PreConfig: func() {
 					gock.New(util.MockUrl).

@@ -101,6 +101,7 @@ func (d *groupDataSource) Read(
 
 	if len(groupResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 
