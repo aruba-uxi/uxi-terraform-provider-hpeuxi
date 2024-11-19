@@ -63,8 +63,8 @@ func (r *sensorGroupAssignmentResource) Schema(
 			"sensor_id": schema.StringAttribute{
 				Description: "The identifier of the sensor to be assigned. " +
 					"Use sensor id; " +
-					"uxi_sensor resource id field or " +
-					"uxi_sensor datasource id field here.",
+					"`uxi_sensor` resource id field or " +
+					"`uxi_sensor` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -73,8 +73,8 @@ func (r *sensorGroupAssignmentResource) Schema(
 			"group_id": schema.StringAttribute{
 				Description: "The identifier of the group to be assigned to. " +
 					"Use group id; " +
-					"uxi_group resource id field or " +
-					"uxi_group datasource id field here.",
+					"`uxi_group` resource id field or " +
+					"`uxi_group` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),

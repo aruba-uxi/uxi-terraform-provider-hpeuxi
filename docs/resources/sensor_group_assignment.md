@@ -17,8 +17,8 @@ Manages a sensor group assignment.
 
 ### Required
 
-- `group_id` (String) The identifier of the group to be assigned to. Use group id; uxi_group resource id field or uxi_group datasource id field here.
-- `sensor_id` (String) The identifier of the sensor to be assigned. Use sensor id; uxi_sensor resource id field or uxi_sensor datasource id field here.
+- `group_id` (String) The identifier of the group to be assigned to. Use group id; `uxi_group` resource id field or `uxi_group` datasource id field here.
+- `sensor_id` (String) The identifier of the sensor to be assigned. Use sensor id; `uxi_sensor` resource id field or `uxi_sensor` datasource id field here.
 
 ### Read-Only
 

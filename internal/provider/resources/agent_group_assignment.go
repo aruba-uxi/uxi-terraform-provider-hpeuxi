@@ -64,8 +64,8 @@ func (r *agentGroupAssignmentResource) Schema(
 			"agent_id": schema.StringAttribute{
 				Description: "The identifier of the agent to be assigned. " +
 					"Use agent id; " +
-					"uxi_agent resource id field or " +
-					"uxi_agent datasource id field here.",
+					"`uxi_agent` resource id field or " +
+					"`uxi_agent` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -74,8 +74,8 @@ func (r *agentGroupAssignmentResource) Schema(
 			"group_id": schema.StringAttribute{
 				Description: "The identifier of the group to be assigned to. " +
 					"Use group id; " +
-					"uxi_group resource id field or " +
-					"uxi_group datasource id field here.",
+					"`uxi_group` resource id field or " +
+					"`uxi_group` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),

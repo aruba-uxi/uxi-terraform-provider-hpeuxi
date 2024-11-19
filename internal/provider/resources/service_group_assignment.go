@@ -63,8 +63,8 @@ func (r *serviceTestGroupAssignmentResource) Schema(
 			"service_test_id": schema.StringAttribute{
 				Description: "The identifier of the service test to be assigned. " +
 					"Use service test id; " +
-					"uxi_service_test resource id field or " +
-					"uxi_service_test datasource id field here.",
+					"`uxi_service_test` resource id field or " +
+					"`uxi_service_test` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -73,8 +73,8 @@ func (r *serviceTestGroupAssignmentResource) Schema(
 			"group_id": schema.StringAttribute{
 				Description: "The identifier of the group to be assigned to. " +
 					"Use group id; " +
-					"uxi_group resource id field or " +
-					"uxi_group datasource id field here.",
+					"`uxi_group` resource id field or " +
+					"`uxi_group` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),

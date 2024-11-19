@@ -17,8 +17,8 @@ Manages a network group assignment.
 
 ### Required
 
-- `group_id` (String) The identifier of the group to be assigned to. Use group id; uxi_group resource id field or uxi_group datasource id field here.
-- `network_id` (String) The identifier of the network to be assigned. Use wired network id; uxi_wired_network resource id field; uxi_wired_network datasource id field; wireless network id; uxi_wireless_network resource id field or uxi_wireless_network datasource id field here.
+- `group_id` (String) The identifier of the group to be assigned to. Use group id; `uxi_group` resource id field or `uxi_group` datasource id field here.
+- `network_id` (String) The identifier of the network to be assigned. Use wired network id; `uxi_wired_network` resource id field; `uxi_wired_network` datasource id field; wireless network id; `uxi_wireless_network` resource id field or `uxi_wireless_network` datasource id field here.
 
 ### Read-Only
 

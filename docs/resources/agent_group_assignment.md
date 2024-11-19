@@ -17,8 +17,8 @@ Manages an agent group assignment.
 
 ### Required
 
-- `agent_id` (String) The identifier of the agent to be assigned. Use agent id; uxi_agent resource id field or uxi_agent datasource id field here.
-- `group_id` (String) The identifier of the group to be assigned to. Use group id; uxi_group resource id field or uxi_group datasource id field here.
+- `agent_id` (String) The identifier of the agent to be assigned. Use agent id; `uxi_agent` resource id field or `uxi_agent` datasource id field here.
+- `group_id` (String) The identifier of the group to be assigned to. Use group id; `uxi_group` resource id field or `uxi_group` datasource id field here.
 
 ### Read-Only
 

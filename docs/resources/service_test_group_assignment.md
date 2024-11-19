@@ -17,8 +17,8 @@ Manages a service test group assignment.
 
 ### Required
 
-- `group_id` (String) The identifier of the group to be assigned to. Use group id; uxi_group resource id field or uxi_group datasource id field here.
-- `service_test_id` (String) The identifier of the service test to be assigned. Use service test id; uxi_service_test resource id field or uxi_service_test datasource id field here.
+- `group_id` (String) The identifier of the group to be assigned to. Use group id; `uxi_group` resource id field or `uxi_group` datasource id field here.
+- `service_test_id` (String) The identifier of the service test to be assigned. Use service test id; `uxi_service_test` resource id field or `uxi_service_test` datasource id field here.
 
 ### Read-Only
 
