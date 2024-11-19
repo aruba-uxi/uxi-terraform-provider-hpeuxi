@@ -149,7 +149,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 			// Importing a agent
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/agents").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -189,7 +189,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 						),
 						1,
 					)
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Patch("/networking-uxi/v1alpha1/agents").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -229,7 +229,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
 						1,
 					)
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Delete("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -263,7 +263,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			// Read 5xx error
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/agents").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -351,7 +351,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// patch agent - with error
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Patch("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
@@ -381,7 +381,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// delete agent - with error
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Delete("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{

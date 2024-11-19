@@ -157,7 +157,7 @@ func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 			// Importing a service_test
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/service-tests").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -238,7 +238,7 @@ func TestServiceTestResourceHttpErrorHandling(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/service-tests").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{

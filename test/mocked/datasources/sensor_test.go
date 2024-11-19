@@ -90,7 +90,7 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/sensors").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -132,7 +132,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 			// 5xx error
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/sensors").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
