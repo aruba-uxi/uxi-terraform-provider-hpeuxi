@@ -21,10 +21,10 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Creating a serviceTest group assignment
+			// Creating a service test group assignment
 			{
 				PreConfig: func() {
-					// required for serviceTest import
+					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
 						util.GeneratePaginatedResponse(
@@ -49,7 +49,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						),
 						1,
 					)
-					// required for serviceTest group assignment create
+					// required for service test group assignment create
 					util.MockPostServiceTestGroupAssignment(
 						util.GenerateServiceTestGroupAssignmentRequest(
 							"service_test_group_assignment_id",
@@ -176,7 +176,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						1,
 					)
 
-					// required for serviceTest group assignment create
+					// required for service test group assignment create
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id_2",
 						util.GeneratePaginatedResponse([]map[string]interface{}{
@@ -261,7 +261,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					),
 				),
 			},
-			// Remove serviceTests from state
+			// Delete service test group assignment and remove service tests from state
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
@@ -321,10 +321,10 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Creating a serviceTest group assignment
+			// Create
 			{
 				PreConfig: func() {
-					// required for serviceTest import
+					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
 						util.GeneratePaginatedResponse(
@@ -351,12 +351,11 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 						1,
 					)
 
-					// required for serviceTest group assignment create
+					// required for service test group assignment create
 					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Post(shared.ServiceTestGroupAssignmentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-
 					util.MockPostServiceTestGroupAssignment(
 						util.GenerateServiceTestGroupAssignmentRequest(
 							"service_test_group_assignment_id",
@@ -410,7 +409,34 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 					},
 				),
 			},
-			// Remove serviceTests from state
+			// Read
+			{
+				PreConfig: func() {
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+						Get("/networking-uxi/v1alpha1/service-test-group-assignments").
+						Reply(http.StatusTooManyRequests).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockGetServiceTestGroupAssignment(
+						"service_test_group_assignment_id",
+						util.GeneratePaginatedResponse([]map[string]interface{}{
+							util.GenerateServiceTestGroupAssignmentResponse(
+								"service_test_group_assignment_id", "",
+							)},
+						),
+						1,
+					)
+				},
+				ResourceName:      "uxi_service_test_group_assignment.my_service_test_group_assignment",
+				ImportState:       true,
+				ImportStateVerify: true,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					func(s *terraform.State) error {
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
+			},
+			// Delete
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
@@ -460,10 +486,10 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Creating a serviceTest group assignment - errors
+			// Creating a service test group assignment - errors
 			{
 				PreConfig: func() {
-					// required for serviceTest import
+					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
 						util.GeneratePaginatedResponse(
@@ -490,7 +516,7 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 
-					// required for serviceTest group assignment create
+					// required for service test group assignment create
 					gock.New(util.MockUxiUrl).
 						Post(shared.ServiceTestGroupAssignmentPath).
 						Reply(http.StatusBadRequest).
@@ -525,7 +551,209 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
 				),
 			},
-			// Remove serviceTests from state
+			// Read not found
+			{
+				PreConfig: func() {
+					util.MockGetServiceTest(
+						"service_test_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponse("service_test_id", ""),
+							},
+						),
+						1,
+					)
+					util.MockGetGroup(
+						"group_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateNonRootGroupResponse("group_id", "", ""),
+							},
+						),
+						1,
+					)
+
+					util.MockGetServiceTestGroupAssignment(
+						"service_test_group_assignment_id",
+						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name"
+						parent_group_id = "parent_id"
+					}
+
+					resource "uxi_service_test" "my_service_test" {
+						name = "name"
+					}
+
+					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = uxi_service_test.my_service_test.id
+						group_id 		= uxi_group.my_group.id
+					}
+
+					import {
+						to = uxi_service_test_group_assignment.my_service_test_group_assignment
+						id = "service_test_group_assignment_id"
+					}`,
+				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
+			},
+			// Actually creating a service test group assignment - needed for next step
+			{
+				PreConfig: func() {
+					// required for service test import
+					util.MockGetServiceTest(
+						"service_test_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponse("service_test_id", ""),
+							},
+						),
+						2,
+					)
+					// required for group create
+					util.MockPostGroup(
+						util.GenerateGroupRequest("group_id", "", ""),
+						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						1,
+					)
+					util.MockGetGroup(
+						"group_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateNonRootGroupResponse("group_id", "", ""),
+							},
+						),
+						1,
+					)
+					// required for service test group assignment create
+					util.MockPostServiceTestGroupAssignment(
+						util.GenerateServiceTestGroupAssignmentRequest(
+							"service_test_group_assignment_id",
+							"",
+						),
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id",
+							"",
+						),
+						1,
+					)
+					util.MockGetServiceTestGroupAssignment(
+						"service_test_group_assignment_id",
+						util.GeneratePaginatedResponse([]map[string]interface{}{
+							util.GenerateServiceTestGroupAssignmentResponse(
+								"service_test_group_assignment_id", "",
+							)},
+						),
+						1,
+					)
+				},
+
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name"
+						parent_group_id = "parent_id"
+					}
+
+					resource "uxi_service_test" "my_service_test" {
+						name = "name"
+					}
+
+					import {
+						to = uxi_service_test.my_service_test
+						id = "service_test_id"
+					}
+
+					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = uxi_service_test.my_service_test.id
+						group_id 		= uxi_group.my_group.id
+					}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"service_test_id",
+						"service_test_id",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"group_id",
+						"group_id",
+					),
+					resource.TestCheckResourceAttr(
+						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"id",
+						"service_test_group_assignment_id",
+					),
+				),
+			},
+			// Read HTTP error
+			{
+				PreConfig: func() {
+					// required for service test import
+					util.MockGetServiceTest(
+						"service_test_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestResponse("service_test_id", ""),
+							},
+						),
+						1,
+					)
+
+					// required for group create
+					util.MockPostGroup(
+						util.GenerateGroupRequest("group_id", "", ""),
+						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						1,
+					)
+					util.MockGetGroup(
+						"group_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateNonRootGroupResponse("group_id", "", ""),
+							},
+						),
+						1,
+					)
+
+					// required for service test group assignment read
+					gock.New("https://test.api.capenetworks.com").
+						Get("/networking-uxi/v1alpha1/service-test-group-assignments").
+						Reply(http.StatusInternalServerError).
+						JSON(map[string]interface{}{
+							"httpStatusCode": http.StatusInternalServerError,
+							"errorCode":      "HPE_GL_ERROR_INTERNAL_SERVER_ERROR",
+							"message":        "Current request cannot be processed due to unknown issue",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+				Config: provider.ProviderConfig + `
+					resource "uxi_group" "my_group" {
+						name            = "name"
+						parent_group_id = "parent_id"
+					}
+
+					resource "uxi_service_test" "my_service_test" {
+						name = "name"
+					}
+
+					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = uxi_service_test.my_service_test.id
+						group_id 		= uxi_group.my_group.id
+					}
+
+					import {
+						to = uxi_service_test_group_assignment.my_service_test_group_assignment
+						id = "service_test_group_assignment_id"
+					}`,
+
+				ExpectError: regexp.MustCompile(
+					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
+				),
+			},
+			// Delete service test group assignment - errors
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
@@ -537,8 +765,70 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						),
 						1,
 					)
+					util.MockGetServiceTestGroupAssignment(
+						"service_test_group_assignment_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestGroupAssignmentResponse(
+									"service_test_group_assignment_id",
+									"",
+								),
+							},
+						),
+						1,
+					)
+					gock.New("https://test.api.capenetworks.com").
+						Delete("/networking-uxi/v1alpha1/service-test-group-assignments/service_test_group_assignment_id").
+						Reply(http.StatusBadRequest).
+						JSON(map[string]interface{}{
+							"httpStatusCode": http.StatusBadRequest,
+							"errorCode":      "HPE_GL_ERROR_BAD_REQUEST",
+							"message":        "Validation error - bad request",
+							"debugId":        "12312-123123-123123-1231212",
+						})
+				},
+				Config: provider.ProviderConfig + `
+					removed {
+						from = uxi_service_test.my_service_test
+
+						lifecycle {
+							destroy = false
+						}
+					}`,
+				ExpectError: regexp.MustCompile(
+					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
+				),
+			},
+			// Actually delete service test group assignment and remove service tests from state
+			{
+				PreConfig: func() {
+					util.MockGetGroup(
+						"group_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateNonRootGroupResponse("group_id", "", ""),
+							},
+						),
+						1,
+					)
+					util.MockGetServiceTestGroupAssignment(
+						"service_test_group_assignment_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateServiceTestGroupAssignmentResponse(
+									"service_test_group_assignment_id",
+									"",
+								),
+							},
+						),
+						1,
+					)
 
 					util.MockDeleteGroup("group_id", 1)
+					util.MockDeleteServiceTestGroupAssignment(
+						"service_test_group_assignment_id",
+						1,
+					)
 				},
 				Config: provider.ProviderConfig + `
 					removed {

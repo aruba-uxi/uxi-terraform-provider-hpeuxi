@@ -129,6 +129,7 @@ func (d *wirelessNetworkDataSource) Read(
 
 	if len(networkResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 

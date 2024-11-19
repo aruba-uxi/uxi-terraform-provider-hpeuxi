@@ -660,7 +660,7 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
-			// Read 5xx error
+			// Read HTTP error
 			{
 				PreConfig: func() {
 					util.MockGetAgent(

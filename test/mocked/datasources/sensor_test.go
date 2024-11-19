@@ -130,7 +130,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// 5xx error
+			// HTTP error
 			{
 				PreConfig: func() {
 					gock.New(util.MockUxiUrl).

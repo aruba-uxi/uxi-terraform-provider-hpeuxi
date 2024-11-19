@@ -266,7 +266,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			tfversion.RequireAbove(tfversion.Version1_7_0),
 		},
 		Steps: []resource.TestStep{
-			// Read 5xx error
+			// Read HTTP error
 			{
 				PreConfig: func() {
 					gock.New(util.MockUxiUrl).
@@ -353,7 +353,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
 				),
 			},
-			// Update 4xx
+			// Update HTTP error
 			{
 				PreConfig: func() {
 					// existing sensor

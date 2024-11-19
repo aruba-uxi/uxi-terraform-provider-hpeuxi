@@ -98,6 +98,7 @@ func (d *serviceTestGroupAssignmentDataSource) Read(
 
 	if len(serviceTestGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
+		resp.State.RemoveResource(ctx)
 		return
 	}
 

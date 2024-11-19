@@ -347,7 +347,7 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Creating a sensor group assignment
+			// Creating
 			{
 				PreConfig: func() {
 					// required for sensor import
@@ -439,7 +439,37 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					},
 				),
 			},
-			// Delete sensor-group assignments and remove sensors from state
+			// Read
+			{
+				PreConfig: func() {
+					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+						Post("/networking-uxi/v1alpha1/sensor-group-assignments").
+						Reply(http.StatusTooManyRequests).
+						SetHeaders(util.RateLimitingHeaders)
+					util.MockGetSensorGroupAssignment(
+						"sensor_group_assignment_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorGroupAssignmentResponse(
+									"sensor_group_assignment_id",
+									"",
+								),
+							},
+						),
+						1,
+					)
+				},
+				ResourceName:      "uxi_sensor_group_assignment.my_sensor_group_assignment",
+				ImportState:       true,
+				ImportStateVerify: true,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					func(s *terraform.State) error {
+						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						return nil
+					},
+				),
+			},
+			// Delete
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
@@ -577,20 +607,16 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for sensor import
-					util.MockGetSensor("sensor_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateSensorResponse("sensor_id", ""),
-						},
-					),
+					util.MockGetSensor(
+						"sensor_id",
+						util.GeneratePaginatedResponse(
+							[]map[string]interface{}{
+								util.GenerateSensorResponse("sensor_id", ""),
+							},
+						),
 						1,
 					)
 
-					// required for group create
-					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
-						1,
-					)
 					util.MockGetGroup(
 						"group_id",
 						util.GeneratePaginatedResponse(
@@ -601,7 +627,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 
-					// sensor group assignment create
+					// sensor group assignment import
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
 						util.GeneratePaginatedResponse([]map[string]interface{}{}),
@@ -636,9 +662,9 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						id = "sensor_group_assignment_id"
 					}
 				`,
-				ExpectError: regexp.MustCompile(`Could not find specified resource`),
+				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
 			},
-			// Read 5xx error
+			// Read HTTP error
 			{
 				PreConfig: func() {
 					// required for sensor import
@@ -710,7 +736,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					`(?s)Current request cannot be processed due to unknown issue\s*DebugID: 12312-123123-123123-1231212`,
 				),
 			},
-			// Actually Creating a sensor group assignment - needed for next step
+			// Actually creating a sensor group assignment - needed for next step
 			{
 				PreConfig: func() {
 					// required for sensor import
@@ -836,20 +862,12 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						lifecycle {
 							destroy = false
 						}
-					}
-
-					removed {
-						from = uxi_sensor.my_sensor_2
-
-						lifecycle {
-							destroy = false
-						}
 					}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
 				),
 			},
-			// Actually Delete sensor-group assignments and remove sensors from state
+			// Actually delete sensor-group assignments and remove sensors from state
 			{
 				PreConfig: func() {
 					util.MockGetGroup(
@@ -879,14 +897,6 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					removed {
 						from = uxi_sensor.my_sensor
-
-						lifecycle {
-							destroy = false
-						}
-					}
-
-					removed {
-						from = uxi_sensor.my_sensor_2
 
 						lifecycle {
 							destroy = false

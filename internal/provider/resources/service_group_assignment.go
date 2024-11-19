@@ -116,7 +116,7 @@ func (r *serviceTestGroupAssignmentResource) Create(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"),
+			util.GenerateErrorSummary("create", "uxi_service_test_group_assignment"),
 			errorDetail,
 		)
 		return
