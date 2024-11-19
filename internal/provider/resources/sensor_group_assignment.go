@@ -209,7 +209,7 @@ func (r *sensorGroupAssignmentResource) Delete(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		if response.StatusCode == http.StatusNotFound {
+		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
 			return
 		}

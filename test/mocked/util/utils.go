@@ -7,6 +7,18 @@ import (
 	"github.com/h2non/gock"
 )
 
+const (
+	mockToken  = "mock_token"
+	MockDomain = "test.api.capenetworks.com"
+	MockUrl    = "https://" + MockDomain
+)
+
+var RateLimitingHeaders = map[string]string{
+	"X-RateLimit-Limit":     "100",
+	"X-RateLimit-Remaining": "0",
+	"X-RateLimit-Reset":     "0.01",
+}
+
 func GenerateSensorResponse(id string, postfix string) map[string]interface{} {
 	return map[string]interface{}{
 		"id":                 id,
@@ -206,22 +218,22 @@ func GenerateServiceTestGroupAssignmentRequest(id string, postfix string) map[st
 }
 
 func MockOAuth() *gock.Response {
-	return gock.New("https://test.sso.common.cloud.hpe.com").
+	return gock.New("https://sso.common.cloud.hpe.com").
 		Post("/as/token.oauth2").
 		MatchHeader("Content-Type", "application/x-www-form-urlencoded").
 		Persist().
 		Reply(http.StatusOK).
 		JSON(map[string]interface{}{
-			"access_token": "mock_token",
+			"access_token": mockToken,
 			"token_type":   "bearer",
 			"expires_in":   3600,
 		})
 }
 
 func MockGetAgent(id string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Get("/networking-uxi/v1alpha1/agents").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
 		Times(times).
 		Reply(http.StatusOK).
@@ -229,9 +241,9 @@ func MockGetAgent(id string, response map[string]interface{}, times int) {
 }
 
 func MockDeleteAgent(id string, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Delete("/networking-uxi/v1alpha1/agents/"+id).
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		Reply(http.StatusNoContent)
 }
@@ -242,10 +254,10 @@ func MockUpdateAgent(
 	response map[string]interface{},
 	times int,
 ) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Patch("/networking-uxi/v1alpha1/agents/"+id).
 		MatchHeader("Content-Type", "application/merge-patch+json").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		JSON(request).
 		Times(times).
 		Reply(http.StatusOK).
@@ -253,10 +265,10 @@ func MockUpdateAgent(
 }
 
 func MockPostGroup(request map[string]interface{}, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Post("/networking-uxi/v1alpha1/groups").
 		MatchHeader("Content-Type", "application/json").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		JSON(request).
 		Reply(http.StatusOK).
@@ -264,9 +276,9 @@ func MockPostGroup(request map[string]interface{}, response map[string]interface
 }
 
 func MockGetGroup(id string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Get("/networking-uxi/v1alpha1/groups").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
 		Times(times).
 		Reply(http.StatusOK).
@@ -280,9 +292,9 @@ func MockUpdateGroup(
 	times int,
 ) {
 	body, _ := json.Marshal(request)
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Patch("/networking-uxi/v1alpha1/groups/"+id).
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchHeader("Content-Type", "application/merge-patch+json").
 		BodyString(string(body)).
 		Times(times).
@@ -291,17 +303,17 @@ func MockUpdateGroup(
 }
 
 func MockDeleteGroup(id string, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Delete("/networking-uxi/v1alpha1/groups/"+id).
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		Reply(http.StatusNoContent)
 }
 
 func MockGetSensor(id string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Get("/networking-uxi/v1alpha1/sensors").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
 		Times(times).
 		Reply(http.StatusOK).
@@ -314,10 +326,10 @@ func MockUpdateSensor(
 	response map[string]interface{},
 	times int,
 ) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Patch("/networking-uxi/v1alpha1/sensors/"+id).
 		MatchHeader("Content-Type", "application/merge-patch+json").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		JSON(request).
 		Times(times).
 		Reply(http.StatusOK).
@@ -325,9 +337,9 @@ func MockUpdateSensor(
 }
 
 func MockGetWiredNetwork(id string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Get("/networking-uxi/v1alpha1/wired-networks").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
 		Times(times).
 		Reply(http.StatusOK).
@@ -335,9 +347,9 @@ func MockGetWiredNetwork(id string, response map[string]interface{}, times int) 
 }
 
 func MockGetWirelessNetwork(id string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Get("/networking-uxi/v1alpha1/wireless-networks").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
 		Times(times).
 		Reply(http.StatusOK).
@@ -345,9 +357,9 @@ func MockGetWirelessNetwork(id string, response map[string]interface{}, times in
 }
 
 func MockGetServiceTest(id string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Get("/networking-uxi/v1alpha1/service-tests").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
 		Times(times).
 		Reply(http.StatusOK).
@@ -355,9 +367,9 @@ func MockGetServiceTest(id string, response map[string]interface{}, times int) {
 }
 
 func MockGetAgentGroupAssignment(id string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Get("/networking-uxi/v1alpha1/agent-group-assignments").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
 		Times(times).
 		Reply(http.StatusOK).
@@ -369,10 +381,10 @@ func MockPostAgentGroupAssignment(
 	response map[string]interface{},
 	times int,
 ) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Post("/networking-uxi/v1alpha1/agent-group-assignments").
 		MatchHeader("Content-Type", "application/json").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		JSON(request).
 		Reply(http.StatusOK).
@@ -380,17 +392,17 @@ func MockPostAgentGroupAssignment(
 }
 
 func MockDeleteAgentGroupAssignment(id string, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Delete("/networking-uxi/v1alpha1/agent-group-assignments/"+id).
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		Reply(http.StatusNoContent)
 }
 
 func MockGetSensorGroupAssignment(id string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Get("/networking-uxi/v1alpha1/sensor-group-assignments").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
 		Times(times).
 		Reply(http.StatusOK).
@@ -402,10 +414,10 @@ func MockPostSensorGroupAssignment(
 	response map[string]interface{},
 	times int,
 ) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Post("/networking-uxi/v1alpha1/sensor-group-assignments").
 		MatchHeader("Content-Type", "application/json").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		JSON(request).
 		Reply(http.StatusOK).
@@ -413,17 +425,17 @@ func MockPostSensorGroupAssignment(
 }
 
 func MockDeleteSensorGroupAssignment(id string, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Delete("/networking-uxi/v1alpha1/sensor-group-assignments/"+id).
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		Reply(http.StatusNoContent)
 }
 
 func MockGetNetworkGroupAssignment(id string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Get("/networking-uxi/v1alpha1/network-group-assignments").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
 		Times(times).
 		Reply(http.StatusOK).
@@ -435,10 +447,10 @@ func MockPostNetworkGroupAssignment(
 	response map[string]interface{},
 	times int,
 ) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Post("/networking-uxi/v1alpha1/network-group-assignments").
 		MatchHeader("Content-Type", "application/json").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		JSON(request).
 		Reply(http.StatusOK).
@@ -446,17 +458,17 @@ func MockPostNetworkGroupAssignment(
 }
 
 func MockDeleteNetworkGroupAssignment(id string, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Delete("/networking-uxi/v1alpha1/network-group-assignments/"+id).
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		Reply(http.StatusNoContent)
 }
 
 func MockGetServiceTestGroupAssignment(id string, response map[string]interface{}, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Get("/networking-uxi/v1alpha1/service-test-group-assignments").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
 		Times(times).
 		Reply(http.StatusOK).
@@ -468,10 +480,10 @@ func MockPostServiceTestGroupAssignment(
 	response map[string]interface{},
 	times int,
 ) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Post("/networking-uxi/v1alpha1/service-test-group-assignments").
 		MatchHeader("Content-Type", "application/json").
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		JSON(request).
 		Reply(http.StatusOK).
@@ -479,15 +491,9 @@ func MockPostServiceTestGroupAssignment(
 }
 
 func MockDeleteServiceTestGroupAssignment(id string, times int) {
-	gock.New("https://test.api.capenetworks.com").
+	gock.New(MockUrl).
 		Delete("/networking-uxi/v1alpha1/service-test-group-assignments/"+id).
-		MatchHeader("Authorization", "mock_token").
+		MatchHeader("Authorization", mockToken).
 		Times(times).
 		Reply(http.StatusNoContent)
-}
-
-var RateLimitingHeaders = map[string]string{
-	"X-RateLimit-Limit":     "100",
-	"X-RateLimit-Remaining": "0",
-	"X-RateLimit-Reset":     "0.01",
 }

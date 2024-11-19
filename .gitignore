@@ -25,5 +25,8 @@ _testmain.go
 
 .coverage*
 
+# Visual Studio Code
+.vscode/
+
 # Terraform
 terraform.tfstate*
