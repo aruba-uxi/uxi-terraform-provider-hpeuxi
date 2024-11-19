@@ -352,7 +352,7 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 					)
 
 					// required for service test group assignment create
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/service-test-group-assignments").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -517,7 +517,7 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// required for service test group assignment create
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/service-test-group-assignments").
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{

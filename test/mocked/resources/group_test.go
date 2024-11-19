@@ -336,7 +336,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -428,7 +428,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 						1,
 					)
 					// new group
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -499,7 +499,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			// read HTTP error
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -550,7 +550,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			// Create HTTP error
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
@@ -618,7 +618,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// new group - with error
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
@@ -649,7 +649,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// delete group - with error
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Delete("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{

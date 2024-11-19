@@ -169,7 +169,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/sensors").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -207,7 +207,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
 						1,
 					)
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Patch("/networking-uxi/v1alpha1/sensors/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -269,7 +269,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			// Read HTTP error
 			{
 				PreConfig: func() {
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/sensors").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -362,7 +362,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 					// patch sensor - with error
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Patch("/networking-uxi/v1alpha1/sensors/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{

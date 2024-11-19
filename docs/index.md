@@ -16,7 +16,5 @@ description: |-
 
 ### Optional
 
-- `client_id` (String)
-- `client_secret` (String, Sensitive)
-- `host` (String)
-- `token_url` (String)
+- `client_id` (String) The Client ID as obtained from HPE GreenLake API client credentials
+- `client_secret` (String, Sensitive) The Client Secret as obtained from HPE GreenLake API client credentials

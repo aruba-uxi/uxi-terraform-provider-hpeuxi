@@ -3,8 +3,8 @@ package provider
 import (
 	"context"
 	"net/http"
-	"os"
 
+	configuration "github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/datasources"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
@@ -23,8 +23,6 @@ var (
 	_ provider.Provider = &uxiConfigurationProvider{}
 )
 
-const tokenURLDefault = "https://sso.common.cloud.hpe.com/as/token.oauth2"
-
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
 		return &uxiConfigurationProvider{
@@ -34,10 +32,8 @@ func New(version string) func() provider.Provider {
 }
 
 type uxiProviderModel struct {
-	Host         types.String `tfsdk:"host"`
 	ClientID     types.String `tfsdk:"client_id"`
 	ClientSecret types.String `tfsdk:"client_secret"`
-	TokenURL     types.String `tfsdk:"token_url"`
 }
 
 type uxiConfigurationProvider struct {
@@ -62,10 +58,15 @@ func (p *uxiConfigurationProvider) Schema(
 	resp *provider.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{Attributes: map[string]schema.Attribute{
-		"host":          schema.StringAttribute{Optional: true},
-		"client_id":     schema.StringAttribute{Optional: true},
-		"client_secret": schema.StringAttribute{Optional: true, Sensitive: true},
-		"token_url":     schema.StringAttribute{Optional: true},
+		"client_id": schema.StringAttribute{
+			Optional:    true,
+			Description: "The Client ID as obtained from HPE GreenLake API client credentials",
+		},
+		"client_secret": schema.StringAttribute{
+			Optional:    true,
+			Sensitive:   true,
+			Description: "The Client Secret as obtained from HPE GreenLake API client credentials",
+		},
 	}}
 }
 
@@ -74,42 +75,28 @@ func (p *uxiConfigurationProvider) Configure(
 	req provider.ConfigureRequest,
 	resp *provider.ConfigureResponse,
 ) {
-	var config uxiProviderModel
+	var (
+		config                 uxiProviderModel
+		clientID, clientSecret string
+	)
 	diags := req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	host := os.Getenv("UXI_HOST")
-	clientID := os.Getenv("CLIENT_ID")
-	clientSecret := os.Getenv("CLIENT_SECRET")
-	tokenURL := os.Getenv("TOKEN_URL")
-
-	if !config.Host.IsNull() {
-		host = config.Host.ValueString()
-	}
+	configuration.InitializeConfig()
 
 	if !config.ClientID.IsNull() {
 		clientID = config.ClientID.ValueString()
+	} else {
+		clientID = configuration.ClientID
 	}
 
 	if !config.ClientSecret.IsNull() {
 		clientSecret = config.ClientSecret.ValueString()
-	}
-
-	if !config.TokenURL.IsNull() {
-		tokenURL = config.TokenURL.ValueString()
-	}
-
-	if host == "" {
-		resp.Diagnostics.AddAttributeError(
-			path.Root("host"),
-			"Missing Host",
-			"The provider cannot initialize as there is a missing or empty value for the UXI API host. "+
-				"Set the host value in the configuration or use the UXI_HOST environment variable. "+
-				"If either is already set, ensure the value is not empty.",
-		)
+	} else {
+		clientSecret = configuration.ClientSecret
 	}
 
 	if clientID == "" {
@@ -132,18 +119,14 @@ func (p *uxiConfigurationProvider) Configure(
 		)
 	}
 
-	if tokenURL == "" {
-		tokenURL = tokenURLDefault
-	}
-
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
 	uxiConfiguration := config_api_client.NewConfiguration()
-	uxiConfiguration.Host = host
+	uxiConfiguration.Host = configuration.Host
 	uxiConfiguration.Scheme = "https"
-	uxiConfiguration.HTTPClient = getHttpClient(clientID, clientSecret, tokenURL)
+	uxiConfiguration.HTTPClient = getHttpClient(clientID, clientSecret, configuration.TokenURL)
 	uxiClient := config_api_client.NewAPIClient(uxiConfiguration)
 
 	resp.DataSourceData = uxiClient

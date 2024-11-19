@@ -375,7 +375,7 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					// required for sensor group assignment create
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/sensor-group-assignments").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -494,7 +494,7 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					util.MockDeleteGroup("group_id", 1)
-					mockTooManyRequests = gock.New("https://test.api.capenetworks.com").
+					mockTooManyRequests = gock.New(util.MockUrl).
 						Delete("/networking-uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -565,7 +565,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// required for sensor group assignment create
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Post("/networking-uxi/v1alpha1/sensor-group-assignments").
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
@@ -692,7 +692,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// required for sensor group assignment read
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Get("/networking-uxi/v1alpha1/sensor-group-assignments").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -844,7 +844,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						1,
 					)
 
-					gock.New("https://test.api.capenetworks.com").
+					gock.New(util.MockUrl).
 						Delete("/networking-uxi/v1alpha1/sensor-group-assignments/sensor_group_assignment_id").
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
