@@ -17,7 +17,7 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) The filter used to filter the specific sensor by id. (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific sensor. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
@@ -38,4 +38,4 @@ description: |-
 
 Required:
 
-- `sensor_id` (String)
+- `sensor_id` (String) The identifier of the sensor group assignment.

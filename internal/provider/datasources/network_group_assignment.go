@@ -67,10 +67,11 @@ func (d *networkGroupAssignmentDataSource) Schema(
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"network_group_assignment_id": schema.StringAttribute{
-						Required: true,
+						Required:    true,
+						Description: "The identifier of the network group assignment.",
 					},
 				},
-				Description: "The filter used to filter the specific network group assignment by id.",
+				Description: "The filter used to filter the specific network group assignment.",
 			},
 		},
 	}

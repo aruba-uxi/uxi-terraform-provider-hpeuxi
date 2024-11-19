@@ -17,7 +17,7 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) The filter used to filter the specific service test by id. (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific service test. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
@@ -33,4 +33,4 @@ description: |-
 
 Required:
 
-- `service_test_id` (String)
+- `service_test_id` (String) The identifier of the service test.

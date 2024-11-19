@@ -67,10 +67,11 @@ func (d *sensorGroupAssignmentDataSource) Schema(
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"sensor_group_assignment_id": schema.StringAttribute{
-						Required: true,
+						Required:    true,
+						Description: "The identifier of the sensor group assignment.",
 					},
 				},
-				Description: "The filter used to filter the specific sensor group assignment by id.",
+				Description: "The filter used to filter the specific sensor group assignment.",
 			},
 		},
 	}

@@ -72,10 +72,11 @@ func (d *groupDataSource) Schema(
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"group_id": schema.StringAttribute{
-						Required: true,
+						Required:    true,
+						Description: "The identifier of the group.",
 					},
 				},
-				Description: "The filter used to filter the specific group by id.",
+				Description: "The filter used to filter the specific group.",
 			},
 		},
 	}

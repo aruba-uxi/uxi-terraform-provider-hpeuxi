@@ -17,7 +17,7 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) The filter used to filter the specific agent by id. (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific agent. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
@@ -35,4 +35,4 @@ description: |-
 
 Required:
 
-- `agent_id` (String)
+- `agent_id` (String) The identifier of the agent.

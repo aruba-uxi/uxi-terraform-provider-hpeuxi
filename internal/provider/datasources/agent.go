@@ -92,10 +92,11 @@ func (d *agentDataSource) Schema(
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"agent_id": schema.StringAttribute{
-						Required: true,
+						Required:    true,
+						Description: "The identifier of the agent.",
 					},
 				},
-				Description: "The filter used to filter the specific agent by id.",
+				Description: "The filter used to filter the specific agent.",
 			},
 		},
 	}

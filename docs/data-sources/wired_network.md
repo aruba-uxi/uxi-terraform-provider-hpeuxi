@@ -17,7 +17,7 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) The filter used to filter the specific wired network by id. (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific wired network. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
@@ -36,4 +36,4 @@ description: |-
 
 Required:
 
-- `wired_network_id` (String)
+- `wired_network_id` (String) The identifier of the wired network.

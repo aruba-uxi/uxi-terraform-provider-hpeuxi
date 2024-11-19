@@ -17,7 +17,7 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) The filter used to filter the specific group by id. (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific group. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
@@ -31,4 +31,4 @@ description: |-
 
 Required:
 
-- `group_id` (String)
+- `group_id` (String) The identifier of the group.

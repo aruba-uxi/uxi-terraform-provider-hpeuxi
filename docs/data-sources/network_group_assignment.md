@@ -17,7 +17,7 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) The filter used to filter the specific network group assignment by id. (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific network group assignment. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
@@ -30,4 +30,4 @@ description: |-
 
 Required:
 
-- `network_group_assignment_id` (String)
+- `network_group_assignment_id` (String) The identifier of the network group assignment.

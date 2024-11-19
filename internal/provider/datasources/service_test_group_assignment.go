@@ -67,10 +67,11 @@ func (d *serviceTestGroupAssignmentDataSource) Schema(
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"service_test_group_assignment_id": schema.StringAttribute{
-						Required: true,
+						Required:    true,
+						Description: "The identifier of the service test group assignment.",
 					},
 				},
-				Description: "The filter used to filter the specific service test group assignment by id.",
+				Description: "The filter used to filter the specific service test group assignment.",
 			},
 		},
 	}

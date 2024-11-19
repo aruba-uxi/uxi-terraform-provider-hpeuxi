@@ -108,10 +108,11 @@ func (d *wirelessNetworkDataSource) Schema(
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"wireless_network_id": schema.StringAttribute{
-						Required: true,
+						Required:    true,
+						Description: "The identifier of the wireless network.",
 					},
 				},
-				Description: "The filter used to filter the specific wired network by id.",
+				Description: "The filter used to filter the specific wireless network.",
 			},
 		},
 	}

@@ -17,7 +17,7 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) The filter used to filter the specific wired network by id. (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific wireless network. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
@@ -38,4 +38,4 @@ description: |-
 
 Required:
 
-- `wireless_network_id` (String)
+- `wireless_network_id` (String) The identifier of the wireless network.

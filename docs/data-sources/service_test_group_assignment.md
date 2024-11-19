@@ -17,7 +17,7 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) The filter used to filter the specific service test group assignment by id. (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific service test group assignment. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
@@ -30,4 +30,4 @@ description: |-
 
 Required:
 
-- `service_test_group_assignment_id` (String)
+- `service_test_group_assignment_id` (String) The identifier of the service test group assignment.

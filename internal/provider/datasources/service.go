@@ -82,10 +82,11 @@ func (d *serviceTestDataSource) Schema(
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"service_test_id": schema.StringAttribute{
-						Required: true,
+						Required:    true,
+						Description: "The identifier of the service test.",
 					},
 				},
-				Description: "The filter used to filter the specific service test by id.",
+				Description: "The filter used to filter the specific service test.",
 			},
 		},
 	}
