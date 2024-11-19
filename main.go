@@ -1,5 +1,6 @@
-// Copyright (c) HashiCorp, Inc.
-// SPDX-License-Identifier: MPL-2.0
+/*
+Copyright 2024 Hewlett Packard Enterprise Development LP.
+*/
 
 package main
 

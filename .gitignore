@@ -30,3 +30,7 @@ _testmain.go
 
 # Terraform
 terraform.tfstate*
+
+# python
+**/*.pyc
+.DS_Store
