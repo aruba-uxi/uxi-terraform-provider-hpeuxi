@@ -31,11 +31,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						2,
 					)
 					// required for group create
@@ -127,20 +123,12 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetServiceTest(
 						"service_test_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id_2", "_2"),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id_2", "_2"),
 						2,
 					)
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						2,
 					)
 					util.MockGetGroup(
@@ -303,11 +291,7 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						2,
 					)
 
@@ -454,11 +438,7 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						1,
 					)
 
@@ -514,11 +494,7 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						1,
 					)
 					util.MockGetGroup(
@@ -560,11 +536,7 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						2,
 					)
 					// required for group create
@@ -642,11 +614,7 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						1,
 					)
 

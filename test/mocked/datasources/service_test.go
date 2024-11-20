@@ -28,15 +28,7 @@ func TestServiceTestDataSource(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("id", ""),
-							},
-						),
-						3,
-					)
+					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
@@ -100,15 +92,7 @@ func TestServiceTestDataSourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.ServiceTestPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetServiceTest(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("id", ""),
-							},
-						),
-						3,
-					)
+					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
@@ -168,11 +152,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 			// Not found error
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetServiceTest("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
