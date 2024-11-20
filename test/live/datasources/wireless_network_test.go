@@ -10,11 +10,12 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestWirelessNetworkDataSource(t *testing.T) {
-	wireless_network := util.GetWirelessNetwork(config.WirelessNetworkId)
+	wirelessNetwork := util.GetWirelessNetwork(config.WirelessNetworkId)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -27,7 +28,11 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 						}
 					}
 				`,
-				Check: util.CheckStateAgainstWirelessNetwork(t, wireless_network),
+				Check: shared.CheckStateAgainstWirelessNetwork(
+					t,
+					"data.uxi_wireless_network.my_wireless_network",
+					wirelessNetwork,
+				),
 			},
 		},
 	})

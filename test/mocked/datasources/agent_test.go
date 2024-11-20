@@ -21,6 +21,7 @@ import (
 func TestAgentDataSource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	agent := util.GenerateAgentResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -37,28 +38,7 @@ func TestAgentDataSource(t *testing.T) {
 						}
 					}
 				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "id"),
-					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "name", "name"),
-					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "serial", "serial"),
-					resource.TestCheckResourceAttr(
-						"data.uxi_agent.my_agent",
-						"model_number",
-						"model_number",
-					),
-					resource.TestCheckResourceAttr(
-						"data.uxi_agent.my_agent",
-						"wifi_mac_address",
-						"wifi_mac_address",
-					),
-					resource.TestCheckResourceAttr(
-						"data.uxi_agent.my_agent",
-						"ethernet_mac_address",
-						"ethernet_mac_address",
-					),
-					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "notes", "notes"),
-					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "pcap_mode", "light"),
-				),
+				Check: shared.CheckStateAgainstAgent(t, "data.uxi_agent.my_agent", agent),
 			},
 		},
 	})
@@ -70,6 +50,7 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
+	agent := util.GenerateAgentResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -92,7 +73,7 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_agent.my_agent", "id", "id"),
+					shared.CheckStateAgainstAgent(t, "data.uxi_agent.my_agent", agent),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil

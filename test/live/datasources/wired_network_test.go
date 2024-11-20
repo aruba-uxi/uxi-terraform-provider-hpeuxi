@@ -15,7 +15,7 @@ import (
 )
 
 func TestWiredNetworkDataSource(t *testing.T) {
-	wired_network := util.GetWiredNetwork(config.WiredNetworkId)
+	wiredNetwork := util.GetWiredNetwork(config.WiredNetworkId)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -31,7 +31,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				Check: shared.CheckStateAgainstWiredNetwork(
 					t,
 					"data.uxi_wired_network.my_wired_network",
-					wired_network,
+					wiredNetwork,
 				),
 			},
 		},
