@@ -30,7 +30,7 @@ Retrieves a specific sensor.
 - `name` (String) The name of the sensor.
 - `notes` (String) The notes of the sensor.
 - `pcap_mode` (String) The packet capture mode of the sensor.
-- `serial` (String) The serial of the sensor.
+- `serial` (String) The serial number of the sensor.
 - `wifi_mac_address` (String) The wifi mac address of the sensor.
 
 <a id="nestedatt--filter"></a>

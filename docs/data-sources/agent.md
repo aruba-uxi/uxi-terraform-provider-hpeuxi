@@ -27,7 +27,7 @@ Retrieves a specific agent.
 - `name` (String) The name of the agent.
 - `notes` (String) The notes of the agent.
 - `pcap_mode` (String) The packet capture mode of the agent.
-- `serial` (String) The serial of the agent.
+- `serial` (String) The serial number of the agent.
 - `wifi_mac_address` (String) The wifi mac address of the agent.
 
 <a id="nestedatt--filter"></a>

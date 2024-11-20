@@ -65,7 +65,7 @@ func (d *sensorDataSource) Schema(
 				Computed:    true,
 			},
 			"serial": schema.StringAttribute{
-				Description: "The serial of the sensor.",
+				Description: "The serial number of the sensor.",
 				Computed:    true,
 			},
 			"name": schema.StringAttribute{
