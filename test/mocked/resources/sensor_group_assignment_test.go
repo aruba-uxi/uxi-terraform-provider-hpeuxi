@@ -29,13 +29,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for sensor import
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateSensorResponse("sensor_id", ""),
-						},
-					),
-						2,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("sensor_id", ""), 2)
 
 					// required for group create
 					util.MockPostGroup(
@@ -130,20 +124,12 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			// Update and Read testing
 			{
 				PreConfig: func() {
-					util.MockGetSensor("sensor_id_2", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateSensorResponse("sensor_id_2", "_2"),
-						},
-					),
+					util.MockGetSensor(
+						"sensor_id_2",
+						util.GenerateSensorResponse("sensor_id_2", "_2"),
 						2,
 					)
-					util.MockGetSensor("sensor_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateSensorResponse("sensor_id", ""),
-						},
-					),
-						3,
-					)
+					util.MockGetSensor("sensor_id", util.GenerateSensorResponse("sensor_id", ""), 3)
 
 					util.MockGetGroup(
 						"group_id_2",
@@ -315,13 +301,7 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for sensor import
-					util.MockGetSensor("sensor_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateSensorResponse("sensor_id", ""),
-						},
-					),
-						2,
-					)
+					util.MockGetSensor("sensor_id", util.GenerateSensorResponse("sensor_id", ""), 2)
 
 					// required for group create
 					util.MockPostGroup(
@@ -485,13 +465,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for sensor import
-					util.MockGetSensor("sensor_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateSensorResponse("sensor_id", ""),
-						},
-					),
-						1,
-					)
+					util.MockGetSensor("sensor_id", util.GenerateSensorResponse("sensor_id", ""), 1)
 
 					// required for group create
 					util.MockPostGroup(
@@ -547,15 +521,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for sensor import
-					util.MockGetSensor(
-						"sensor_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorResponse("sensor_id", ""),
-							},
-						),
-						1,
-					)
+					util.MockGetSensor("sensor_id", util.GenerateSensorResponse("sensor_id", ""), 1)
 
 					util.MockGetGroup(
 						"group_id",
@@ -604,13 +570,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for sensor import
-					util.MockGetSensor("sensor_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateSensorResponse("sensor_id", ""),
-						},
-					),
-						1,
-					)
+					util.MockGetSensor("sensor_id", util.GenerateSensorResponse("sensor_id", ""), 1)
 
 					// required for group create
 					util.MockPostGroup(
@@ -672,13 +632,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// required for sensor import
-					util.MockGetSensor("sensor_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateSensorResponse("sensor_id", ""),
-						},
-					),
-						2,
-					)
+					util.MockGetSensor("sensor_id", util.GenerateSensorResponse("sensor_id", ""), 2)
 
 					// required for group create
 					util.MockPostGroup(
