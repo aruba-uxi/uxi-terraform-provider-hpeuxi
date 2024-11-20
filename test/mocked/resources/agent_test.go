@@ -23,6 +23,9 @@ func TestAgentResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
+	agent := util.GenerateAgentResponse("id", "").Items[0]
+	updated_agent := util.GenerateAgentResponse("id", "_2").Items[0]
+
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -56,12 +59,7 @@ func TestAgentResource(t *testing.T) {
 						id = "id"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "id"),
-				),
+				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
 			},
 			// ImportState testing
 			{
@@ -92,11 +90,7 @@ func TestAgentResource(t *testing.T) {
 					notes = "notes_2"
 					pcap_mode = "light"
 				}`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name_2"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes_2"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
-				),
+				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", updated_agent),
 			},
 			// Delete testing
 			{
