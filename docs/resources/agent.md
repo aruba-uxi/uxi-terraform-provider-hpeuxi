@@ -3,12 +3,12 @@
 page_title: "uxi_agent Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages an agent.
 ---
 
 # uxi_agent (Resource)
 
-
+Manages an agent.
 
 
 
@@ -17,13 +17,13 @@ description: |-
 
 ### Required
 
-- `name` (String)
+- `name` (String) The name of the agent.
 
 ### Optional
 
-- `notes` (String)
-- `pcap_mode` (String)
+- `notes` (String) The notes of the agent.
+- `pcap_mode` (String) The packet capture mode of the agent.
 
 ### Read-Only
 
-- `id` (String) The ID of this resource.
+- `id` (String) The identifier of the agent.

@@ -3,12 +3,12 @@
 page_title: "uxi_service_test Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific service test.
 ---
 
 # uxi_service_test (Data Source)
 
-
+Retrieves a specific service test.
 
 
 
@@ -17,20 +17,20 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific service test. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `category` (String)
-- `id` (String) The ID of this resource.
-- `is_enabled` (Boolean)
-- `name` (String)
-- `target` (String)
-- `template` (String)
+- `category` (String) The category of the service test.
+- `id` (String) The identifier of the service test.
+- `is_enabled` (Boolean) Whether the service test is enabled or not.
+- `name` (String) The name of the service test.
+- `target` (String) The target of the service test.
+- `template` (String) The template of the service test.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`
 
 Required:
 
-- `service_test_id` (String)
+- `service_test_id` (String) The identifier of the service test.

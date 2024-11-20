@@ -3,12 +3,12 @@
 page_title: "uxi_agent_group_assignment Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific agent group assignment.
 ---
 
 # uxi_agent_group_assignment (Data Source)
 
-
+Retrieves a specific agent group assignment.
 
 
 
@@ -17,17 +17,17 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific agent group assignment. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `agent_id` (String)
-- `group_id` (String)
-- `id` (String) The ID of this resource.
+- `agent_id` (String) The identifier of the assigned agent.
+- `group_id` (String) The identifier of the assigned group.
+- `id` (String) The identifier of the agent group assignment.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`
 
 Required:
 
-- `agent_group_assignment_id` (String)
+- `agent_group_assignment_id` (String) The identifier of the agent group assignment.

@@ -3,12 +3,12 @@
 page_title: "uxi_wireless_network Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a wireless network.
 ---
 
 # uxi_wireless_network (Resource)
 
-
+Manages a wireless network.
 
 
 
@@ -17,8 +17,8 @@ description: |-
 
 ### Required
 
-- `name` (String)
+- `name` (String) The name of the wireless network.
 
 ### Read-Only
 
-- `id` (String) The ID of this resource.
+- `id` (String) The identifier of the wireless network.

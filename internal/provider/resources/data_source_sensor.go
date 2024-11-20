@@ -58,45 +58,59 @@ func (d *sensorDataSource) Schema(
 	resp *datasource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Retrieves a specific sensor.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the sensor.",
+				Computed:    true,
 			},
 			"serial": schema.StringAttribute{
-				Computed: true,
+				Description: "The serial number of the sensor.",
+				Computed:    true,
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
+				Description: "The name of the sensor.",
+				Computed:    true,
 			},
 			"model_number": schema.StringAttribute{
-				Computed: true,
+				Description: "The model number of the sensor.",
+				Computed:    true,
 			},
 			"wifi_mac_address": schema.StringAttribute{
-				Computed: true,
+				Description: "The wifi mac address of the sensor.",
+				Computed:    true,
 			},
 			"ethernet_mac_address": schema.StringAttribute{
-				Computed: true,
+				Description: "The ethernet mac address of the sensor.",
+				Computed:    true,
 			},
 			"address_note": schema.StringAttribute{
-				Computed: true,
+				Description: "The address note of the sensor.",
+				Computed:    true,
 			},
 			"longitude": schema.Float32Attribute{
-				Computed: true,
+				Description: "The geolocation longitude of the sensor.",
+				Computed:    true,
 			},
 			"latitude": schema.Float32Attribute{
-				Computed: true,
+				Description: "The geolocation latitude of the sensor.",
+				Computed:    true,
 			},
 			"notes": schema.StringAttribute{
-				Computed: true,
+				Description: "The notes of the sensor.",
+				Computed:    true,
 			},
 			"pcap_mode": schema.StringAttribute{
-				Computed: true,
+				Description: "The packet capture mode of the sensor.",
+				Computed:    true,
 			},
 			"filter": schema.SingleNestedAttribute{
-				Required: true,
+				Description: "The filter used to filter the specific sensor.",
+				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"sensor_id": schema.StringAttribute{
-						Required: true,
+						Description: "The identifier of the sensor group assignment.",
+						Required:    true,
 					},
 				},
 			},

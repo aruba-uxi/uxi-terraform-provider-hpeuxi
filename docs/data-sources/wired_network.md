@@ -3,12 +3,12 @@
 page_title: "uxi_wired_network Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific wired network.
 ---
 
 # uxi_wired_network (Data Source)
 
-
+Retrieves a specific wired network.
 
 
 
@@ -17,23 +17,23 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific wired network. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `disable_edns` (Boolean)
-- `dns_lookup_domain` (String)
-- `external_connectivity` (Boolean)
-- `id` (String) The ID of this resource.
-- `ip_version` (String)
-- `name` (String)
-- `security` (String)
-- `use_dns64` (Boolean)
-- `vlan_id` (Number)
+- `disable_edns` (Boolean) Whether EDNS is disabled on the wired network.
+- `dns_lookup_domain` (String) The DNS lookup domain of the wired network.
+- `external_connectivity` (Boolean) Whether the wired network has external connectivity.
+- `id` (String) The identifier of the wired network.
+- `ip_version` (String) The ip version of the wired network.
+- `name` (String) The name of the wired network.
+- `security` (String) The security protocol of the wired network.
+- `use_dns64` (Boolean) Whether the wired network is configured to use DNS64.
+- `vlan_id` (Number) The VLAN identifier of the wired network.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`
 
 Required:
 
-- `wired_network_id` (String)
+- `wired_network_id` (String) The identifier of the wired network.

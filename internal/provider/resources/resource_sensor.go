@@ -52,28 +52,34 @@ func (r *sensorResource) Schema(
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Manages a sensor.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the sensor.",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Description: "The name of the sensor.",
+				Required:    true,
 			},
 			"address_note": schema.StringAttribute{
-				Optional: true,
+				Description: "The address notes of the sensor.",
+				Optional:    true,
 				// computed because goes from nil -> "" when sensor becomes configured
 				Computed: true,
 			},
 			"notes": schema.StringAttribute{
-				Optional: true,
+				Description: "The address notes of the sensor.",
+				Optional:    true,
 				// computed because goes from from nil -> "" when sensor becomes configured
 				Computed: true,
 			},
 			"pcap_mode": schema.StringAttribute{
-				Optional: true,
+				Description: "The packet capture mode of the agent.",
+				Optional:    true,
 				// computed because goes from from nil -> "light" when sensor becomes configured
 				Computed: true,
 			},

@@ -3,12 +3,12 @@
 page_title: "uxi_sensor Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific sensor.
 ---
 
 # uxi_sensor (Data Source)
 
-
+Retrieves a specific sensor.
 
 
 
@@ -17,25 +17,25 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific sensor. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `address_note` (String)
-- `ethernet_mac_address` (String)
-- `id` (String) The ID of this resource.
-- `latitude` (Number)
-- `longitude` (Number)
-- `model_number` (String)
-- `name` (String)
-- `notes` (String)
-- `pcap_mode` (String)
-- `serial` (String)
-- `wifi_mac_address` (String)
+- `address_note` (String) The address note of the sensor.
+- `ethernet_mac_address` (String) The ethernet mac address of the sensor.
+- `id` (String) The identifier of the sensor.
+- `latitude` (Number) The geolocation latitude of the sensor.
+- `longitude` (Number) The geolocation longitude of the sensor.
+- `model_number` (String) The model number of the sensor.
+- `name` (String) The name of the sensor.
+- `notes` (String) The notes of the sensor.
+- `pcap_mode` (String) The packet capture mode of the sensor.
+- `serial` (String) The serial number of the sensor.
+- `wifi_mac_address` (String) The wifi mac address of the sensor.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`
 
 Required:
 
-- `sensor_id` (String)
+- `sensor_id` (String) The identifier of the sensor group assignment.

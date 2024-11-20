@@ -51,20 +51,30 @@ func (r *sensorGroupAssignmentResource) Schema(
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Manages a sensor group assignment.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the sensor group assignment",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"sensor_id": schema.StringAttribute{
+				Description: "The identifier of the sensor to be assigned. " +
+					"Use sensor id; " +
+					"`uxi_sensor` resource id field or " +
+					"`uxi_sensor` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"group_id": schema.StringAttribute{
+				Description: "The identifier of the group to be assigned to. " +
+					"Use group id; " +
+					"`uxi_group` resource id field or " +
+					"`uxi_group` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),

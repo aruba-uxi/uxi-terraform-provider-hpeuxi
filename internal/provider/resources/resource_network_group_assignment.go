@@ -51,20 +51,33 @@ func (r *networkGroupAssignmentResource) Schema(
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Manages a network group assignment.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the network group assignment",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"network_id": schema.StringAttribute{
+				Description: "The identifier of the network to be assigned. " +
+					"Use wired network id; " +
+					"`uxi_wired_network` resource id field; " +
+					"`uxi_wired_network` datasource id field; " +
+					"wireless network id; " +
+					"`uxi_wireless_network` resource id field or " +
+					"`uxi_wireless_network` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"group_id": schema.StringAttribute{
+				Description: "The identifier of the group to be assigned to. " +
+					"Use group id; " +
+					"`uxi_group` resource id field or " +
+					"`uxi_group` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
