@@ -9,7 +9,6 @@ import (
 	"regexp"
 	"testing"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
@@ -23,14 +22,6 @@ import (
 func TestAgentResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-
-	agent := config_api_client.NewAgentItemWithDefaults()
-	agent.Id = "id"
-	agent.Name = "name"
-	notes := "notes"
-	pcapMode := "light"
-	agent.Notes = *config_api_client.NewNullableString(&notes)
-	agent.PcapMode = *config_api_client.NewNullableString(&pcapMode)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -71,7 +62,12 @@ func TestAgentResource(t *testing.T) {
 						id = "id"
 					}`,
 
-				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", *agent),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
+					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "id"),
+				),
 			},
 			// ImportState testing
 			{
