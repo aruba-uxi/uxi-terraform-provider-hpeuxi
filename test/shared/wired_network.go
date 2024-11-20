@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/stretchr/testify/assert"
 )
@@ -17,41 +16,41 @@ import (
 func CheckStateAgainstWiredNetwork(
 	t *testing.T,
 	entity string,
-	wired_network config_api_client.WiredNetworksItem,
+	wiredNetwork config_api_client.WiredNetworksItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
-		resource.TestCheckResourceAttr(entity, "id", config.WiredNetworkId),
+		resource.TestCheckResourceAttr(entity, "id", wiredNetwork.Id),
 		resource.TestCheckResourceAttrWith(
 			entity,
 			"name",
 			func(value string) error {
-				assert.Equal(t, value, wired_network.Name)
+				assert.Equal(t, value, wiredNetwork.Name)
 				return nil
 			},
 		),
-		resource.TestCheckResourceAttr(entity, "ip_version", wired_network.IpVersion),
-		TestOptionalValue(t, entity, "security", wired_network.Security.Get()),
-		TestOptionalValue(t, entity, "dns_lookup_domain", wired_network.DnsLookupDomain.Get()),
+		resource.TestCheckResourceAttr(entity, "ip_version", wiredNetwork.IpVersion),
+		TestOptionalValue(t, entity, "security", wiredNetwork.Security.Get()),
+		TestOptionalValue(t, entity, "dns_lookup_domain", wiredNetwork.DnsLookupDomain.Get()),
 		resource.TestCheckResourceAttr(
 			entity,
 			"disable_edns",
-			strconv.FormatBool(wired_network.DisableEdns),
+			strconv.FormatBool(wiredNetwork.DisableEdns),
 		),
 		resource.TestCheckResourceAttr(
 			entity,
 			"use_dns64",
-			strconv.FormatBool(wired_network.UseDns64),
+			strconv.FormatBool(wiredNetwork.UseDns64),
 		),
 		resource.TestCheckResourceAttr(
 			entity,
 			"external_connectivity",
-			strconv.FormatBool(wired_network.ExternalConnectivity),
+			strconv.FormatBool(wiredNetwork.ExternalConnectivity),
 		),
 		TestOptionalValue(
 			t,
 			entity,
 			"vlan_id",
-			Int32PtrToStringPtr(wired_network.VLanId.Get()),
+			Int32PtrToStringPtr(wiredNetwork.VLanId.Get()),
 		),
 	)
 }
