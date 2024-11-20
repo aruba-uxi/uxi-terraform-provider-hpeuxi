@@ -106,17 +106,3 @@ func (p ProvisionAgent) generateId() (string, error) {
 
 	return uuid.String(), nil
 }
-
-func GetAgent(id string) *config_api_client.AgentItem {
-	result, _, err := Client.ConfigurationAPI.
-		AgentsGet(context.Background()).
-		Id(id).
-		Execute()
-	if err != nil {
-		panic(err)
-	}
-	if len(result.Items) != 1 {
-		return nil
-	}
-	return &result.Items[0]
-}

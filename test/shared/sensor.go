@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/stretchr/testify/assert"
 )
@@ -19,7 +18,7 @@ func CheckStateAgainstSensor(
 	sensor config_api_client.SensorItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
-		resource.TestCheckResourceAttr(entity, "id", config.SensorId),
+		resource.TestCheckResourceAttr(entity, "id", sensor.Id),
 		resource.TestCheckResourceAttr(entity, "serial", sensor.Serial),
 		resource.TestCheckResourceAttr(entity, "model_number", sensor.ModelNumber),
 		resource.TestCheckResourceAttrWith(

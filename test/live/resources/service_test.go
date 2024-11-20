@@ -5,16 +5,20 @@ Copyright 2024 Hewlett Packard Enterprise Development LP.
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"regexp"
 	"testing"
 
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
 func TestServiceTestResource(t *testing.T) {
+	serviceTest := util.GetServiceTest(config.ServiceTestId)
+
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -45,18 +49,7 @@ func TestServiceTestResource(t *testing.T) {
 						id = "` + config.ServiceTestId + `"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(
-						"uxi_service_test.my_service_test",
-						"name",
-						config.ServiceTestName,
-					),
-					resource.TestCheckResourceAttr(
-						"uxi_service_test.my_service_test",
-						"id",
-						config.ServiceTestId,
-					),
-				),
+				Check: shared.CheckStateAgainstServiceTest(t, "uxi_service_test.my_service_test", serviceTest),
 			},
 			// ImportState testing
 			{

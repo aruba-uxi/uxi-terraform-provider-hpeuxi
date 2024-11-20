@@ -22,9 +22,8 @@ import (
 func TestSensorResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-
 	sensor := util.GenerateSensorResponse("id", "").Items[0]
-	updated_sensor := util.GenerateSensorResponse("id", "_2").Items[0]
+	updatedSensor := util.GenerateSensorResponse("id", "_2").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -97,7 +96,7 @@ func TestSensorResource(t *testing.T) {
 					notes = "notes_2"
 					pcap_mode = "light"
 				}`,
-				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", updated_sensor),
+				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", updatedSensor),
 			},
 			// Deleting a sensor is not allowed
 			{
@@ -129,6 +128,8 @@ func TestSensorResource(t *testing.T) {
 func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	sensor := util.GenerateSensorResponse("id", "").Items[0]
+	updatedSensor := util.GenerateSensorResponse("id", "_2").Items[0]
 	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
@@ -161,7 +162,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
+					shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", sensor),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
@@ -194,7 +195,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 					pcap_mode = "light"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
+					shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", updatedSensor),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
@@ -221,6 +222,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 func TestSensorResourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	sensor := util.GenerateSensorResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -297,17 +299,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 						id = "id"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name"),
-					resource.TestCheckResourceAttr(
-						"uxi_sensor.my_sensor",
-						"address_note",
-						"address_note",
-					),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
-				),
+				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", sensor),
 			},
 			// Update HTTP error
 			{

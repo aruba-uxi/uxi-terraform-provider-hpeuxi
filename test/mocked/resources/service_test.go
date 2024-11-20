@@ -22,6 +22,7 @@ import (
 func TestServiceTestResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	serviceTest := util.GenerateServiceTestResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -56,14 +57,7 @@ func TestServiceTestResource(t *testing.T) {
 						id = "id"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(
-						"uxi_service_test.my_service_test",
-						"name",
-						"name",
-					),
-					resource.TestCheckResourceAttr("uxi_service_test.my_service_test", "id", "id"),
-				),
+				Check: shared.CheckStateAgainstServiceTest(t, "uxi_service_test.my_service_test", serviceTest),
 			},
 			// ImportState testing
 			{
@@ -117,6 +111,7 @@ func TestServiceTestResource(t *testing.T) {
 func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	serviceTest := util.GenerateServiceTestResponse("id", "").Items[0]
 	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
@@ -146,7 +141,7 @@ func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_service_test.my_service_test", "id", "id"),
+					shared.CheckStateAgainstServiceTest(t, "uxi_service_test.my_service_test", serviceTest),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil

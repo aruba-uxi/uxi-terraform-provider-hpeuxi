@@ -23,8 +23,12 @@ var (
 )
 
 type serviceTestResourceModel struct {
-	ID   types.String `tfsdk:"id"`
-	Name types.String `tfsdk:"name"`
+	Id        types.String `tfsdk:"id"`
+	Category  types.String `tfsdk:"category"`
+	Name      types.String `tfsdk:"name"`
+	Target    types.String `tfsdk:"target"`
+	Template  types.String `tfsdk:"template"`
+	IsEnabled types.Bool   `tfsdk:"is_enabled"`
 }
 
 func NewServiceTestResource() resource.Resource {
@@ -58,9 +62,25 @@ func (r *serviceTestResource) Schema(
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
+			"category": schema.StringAttribute{
+				Description: "The category of the service test.",
+				Computed:    true,
+			},
 			"name": schema.StringAttribute{
 				Description: "The name of the service test.",
 				Required:    true,
+			},
+			"target": schema.StringAttribute{
+				Description: "The target of the service test.",
+				Computed:    true,
+			},
+			"template": schema.StringAttribute{
+				Description: "The template of the service test.",
+				Computed:    true,
+			},
+			"is_enabled": schema.BoolAttribute{
+				Description: "Whether the service test is enabled or not.",
+				Computed:    true,
 			},
 		},
 	}
@@ -116,7 +136,7 @@ func (r *serviceTestResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		ServiceTestsGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -133,8 +153,12 @@ func (r *serviceTestResource) Read(
 	}
 	serviceTest := sensorResponse.Items[0]
 
-	state.ID = types.StringValue(serviceTest.Id)
+	state.Id = types.StringValue(serviceTest.Id)
+	state.Category = types.StringValue(serviceTest.Category)
 	state.Name = types.StringValue(serviceTest.Name)
+	state.Target = types.StringPointerValue(serviceTest.Target.Get())
+	state.Template = types.StringValue(serviceTest.Template)
+	state.IsEnabled = types.BoolValue(serviceTest.IsEnabled)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
