@@ -62,7 +62,7 @@ func (d *agentDataSource) Schema(
 				Computed:    true,
 			},
 			"serial": schema.StringAttribute{
-				Description: "The serial of the agent.",
+				Description: "The serial number of the agent.",
 				Computed:    true,
 			},
 			"name": schema.StringAttribute{
