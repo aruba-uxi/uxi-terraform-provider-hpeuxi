@@ -142,11 +142,7 @@ func TestAgentGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					util.MockGetAgentGroupAssignment(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetAgentGroupAssignment("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_agent_group_assignment" "my_agent_group_assignment" {

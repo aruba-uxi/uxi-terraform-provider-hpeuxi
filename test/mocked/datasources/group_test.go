@@ -131,11 +131,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 			// Not found error
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetGroup("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {

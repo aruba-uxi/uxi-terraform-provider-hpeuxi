@@ -28,14 +28,6 @@ var EmptyGetListResponse = map[string]interface{}{
 	"count": 0,
 }
 
-func GeneratePaginatedResponse(items []map[string]interface{}) map[string]interface{} {
-	return map[string]interface{}{
-		"items": items,
-		"next":  nil,
-		"count": len(items),
-	}
-}
-
 func MockOAuth() *gock.Response {
 	return gock.New("https://sso.common.cloud.hpe.com").
 		Post("/as/token.oauth2").

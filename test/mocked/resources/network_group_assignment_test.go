@@ -31,11 +31,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						2,
 					)
 
@@ -131,20 +127,12 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id_2", "_2"),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id_2", "_2"),
 						2,
 					)
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						2,
 					)
 					util.MockGetGroup(
@@ -254,20 +242,12 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id_2", "_2"),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id_2", "_2"),
 						1,
 					)
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						1,
 					)
 					util.MockGetGroup(
@@ -339,11 +319,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					// required for network import
 					util.MockGetWirelessNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWirelessNetworkResponse("network_id", ""),
 						2,
 					)
 					// required for group create
@@ -438,20 +414,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"network_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("network_id_2", "_2"),
-							},
-						),
+						util.GenerateWirelessNetworkResponse("network_id_2", "_2"),
 						2,
 					)
 					util.MockGetWirelessNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWirelessNetworkResponse("network_id", ""),
 						2,
 					)
 
@@ -561,20 +529,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"network_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("network_id_2", "_2"),
-							},
-						),
+						util.GenerateWirelessNetworkResponse("network_id_2", "_2"),
 						1,
 					)
 					util.MockGetWirelessNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWirelessNetworkResponse("network_id", ""),
 						1,
 					)
 					util.MockGetGroup(
@@ -645,11 +605,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						2,
 					)
 
@@ -753,11 +709,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						1,
 					)
 					util.MockGetGroup(
@@ -814,11 +766,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						2,
 					)
 
@@ -874,11 +822,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						2,
 					)
 
@@ -933,11 +877,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						2,
 					)
 
@@ -999,11 +939,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						2,
 					)
 
@@ -1073,11 +1009,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						1,
 					)
 					util.MockGetGroup(
@@ -1123,11 +1055,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork(
 						"network_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("network_id", ""),
-							},
-						),
+						util.GenerateWiredNetworkResponse("network_id", ""),
 						1,
 					)
 					util.MockGetGroup(

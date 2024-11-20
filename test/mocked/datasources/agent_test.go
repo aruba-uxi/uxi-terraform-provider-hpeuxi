@@ -138,11 +138,7 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 			// Not found error
 			{
 				PreConfig: func() {
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetAgent("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
