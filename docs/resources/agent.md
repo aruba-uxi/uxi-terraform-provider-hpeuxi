@@ -26,4 +26,8 @@ Manages an agent.
 
 ### Read-Only
 
+- `ethernet_mac_address` (String)
 - `id` (String) The identifier of the agent.
+- `model_number` (String)
+- `serial` (String)
+- `wifi_mac_address` (String)

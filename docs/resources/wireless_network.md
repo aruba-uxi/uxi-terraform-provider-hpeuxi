@@ -21,4 +21,13 @@ Manages a wireless network.
 
 ### Read-Only
 
+- `band_locking` (String) The frequency band the wireless network is locked to.
+- `disable_edns` (Boolean) Whether EDNS is disabled on the wireless network.
+- `dns_lookup_domain` (String) The DNS lookup domain of the wireless network.
+- `external_connectivity` (Boolean) Whether the wireless network has external connectivity.
+- `hidden` (Boolean) Whether the wireless network is hidden.
 - `id` (String) The identifier of the wireless network.
+- `ip_version` (String) The IP version of the wireless network.
+- `security` (String) The security protocol of the wireless network.
+- `ssid` (String) The SSID of the wireless network.
+- `use_dns64` (Boolean) Whether the wireless network is configured to use DNS64.

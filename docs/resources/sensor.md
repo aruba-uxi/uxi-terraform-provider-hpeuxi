@@ -27,4 +27,10 @@ Manages a sensor.
 
 ### Read-Only
 
+- `ethernet_mac_address` (String) The ethernet mac address of the sensor.
 - `id` (String) The identifier of the sensor.
+- `latitude` (Number) The geolocation latitude of the sensor.
+- `longitude` (Number) The geolocation longitude of the sensor.
+- `model_number` (String) The model number of the sensor.
+- `serial` (String) The serial number of the sensor.
+- `wifi_mac_address` (String) The wifi mac address of the sensor.
