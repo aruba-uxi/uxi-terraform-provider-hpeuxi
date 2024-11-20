@@ -10,6 +10,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/stretchr/testify/assert"
 )
@@ -45,13 +46,18 @@ func CheckDataSourceStateAgainstSensor(
 				return nil
 			},
 		),
-		TestOptionalValue(t, entity, "wifi_mac_address", sensor.WifiMacAddress.Get()),
-		TestOptionalValue(t, entity, "ethernet_mac_address", sensor.EthernetMacAddress.Get()),
-		TestOptionalValue(t, entity, "address_note", sensor.AddressNote.Get()),
+		shared.TestOptionalValue(t, entity, "wifi_mac_address", sensor.WifiMacAddress.Get()),
+		shared.TestOptionalValue(
+			t,
+			entity,
+			"ethernet_mac_address",
+			sensor.EthernetMacAddress.Get(),
+		),
+		shared.TestOptionalValue(t, entity, "address_note", sensor.AddressNote.Get()),
 		TestOptionalFloatValue(t, entity, "latitude", sensor.Latitude.Get()),
 		TestOptionalFloatValue(t, entity, "longitude", sensor.Longitude.Get()),
-		TestOptionalValue(t, entity, "notes", sensor.Notes.Get()),
-		TestOptionalValue(t, entity, "pcap_mode", sensor.PcapMode.Get()),
+		shared.TestOptionalValue(t, entity, "notes", sensor.Notes.Get()),
+		shared.TestOptionalValue(t, entity, "pcap_mode", sensor.PcapMode.Get()),
 	)
 }
 
@@ -70,8 +76,8 @@ func CheckResourceStateAgainstSensor(
 				return nil
 			},
 		),
-		TestOptionalValue(t, entity, "address_note", sensor.AddressNote.Get()),
-		TestOptionalValue(t, entity, "notes", sensor.Notes.Get()),
-		TestOptionalValue(t, entity, "pcap_mode", sensor.PcapMode.Get()),
+		shared.TestOptionalValue(t, entity, "address_note", sensor.AddressNote.Get()),
+		shared.TestOptionalValue(t, entity, "notes", sensor.Notes.Get()),
+		shared.TestOptionalValue(t, entity, "pcap_mode", sensor.PcapMode.Get()),
 	)
 }

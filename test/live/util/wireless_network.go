@@ -11,6 +11,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/stretchr/testify/assert"
 )
@@ -57,7 +58,7 @@ func CheckStateAgainstWirelessNetwork(
 			"ip_version",
 			wireless_network.IpVersion,
 		),
-		TestOptionalValue(
+		shared.TestOptionalValue(
 			t,
 			"data.uxi_wireless_network.my_wireless_network",
 			"security",
@@ -73,7 +74,7 @@ func CheckStateAgainstWirelessNetwork(
 			"band_locking",
 			wireless_network.BandLocking,
 		),
-		TestOptionalValue(
+		shared.TestOptionalValue(
 			t,
 			"data.uxi_wireless_network.my_wireless_network",
 			"dns_lookup_domain",

@@ -20,19 +20,6 @@ func ConditionalProperty(property string, value *string) string {
 	return property + `= "` + *value + `"`
 }
 
-func TestOptionalValue(
-	t *testing.T,
-	tfResource string,
-	tfKey string,
-	property *string,
-) resource.TestCheckFunc {
-	if property == nil {
-		return resource.TestCheckNoResourceAttr(tfResource, tfKey)
-	}
-
-	return resource.TestCheckResourceAttrPtr(tfResource, tfKey, property)
-}
-
 // This is required to do a check against floats since 100% accuracy is not guaranteed for floating
 // point numbers in the terraform plugin framework
 func TestOptionalFloatValue(

@@ -11,6 +11,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/stretchr/testify/assert"
 )
@@ -52,13 +53,13 @@ func CheckStateAgainstWiredNetwork(
 			"ip_version",
 			wired_network.IpVersion,
 		),
-		TestOptionalValue(
+		shared.TestOptionalValue(
 			t,
 			"data.uxi_wired_network.my_wired_network",
 			"security",
 			wired_network.Security.Get(),
 		),
-		TestOptionalValue(
+		shared.TestOptionalValue(
 			t,
 			"data.uxi_wired_network.my_wired_network",
 			"dns_lookup_domain",
@@ -79,7 +80,7 @@ func CheckStateAgainstWiredNetwork(
 			"external_connectivity",
 			strconv.FormatBool(wired_network.ExternalConnectivity),
 		),
-		TestOptionalValue(
+		shared.TestOptionalValue(
 			t,
 			"data.uxi_wired_network.my_wired_network",
 			"vlan_id",

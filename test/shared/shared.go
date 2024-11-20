@@ -4,6 +4,13 @@ Copyright 2024 Hewlett Packard Enterprise Development LP.
 
 package shared
 
+import (
+	"fmt"
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+)
+
 const (
 	AgentGroupAssignmentType       = "networking-uxi/agent-group-assignment"
 	AgentType                      = "networking-uxi/agent"
@@ -27,3 +34,16 @@ const (
 	WiredNetworkPath               = "/networking-uxi/v1alpha1/wired-networks"
 	WirelessNetworkPath            = "/networking-uxi/v1alpha1/wireless-networks"
 )
+
+func TestOptionalValue(
+	t *testing.T,
+	tfResource string,
+	tfKey string,
+	property *string,
+) resource.TestCheckFunc {
+	if property == nil {
+		return resource.TestCheckNoResourceAttr(tfResource, tfKey)
+	}
+
+	return resource.TestCheckResourceAttrPtr(tfResource, tfKey, property)
+}

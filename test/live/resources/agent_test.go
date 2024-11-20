@@ -9,20 +9,17 @@ import (
 	"regexp"
 	"testing"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAgentResource(t *testing.T) {
-	const (
-		agentName        = "tf_provider_acceptance_test_agent_resource"
-		agentNameUpdated = agentName + "_updated"
-	)
-
 	// we provision an agent here so that we have something to delete later on
 	agentId, err := util.ProvisionAgent{
 		CustomerId:        config.CustomerId,
@@ -34,6 +31,14 @@ func TestAgentResource(t *testing.T) {
 		panic(err)
 	}
 
+	agent := util.GetAgentProperties(agentId)
+	updated_agent := agent
+	updated_notes := "notes"
+	updated_pcapMode := "off"
+	updated_agent.Name = "tf_provider_acceptance_test_agent_resource_updated_name"
+	updated_agent.Notes = *config_api_client.NewNullableString(&updated_notes)
+	updated_agent.PcapMode = *config_api_client.NewNullableString(&updated_pcapMode)
+
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -41,7 +46,7 @@ func TestAgentResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_agent" "my_agent" {
-						name = "` + agentName + `"
+						name = "` + agent.Name + `"
 					}`,
 
 				ExpectError: regexp.MustCompile(
@@ -52,22 +57,14 @@ func TestAgentResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "uxi_agent" "my_agent" {
-						name  	  = "` + agentName + `"
-						notes 	  = ""
-						pcap_mode = "light"
+						name = "` + agent.Name + `"
 					}
 
 					import {
 						to = uxi_agent.my_agent
 						id = "` + agentId + `"
 					}`,
-
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", agentId),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", agentName),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", ""),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
-				),
+				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
 			},
 			// ImportState
 			{
@@ -78,17 +75,12 @@ func TestAgentResource(t *testing.T) {
 			// Update
 			{
 				Config: provider.ProviderConfig + `
-				resource "uxi_agent" "my_agent" {
-					name = "` + agentNameUpdated + `"
-					notes = "notes"
-					pcap_mode = "off"
-				}`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", agentId),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", agentNameUpdated),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "off"),
-				),
+					resource "uxi_agent" "my_agent" {
+						name = "tf_provider_acceptance_test_agent_resource_updated_name"
+						notes = "notes"
+						pcap_mode = "off"
+					}`,
+				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", updated_agent),
 			},
 			// Delete
 			{

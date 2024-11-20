@@ -24,10 +24,14 @@ var (
 )
 
 type agentResourceModel struct {
-	ID       types.String `tfsdk:"id"`
-	Name     types.String `tfsdk:"name"`
-	Notes    types.String `tfsdk:"notes"`
-	PCapMode types.String `tfsdk:"pcap_mode"`
+	Id                 types.String `tfsdk:"id"`
+	Serial             types.String `tfsdk:"serial"`
+	Name               types.String `tfsdk:"name"`
+	ModelNumber        types.String `tfsdk:"model_number"`
+	WifiMacAddress     types.String `tfsdk:"wifi_mac_address"`
+	EthernetMacAddress types.String `tfsdk:"ethernet_mac_address"`
+	Notes              types.String `tfsdk:"notes"`
+	PcapMode           types.String `tfsdk:"pcap_mode"`
 }
 
 func NewAgentResource() resource.Resource {
@@ -59,8 +63,20 @@ func (r *agentResource) Schema(
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
+			"serial": schema.StringAttribute{
+				Computed: true,
+			},
 			"name": schema.StringAttribute{
 				Required: true,
+			},
+			"model_number": schema.StringAttribute{
+				Computed: true,
+			},
+			"wifi_mac_address": schema.StringAttribute{
+				Computed: true,
+			},
+			"ethernet_mac_address": schema.StringAttribute{
+				Computed: true,
 			},
 			"notes": schema.StringAttribute{
 				Optional: true,
@@ -124,7 +140,7 @@ func (r *agentResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		AgentsGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -141,10 +157,14 @@ func (r *agentResource) Read(
 	}
 	agent := agentResponse.Items[0]
 
-	state.ID = types.StringValue(agent.Id)
+	state.Id = types.StringValue(agent.Id)
 	state.Name = types.StringValue(agent.Name)
+	state.Serial = types.StringValue(agent.Serial)
+	state.ModelNumber = types.StringPointerValue(agent.ModelNumber.Get())
+	state.WifiMacAddress = types.StringPointerValue(agent.WifiMacAddress.Get())
+	state.EthernetMacAddress = types.StringPointerValue(agent.EthernetMacAddress.Get())
 	state.Notes = types.StringPointerValue(agent.Notes.Get())
-	state.PCapMode = types.StringPointerValue(agent.PcapMode.Get())
+	state.PcapMode = types.StringPointerValue(agent.PcapMode.Get())
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -171,8 +191,8 @@ func (r *agentResource) Update(
 	if !plan.Notes.IsUnknown() {
 		patchRequest.Notes = plan.Notes.ValueStringPointer()
 	}
-	plannedPcapMode := plan.PCapMode.ValueStringPointer()
-	if !plan.PCapMode.IsUnknown() && plannedPcapMode != nil {
+	plannedPcapMode := plan.PcapMode.ValueStringPointer()
+	if !plan.PcapMode.IsUnknown() && plannedPcapMode != nil {
 		pcapMode, err := config_api_client.NewPcapModeFromValue(*plannedPcapMode)
 		if err != nil {
 			resp.Diagnostics.AddError(errorSummary, err.Error())
@@ -181,7 +201,7 @@ func (r *agentResource) Update(
 		patchRequest.PcapMode = pcapMode
 	}
 	request := r.client.ConfigurationAPI.
-		AgentsPatch(ctx, plan.ID.ValueString()).
+		AgentsPatch(ctx, plan.Id.ValueString()).
 		AgentsPatchRequest(*patchRequest)
 	agent, response, err := util.RetryForTooManyRequests(request.Execute)
 
@@ -192,13 +212,15 @@ func (r *agentResource) Update(
 		return
 	}
 
-	plan.ID = types.StringValue(agent.Id)
+	plan.Id = types.StringValue(agent.Id)
 	plan.Name = types.StringValue(agent.Name)
-	if agent.Notes.Get() != nil {
-		plan.Notes = types.StringValue(*agent.Notes.Get())
-	}
+	plan.Serial = types.StringValue(agent.Serial)
+	plan.ModelNumber = types.StringPointerValue(agent.ModelNumber.Get())
+	plan.WifiMacAddress = types.StringPointerValue(agent.WifiMacAddress.Get())
+	plan.EthernetMacAddress = types.StringPointerValue(agent.EthernetMacAddress.Get())
+	plan.Notes = types.StringPointerValue(agent.Notes.Get())
 	if agent.PcapMode.Get() != nil {
-		plan.PCapMode = types.StringValue(string(*agent.PcapMode.Get()))
+		plan.PcapMode = types.StringValue(string(*agent.PcapMode.Get()))
 	}
 
 	diags = resp.State.Set(ctx, plan)
@@ -220,7 +242,7 @@ func (r *agentResource) Delete(
 		return
 	}
 
-	request := r.client.ConfigurationAPI.AgentsDelete(ctx, state.ID.ValueString())
+	request := r.client.ConfigurationAPI.AgentsDelete(ctx, state.Id.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

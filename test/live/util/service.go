@@ -11,6 +11,7 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
@@ -48,7 +49,7 @@ func CheckStateAgainstServiceTest(
 			"name",
 			serviceTest.Name,
 		),
-		TestOptionalValue(
+		shared.TestOptionalValue(
 			t,
 			"data.uxi_service_test.my_service_test",
 			"target",
