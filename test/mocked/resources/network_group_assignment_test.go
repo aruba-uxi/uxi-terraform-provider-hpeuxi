@@ -41,15 +41,13 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 
@@ -159,27 +157,19 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						3,
 					)
 
 					// required for creating another group
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id_2", "_2", "_2"),
-						util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
+						util.GenerateNonRootGroupPostRequest("group_id_2", "_2", "_2"),
+						util.GenerateGroupPostResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 
@@ -296,18 +286,14 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
-					util.MockGetGroup("group_id_2", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
-						},
-					),
+					util.MockGetGroup(
+						"group_id_2",
+						util.GenerateGroupGetResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 					util.MockGetNetworkGroupAssignment(
@@ -386,17 +372,13 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					)
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 
@@ -508,27 +490,18 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					// required for creating another group
 					util.MockDeleteNetworkGroupAssignment("network_group_assignment_id", 1)
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id_2", "_2", "_2"),
-						util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
+						util.GenerateNonRootGroupPostRequest("group_id_2", "_2", "_2"),
+						util.GenerateGroupPostResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id_2", "_2", "_2"),
 						1,
 					)
-
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						3,
 					)
 
@@ -646,20 +619,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 					util.MockGetGroup(
 						"group_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 					util.MockGetNetworkGroupAssignment(
@@ -738,15 +703,13 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 
@@ -853,11 +816,9 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetNetworkGroupAssignment(
@@ -923,15 +884,13 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 
@@ -985,15 +944,13 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 
@@ -1046,15 +1003,13 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 
@@ -1114,15 +1069,13 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 
@@ -1191,11 +1144,9 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetNetworkGroupAssignment(
@@ -1247,11 +1198,9 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetNetworkGroupAssignment(

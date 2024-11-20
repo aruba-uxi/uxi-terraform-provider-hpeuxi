@@ -33,24 +33,26 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 
 					// required for agent group assignment create
 					util.MockPostAgentGroupAssignment(
-						util.GenerateAgentGroupAssignmentPostRequest("agent_group_assignment_id", ""),
-						util.GenerateAgentGroupAssignmentPostResponse("agent_group_assignment_id", ""),
+						util.GenerateAgentGroupAssignmentPostRequest(
+							"agent_group_assignment_id",
+							"",
+						),
+						util.GenerateAgentGroupAssignmentPostResponse(
+							"agent_group_assignment_id",
+							"",
+						),
 						1,
 					)
 					util.MockGetAgentGroupAssignment(
@@ -115,39 +117,38 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			// Update testing
 			{
 				PreConfig: func() {
-					util.MockGetAgent("agent_id_2", util.GenerateAgentResponse("agent_id_2", "_2"), 2)
+					util.MockGetAgent(
+						"agent_id_2",
+						util.GenerateAgentResponse("agent_id_2", "_2"),
+						2,
+					)
 					util.MockGetAgent("agent_id", util.GenerateAgentResponse("agent_id", ""), 2)
 					util.MockGetGroup(
 						"group_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 					util.MockDeleteAgentGroupAssignment("agent_group_assignment_id", 1)
 
 					// required for creating another group
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id_2", "_2", "_2"),
-						util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
+						util.GenerateNonRootGroupPostRequest("group_id_2", "_2", "_2"),
+						util.GenerateGroupPostResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 
 					// required for agent group assignment create
 					util.MockGetAgentGroupAssignment(
 						"agent_group_assignment_id_2",
-						util.GenerateAgentGroupAssignmentsResponse("agent_group_assignment_id_2", "_2"),
+						util.GenerateAgentGroupAssignmentsResponse(
+							"agent_group_assignment_id_2",
+							"_2",
+						),
 						2,
 					)
 					util.MockGetAgentGroupAssignment(
@@ -232,23 +233,19 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent("agent_id", util.GenerateAgentResponse("agent_id", ""), 2)
-					util.MockGetAgent("agent_id_2", util.GenerateAgentResponse("agent_id_2", "_2"), 1)
+					util.MockGetAgent(
+						"agent_id_2",
+						util.GenerateAgentResponse("agent_id_2", "_2"),
+						1,
+					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 					util.MockGetGroup(
 						"group_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 					util.MockGetAgentGroupAssignment(
@@ -301,24 +298,26 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 
 					// required for agent group assignment create
 					util.MockPostAgentGroupAssignment(
-						util.GenerateAgentGroupAssignmentPostRequest("agent_group_assignment_id", ""),
-						util.GenerateAgentGroupAssignmentPostResponse("agent_group_assignment_id", ""),
+						util.GenerateAgentGroupAssignmentPostRequest(
+							"agent_group_assignment_id",
+							"",
+						),
+						util.GenerateAgentGroupAssignmentPostResponse(
+							"agent_group_assignment_id",
+							"",
+						),
 						1,
 					)
 					util.MockGetAgentGroupAssignment(
@@ -391,11 +390,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetAgent("agent_id", util.GenerateAgentResponse("agent_id", ""), 1)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetAgentGroupAssignment(
@@ -437,15 +432,13 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 
@@ -493,20 +486,22 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 
 					// agent group assignment read
-					util.MockGetAgentGroupAssignment("agent_group_assignment_id", util.EmptyGetListResponse, 1)
+					util.MockGetAgentGroupAssignment(
+						"agent_group_assignment_id",
+						util.EmptyGetListResponse,
+						1,
+					)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_group" "my_group" {
@@ -544,15 +539,13 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 
@@ -606,15 +599,13 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						2,
 					)
 
@@ -674,11 +665,9 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent("agent_id", util.GenerateAgentResponse("agent_id", ""), 1)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetAgentGroupAssignment(
@@ -715,11 +704,9 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent("agent_id", util.GenerateAgentResponse("agent_id", ""), 1)
-					util.MockGetGroup("group_id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{
-							util.GenerateNonRootGroupResponse("group_id", "", ""),
-						},
-					),
+					util.MockGetGroup(
+						"group_id",
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetAgentGroupAssignment(

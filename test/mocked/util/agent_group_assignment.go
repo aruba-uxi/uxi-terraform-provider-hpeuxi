@@ -12,14 +12,20 @@ import (
 	"github.com/h2non/gock"
 )
 
-func GenerateAgentGroupAssignmentPostRequest(id string, postfix string) config_api_client.AgentGroupAssignmentsPostRequest {
+func GenerateAgentGroupAssignmentPostRequest(
+	id string,
+	postfix string,
+) config_api_client.AgentGroupAssignmentsPostRequest {
 	return config_api_client.AgentGroupAssignmentsPostRequest{
 		GroupId: "group_id" + postfix,
 		AgentId: "agent_id" + postfix,
 	}
 }
 
-func GenerateAgentGroupAssignmentPostResponse(id string, postfix string) config_api_client.AgentGroupAssignmentResponse {
+func GenerateAgentGroupAssignmentPostResponse(
+	id string,
+	postfix string,
+) config_api_client.AgentGroupAssignmentResponse {
 	return config_api_client.AgentGroupAssignmentResponse{
 		Id:    id,
 		Group: *config_api_client.NewGroup("group_id" + postfix),
@@ -28,7 +34,10 @@ func GenerateAgentGroupAssignmentPostResponse(id string, postfix string) config_
 	}
 }
 
-func GenerateAgentGroupAssignmentsResponse(id string, postfix string) config_api_client.AgentGroupAssignmentsResponse {
+func GenerateAgentGroupAssignmentsResponse(
+	id string,
+	postfix string,
+) config_api_client.AgentGroupAssignmentsResponse {
 	return config_api_client.AgentGroupAssignmentsResponse{
 		Items: []config_api_client.AgentGroupAssignmentsItem{
 			{
@@ -38,7 +47,7 @@ func GenerateAgentGroupAssignmentsResponse(id string, postfix string) config_api
 				Type:  shared.AgentGroupAssignmentType,
 			},
 		},
-		Count: 0,
+		Count: 1,
 		Next:  *config_api_client.NewNullableString(nil),
 	}
 }
