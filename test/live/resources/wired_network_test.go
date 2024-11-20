@@ -5,16 +5,21 @@ Copyright 2024 Hewlett Packard Enterprise Development LP.
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"regexp"
 	"testing"
+
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
 func TestWiredNetworkResource(t *testing.T) {
+	wiredNetwork := util.GetWiredNetwork(config.WiredNetworkId)
+
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -45,17 +50,10 @@ func TestWiredNetworkResource(t *testing.T) {
 						id = "` + config.WiredNetworkId + `"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(
-						"uxi_wired_network.wired_network_0",
-						"name",
-						config.WiredNetworkName,
-					),
-					resource.TestCheckResourceAttr(
-						"uxi_wired_network.wired_network_0",
-						"id",
-						config.WiredNetworkId,
-					),
+				Check: shared.CheckStateAgainstWiredNetwork(
+					t,
+					"uxi_wired_network.wired_network_0",
+					wiredNetwork,
 				),
 			},
 			// ImportState testing

@@ -23,8 +23,15 @@ var (
 )
 
 type wiredNetworkResourceModel struct {
-	ID   types.String `tfsdk:"id"`
-	Name types.String `tfsdk:"name"`
+	Id                   types.String `tfsdk:"id"`
+	Name                 types.String `tfsdk:"name"`
+	IpVersion            types.String `tfsdk:"ip_version"`
+	Security             types.String `tfsdk:"security"`
+	DnsLookupDomain      types.String `tfsdk:"dns_lookup_domain"`
+	DisableEdns          types.Bool   `tfsdk:"disable_edns"`
+	UseDns64             types.Bool   `tfsdk:"use_dns64"`
+	ExternalConnectivity types.Bool   `tfsdk:"external_connectivity"`
+	VlanId               types.Int32  `tfsdk:"vlan_id"`
 }
 
 func NewWiredNetworkResource() resource.Resource {
@@ -61,6 +68,34 @@ func (r *wiredNetworkResource) Schema(
 			"name": schema.StringAttribute{
 				Description: "The name of the wired network.",
 				Required:    true,
+			},
+			"ip_version": schema.StringAttribute{
+				Description: "The ip version of the wired network.",
+				Computed:    true,
+			},
+			"security": schema.StringAttribute{
+				Description: "The security protocol of the wired network.",
+				Computed:    true,
+			},
+			"dns_lookup_domain": schema.StringAttribute{
+				Description: "The DNS lookup domain of the wired network.",
+				Computed:    true,
+			},
+			"disable_edns": schema.BoolAttribute{
+				Description: "Whether EDNS is disabled on the wired network.",
+				Computed:    true,
+			},
+			"use_dns64": schema.BoolAttribute{
+				Description: "Whether the wired network is configured to use DNS64.",
+				Computed:    true,
+			},
+			"external_connectivity": schema.BoolAttribute{
+				Description: "Whether the wired network has external connectivity.",
+				Computed:    true,
+			},
+			"vlan_id": schema.Int32Attribute{
+				Description: "The VLAN identifier of the wired network.",
+				Computed:    true,
 			},
 		},
 	}
@@ -116,7 +151,7 @@ func (r *wiredNetworkResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		WiredNetworksGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -134,8 +169,15 @@ func (r *wiredNetworkResource) Read(
 
 	network := networkResponse.Items[0]
 
-	state.ID = types.StringValue(network.Id)
+	state.Id = types.StringValue(network.Id)
 	state.Name = types.StringValue(network.Name)
+	state.IpVersion = types.StringValue(network.IpVersion)
+	state.Security = types.StringPointerValue(network.Security.Get())
+	state.DnsLookupDomain = types.StringPointerValue(network.DnsLookupDomain.Get())
+	state.DisableEdns = types.BoolValue(network.DisableEdns)
+	state.UseDns64 = types.BoolValue(network.UseDns64)
+	state.ExternalConnectivity = types.BoolValue(network.ExternalConnectivity)
+	state.VlanId = types.Int32PointerValue(network.VLanId.Get())
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)

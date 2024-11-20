@@ -10,6 +10,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
@@ -27,7 +28,11 @@ func TestWiredNetworkDataSource(t *testing.T) {
 						}
 					}
 				`,
-				Check: util.CheckStateAgainstWiredNetwork(t, wired_network),
+				Check: shared.CheckStateAgainstWiredNetwork(
+					t,
+					"data.uxi_wired_network.my_wired_network",
+					wired_network,
+				),
 			},
 		},
 	})

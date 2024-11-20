@@ -49,7 +49,11 @@ func TestServiceTestResource(t *testing.T) {
 						id = "` + config.ServiceTestId + `"
 					}`,
 
-				Check: shared.CheckStateAgainstServiceTest(t, "uxi_service_test.my_service_test", serviceTest),
+				Check: shared.CheckStateAgainstServiceTest(
+					t,
+					"uxi_service_test.my_service_test",
+					serviceTest,
+				),
 			},
 			// ImportState testing
 			{

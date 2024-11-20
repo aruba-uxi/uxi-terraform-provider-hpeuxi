@@ -23,6 +23,10 @@ func CheckStateAgainstServiceTest(
 		resource.TestCheckResourceAttr(entity, "name", serviceTest.Name),
 		TestOptionalValue(t, entity, "target", serviceTest.Target.Get()),
 		resource.TestCheckResourceAttr(entity, "template", serviceTest.Template),
-		resource.TestCheckResourceAttr(entity, "is_enabled", strconv.FormatBool(serviceTest.IsEnabled)),
+		resource.TestCheckResourceAttr(
+			entity,
+			"is_enabled",
+			strconv.FormatBool(serviceTest.IsEnabled),
+		),
 	)
 }

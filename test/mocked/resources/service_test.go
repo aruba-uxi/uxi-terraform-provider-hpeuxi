@@ -57,7 +57,11 @@ func TestServiceTestResource(t *testing.T) {
 						id = "id"
 					}`,
 
-				Check: shared.CheckStateAgainstServiceTest(t, "uxi_service_test.my_service_test", serviceTest),
+				Check: shared.CheckStateAgainstServiceTest(
+					t,
+					"uxi_service_test.my_service_test",
+					serviceTest,
+				),
 			},
 			// ImportState testing
 			{
@@ -141,7 +145,11 @@ func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					shared.CheckStateAgainstServiceTest(t, "uxi_service_test.my_service_test", serviceTest),
+					shared.CheckStateAgainstServiceTest(
+						t,
+						"uxi_service_test.my_service_test",
+						serviceTest,
+					),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil

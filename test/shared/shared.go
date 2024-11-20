@@ -81,3 +81,11 @@ func stringToFloat64(s string) float64 {
 	val, _ := strconv.ParseFloat(s, 32)
 	return float64(val)
 }
+
+func Int32PtrToStringPtr(value *int32) *string {
+	if value == nil {
+		return nil
+	}
+	result := strconv.Itoa(int(*value))
+	return &result
+}

@@ -28,7 +28,11 @@ func TestServiceTestDataSource(t *testing.T) {
 						}
 					}
 				`,
-				Check: shared.CheckStateAgainstServiceTest(t, "data.uxi_service_test.my_service_test", serviceTest),
+				Check: shared.CheckStateAgainstServiceTest(
+					t,
+					"data.uxi_service_test.my_service_test",
+					serviceTest,
+				),
 			},
 		},
 	})
