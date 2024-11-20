@@ -23,6 +23,9 @@ func TestSensorResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
+	sensor := util.GenerateSensorResponse("id", "").Items[0]
+	updated_sensor := util.GenerateSensorResponse("id", "_2").Items[0]
+
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -62,17 +65,7 @@ func TestSensorResource(t *testing.T) {
 						id = "id"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name"),
-					resource.TestCheckResourceAttr(
-						"uxi_sensor.my_sensor",
-						"address_note",
-						"address_note",
-					),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
-				),
+				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", sensor),
 			},
 			// ImportState testing
 			{
@@ -83,7 +76,7 @@ func TestSensorResource(t *testing.T) {
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Update and Read testing
+			// Update
 			{
 				PreConfig: func() {
 					// existing sensor
@@ -104,17 +97,7 @@ func TestSensorResource(t *testing.T) {
 					notes = "notes_2"
 					pcap_mode = "light"
 				}`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "name", "name_2"),
-					resource.TestCheckResourceAttr(
-						"uxi_sensor.my_sensor",
-						"address_note",
-						"address_note_2",
-					),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "notes", "notes_2"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "pcap_mode", "light"),
-					resource.TestCheckResourceAttr("uxi_sensor.my_sensor", "id", "id"),
-				),
+				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", updated_sensor),
 			},
 			// Deleting a sensor is not allowed
 			{

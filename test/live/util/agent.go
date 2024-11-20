@@ -17,7 +17,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func GetAgentProperties(id string) config_api_client.AgentItem {
+func GetAgent(id string) config_api_client.AgentItem {
 	result, _, err := Client.ConfigurationAPI.
 		AgentsGet(context.Background()).
 		Id(id).

@@ -10,11 +10,12 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestSensorDataSource(t *testing.T) {
-	sensor := util.GetSensorProperties(config.SensorId)
+	sensor := util.GetSensor(config.SensorId)
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -26,11 +27,7 @@ func TestSensorDataSource(t *testing.T) {
 						}
 					}
 				`,
-				Check: util.CheckDataSourceStateAgainstSensor(
-					t,
-					"data.uxi_sensor.my_sensor",
-					sensor,
-				),
+				Check: shared.CheckStateAgainstSensor(t, "data.uxi_sensor.my_sensor", sensor),
 			},
 		},
 	})

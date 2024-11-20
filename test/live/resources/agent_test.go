@@ -31,7 +31,7 @@ func TestAgentResource(t *testing.T) {
 		panic(err)
 	}
 
-	agent := util.GetAgentProperties(agentId)
+	agent := util.GetAgent(agentId)
 	updated_agent := agent
 	updated_notes := "notes"
 	updated_pcapMode := "off"

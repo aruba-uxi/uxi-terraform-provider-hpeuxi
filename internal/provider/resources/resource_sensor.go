@@ -23,11 +23,17 @@ var (
 )
 
 type sensorResourceModel struct {
-	ID          types.String `tfsdk:"id"`
-	Name        types.String `tfsdk:"name"`
-	AddressNote types.String `tfsdk:"address_note"`
-	Notes       types.String `tfsdk:"notes"`
-	PCapMode    types.String `tfsdk:"pcap_mode"`
+	Id                 types.String  `tfsdk:"id"`
+	Serial             types.String  `tfsdk:"serial"`
+	Name               types.String  `tfsdk:"name"`
+	ModelNumber        types.String  `tfsdk:"model_number"`
+	WifiMacAddress     types.String  `tfsdk:"wifi_mac_address"`
+	EthernetMacAddress types.String  `tfsdk:"ethernet_mac_address"`
+	AddressNote        types.String  `tfsdk:"address_note"`
+	Longitude          types.Float32 `tfsdk:"longitude"`
+	Latitude           types.Float32 `tfsdk:"latitude"`
+	Notes              types.String  `tfsdk:"notes"`
+	PcapMode           types.String  `tfsdk:"pcap_mode"`
 }
 
 func NewSensorResource() resource.Resource {
@@ -61,15 +67,39 @@ func (r *sensorResource) Schema(
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
+			"serial": schema.StringAttribute{
+				Description: "The serial number of the sensor.",
+				Computed:    true,
+			},
 			"name": schema.StringAttribute{
 				Description: "The name of the sensor.",
 				Required:    true,
+			},
+			"model_number": schema.StringAttribute{
+				Description: "The model number of the sensor.",
+				Computed:    true,
+			},
+			"wifi_mac_address": schema.StringAttribute{
+				Description: "The wifi mac address of the sensor.",
+				Computed:    true,
+			},
+			"ethernet_mac_address": schema.StringAttribute{
+				Description: "The ethernet mac address of the sensor.",
+				Computed:    true,
 			},
 			"address_note": schema.StringAttribute{
 				Description: "The address notes of the sensor.",
 				Optional:    true,
 				// computed because goes from nil -> "" when sensor becomes configured
 				Computed: true,
+			},
+			"longitude": schema.Float32Attribute{
+				Description: "The geolocation longitude of the sensor.",
+				Computed:    true,
+			},
+			"latitude": schema.Float32Attribute{
+				Description: "The geolocation latitude of the sensor.",
+				Computed:    true,
 			},
 			"notes": schema.StringAttribute{
 				Description: "The address notes of the sensor.",
@@ -137,7 +167,7 @@ func (r *sensorResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		SensorsGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -154,11 +184,17 @@ func (r *sensorResource) Read(
 	}
 	sensor := sensorResponse.Items[0]
 
-	state.ID = types.StringValue(sensor.Id)
+	state.Id = types.StringValue(sensor.Id)
 	state.Name = types.StringValue(sensor.Name)
+	state.Serial = types.StringValue(sensor.Serial)
+	state.ModelNumber = types.StringValue(sensor.ModelNumber)
+	state.WifiMacAddress = types.StringPointerValue(sensor.WifiMacAddress.Get())
+	state.EthernetMacAddress = types.StringPointerValue(sensor.EthernetMacAddress.Get())
 	state.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
+	state.Latitude = types.Float32PointerValue(sensor.Latitude.Get())
+	state.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
-	state.PCapMode = types.StringPointerValue(sensor.PcapMode.Get())
+	state.PcapMode = types.StringPointerValue(sensor.PcapMode.Get())
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -184,8 +220,8 @@ func (r *sensorResource) Update(
 	patchRequest.Name = plan.Name.ValueStringPointer()
 	patchRequest.AddressNote = plan.AddressNote.ValueStringPointer()
 	patchRequest.Notes = plan.Notes.ValueStringPointer()
-	plannedPcapMode := plan.PCapMode.ValueStringPointer()
-	if !plan.PCapMode.IsUnknown() && plannedPcapMode != nil {
+	plannedPcapMode := plan.PcapMode.ValueStringPointer()
+	if !plan.PcapMode.IsUnknown() && plannedPcapMode != nil {
 		pcapMode, err := config_api_client.NewPcapModeFromValue(*plannedPcapMode)
 		if err != nil {
 			resp.Diagnostics.AddError(errorSummary, err.Error())
@@ -195,7 +231,7 @@ func (r *sensorResource) Update(
 	}
 
 	request := r.client.ConfigurationAPI.
-		SensorsPatch(ctx, plan.ID.ValueString()).
+		SensorsPatch(ctx, plan.Id.ValueString()).
 		SensorsPatchRequest(*patchRequest)
 	sensor, response, err := util.RetryForTooManyRequests(request.Execute)
 
@@ -206,12 +242,18 @@ func (r *sensorResource) Update(
 		return
 	}
 
-	plan.ID = types.StringValue(sensor.Id)
+	plan.Id = types.StringValue(sensor.Id)
 	plan.Name = types.StringValue(sensor.Name)
+	plan.Serial = types.StringValue(sensor.Serial)
+	plan.ModelNumber = types.StringValue(sensor.ModelNumber)
+	plan.WifiMacAddress = types.StringPointerValue(sensor.WifiMacAddress.Get())
+	plan.EthernetMacAddress = types.StringPointerValue(sensor.EthernetMacAddress.Get())
 	plan.AddressNote = types.StringPointerValue(sensor.AddressNote.Get())
+	plan.Latitude = types.Float32PointerValue(sensor.Latitude.Get())
+	plan.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	plan.Notes = types.StringPointerValue(sensor.Notes.Get())
 	if sensor.PcapMode.Get() != nil {
-		plan.PCapMode = types.StringValue(string(*sensor.PcapMode.Get()))
+		plan.PcapMode = types.StringValue(string(*sensor.PcapMode.Get()))
 	}
 
 	diags = resp.State.Set(ctx, plan)
