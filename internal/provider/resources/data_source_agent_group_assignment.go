@@ -2,7 +2,7 @@
 Copyright 2024 Hewlett Packard Enterprise Development LP.
 */
 
-package datasources
+package resources
 
 import (
 	"context"
@@ -15,39 +15,36 @@ import (
 )
 
 var (
-	_ datasource.DataSource              = &serviceTestDataSource{}
-	_ datasource.DataSourceWithConfigure = &serviceTestDataSource{}
+	_ datasource.DataSource              = &agentGroupAssignmentDataSource{}
+	_ datasource.DataSourceWithConfigure = &agentGroupAssignmentDataSource{}
 )
 
-func NewServiceTestDataSource() datasource.DataSource {
-	return &serviceTestDataSource{}
+func NewAgentGroupAssignmentDataSource() datasource.DataSource {
+	return &agentGroupAssignmentDataSource{}
 }
 
-type serviceTestDataSource struct {
+type agentGroupAssignmentDataSource struct {
 	client *config_api_client.APIClient
 }
 
-type serviceTestDataSourceModel struct {
-	Id        types.String `tfsdk:"id"`
-	Category  types.String `tfsdk:"category"`
-	Name      types.String `tfsdk:"name"`
-	Target    types.String `tfsdk:"target"`
-	Template  types.String `tfsdk:"template"`
-	IsEnabled types.Bool   `tfsdk:"is_enabled"`
-	Filter    struct {
-		ServiceTestID types.String `tfsdk:"service_test_id"`
+type agentGroupAssignmentDataSourceModel struct {
+	ID      types.String `tfsdk:"id"`
+	AgentID types.String `tfsdk:"agent_id"`
+	GroupID types.String `tfsdk:"group_id"`
+	Filter  struct {
+		AgentGroupAssignmentID string `tfsdk:"agent_group_assignment_id"`
 	} `tfsdk:"filter"`
 }
 
-func (d *serviceTestDataSource) Metadata(
+func (d *agentGroupAssignmentDataSource) Metadata(
 	_ context.Context,
 	req datasource.MetadataRequest,
 	resp *datasource.MetadataResponse,
 ) {
-	resp.TypeName = req.ProviderTypeName + "_service_test"
+	resp.TypeName = req.ProviderTypeName + "_agent_group_assignment"
 }
 
-func (d *serviceTestDataSource) Schema(
+func (d *agentGroupAssignmentDataSource) Schema(
 	_ context.Context,
 	_ datasource.SchemaRequest,
 	resp *datasource.SchemaResponse,
@@ -57,25 +54,16 @@ func (d *serviceTestDataSource) Schema(
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
-			"category": schema.StringAttribute{
+			"agent_id": schema.StringAttribute{
 				Computed: true,
 			},
-			"name": schema.StringAttribute{
-				Computed: true,
-			},
-			"target": schema.StringAttribute{
-				Computed: true,
-			},
-			"template": schema.StringAttribute{
-				Computed: true,
-			},
-			"is_enabled": schema.BoolAttribute{
+			"group_id": schema.StringAttribute{
 				Computed: true,
 			},
 			"filter": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"service_test_id": schema.StringAttribute{
+					"agent_group_assignment_id": schema.StringAttribute{
 						Required: true,
 					},
 				},
@@ -84,12 +72,12 @@ func (d *serviceTestDataSource) Schema(
 	}
 }
 
-func (d *serviceTestDataSource) Read(
+func (d *agentGroupAssignmentDataSource) Read(
 	ctx context.Context,
 	req datasource.ReadRequest,
 	resp *datasource.ReadResponse,
 ) {
-	var state serviceTestDataSourceModel
+	var state agentGroupAssignmentDataSourceModel
 
 	diags := req.Config.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -98,33 +86,28 @@ func (d *serviceTestDataSource) Read(
 	}
 
 	request := d.client.ConfigurationAPI.
-		ServiceTestsGet(ctx).
-		Id(state.Filter.ServiceTestID.ValueString())
-
-	serviceTestResponse, response, err := util.RetryForTooManyRequests(request.Execute)
+		AgentGroupAssignmentsGet(ctx).
+		Id(state.Filter.AgentGroupAssignmentID)
+	agentGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")
+	errorSummary := util.GenerateErrorSummary("read", "uxi_agent_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
 		return
 	}
 
-	if len(serviceTestResponse.Items) != 1 {
+	if len(agentGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
 		return
 	}
 
-	serviceTest := serviceTestResponse.Items[0]
-
-	state.Id = types.StringValue(serviceTest.Id)
-	state.Category = types.StringValue(serviceTest.Category)
-	state.Name = types.StringValue(serviceTest.Name)
-	state.Target = types.StringPointerValue(serviceTest.Target.Get())
-	state.Template = types.StringValue(serviceTest.Template)
-	state.IsEnabled = types.BoolValue(serviceTest.IsEnabled)
+	agentGroupAssignment := agentGroupAssignmentResponse.Items[0]
+	state.ID = types.StringValue(agentGroupAssignment.Id)
+	state.AgentID = types.StringValue(agentGroupAssignment.Agent.Id)
+	state.GroupID = types.StringValue(agentGroupAssignment.Group.Id)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -133,7 +116,7 @@ func (d *serviceTestDataSource) Read(
 	}
 }
 
-func (d *serviceTestDataSource) Configure(
+func (d *agentGroupAssignmentDataSource) Configure(
 	_ context.Context,
 	req datasource.ConfigureRequest,
 	resp *datasource.ConfigureResponse,
@@ -147,7 +130,7 @@ func (d *serviceTestDataSource) Configure(
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			"Data Source type: ServiceTest. Please report this issue to the provider developers.",
+			"Data Source type: Agent Group Assignment. Please report this issue to the provider developers.",
 		)
 		return
 	}
