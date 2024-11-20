@@ -50,21 +50,27 @@ func (d *sensorGroupAssignmentDataSource) Schema(
 	resp *datasource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Retrieves a specific sensor group assignment.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the network group assignment.",
+				Computed:    true,
 			},
 			"sensor_id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the assigned sensor.",
+				Computed:    true,
 			},
 			"group_id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the assigned group.",
+				Computed:    true,
 			},
 			"filter": schema.SingleNestedAttribute{
-				Required: true,
+				Description: "The filter used to filter the specific sensor group assignment.",
+				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"sensor_group_assignment_id": schema.StringAttribute{
-						Required: true,
+						Description: "The identifier of the sensor group assignment.",
+						Required:    true,
 					},
 				},
 			},

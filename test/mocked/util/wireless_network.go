@@ -6,31 +6,42 @@ package util
 
 import (
 	"net/http"
+	"time"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 )
 
-func GenerateWirelessNetworkResponse(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"id":                   id,
-		"ssid":                 "ssid" + postfix,
-		"createdAt":            "2024-09-11T12:00:00.000Z",
-		"updatedAt":            "2024-09-11T12:00:00.000Z",
-		"name":                 "name" + postfix,
-		"ipVersion":            "ip_version" + postfix,
-		"security":             "security" + postfix,
-		"hidden":               false,
-		"bandLocking":          "band_locking" + postfix,
-		"dnsLookupDomain":      "dns_lookup_domain" + postfix,
-		"disableEdns":          false,
-		"useDns64":             false,
-		"externalConnectivity": false,
-		"type":                 shared.WirelessNetworkType,
+func GenerateWirelessNetworkResponse(
+	id string,
+	postfix string,
+) config_api_client.WirelessNetworksResponse {
+	createdAt, _ := time.Parse(time.RFC3339, "2024-09-11T12:00:00.000Z")
+	updatedAt, _ := time.Parse(time.RFC3339, "2024-09-11T12:00:00.000Z")
+	return config_api_client.WirelessNetworksResponse{
+		Items: []config_api_client.WirelessNetworksItem{
+			{
+				Id:                   id,
+				Ssid:                 "ssid" + postfix,
+				CreatedAt:            createdAt,
+				UpdatedAt:            updatedAt,
+				Name:                 "name" + postfix,
+				IpVersion:            "ip_version" + postfix,
+				Security:             *config_api_client.NewNullableString(config_api_client.PtrString("security" + postfix)),
+				Hidden:               false,
+				BandLocking:          "band_locking" + postfix,
+				DnsLookupDomain:      *config_api_client.NewNullableString(config_api_client.PtrString("dns_lookup_domain" + postfix)),
+				DisableEdns:          false,
+				UseDns64:             false,
+				ExternalConnectivity: false,
+				Type:                 shared.WirelessNetworkType,
+			},
+		},
 	}
 }
 
-func MockGetWirelessNetwork(id string, response map[string]interface{}, times int) {
+func MockGetWirelessNetwork(id string, response interface{}, times int) {
 	gock.New(MockUxiUrl).
 		Get(shared.WirelessNetworkPath).
 		MatchHeader("Authorization", mockToken).

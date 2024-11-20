@@ -3,12 +3,12 @@
 page_title: "uxi_network_group_assignment Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific network group assignment.
 ---
 
 # uxi_network_group_assignment (Data Source)
 
-
+Retrieves a specific network group assignment.
 
 
 
@@ -17,17 +17,17 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific network group assignment. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `group_id` (String)
-- `id` (String) The ID of this resource.
-- `network_id` (String)
+- `group_id` (String) The identifier of the assigned group.
+- `id` (String) The identifier of the network group assignment.
+- `network_id` (String) The identifier of the assigned wired or wireless network.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`
 
 Required:
 
-- `network_group_assignment_id` (String)
+- `network_group_assignment_id` (String) The identifier of the network group assignment.

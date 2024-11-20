@@ -30,11 +30,7 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetServiceTestGroupAssignment(
 						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestGroupAssignmentResponse("id", ""),
-							},
-						),
+						util.GenerateServiceTestGroupAssignmentResponse("id", ""),
 						3,
 					)
 				},
@@ -86,11 +82,7 @@ func TestServiceTestGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetServiceTestGroupAssignment(
 						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestGroupAssignmentResponse("id", ""),
-							},
-						),
+						util.GenerateServiceTestGroupAssignmentResponse("id", ""),
 						3,
 					)
 				},
@@ -150,11 +142,7 @@ func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					util.MockGetServiceTestGroupAssignment(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetServiceTestGroupAssignment("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {

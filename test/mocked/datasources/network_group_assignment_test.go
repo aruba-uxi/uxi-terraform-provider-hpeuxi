@@ -30,11 +30,7 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetNetworkGroupAssignment(
 						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNetworkGroupAssignmentResponse("id", ""),
-							},
-						),
+						util.GenerateNetworkGroupAssignmentResponse("id", ""),
 						3,
 					)
 				},
@@ -86,11 +82,7 @@ func TestNetworkGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetNetworkGroupAssignment(
 						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNetworkGroupAssignmentResponse("id", ""),
-							},
-						),
+						util.GenerateNetworkGroupAssignmentResponse("id", ""),
 						3,
 					)
 				},
@@ -150,11 +142,7 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					util.MockGetNetworkGroupAssignment(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetNetworkGroupAssignment("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_network_group_assignment" "my_network_group_assignment" {

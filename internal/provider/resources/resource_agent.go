@@ -56,9 +56,11 @@ func (r *agentResource) Schema(
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Manages an agent.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the agent.",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
@@ -67,7 +69,8 @@ func (r *agentResource) Schema(
 				Computed: true,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Description: "The name of the agent.",
+				Required:    true,
 			},
 			"model_number": schema.StringAttribute{
 				Computed: true,
@@ -79,12 +82,14 @@ func (r *agentResource) Schema(
 				Computed: true,
 			},
 			"notes": schema.StringAttribute{
-				Optional: true,
-				Computed: true,
+				Description: "The notes of the agent.",
+				Optional:    true,
+				Computed:    true,
 			},
 			"pcap_mode": schema.StringAttribute{
-				Optional: true,
-				Computed: true,
+				Description: "The packet capture mode of the agent.",
+				Optional:    true,
+				Computed:    true,
 			},
 		},
 	}

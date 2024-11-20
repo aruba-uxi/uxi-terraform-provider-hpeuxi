@@ -3,12 +3,12 @@
 page_title: "uxi_service_test Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a service test.
 ---
 
 # uxi_service_test (Resource)
 
-
+Manages a service test.
 
 
 
@@ -17,8 +17,8 @@ description: |-
 
 ### Required
 
-- `name` (String)
+- `name` (String) The name of the service test.
 
 ### Read-Only
 
-- `id` (String) The ID of this resource.
+- `id` (String) The identifier of the service test.

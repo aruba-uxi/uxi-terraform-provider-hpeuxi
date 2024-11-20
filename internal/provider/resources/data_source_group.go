@@ -51,24 +51,31 @@ func (d *groupDataSource) Schema(
 	resp *datasource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Retrieves a specific group.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the group.",
+				Computed:    true,
 			},
 			"path": schema.StringAttribute{
-				Computed: true,
+				Description: "The path of the group.",
+				Computed:    true,
 			},
 			"parent_group_id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the parent of the group.",
+				Computed:    true,
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
+				Description: "The name of the group.",
+				Computed:    true,
 			},
 			"filter": schema.SingleNestedAttribute{
-				Required: true,
+				Description: "The filter used to filter the specific group.",
+				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"group_id": schema.StringAttribute{
-						Required: true,
+						Description: "The identifier of the group.",
+						Required:    true,
 					},
 				},
 			},

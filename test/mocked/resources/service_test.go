@@ -44,15 +44,7 @@ func TestServiceTestResource(t *testing.T) {
 			// Importing a service_test
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("id", ""),
-							},
-						),
-						2,
-					)
+					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_service_test" "my_service_test" {
@@ -76,15 +68,7 @@ func TestServiceTestResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("id", ""),
-							},
-						),
-						1,
-					)
+					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 1)
 				},
 				ResourceName:      "uxi_service_test.my_service_test",
 				ImportState:       true,
@@ -93,15 +77,7 @@ func TestServiceTestResource(t *testing.T) {
 			// Updating a service_test is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("id", ""),
-							},
-						),
-						1,
-					)
+					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_service_test" "my_service_test" {
@@ -114,15 +90,7 @@ func TestServiceTestResource(t *testing.T) {
 			// Deleting a service_test is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("id", ""),
-							},
-						),
-						1,
-					)
+					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 1)
 				},
 				Config: provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(
@@ -165,15 +133,7 @@ func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.ServiceTestPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetServiceTest(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("id", ""),
-							},
-						),
-						2,
-					)
+					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_service_test" "my_service_test" {
@@ -224,11 +184,7 @@ func TestServiceTestResourceHttpErrorHandling(t *testing.T) {
 			// Read not found
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetServiceTest("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_service_test" "my_service_test" {

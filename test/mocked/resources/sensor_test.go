@@ -47,10 +47,7 @@ func TestSensorResource(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
-						2,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_sensor" "my_sensor" {
@@ -80,10 +77,7 @@ func TestSensorResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
-						1,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 1)
 				},
 				ResourceName:      "uxi_sensor.my_sensor",
 				ImportState:       true,
@@ -93,21 +87,15 @@ func TestSensorResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing sensor
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
-						1,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 1)
 					util.MockUpdateSensor(
 						"id",
-						util.GenerateSensorUpdateRequest("_2"),
-						util.GenerateSensorResponse("id", "_2"),
+						util.GenerateSensorPatchRequest("_2"),
+						util.GenerateSensorPatchResponse("id", "_2"),
 						1,
 					)
 					// updated sensor
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponse("id", "_2")}),
-						1,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_sensor" "my_sensor" {
@@ -131,10 +119,7 @@ func TestSensorResource(t *testing.T) {
 			// Deleting a sensor is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponse("id", "_2")}),
-						1,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(
@@ -177,10 +162,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.SensorPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
-						2,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_sensor" "my_sensor" {
@@ -207,25 +189,19 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing sensor
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
-						1,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 1)
 					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Patch("/networking-uxi/v1alpha1/sensors/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateSensor(
 						"id",
-						util.GenerateSensorUpdateRequest("_2"),
-						util.GenerateSensorResponse("id", "_2"),
+						util.GenerateSensorPatchRequest("_2"),
+						util.GenerateSensorPatchResponse("id", "_2"),
 						1,
 					)
 					// updated sensor
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponse("id", "_2")}),
-						1,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_sensor" "my_sensor" {
@@ -303,11 +279,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			// Read not found
 			{
 				PreConfig: func() {
-					util.MockGetSensor(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetSensor("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_sensor" "my_sensor" {
@@ -327,10 +299,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			// Actually import a sensor for subsequent testing
 			{
 				PreConfig: func() {
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
-						2,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_sensor" "my_sensor" {
@@ -361,10 +330,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing sensor
-					util.MockGetSensor("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateSensorResponse("id", "")}),
-						1,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 1)
 					// patch sensor - with error
 					gock.New(util.MockUxiUrl).
 						Patch("/networking-uxi/v1alpha1/sensors/id").

@@ -3,12 +3,12 @@
 page_title: "uxi_wireless_network Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific wireless network.
 ---
 
 # uxi_wireless_network (Data Source)
 
-
+Retrieves a specific wireless network.
 
 
 
@@ -17,25 +17,25 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific wireless network. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `band_locking` (String)
-- `disable_edns` (Boolean)
-- `dns_lookup_domain` (String)
-- `external_connectivity` (Boolean)
-- `hidden` (Boolean)
-- `id` (String) The ID of this resource.
-- `ip_version` (String)
-- `name` (String)
-- `security` (String)
-- `ssid` (String)
-- `use_dns64` (Boolean)
+- `band_locking` (String) The frequency band the wireless network is locked to.
+- `disable_edns` (Boolean) Whether EDNS is disabled on the wireless network.
+- `dns_lookup_domain` (String) The DNS lookup domain of the wireless network.
+- `external_connectivity` (Boolean) Whether the wireless network has external connectivity.
+- `hidden` (Boolean) Whether the wireless network is hidden.
+- `id` (String) The identifier of the wireless network.
+- `ip_version` (String) The IP version of the wireless network.
+- `name` (String) The name of the wireless network.
+- `security` (String) The security protocol of the wireless network.
+- `ssid` (String) The SSID of the wireless network.
+- `use_dns64` (Boolean) Whether the wireless network is configured to use DNS64.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`
 
 Required:
 
-- `wireless_network_id` (String)
+- `wireless_network_id` (String) The identifier of the wireless network.
