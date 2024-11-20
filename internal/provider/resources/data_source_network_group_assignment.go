@@ -2,7 +2,7 @@
 Copyright 2024 Hewlett Packard Enterprise Development LP.
 */
 
-package datasources
+package resources
 
 import (
 	"context"
@@ -15,49 +15,49 @@ import (
 )
 
 var (
-	_ datasource.DataSource              = &sensorGroupAssignmentDataSource{}
-	_ datasource.DataSourceWithConfigure = &sensorGroupAssignmentDataSource{}
+	_ datasource.DataSource              = &networkGroupAssignmentDataSource{}
+	_ datasource.DataSourceWithConfigure = &networkGroupAssignmentDataSource{}
 )
 
-func NewSensorGroupAssignmentDataSource() datasource.DataSource {
-	return &sensorGroupAssignmentDataSource{}
+func NewNetworkGroupAssignmentDataSource() datasource.DataSource {
+	return &networkGroupAssignmentDataSource{}
 }
 
-type sensorGroupAssignmentDataSource struct {
+type networkGroupAssignmentDataSource struct {
 	client *config_api_client.APIClient
 }
 
-type sensorGroupAssignmentDataSourceModel struct {
-	ID       types.String `tfsdk:"id"`
-	SensorID types.String `tfsdk:"sensor_id"`
-	GroupID  types.String `tfsdk:"group_id"`
-	Filter   struct {
-		SensorGroupAssignmentID string `tfsdk:"sensor_group_assignment_id"`
+type networkGroupAssignmentDataSourceModel struct {
+	ID        types.String `tfsdk:"id"`
+	NetworkID types.String `tfsdk:"network_id"`
+	GroupID   types.String `tfsdk:"group_id"`
+	Filter    struct {
+		NetworkGroupAssignmentID string `tfsdk:"network_group_assignment_id"`
 	} `tfsdk:"filter"`
 }
 
-func (d *sensorGroupAssignmentDataSource) Metadata(
+func (d *networkGroupAssignmentDataSource) Metadata(
 	_ context.Context,
 	req datasource.MetadataRequest,
 	resp *datasource.MetadataResponse,
 ) {
-	resp.TypeName = req.ProviderTypeName + "_sensor_group_assignment"
+	resp.TypeName = req.ProviderTypeName + "_network_group_assignment"
 }
 
-func (d *sensorGroupAssignmentDataSource) Schema(
+func (d *networkGroupAssignmentDataSource) Schema(
 	_ context.Context,
 	_ datasource.SchemaRequest,
 	resp *datasource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves a specific sensor group assignment.",
+		Description: "Retrieves a specific network group assignment.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The identifier of the network group assignment.",
 				Computed:    true,
 			},
-			"sensor_id": schema.StringAttribute{
-				Description: "The identifier of the assigned sensor.",
+			"network_id": schema.StringAttribute{
+				Description: "The identifier of the assigned wired or wireless network.",
 				Computed:    true,
 			},
 			"group_id": schema.StringAttribute{
@@ -65,11 +65,11 @@ func (d *sensorGroupAssignmentDataSource) Schema(
 				Computed:    true,
 			},
 			"filter": schema.SingleNestedAttribute{
-				Description: "The filter used to filter the specific sensor group assignment.",
+				Description: "The filter used to filter the specific network group assignment.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"sensor_group_assignment_id": schema.StringAttribute{
-						Description: "The identifier of the sensor group assignment.",
+					"network_group_assignment_id": schema.StringAttribute{
+						Description: "The identifier of the network group assignment.",
 						Required:    true,
 					},
 				},
@@ -78,12 +78,12 @@ func (d *sensorGroupAssignmentDataSource) Schema(
 	}
 }
 
-func (d *sensorGroupAssignmentDataSource) Read(
+func (d *networkGroupAssignmentDataSource) Read(
 	ctx context.Context,
 	req datasource.ReadRequest,
 	resp *datasource.ReadResponse,
 ) {
-	var state sensorGroupAssignmentDataSourceModel
+	var state networkGroupAssignmentDataSourceModel
 
 	diags := req.Config.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -92,28 +92,28 @@ func (d *sensorGroupAssignmentDataSource) Read(
 	}
 
 	request := d.client.ConfigurationAPI.
-		SensorGroupAssignmentsGet(ctx).
-		Id(state.Filter.SensorGroupAssignmentID)
-	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
+		NetworkGroupAssignmentsGet(ctx).
+		Id(state.Filter.NetworkGroupAssignmentID)
+	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
 		return
 	}
 
-	if len(sensorGroupAssignmentResponse.Items) != 1 {
+	if len(networkGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
 		return
 	}
 
-	sensorGroupAssignment := sensorGroupAssignmentResponse.Items[0]
-	state.ID = types.StringValue(sensorGroupAssignment.Id)
-	state.SensorID = types.StringValue(sensorGroupAssignment.Sensor.Id)
-	state.GroupID = types.StringValue(sensorGroupAssignment.Group.Id)
+	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
+	state.ID = types.StringValue(networkGroupAssignment.Id)
+	state.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
+	state.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -122,7 +122,7 @@ func (d *sensorGroupAssignmentDataSource) Read(
 	}
 }
 
-func (d *sensorGroupAssignmentDataSource) Configure(
+func (d *networkGroupAssignmentDataSource) Configure(
 	_ context.Context,
 	req datasource.ConfigureRequest,
 	resp *datasource.ConfigureResponse,
@@ -136,7 +136,7 @@ func (d *sensorGroupAssignmentDataSource) Configure(
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			"Data Source type: Sensor Group Assignment. Please report this issue to the provider developers.",
+			"Data Source type: Network Group Assignment. Please report this issue to the provider developers.",
 		)
 		return
 	}

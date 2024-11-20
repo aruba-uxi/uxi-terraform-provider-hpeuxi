@@ -9,7 +9,6 @@ import (
 	"net/http"
 
 	configuration "github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/datasources"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -145,16 +144,16 @@ func (p *uxiConfigurationProvider) Configure(
 
 func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		datasources.NewAgentDataSource,
-		datasources.NewAgentGroupAssignmentDataSource,
-		datasources.NewGroupDataSource,
-		datasources.NewNetworkGroupAssignmentDataSource,
-		datasources.NewSensorDataSource,
-		datasources.NewSensorGroupAssignmentDataSource,
-		datasources.NewServiceTestDataSource,
-		datasources.NewServiceTestGroupAssignmentDataSource,
-		datasources.NewWiredNetworkDataSource,
-		datasources.NewWirelessNetworkDataSource,
+		resources.NewAgentDataSource,
+		resources.NewAgentGroupAssignmentDataSource,
+		resources.NewGroupDataSource,
+		resources.NewNetworkGroupAssignmentDataSource,
+		resources.NewSensorDataSource,
+		resources.NewSensorGroupAssignmentDataSource,
+		resources.NewServiceTestDataSource,
+		resources.NewServiceTestGroupAssignmentDataSource,
+		resources.NewWiredNetworkDataSource,
+		resources.NewWirelessNetworkDataSource,
 	}
 }
 
