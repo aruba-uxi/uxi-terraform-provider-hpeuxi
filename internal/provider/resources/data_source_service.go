@@ -2,7 +2,7 @@
 Copyright 2024 Hewlett Packard Enterprise Development LP.
 */
 
-package datasources
+package resources
 
 import (
 	"context"
@@ -15,36 +15,39 @@ import (
 )
 
 var (
-	_ datasource.DataSource              = &sensorGroupAssignmentDataSource{}
-	_ datasource.DataSourceWithConfigure = &sensorGroupAssignmentDataSource{}
+	_ datasource.DataSource              = &serviceTestDataSource{}
+	_ datasource.DataSourceWithConfigure = &serviceTestDataSource{}
 )
 
-func NewSensorGroupAssignmentDataSource() datasource.DataSource {
-	return &sensorGroupAssignmentDataSource{}
+func NewServiceTestDataSource() datasource.DataSource {
+	return &serviceTestDataSource{}
 }
 
-type sensorGroupAssignmentDataSource struct {
+type serviceTestDataSource struct {
 	client *config_api_client.APIClient
 }
 
-type sensorGroupAssignmentDataSourceModel struct {
-	ID       types.String `tfsdk:"id"`
-	SensorID types.String `tfsdk:"sensor_id"`
-	GroupID  types.String `tfsdk:"group_id"`
-	Filter   struct {
-		SensorGroupAssignmentID string `tfsdk:"sensor_group_assignment_id"`
+type serviceTestDataSourceModel struct {
+	Id        types.String `tfsdk:"id"`
+	Category  types.String `tfsdk:"category"`
+	Name      types.String `tfsdk:"name"`
+	Target    types.String `tfsdk:"target"`
+	Template  types.String `tfsdk:"template"`
+	IsEnabled types.Bool   `tfsdk:"is_enabled"`
+	Filter    struct {
+		ServiceTestID types.String `tfsdk:"service_test_id"`
 	} `tfsdk:"filter"`
 }
 
-func (d *sensorGroupAssignmentDataSource) Metadata(
+func (d *serviceTestDataSource) Metadata(
 	_ context.Context,
 	req datasource.MetadataRequest,
 	resp *datasource.MetadataResponse,
 ) {
-	resp.TypeName = req.ProviderTypeName + "_sensor_group_assignment"
+	resp.TypeName = req.ProviderTypeName + "_service_test"
 }
 
-func (d *sensorGroupAssignmentDataSource) Schema(
+func (d *serviceTestDataSource) Schema(
 	_ context.Context,
 	_ datasource.SchemaRequest,
 	resp *datasource.SchemaResponse,
@@ -54,16 +57,25 @@ func (d *sensorGroupAssignmentDataSource) Schema(
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
-			"sensor_id": schema.StringAttribute{
+			"category": schema.StringAttribute{
 				Computed: true,
 			},
-			"group_id": schema.StringAttribute{
+			"name": schema.StringAttribute{
+				Computed: true,
+			},
+			"target": schema.StringAttribute{
+				Computed: true,
+			},
+			"template": schema.StringAttribute{
+				Computed: true,
+			},
+			"is_enabled": schema.BoolAttribute{
 				Computed: true,
 			},
 			"filter": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"sensor_group_assignment_id": schema.StringAttribute{
+					"service_test_id": schema.StringAttribute{
 						Required: true,
 					},
 				},
@@ -72,12 +84,12 @@ func (d *sensorGroupAssignmentDataSource) Schema(
 	}
 }
 
-func (d *sensorGroupAssignmentDataSource) Read(
+func (d *serviceTestDataSource) Read(
 	ctx context.Context,
 	req datasource.ReadRequest,
 	resp *datasource.ReadResponse,
 ) {
-	var state sensorGroupAssignmentDataSourceModel
+	var state serviceTestDataSourceModel
 
 	diags := req.Config.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -86,28 +98,33 @@ func (d *sensorGroupAssignmentDataSource) Read(
 	}
 
 	request := d.client.ConfigurationAPI.
-		SensorGroupAssignmentsGet(ctx).
-		Id(state.Filter.SensorGroupAssignmentID)
-	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
+		ServiceTestsGet(ctx).
+		Id(state.Filter.ServiceTestID.ValueString())
+
+	serviceTestResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
 		return
 	}
 
-	if len(sensorGroupAssignmentResponse.Items) != 1 {
+	if len(serviceTestResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
 		return
 	}
 
-	sensorGroupAssignment := sensorGroupAssignmentResponse.Items[0]
-	state.ID = types.StringValue(sensorGroupAssignment.Id)
-	state.SensorID = types.StringValue(sensorGroupAssignment.Sensor.Id)
-	state.GroupID = types.StringValue(sensorGroupAssignment.Group.Id)
+	serviceTest := serviceTestResponse.Items[0]
+
+	state.Id = types.StringValue(serviceTest.Id)
+	state.Category = types.StringValue(serviceTest.Category)
+	state.Name = types.StringValue(serviceTest.Name)
+	state.Target = types.StringPointerValue(serviceTest.Target.Get())
+	state.Template = types.StringValue(serviceTest.Template)
+	state.IsEnabled = types.BoolValue(serviceTest.IsEnabled)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -116,7 +133,7 @@ func (d *sensorGroupAssignmentDataSource) Read(
 	}
 }
 
-func (d *sensorGroupAssignmentDataSource) Configure(
+func (d *serviceTestDataSource) Configure(
 	_ context.Context,
 	req datasource.ConfigureRequest,
 	resp *datasource.ConfigureResponse,
@@ -130,7 +147,7 @@ func (d *sensorGroupAssignmentDataSource) Configure(
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			"Data Source type: Sensor Group Assignment. Please report this issue to the provider developers.",
+			"Data Source type: ServiceTest. Please report this issue to the provider developers.",
 		)
 		return
 	}
