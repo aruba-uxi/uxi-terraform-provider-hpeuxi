@@ -3,12 +3,12 @@
 page_title: "uxi_sensor_group_assignment Data Source - uxi"
 subcategory: ""
 description: |-
-  
+  Retrieves a specific sensor group assignment.
 ---
 
 # uxi_sensor_group_assignment (Data Source)
 
-
+Retrieves a specific sensor group assignment.
 
 
 
@@ -17,17 +17,17 @@ description: |-
 
 ### Required
 
-- `filter` (Attributes) (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) The filter used to filter the specific sensor group assignment. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
-- `group_id` (String)
-- `id` (String) The ID of this resource.
-- `sensor_id` (String)
+- `group_id` (String) The identifier of the assigned group.
+- `id` (String) The identifier of the network group assignment.
+- `sensor_id` (String) The identifier of the assigned sensor.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`
 
 Required:
 
-- `sensor_group_assignment_id` (String)
+- `sensor_group_assignment_id` (String) The identifier of the sensor group assignment.

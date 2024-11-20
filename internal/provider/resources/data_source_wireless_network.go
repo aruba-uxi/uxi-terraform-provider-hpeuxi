@@ -2,7 +2,7 @@
 Copyright 2024 Hewlett Packard Enterprise Development LP.
 */
 
-package datasources
+package resources
 
 import (
 	"context"
@@ -59,45 +59,59 @@ func (d *wirelessNetworkDataSource) Schema(
 	resp *datasource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Retrieves a specific wireless network.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the wireless network.",
+				Computed:    true,
 			},
 			"ssid": schema.StringAttribute{
-				Computed: true,
+				Description: "The SSID of the wireless network.",
+				Computed:    true,
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
+				Description: "The name of the wireless network.",
+				Computed:    true,
 			},
 			"ip_version": schema.StringAttribute{
-				Computed: true,
+				Description: "The IP version of the wireless network.",
+				Computed:    true,
 			},
 			"security": schema.StringAttribute{
-				Computed: true,
+				Description: "The security protocol of the wireless network.",
+				Computed:    true,
 			},
 			"hidden": schema.BoolAttribute{
-				Computed: true,
+				Description: "Whether the wireless network is hidden.",
+				Computed:    true,
 			},
 			"band_locking": schema.StringAttribute{
-				Computed: true,
+				Description: "The frequency band the wireless network is locked to.",
+				Computed:    true,
 			},
 			"dns_lookup_domain": schema.StringAttribute{
-				Computed: true,
+				Description: "The DNS lookup domain of the wireless network.",
+				Computed:    true,
 			},
 			"disable_edns": schema.BoolAttribute{
-				Computed: true,
+				Description: "Whether EDNS is disabled on the wireless network.",
+				Computed:    true,
 			},
 			"use_dns64": schema.BoolAttribute{
-				Computed: true,
+				Description: "Whether the wireless network is configured to use DNS64.",
+				Computed:    true,
 			},
 			"external_connectivity": schema.BoolAttribute{
-				Computed: true,
+				Description: "Whether the wireless network has external connectivity.",
+				Computed:    true,
 			},
 			"filter": schema.SingleNestedAttribute{
-				Required: true,
+				Description: "The filter used to filter the specific wireless network.",
+				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"wireless_network_id": schema.StringAttribute{
-						Required: true,
+						Description: "The identifier of the wireless network.",
+						Required:    true,
 					},
 				},
 			},

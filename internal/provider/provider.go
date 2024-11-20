@@ -9,7 +9,6 @@ import (
 	"net/http"
 
 	configuration "github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/datasources"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -61,17 +60,23 @@ func (p *uxiConfigurationProvider) Schema(
 	_ provider.SchemaRequest,
 	resp *provider.SchemaResponse,
 ) {
-	resp.Schema = schema.Schema{Attributes: map[string]schema.Attribute{
-		"client_id": schema.StringAttribute{
-			Optional:    true,
-			Description: "The Client ID as obtained from HPE GreenLake API client credentials",
-		},
-		"client_secret": schema.StringAttribute{
-			Optional:    true,
-			Sensitive:   true,
-			Description: "The Client Secret as obtained from HPE GreenLake API client credentials",
-		},
-	}}
+	resp.Schema = schema.Schema{
+		Description: "Interact with HPE Aruba Network UXI Configuration.",
+		Attributes: map[string]schema.Attribute{
+			"client_id": schema.StringAttribute{
+				Description: "The Client ID as obtained from HPE GreenLake API client credentials. " +
+					"It is recommended that this configuration is left blank and the Client ID " +
+					"is exported as the `GREENLAKE_UXI_CLIENT_ID` environment variable instead.",
+				Optional: true,
+			},
+			"client_secret": schema.StringAttribute{
+				Description: "The Client Secret as obtained from HPE GreenLake API client credentials. " +
+					"It is recommended that this configuration is left blank and the Client Secret " +
+					"is exported as the `GREENLAKE_UXI_CLIENT_SECRET` environment variable instead.",
+				Optional:  true,
+				Sensitive: true,
+			},
+		}}
 }
 
 func (p *uxiConfigurationProvider) Configure(
@@ -139,16 +144,16 @@ func (p *uxiConfigurationProvider) Configure(
 
 func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		datasources.NewAgentDataSource,
-		datasources.NewAgentGroupAssignmentDataSource,
-		datasources.NewGroupDataSource,
-		datasources.NewNetworkGroupAssignmentDataSource,
-		datasources.NewSensorDataSource,
-		datasources.NewSensorGroupAssignmentDataSource,
-		datasources.NewServiceTestDataSource,
-		datasources.NewServiceTestGroupAssignmentDataSource,
-		datasources.NewWiredNetworkDataSource,
-		datasources.NewWirelessNetworkDataSource,
+		resources.NewAgentDataSource,
+		resources.NewAgentGroupAssignmentDataSource,
+		resources.NewGroupDataSource,
+		resources.NewNetworkGroupAssignmentDataSource,
+		resources.NewSensorDataSource,
+		resources.NewSensorGroupAssignmentDataSource,
+		resources.NewServiceTestDataSource,
+		resources.NewServiceTestGroupAssignmentDataSource,
+		resources.NewWiredNetworkDataSource,
+		resources.NewWirelessNetworkDataSource,
 	}
 }
 

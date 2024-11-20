@@ -2,7 +2,7 @@
 Copyright 2024 Hewlett Packard Enterprise Development LP.
 */
 
-package datasources
+package resources
 
 import (
 	"context"
@@ -50,21 +50,27 @@ func (d *networkGroupAssignmentDataSource) Schema(
 	resp *datasource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Retrieves a specific network group assignment.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the network group assignment.",
+				Computed:    true,
 			},
 			"network_id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the assigned wired or wireless network.",
+				Computed:    true,
 			},
 			"group_id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the assigned group.",
+				Computed:    true,
 			},
 			"filter": schema.SingleNestedAttribute{
-				Required: true,
+				Description: "The filter used to filter the specific network group assignment.",
+				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"network_group_assignment_id": schema.StringAttribute{
-						Required: true,
+						Description: "The identifier of the network group assignment.",
+						Required:    true,
 					},
 				},
 			},

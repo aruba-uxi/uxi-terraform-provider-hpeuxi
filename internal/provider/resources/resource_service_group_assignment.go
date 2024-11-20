@@ -19,52 +19,62 @@ import (
 )
 
 var (
-	_ resource.Resource              = &networkGroupAssignmentResource{}
-	_ resource.ResourceWithConfigure = &networkGroupAssignmentResource{}
+	_ resource.Resource              = &serviceTestGroupAssignmentResource{}
+	_ resource.ResourceWithConfigure = &serviceTestGroupAssignmentResource{}
 )
 
-type networkGroupAssignmentResourceModel struct {
-	ID        types.String `tfsdk:"id"`
-	NetworkID types.String `tfsdk:"network_id"`
-	GroupID   types.String `tfsdk:"group_id"`
+type serviceTestGroupAssignmentResourceModel struct {
+	ID            types.String `tfsdk:"id"`
+	ServiceTestID types.String `tfsdk:"service_test_id"`
+	GroupID       types.String `tfsdk:"group_id"`
 }
 
-func NewNetworkGroupAssignmentResource() resource.Resource {
-	return &networkGroupAssignmentResource{}
+func NewServiceTestGroupAssignmentResource() resource.Resource {
+	return &serviceTestGroupAssignmentResource{}
 }
 
-type networkGroupAssignmentResource struct {
+type serviceTestGroupAssignmentResource struct {
 	client *config_api_client.APIClient
 }
 
-func (r *networkGroupAssignmentResource) Metadata(
+func (r *serviceTestGroupAssignmentResource) Metadata(
 	ctx context.Context,
 	req resource.MetadataRequest,
 	resp *resource.MetadataResponse,
 ) {
-	resp.TypeName = req.ProviderTypeName + "_network_group_assignment"
+	resp.TypeName = req.ProviderTypeName + "_service_test_group_assignment"
 }
 
-func (r *networkGroupAssignmentResource) Schema(
+func (r *serviceTestGroupAssignmentResource) Schema(
 	_ context.Context,
 	_ resource.SchemaRequest,
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Manages a service test group assignment.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the service test group assignment",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"network_id": schema.StringAttribute{
+			"service_test_id": schema.StringAttribute{
+				Description: "The identifier of the service test to be assigned. " +
+					"Use service test id; " +
+					"`uxi_service_test` resource id field or " +
+					"`uxi_service_test` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"group_id": schema.StringAttribute{
+				Description: "The identifier of the group to be assigned to. " +
+					"Use group id; " +
+					"`uxi_group` resource id field or " +
+					"`uxi_group` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -74,7 +84,7 @@ func (r *networkGroupAssignmentResource) Schema(
 	}
 }
 
-func (r *networkGroupAssignmentResource) Configure(
+func (r *serviceTestGroupAssignmentResource) Configure(
 	_ context.Context,
 	req resource.ConfigureRequest,
 	resp *resource.ConfigureResponse,
@@ -88,7 +98,7 @@ func (r *networkGroupAssignmentResource) Configure(
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			"Resource type: Network Group Assignment. Please report this issue to the provider developers.",
+			"Resource type: Service Test Group Assignment. Please report this issue to the provider developers.",
 		)
 		return
 	}
@@ -96,39 +106,39 @@ func (r *networkGroupAssignmentResource) Configure(
 	r.client = client
 }
 
-func (r *networkGroupAssignmentResource) Create(
+func (r *serviceTestGroupAssignmentResource) Create(
 	ctx context.Context,
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	var plan networkGroupAssignmentResourceModel
+	var plan serviceTestGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	postRequest := config_api_client.NewNetworkGroupAssignmentsPostRequest(
+	postRequest := config_api_client.NewServiceTestGroupAssignmentsPostRequest(
 		plan.GroupID.ValueString(),
-		plan.NetworkID.ValueString(),
+		plan.ServiceTestID.ValueString(),
 	)
 	request := r.client.ConfigurationAPI.
-		NetworkGroupAssignmentsPost(ctx).
-		NetworkGroupAssignmentsPostRequest(*postRequest)
-	networkGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
+		ServiceTestGroupAssignmentsPost(ctx).
+		ServiceTestGroupAssignmentsPostRequest(*postRequest)
+	serviceTestGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("create", "uxi_network_group_assignment"),
+			util.GenerateErrorSummary("create", "uxi_service_test_group_assignment"),
 			errorDetail,
 		)
 		return
 	}
 
-	plan.ID = types.StringValue(networkGroupAssignment.Id)
-	plan.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
-	plan.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
+	plan.ID = types.StringValue(serviceTestGroupAssignment.Id)
+	plan.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
+	plan.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTest.Id)
 
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
@@ -137,12 +147,12 @@ func (r *networkGroupAssignmentResource) Create(
 	}
 }
 
-func (r *networkGroupAssignmentResource) Read(
+func (r *serviceTestGroupAssignmentResource) Read(
 	ctx context.Context,
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	var state networkGroupAssignmentResourceModel
+	var state serviceTestGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -150,27 +160,29 @@ func (r *networkGroupAssignmentResource) Read(
 	}
 
 	request := r.client.ConfigurationAPI.
-		NetworkGroupAssignmentsGet(ctx).
+		ServiceTestGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
-	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
+	serviceTestGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(
+		request.Execute,
+	)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
 		return
 	}
 
-	if len(networkGroupAssignmentResponse.Items) != 1 {
+	if len(serviceTestGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
 		return
 	}
-	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
+	serviceTestGroupAssignment := serviceTestGroupAssignmentResponse.Items[0]
 
-	state.ID = types.StringValue(networkGroupAssignment.Id)
-	state.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
-	state.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
+	state.ID = types.StringValue(serviceTestGroupAssignment.Id)
+	state.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
+	state.ServiceTestID = types.StringValue(serviceTestGroupAssignment.ServiceTest.Id)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -179,16 +191,16 @@ func (r *networkGroupAssignmentResource) Read(
 	}
 }
 
-func (r *networkGroupAssignmentResource) Update(
+func (r *serviceTestGroupAssignmentResource) Update(
 	ctx context.Context,
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	var plan networkGroupAssignmentResourceModel
+	var plan serviceTestGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError(
 		"operation not supported",
-		"updating a network group assignment is not supported",
+		"updating a service_test group assignment is not supported",
 	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -196,12 +208,12 @@ func (r *networkGroupAssignmentResource) Update(
 	}
 }
 
-func (r *networkGroupAssignmentResource) Delete(
+func (r *serviceTestGroupAssignmentResource) Delete(
 	ctx context.Context,
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	var state networkGroupAssignmentResourceModel
+	var state serviceTestGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -209,7 +221,8 @@ func (r *networkGroupAssignmentResource) Delete(
 	}
 
 	request := r.client.ConfigurationAPI.
-		NetworkGroupAssignmentsDelete(ctx, state.ID.ValueString())
+		ServiceTestGroupAssignmentsDelete(ctx, state.ID.ValueString())
+
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -219,14 +232,14 @@ func (r *networkGroupAssignmentResource) Delete(
 			return
 		}
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("delete", "uxi_network_group_assignment"),
+			util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"),
 			errorDetail,
 		)
 		return
 	}
 }
 
-func (r *networkGroupAssignmentResource) ImportState(
+func (r *serviceTestGroupAssignmentResource) ImportState(
 	ctx context.Context,
 	req resource.ImportStateRequest,
 	resp *resource.ImportStateResponse,

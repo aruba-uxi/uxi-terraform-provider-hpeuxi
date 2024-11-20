@@ -3,12 +3,12 @@
 page_title: "uxi_group Resource - uxi"
 subcategory: ""
 description: |-
-  
+  Manages a group.
 ---
 
 # uxi_group (Resource)
 
-
+Manages a group.
 
 
 
@@ -17,12 +17,12 @@ description: |-
 
 ### Required
 
-- `name` (String)
+- `name` (String) The name of the group.
 
 ### Optional
 
-- `parent_group_id` (String)
+- `parent_group_id` (String) The identifier of the parent of this group. Use uxi_group resource or datasource id for this attribute. Alternatively leave blank to set group to highest level configurable node.
 
 ### Read-Only
 
-- `id` (String) The ID of this resource.
+- `id` (String) The identifier of the group.

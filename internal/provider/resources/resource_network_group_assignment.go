@@ -19,52 +19,65 @@ import (
 )
 
 var (
-	_ resource.Resource              = &sensorGroupAssignmentResource{}
-	_ resource.ResourceWithConfigure = &sensorGroupAssignmentResource{}
+	_ resource.Resource              = &networkGroupAssignmentResource{}
+	_ resource.ResourceWithConfigure = &networkGroupAssignmentResource{}
 )
 
-type sensorGroupAssignmentResourceModel struct {
-	ID       types.String `tfsdk:"id"`
-	SensorID types.String `tfsdk:"sensor_id"`
-	GroupID  types.String `tfsdk:"group_id"`
+type networkGroupAssignmentResourceModel struct {
+	ID        types.String `tfsdk:"id"`
+	NetworkID types.String `tfsdk:"network_id"`
+	GroupID   types.String `tfsdk:"group_id"`
 }
 
-func NewSensorGroupAssignmentResource() resource.Resource {
-	return &sensorGroupAssignmentResource{}
+func NewNetworkGroupAssignmentResource() resource.Resource {
+	return &networkGroupAssignmentResource{}
 }
 
-type sensorGroupAssignmentResource struct {
+type networkGroupAssignmentResource struct {
 	client *config_api_client.APIClient
 }
 
-func (r *sensorGroupAssignmentResource) Metadata(
+func (r *networkGroupAssignmentResource) Metadata(
 	ctx context.Context,
 	req resource.MetadataRequest,
 	resp *resource.MetadataResponse,
 ) {
-	resp.TypeName = req.ProviderTypeName + "_sensor_group_assignment"
+	resp.TypeName = req.ProviderTypeName + "_network_group_assignment"
 }
 
-func (r *sensorGroupAssignmentResource) Schema(
+func (r *networkGroupAssignmentResource) Schema(
 	_ context.Context,
 	_ resource.SchemaRequest,
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Manages a network group assignment.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the network group assignment",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"sensor_id": schema.StringAttribute{
+			"network_id": schema.StringAttribute{
+				Description: "The identifier of the network to be assigned. " +
+					"Use wired network id; " +
+					"`uxi_wired_network` resource id field; " +
+					"`uxi_wired_network` datasource id field; " +
+					"wireless network id; " +
+					"`uxi_wireless_network` resource id field or " +
+					"`uxi_wireless_network` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"group_id": schema.StringAttribute{
+				Description: "The identifier of the group to be assigned to. " +
+					"Use group id; " +
+					"`uxi_group` resource id field or " +
+					"`uxi_group` datasource id field here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -74,7 +87,7 @@ func (r *sensorGroupAssignmentResource) Schema(
 	}
 }
 
-func (r *sensorGroupAssignmentResource) Configure(
+func (r *networkGroupAssignmentResource) Configure(
 	_ context.Context,
 	req resource.ConfigureRequest,
 	resp *resource.ConfigureResponse,
@@ -88,48 +101,47 @@ func (r *sensorGroupAssignmentResource) Configure(
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			"Resource type: Sensor Group Assignment. Please report this issue to the provider developers.",
+			"Resource type: Network Group Assignment. Please report this issue to the provider developers.",
 		)
 		return
 	}
 
 	r.client = client
-
 }
 
-func (r *sensorGroupAssignmentResource) Create(
+func (r *networkGroupAssignmentResource) Create(
 	ctx context.Context,
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	var plan sensorGroupAssignmentResourceModel
+	var plan networkGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	postRequest := config_api_client.NewSensorGroupAssignmentsPostRequest(
+	postRequest := config_api_client.NewNetworkGroupAssignmentsPostRequest(
 		plan.GroupID.ValueString(),
-		plan.SensorID.ValueString(),
+		plan.NetworkID.ValueString(),
 	)
 	request := r.client.ConfigurationAPI.
-		SensorGroupAssignmentsPost(ctx).
-		SensorGroupAssignmentsPostRequest(*postRequest)
-	sensorGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
+		NetworkGroupAssignmentsPost(ctx).
+		NetworkGroupAssignmentsPostRequest(*postRequest)
+	networkGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("create", "uxi_sensor_group_assignment"),
+			util.GenerateErrorSummary("create", "uxi_network_group_assignment"),
 			errorDetail,
 		)
 		return
 	}
 
-	plan.ID = types.StringValue(sensorGroupAssignment.Id)
-	plan.GroupID = types.StringValue(sensorGroupAssignment.Group.Id)
-	plan.SensorID = types.StringValue(sensorGroupAssignment.Sensor.Id)
+	plan.ID = types.StringValue(networkGroupAssignment.Id)
+	plan.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
+	plan.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
 
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
@@ -138,12 +150,12 @@ func (r *sensorGroupAssignmentResource) Create(
 	}
 }
 
-func (r *sensorGroupAssignmentResource) Read(
+func (r *networkGroupAssignmentResource) Read(
 	ctx context.Context,
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	var state sensorGroupAssignmentResourceModel
+	var state networkGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -151,28 +163,27 @@ func (r *sensorGroupAssignmentResource) Read(
 	}
 
 	request := r.client.ConfigurationAPI.
-		SensorGroupAssignmentsGet(ctx).
+		NetworkGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
-	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
+	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
 		return
 	}
 
-	if len(sensorGroupAssignmentResponse.Items) != 1 {
+	if len(networkGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
 		return
 	}
+	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
 
-	sensorGroupAssignment := sensorGroupAssignmentResponse.Items[0]
-
-	state.ID = types.StringValue(sensorGroupAssignment.Id)
-	state.GroupID = types.StringValue(sensorGroupAssignment.Group.Id)
-	state.SensorID = types.StringValue(sensorGroupAssignment.Sensor.Id)
+	state.ID = types.StringValue(networkGroupAssignment.Id)
+	state.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
+	state.NetworkID = types.StringValue(networkGroupAssignment.Network.Id)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -181,26 +192,29 @@ func (r *sensorGroupAssignmentResource) Read(
 	}
 }
 
-func (r *sensorGroupAssignmentResource) Update(
+func (r *networkGroupAssignmentResource) Update(
 	ctx context.Context,
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	var plan sensorGroupAssignmentResourceModel
+	var plan networkGroupAssignmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	diags.AddError("operation not supported", "updating a sensor group assignment is not supported")
+	diags.AddError(
+		"operation not supported",
+		"updating a network group assignment is not supported",
+	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 }
 
-func (r *sensorGroupAssignmentResource) Delete(
+func (r *networkGroupAssignmentResource) Delete(
 	ctx context.Context,
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	var state sensorGroupAssignmentResourceModel
+	var state networkGroupAssignmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -208,7 +222,7 @@ func (r *sensorGroupAssignmentResource) Delete(
 	}
 
 	request := r.client.ConfigurationAPI.
-		SensorGroupAssignmentsDelete(ctx, state.ID.ValueString())
+		NetworkGroupAssignmentsDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -218,14 +232,14 @@ func (r *sensorGroupAssignmentResource) Delete(
 			return
 		}
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("delete", "uxi_sensor_group_assignment"),
+			util.GenerateErrorSummary("delete", "uxi_network_group_assignment"),
 			errorDetail,
 		)
 		return
 	}
 }
 
-func (r *sensorGroupAssignmentResource) ImportState(
+func (r *networkGroupAssignmentResource) ImportState(
 	ctx context.Context,
 	req resource.ImportStateRequest,
 	resp *resource.ImportStateResponse,

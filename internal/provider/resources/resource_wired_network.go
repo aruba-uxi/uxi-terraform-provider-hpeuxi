@@ -18,52 +18,55 @@ import (
 )
 
 var (
-	_ resource.Resource              = &wirelessNetworkResource{}
-	_ resource.ResourceWithConfigure = &wirelessNetworkResource{}
+	_ resource.Resource              = &wiredNetworkResource{}
+	_ resource.ResourceWithConfigure = &wiredNetworkResource{}
 )
 
-type wirelessNetworkResourceModel struct {
+type wiredNetworkResourceModel struct {
 	ID   types.String `tfsdk:"id"`
 	Name types.String `tfsdk:"name"`
 }
 
-func NewWirelessNetworkResource() resource.Resource {
-	return &wirelessNetworkResource{}
+func NewWiredNetworkResource() resource.Resource {
+	return &wiredNetworkResource{}
 }
 
-type wirelessNetworkResource struct {
+type wiredNetworkResource struct {
 	client *config_api_client.APIClient
 }
 
-func (r *wirelessNetworkResource) Metadata(
+func (r *wiredNetworkResource) Metadata(
 	ctx context.Context,
 	req resource.MetadataRequest,
 	resp *resource.MetadataResponse,
 ) {
-	resp.TypeName = req.ProviderTypeName + "_wireless_network"
+	resp.TypeName = req.ProviderTypeName + "_wired_network"
 }
 
-func (r *wirelessNetworkResource) Schema(
+func (r *wiredNetworkResource) Schema(
 	_ context.Context,
 	_ resource.SchemaRequest,
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
+		Description: "Manages a wired network.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The identifier of the wired network.",
+				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Description: "The name of the wired network.",
+				Required:    true,
 			},
 		},
 	}
 }
 
-func (r *wirelessNetworkResource) Configure(
+func (r *wiredNetworkResource) Configure(
 	_ context.Context,
 	req resource.ConfigureRequest,
 	resp *resource.ConfigureResponse,
@@ -77,7 +80,7 @@ func (r *wirelessNetworkResource) Configure(
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			"Resource type: Wireless Network. Please report this issue to the provider developers.",
+			"Resource type: Wired Network. Please report this issue to the provider developers.",
 		)
 		return
 	}
@@ -85,26 +88,26 @@ func (r *wirelessNetworkResource) Configure(
 	r.client = client
 }
 
-func (r *wirelessNetworkResource) Create(
+func (r *wiredNetworkResource) Create(
 	ctx context.Context,
 	req resource.CreateRequest,
 	resp *resource.CreateResponse,
 ) {
-	var plan wirelessNetworkResourceModel
+	var plan wiredNetworkResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError(
 		"operation not supported",
-		"creating a wireless_network is not supported; wireless_networks can only be imported",
+		"creating a wired_network is not supported; wired_networks can only be imported",
 	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *wirelessNetworkResource) Read(
+func (r *wiredNetworkResource) Read(
 	ctx context.Context,
 	req resource.ReadRequest,
 	resp *resource.ReadResponse,
 ) {
-	var state wirelessNetworkResourceModel
+	var state wiredNetworkResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -112,12 +115,12 @@ func (r *wirelessNetworkResource) Read(
 	}
 
 	request := r.client.ConfigurationAPI.
-		WirelessNetworksGet(ctx).
+		WiredNetworksGet(ctx).
 		Id(state.ID.ValueString())
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
-	errorSummary := util.GenerateErrorSummary("read", "uxi_wireless_network")
+	errorSummary := util.GenerateErrorSummary("read", "uxi_wired_network")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
@@ -141,35 +144,35 @@ func (r *wirelessNetworkResource) Read(
 	}
 }
 
-func (r *wirelessNetworkResource) Update(
+func (r *wiredNetworkResource) Update(
 	ctx context.Context,
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	var plan wirelessNetworkResourceModel
+	var plan wiredNetworkResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	diags.AddError(
 		"operation not supported",
-		"updating a wireless_network is not supported; wireless_networks can only be updated through the dashboard",
+		"updating a wired_network is not supported; wired_networks can only be updated through the dashboard",
 	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *wirelessNetworkResource) Delete(
+func (r *wiredNetworkResource) Delete(
 	ctx context.Context,
 	req resource.DeleteRequest,
 	resp *resource.DeleteResponse,
 ) {
-	var state wirelessNetworkResourceModel
+	var state wiredNetworkResourceModel
 	diags := req.State.Get(ctx, &state)
 	diags.AddError(
 		"operation not supported",
-		"deleting a wireless_network is not supported; wireless_networks can only removed from state",
+		"deleting a wired_network is not supported; wired_networks can only removed from state",
 	)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *wirelessNetworkResource) ImportState(
+func (r *wiredNetworkResource) ImportState(
 	ctx context.Context,
 	req resource.ImportStateRequest,
 	resp *resource.ImportStateResponse,
