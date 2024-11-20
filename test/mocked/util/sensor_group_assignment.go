@@ -7,27 +7,52 @@ package util
 import (
 	"net/http"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 )
 
-func GenerateSensorGroupAssignmentResponse(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"id":     id,
-		"group":  map[string]string{"id": "group_id" + postfix},
-		"sensor": map[string]string{"id": "sensor_id" + postfix},
-		"type":   shared.SensorGroupAssignmentType,
+func GenerateSensorGroupAssignmentResponse(
+	id string,
+	postfix string,
+) config_api_client.SensorGroupAssignmentsResponse {
+	return config_api_client.SensorGroupAssignmentsResponse{
+		Items: []config_api_client.SensorGroupAssignmentsItem{
+			{
+				Id:     id,
+				Group:  *config_api_client.NewGroup("group_id" + postfix),
+				Sensor: *config_api_client.NewSensor("sensor_id" + postfix),
+				Type:   shared.SensorGroupAssignmentType,
+			},
+		},
+		Count: 1,
+		Next:  *config_api_client.NewNullableString(nil),
 	}
 }
 
-func GenerateSensorGroupAssignmentRequest(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"groupId":  "group_id" + postfix,
-		"sensorId": "sensor_id" + postfix,
+func GenerateSensorGroupAssignmentPostRequest(
+	id string,
+	postfix string,
+) config_api_client.SensorGroupAssignmentsPostRequest {
+	return config_api_client.SensorGroupAssignmentsPostRequest{
+		GroupId:  "group_id" + postfix,
+		SensorId: "sensor_id" + postfix,
 	}
 }
 
-func MockGetSensorGroupAssignment(id string, response map[string]interface{}, times int) {
+func GenerateSensorGroupAssignmentPostResponse(
+	id string,
+	postfix string,
+) config_api_client.SensorGroupAssignmentResponse {
+	return config_api_client.SensorGroupAssignmentResponse{
+		Id:     id,
+		Group:  *config_api_client.NewGroup("group_id" + postfix),
+		Sensor: *config_api_client.NewSensor("sensor_id" + postfix),
+		Type:   shared.SensorGroupAssignmentType,
+	}
+}
+
+func MockGetSensorGroupAssignment(id string, response interface{}, times int) {
 	gock.New(MockUxiUrl).
 		Get(shared.SensorGroupAssignmentPath).
 		MatchHeader("Authorization", mockToken).
@@ -38,8 +63,8 @@ func MockGetSensorGroupAssignment(id string, response map[string]interface{}, ti
 }
 
 func MockPostSensorGroupAssignment(
-	request map[string]interface{},
-	response map[string]interface{},
+	request config_api_client.SensorGroupAssignmentsPostRequest,
+	response config_api_client.SensorGroupAssignmentResponse,
 	times int,
 ) {
 	gock.New(MockUxiUrl).

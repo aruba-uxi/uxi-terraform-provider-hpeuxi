@@ -51,11 +51,11 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 
 					// required for sensor group assignment create
 					util.MockPostSensorGroupAssignment(
-						util.GenerateSensorGroupAssignmentRequest(
+						util.GenerateSensorGroupAssignmentPostRequest(
 							"sensor_group_assignment_id",
 							"",
 						),
-						util.GenerateSensorGroupAssignmentResponse(
+						util.GenerateSensorGroupAssignmentPostResponse(
 							"sensor_group_assignment_id",
 							"",
 						),
@@ -63,13 +63,9 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id",
+							"",
 						),
 						1,
 					)
@@ -120,13 +116,9 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id",
+							"",
 						),
 						1,
 					)
@@ -175,35 +167,27 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					// required for sensor group assignment create
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id",
+							"",
 						),
 						1,
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id_2",
-									"_2",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id_2",
+							"_2",
 						),
 						1,
 					)
 
 					util.MockPostSensorGroupAssignment(
-						util.GenerateSensorGroupAssignmentRequest(
+						util.GenerateSensorGroupAssignmentPostRequest(
 							"sensor_group_assignment_id_2",
 							"_2",
 						),
-						util.GenerateSensorGroupAssignmentResponse(
+						util.GenerateSensorGroupAssignmentPostResponse(
 							"sensor_group_assignment_id_2",
 							"_2",
 						),
@@ -285,13 +269,9 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id",
+							"",
 						),
 						1,
 					)
@@ -361,11 +341,11 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostSensorGroupAssignment(
-						util.GenerateSensorGroupAssignmentRequest(
+						util.GenerateSensorGroupAssignmentPostRequest(
 							"sensor_group_assignment_id",
 							"",
 						),
-						util.GenerateSensorGroupAssignmentResponse(
+						util.GenerateSensorGroupAssignmentPostResponse(
 							"sensor_group_assignment_id",
 							"",
 						),
@@ -373,13 +353,9 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id",
+							"",
 						),
 						1,
 					)
@@ -428,13 +404,9 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id",
+							"",
 						),
 						1,
 					)
@@ -459,13 +431,9 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id",
+							"",
 						),
 						1,
 					)
@@ -598,7 +566,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// sensor group assignment import
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						util.EmptyGetListResponse,
 						1,
 					)
 				},
@@ -726,11 +694,11 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 
 					// required for sensor group assignment create
 					util.MockPostSensorGroupAssignment(
-						util.GenerateSensorGroupAssignmentRequest(
+						util.GenerateSensorGroupAssignmentPostRequest(
 							"sensor_group_assignment_id",
 							"",
 						),
-						util.GenerateSensorGroupAssignmentResponse(
+						util.GenerateSensorGroupAssignmentPostResponse(
 							"sensor_group_assignment_id",
 							"",
 						),
@@ -738,13 +706,9 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id",
+							"",
 						),
 						1,
 					)
@@ -790,13 +754,9 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id",
+							"",
 						),
 						1,
 					)
@@ -833,13 +793,9 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetSensorGroupAssignment(
 						"sensor_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse(
-									"sensor_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateSensorGroupAssignmentResponse(
+							"sensor_group_assignment_id",
+							"",
 						),
 						1,
 					)
