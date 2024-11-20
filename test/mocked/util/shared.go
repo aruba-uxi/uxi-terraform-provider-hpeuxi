@@ -22,6 +22,12 @@ var RateLimitingHeaders = map[string]string{
 	"X-RateLimit-Reset":     "0.01",
 }
 
+var EmptyGetListResponse = map[string]interface{}{
+	"items": []map[string]interface{}{},
+	"next":  nil,
+	"count": 0,
+}
+
 func GeneratePaginatedResponse(items []map[string]interface{}) map[string]interface{} {
 	return map[string]interface{}{
 		"items": items,

@@ -28,13 +28,7 @@ func TestAgentDataSource(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
-						),
-						3,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
@@ -88,13 +82,7 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
-						),
-						3,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {

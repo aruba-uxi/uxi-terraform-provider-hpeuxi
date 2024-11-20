@@ -7,27 +7,43 @@ package util
 import (
 	"net/http"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 )
 
-func GenerateAgentGroupAssignmentRequest(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"groupId": "group_id" + postfix,
-		"agentId": "agent_id" + postfix,
+func GenerateAgentGroupAssignmentPostRequest(id string, postfix string) config_api_client.AgentGroupAssignmentsPostRequest {
+	return config_api_client.AgentGroupAssignmentsPostRequest{
+		GroupId: "group_id" + postfix,
+		AgentId: "agent_id" + postfix,
 	}
 }
 
-func GenerateAgentGroupAssignmentResponse(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"id":    id,
-		"group": map[string]string{"id": "group_id" + postfix},
-		"agent": map[string]string{"id": "agent_id" + postfix},
-		"type":  shared.AgentGroupAssignmentType,
+func GenerateAgentGroupAssignmentPostResponse(id string, postfix string) config_api_client.AgentGroupAssignmentResponse {
+	return config_api_client.AgentGroupAssignmentResponse{
+		Id:    id,
+		Group: *config_api_client.NewGroup("group_id" + postfix),
+		Agent: *config_api_client.NewAgent("agent_id" + postfix),
+		Type:  shared.AgentGroupAssignmentType,
 	}
 }
 
-func MockGetAgentGroupAssignment(id string, response map[string]interface{}, times int) {
+func GenerateAgentGroupAssignmentsResponse(id string, postfix string) config_api_client.AgentGroupAssignmentsResponse {
+	return config_api_client.AgentGroupAssignmentsResponse{
+		Items: []config_api_client.AgentGroupAssignmentsItem{
+			{
+				Id:    id,
+				Group: *config_api_client.NewGroup("group_id" + postfix),
+				Agent: *config_api_client.NewAgent("agent_id" + postfix),
+				Type:  shared.AgentGroupAssignmentType,
+			},
+		},
+		Count: 0,
+		Next:  *config_api_client.NewNullableString(nil),
+	}
+}
+
+func MockGetAgentGroupAssignment(id string, response interface{}, times int) {
 	gock.New(MockUxiUrl).
 		Get(shared.AgentGroupAssignmentPath).
 		MatchHeader("Authorization", mockToken).
@@ -38,8 +54,8 @@ func MockGetAgentGroupAssignment(id string, response map[string]interface{}, tim
 }
 
 func MockPostAgentGroupAssignment(
-	request map[string]interface{},
-	response map[string]interface{},
+	request config_api_client.AgentGroupAssignmentsPostRequest,
+	response config_api_client.AgentGroupAssignmentResponse,
 	times int,
 ) {
 	gock.New(MockUxiUrl).
