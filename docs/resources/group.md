@@ -13,15 +13,15 @@ Manages a group.
 ## Example Usage
 
 ```terraform
-# Create a parent group attached to the root node
-resource "uxi_group" "parent_group" {
+# Create level 1 group attached to the root node
+resource "uxi_group" "level_1" {
   name            = "Parent Group"
 }
 
-# Create a child group attached to the parent group
-resource "uxi_group" "child_group" {
+# Create level 2 group attached to level 1 group
+resource "uxi_group" "level_2" {
   name            = "Child Group"
-  parent_group_id = uxi_group.parent_group.id
+  parent_group_id = uxi_group.level_1.id
 }
 ```
 
@@ -39,3 +39,27 @@ resource "uxi_group" "child_group" {
 ### Read-Only
 
 - `id` (String) The identifier of the group.
+
+## Import
+
+Import is supported using the following syntax:
+
+```shell
+# Import level 1 group using its ID
+terraform import uxi_group.level_1 <level_1_id>
+
+# Import level 1 group using its ID with an import block
+import {
+  to = uxi_group.level_1
+  id = "level_1_id"
+}
+
+# Import level 2 group using its ID
+terraform import uxi_group.level_2 <level_2_id>
+
+# Import level 2 group using its ID with an import block
+import {
+  to = uxi_group.level_2
+  id = "level_2_id"
+}
+```

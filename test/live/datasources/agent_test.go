@@ -24,7 +24,7 @@ func TestAgentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "` + config.AgentPermanentId + `"
+							id = "` + config.AgentPermanentId + `"
 						}
 					}
 				`,

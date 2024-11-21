@@ -38,4 +38,4 @@ Retrieves a specific sensor.
 
 Required:
 
-- `sensor_id` (String) The identifier of the sensor group assignment.
+- `id` (String) The identifier of the sensor group assignment.

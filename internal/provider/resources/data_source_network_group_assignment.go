@@ -32,7 +32,7 @@ type networkGroupAssignmentDataSourceModel struct {
 	NetworkID types.String `tfsdk:"network_id"`
 	GroupID   types.String `tfsdk:"group_id"`
 	Filter    struct {
-		NetworkGroupAssignmentID string `tfsdk:"network_group_assignment_id"`
+		ID string `tfsdk:"id"`
 	} `tfsdk:"filter"`
 }
 
@@ -68,7 +68,7 @@ func (d *networkGroupAssignmentDataSource) Schema(
 				Description: "The filter used to filter the specific network group assignment.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"network_group_assignment_id": schema.StringAttribute{
+					"id": schema.StringAttribute{
 						Description: "The identifier of the network group assignment.",
 						Required:    true,
 					},
@@ -93,7 +93,7 @@ func (d *networkGroupAssignmentDataSource) Read(
 
 	request := d.client.ConfigurationAPI.
 		NetworkGroupAssignmentsGet(ctx).
-		Id(state.Filter.NetworkGroupAssignmentID)
+		Id(state.Filter.ID)
 	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 

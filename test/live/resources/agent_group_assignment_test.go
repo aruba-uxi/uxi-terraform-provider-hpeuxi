@@ -37,7 +37,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "` + config.AgentPermanentId + `"
+							id = "` + config.AgentPermanentId + `"
 						}
 					}
 
@@ -89,7 +89,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "` + config.AgentPermanentId + `"
+							id = "` + config.AgentPermanentId + `"
 						}
 					}
 

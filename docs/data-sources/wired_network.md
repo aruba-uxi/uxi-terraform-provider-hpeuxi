@@ -36,4 +36,4 @@ Retrieves a specific wired network.
 
 Required:
 
-- `wired_network_id` (String) The identifier of the wired network.
+- `id` (String) The identifier of the wired network.

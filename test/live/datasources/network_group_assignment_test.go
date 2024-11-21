@@ -29,7 +29,7 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 
 					data "uxi_wired_network" "my_network" {
 						filter = {
-							wired_network_id = "` + config.WiredNetworkId + `"
+							id = "` + config.WiredNetworkId + `"
 						}
 					}
 
@@ -41,7 +41,7 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 					// the actual datasource
 					data "uxi_network_group_assignment" "my_network_group_assignment" {
 						filter = {
-							network_group_assignment_id = uxi_network_group_assignment.my_network_group_assignment.id
+							id = uxi_network_group_assignment.my_network_group_assignment.id
 						}
 					}
 				`,

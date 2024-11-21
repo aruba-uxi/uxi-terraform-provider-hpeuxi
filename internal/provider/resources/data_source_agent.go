@@ -37,7 +37,7 @@ type agentDataSourceModel struct {
 	Notes              types.String `tfsdk:"notes"`
 	PcapMode           types.String `tfsdk:"pcap_mode"`
 	Filter             struct {
-		AgentID types.String `tfsdk:"agent_id"`
+		ID types.String `tfsdk:"id"`
 	} `tfsdk:"filter"`
 }
 
@@ -93,7 +93,7 @@ func (d *agentDataSource) Schema(
 				Description: "The filter used to filter the specific agent.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"agent_id": schema.StringAttribute{
+					"id": schema.StringAttribute{
 						Description: "The identifier of the agent.",
 						Required:    true,
 					},
@@ -118,7 +118,7 @@ func (d *agentDataSource) Read(
 
 	request := d.client.ConfigurationAPI.
 		AgentsGet(ctx).
-		Id(state.Filter.AgentID.ValueString())
+		Id(state.Filter.ID.ValueString())
 
 	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

@@ -33,4 +33,4 @@ Retrieves a specific service test.
 
 Required:
 
-- `service_test_id` (String) The identifier of the service test.
+- `id` (String) The identifier of the service test.

@@ -34,7 +34,7 @@ func TestServiceTestDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -72,7 +72,7 @@ func TestServiceTestDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -116,7 +116,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -132,7 +132,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "id"
+							id = "id"
 						}
 					}
 				`,

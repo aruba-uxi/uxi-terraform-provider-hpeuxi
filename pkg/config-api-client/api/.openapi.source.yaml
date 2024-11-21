@@ -9,7 +9,7 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 5.13.0
+  version: 5.15.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
@@ -543,6 +543,8 @@ paths:
           schema:
             type: integer
             default: 50
+            maximum: 100
+            minimum: 0
             title: Limit
       responses:
         '200':
@@ -1067,6 +1069,8 @@ paths:
           schema:
             type: integer
             default: 50
+            maximum: 100
+            minimum: 0
             title: Limit
       responses:
         '200':

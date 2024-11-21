@@ -34,7 +34,7 @@ func TestSensorDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -68,7 +68,7 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -108,7 +108,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -124,7 +124,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "id"
+							id = "id"
 						}
 					}
 				`,
