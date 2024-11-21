@@ -28,7 +28,7 @@ type serviceTestDataSource struct {
 }
 
 type serviceTestDataSourceModel struct {
-	Id        types.String `tfsdk:"id"`
+	ID        types.String `tfsdk:"id"`
 	Category  types.String `tfsdk:"category"`
 	Name      types.String `tfsdk:"name"`
 	Target    types.String `tfsdk:"target"`
@@ -128,7 +128,7 @@ func (d *serviceTestDataSource) Read(
 
 	serviceTest := serviceTestResponse.Items[0]
 
-	state.Id = types.StringValue(serviceTest.Id)
+	state.ID = types.StringValue(serviceTest.Id)
 	state.Category = types.StringValue(serviceTest.Category)
 	state.Name = types.StringValue(serviceTest.Name)
 	state.Target = types.StringPointerValue(serviceTest.Target.Get())

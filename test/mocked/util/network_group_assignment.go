@@ -53,7 +53,7 @@ func GenerateNetworkGroupAssignmentPostResponse(
 }
 
 func MockGetNetworkGroupAssignment(id string, response interface{}, times int) {
-	gock.New(MockUxiUrl).
+	gock.New(MockUXIURL).
 		Get(shared.NetworkGroupAssignmentPath).
 		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
@@ -67,7 +67,7 @@ func MockPostNetworkGroupAssignment(
 	response config_api_client.NetworkGroupAssignmentsPostResponse,
 	times int,
 ) {
-	gock.New(MockUxiUrl).
+	gock.New(MockUXIURL).
 		Post(shared.NetworkGroupAssignmentPath).
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", mockToken).
@@ -78,7 +78,7 @@ func MockPostNetworkGroupAssignment(
 }
 
 func MockDeleteNetworkGroupAssignment(id string, times int) {
-	gock.New(MockUxiUrl).
+	gock.New(MockUXIURL).
 		Delete(shared.NetworkGroupAssignmentPath+"/"+id).
 		MatchHeader("Authorization", mockToken).
 		Times(times).
