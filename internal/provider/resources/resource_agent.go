@@ -66,20 +66,24 @@ func (r *agentResource) Schema(
 				},
 			},
 			"serial": schema.StringAttribute{
-				Computed: true,
+				Description: "The serial number of the agent.",
+				Computed:    true,
 			},
 			"name": schema.StringAttribute{
 				Description: "The name of the agent.",
 				Required:    true,
 			},
 			"model_number": schema.StringAttribute{
-				Computed: true,
+				Description: "The model number of the agent.",
+				Computed:    true,
 			},
 			"wifi_mac_address": schema.StringAttribute{
-				Computed: true,
+				Description: "The wifi mac address of the agent.",
+				Computed:    true,
 			},
 			"ethernet_mac_address": schema.StringAttribute{
-				Computed: true,
+				Description: "The ethernet mac address of the agent.",
+				Computed:    true,
 			},
 			"notes": schema.StringAttribute{
 				Description: "The notes of the agent.",
