@@ -239,7 +239,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUxiUrl).
+					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Post("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -301,7 +301,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					// existing group
 					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
 					// new group
-					mockTooManyRequests = gock.New(util.MockUxiUrl).
+					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -356,7 +356,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			// read HTTP error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Get("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -403,7 +403,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 			// Create HTTP error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Post("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
@@ -453,7 +453,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					// existing group
 					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
 					// new group - with error
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Patch("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
@@ -478,7 +478,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					// existing group
 					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
 					// delete group - with error
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Delete("/networking-uxi/v1alpha1/groups/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{

@@ -622,7 +622,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					// required for network group assignment create
-					mockTooManyRequests = gock.New(util.MockUxiUrl).
+					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Post(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -727,7 +727,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 
 					util.MockDeleteGroup("group_id", 1)
-					mockTooManyRequests = gock.New(util.MockUxiUrl).
+					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Delete("/networking-uxi/v1alpha1/network-group-assignments/network_group_assignment_id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -783,7 +783,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// network group assignment create
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Post(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
@@ -894,7 +894,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// network group assignment read
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Get(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -1027,7 +1027,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// network group assignment create
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Delete(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusForbidden).
 						JSON(map[string]interface{}{

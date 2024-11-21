@@ -23,7 +23,7 @@ var (
 )
 
 type sensorResourceModel struct {
-	Id                 types.String  `tfsdk:"id"`
+	ID                 types.String  `tfsdk:"id"`
 	Serial             types.String  `tfsdk:"serial"`
 	Name               types.String  `tfsdk:"name"`
 	ModelNumber        types.String  `tfsdk:"model_number"`
@@ -167,7 +167,7 @@ func (r *sensorResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		SensorsGet(ctx).
-		Id(state.Id.ValueString())
+		Id(state.ID.ValueString())
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -184,7 +184,7 @@ func (r *sensorResource) Read(
 	}
 	sensor := sensorResponse.Items[0]
 
-	state.Id = types.StringValue(sensor.Id)
+	state.ID = types.StringValue(sensor.Id)
 	state.Name = types.StringValue(sensor.Name)
 	state.Serial = types.StringValue(sensor.Serial)
 	state.ModelNumber = types.StringValue(sensor.ModelNumber)
@@ -231,7 +231,7 @@ func (r *sensorResource) Update(
 	}
 
 	request := r.client.ConfigurationAPI.
-		SensorsPatch(ctx, plan.Id.ValueString()).
+		SensorsPatch(ctx, plan.ID.ValueString()).
 		SensorsPatchRequest(*patchRequest)
 	sensor, response, err := util.RetryForTooManyRequests(request.Execute)
 
@@ -242,7 +242,7 @@ func (r *sensorResource) Update(
 		return
 	}
 
-	plan.Id = types.StringValue(sensor.Id)
+	plan.ID = types.StringValue(sensor.Id)
 	plan.Name = types.StringValue(sensor.Name)
 	plan.Serial = types.StringValue(sensor.Serial)
 	plan.ModelNumber = types.StringValue(sensor.ModelNumber)
