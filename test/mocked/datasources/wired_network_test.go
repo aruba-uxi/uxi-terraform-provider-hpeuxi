@@ -34,7 +34,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -71,7 +71,7 @@ func TestWiredNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -114,7 +114,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -129,7 +129,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "id"
+							id = "id"
 						}
 					}
 				`,

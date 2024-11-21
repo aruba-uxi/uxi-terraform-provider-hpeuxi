@@ -37,7 +37,7 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_network_group_assignment" "my_network_group_assignment" {
 						filter = {
-							network_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -89,7 +89,7 @@ func TestNetworkGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_network_group_assignment" "my_network_group_assignment" {
 						filter = {
-							network_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -132,7 +132,7 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_network_group_assignment" "my_network_group_assignment" {
 						filter = {
-							network_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -147,7 +147,7 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_network_group_assignment" "my_network_group_assignment" {
 						filter = {
-							network_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,

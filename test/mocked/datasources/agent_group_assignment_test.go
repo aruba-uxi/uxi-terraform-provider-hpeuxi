@@ -37,7 +37,7 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
-							agent_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -89,7 +89,7 @@ func TestAgentGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
-							agent_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -132,7 +132,7 @@ func TestAgentGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
-							agent_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -147,7 +147,7 @@ func TestAgentGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
-							agent_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,

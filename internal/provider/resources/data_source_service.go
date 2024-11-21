@@ -35,7 +35,7 @@ type serviceTestDataSourceModel struct {
 	Template  types.String `tfsdk:"template"`
 	IsEnabled types.Bool   `tfsdk:"is_enabled"`
 	Filter    struct {
-		ServiceTestID types.String `tfsdk:"service_test_id"`
+		ID types.String `tfsdk:"id"`
 	} `tfsdk:"filter"`
 }
 
@@ -83,7 +83,7 @@ func (d *serviceTestDataSource) Schema(
 				Description: "The filter used to filter the specific service test.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"service_test_id": schema.StringAttribute{
+					"id": schema.StringAttribute{
 						Description: "The identifier of the service test.",
 						Required:    true,
 					},
@@ -108,7 +108,7 @@ func (d *serviceTestDataSource) Read(
 
 	request := d.client.ConfigurationAPI.
 		ServiceTestsGet(ctx).
-		Id(state.Filter.ServiceTestID.ValueString())
+		Id(state.Filter.ID.ValueString())
 
 	serviceTestResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

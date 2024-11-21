@@ -23,7 +23,7 @@ func TestSensorDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							sensor_id = "` + config.SensorId + `"
+							id = "` + config.SensorId + `"
 						}
 					}
 				`,

@@ -24,7 +24,7 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wireless_network_id = "` + config.WirelessNetworkId + `"
+							id = "` + config.WirelessNetworkId + `"
 						}
 					}
 				`,

@@ -29,7 +29,7 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "` + config.AgentPermanentId + `"
+							id = "` + config.AgentPermanentId + `"
 						}
 					}
 
@@ -41,7 +41,7 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 					// the actual datasource
 					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
-							agent_group_assignment_id = uxi_agent_group_assignment.my_agent_group_assignment.id
+							id = uxi_agent_group_assignment.my_agent_group_assignment.id
 						}
 					}
 				`,
