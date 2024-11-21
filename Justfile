@@ -30,7 +30,7 @@ generate-config-api-client: retrieve-config-api-openapi-spec
   just tidy-client
   just fmt-client
 
-#nothing to see here
+#setup dev env, empty for now but here for consistency
 setup-dev:
 
 build-local:
