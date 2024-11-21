@@ -24,7 +24,7 @@ func TestServiceTestDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "` + config.ServiceTestId + `"
+							id = "` + config.ServiceTestId + `"
 						}
 					}
 				`,

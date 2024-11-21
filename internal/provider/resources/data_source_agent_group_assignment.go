@@ -32,7 +32,7 @@ type agentGroupAssignmentDataSourceModel struct {
 	AgentID types.String `tfsdk:"agent_id"`
 	GroupID types.String `tfsdk:"group_id"`
 	Filter  struct {
-		AgentGroupAssignmentID string `tfsdk:"agent_group_assignment_id"`
+		ID string `tfsdk:"id"`
 	} `tfsdk:"filter"`
 }
 
@@ -68,7 +68,7 @@ func (d *agentGroupAssignmentDataSource) Schema(
 				Description: "The filter used to filter the specific agent group assignment.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"agent_group_assignment_id": schema.StringAttribute{
+					"id": schema.StringAttribute{
 						Description: "The identifier of the agent group assignment.",
 						Required:    true,
 					},
@@ -93,7 +93,7 @@ func (d *agentGroupAssignmentDataSource) Read(
 
 	request := d.client.ConfigurationAPI.
 		AgentGroupAssignmentsGet(ctx).
-		Id(state.Filter.AgentGroupAssignmentID)
+		Id(state.Filter.ID)
 	agentGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 

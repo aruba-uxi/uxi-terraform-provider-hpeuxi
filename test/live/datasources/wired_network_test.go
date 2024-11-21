@@ -24,7 +24,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
 						filter = {
-							wired_network_id = "` + config.WiredNetworkId + `"
+							id = "` + config.WiredNetworkId + `"
 						}
 					}
 				`,

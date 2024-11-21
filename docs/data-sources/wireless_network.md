@@ -38,4 +38,4 @@ Retrieves a specific wireless network.
 
 Required:
 
-- `wireless_network_id` (String) The identifier of the wireless network.
+- `id` (String) The identifier of the wireless network.

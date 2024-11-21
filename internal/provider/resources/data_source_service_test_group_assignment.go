@@ -32,7 +32,7 @@ type serviceTestGroupAssignmentDataSourceModel struct {
 	ServiceTestID types.String `tfsdk:"service_test_id"`
 	GroupID       types.String `tfsdk:"group_id"`
 	Filter        struct {
-		ServiceTestGroupAssignmentID string `tfsdk:"service_test_group_assignment_id"`
+		ID string `tfsdk:"id"`
 	} `tfsdk:"filter"`
 }
 
@@ -68,7 +68,7 @@ func (d *serviceTestGroupAssignmentDataSource) Schema(
 				Description: "The filter used to filter the specific service test group assignment.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"service_test_group_assignment_id": schema.StringAttribute{
+					"id": schema.StringAttribute{
 						Description: "The identifier of the service test group assignment.",
 						Required:    true,
 					},
@@ -93,7 +93,7 @@ func (d *serviceTestGroupAssignmentDataSource) Read(
 
 	request := d.client.ConfigurationAPI.
 		ServiceTestGroupAssignmentsGet(ctx).
-		Id(state.Filter.ServiceTestGroupAssignmentID)
+		Id(state.Filter.ID)
 	serviceTestGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(
 		request.Execute,
 	)
