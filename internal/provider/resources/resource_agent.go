@@ -24,7 +24,7 @@ var (
 )
 
 type agentResourceModel struct {
-	ID                 types.String `tfsdk:"id"`
+	Id                 types.String `tfsdk:"id"`
 	Serial             types.String `tfsdk:"serial"`
 	Name               types.String `tfsdk:"name"`
 	ModelNumber        types.String `tfsdk:"model_number"`
@@ -149,7 +149,7 @@ func (r *agentResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		AgentsGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -166,7 +166,7 @@ func (r *agentResource) Read(
 	}
 	agent := agentResponse.Items[0]
 
-	state.ID = types.StringValue(agent.Id)
+	state.Id = types.StringValue(agent.Id)
 	state.Name = types.StringValue(agent.Name)
 	state.Serial = types.StringValue(agent.Serial)
 	state.ModelNumber = types.StringPointerValue(agent.ModelNumber.Get())
@@ -210,7 +210,7 @@ func (r *agentResource) Update(
 		patchRequest.PcapMode = pcapMode
 	}
 	request := r.client.ConfigurationAPI.
-		AgentsPatch(ctx, plan.ID.ValueString()).
+		AgentsPatch(ctx, plan.Id.ValueString()).
 		AgentsPatchRequest(*patchRequest)
 	agent, response, err := util.RetryForTooManyRequests(request.Execute)
 
@@ -221,7 +221,7 @@ func (r *agentResource) Update(
 		return
 	}
 
-	plan.ID = types.StringValue(agent.Id)
+	plan.Id = types.StringValue(agent.Id)
 	plan.Name = types.StringValue(agent.Name)
 	plan.Serial = types.StringValue(agent.Serial)
 	plan.ModelNumber = types.StringPointerValue(agent.ModelNumber.Get())
@@ -251,7 +251,7 @@ func (r *agentResource) Delete(
 		return
 	}
 
-	request := r.client.ConfigurationAPI.AgentsDelete(ctx, state.ID.ValueString())
+	request := r.client.ConfigurationAPI.AgentsDelete(ctx, state.Id.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

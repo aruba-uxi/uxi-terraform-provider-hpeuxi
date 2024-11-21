@@ -23,15 +23,15 @@ var (
 )
 
 type wiredNetworkResourceModel struct {
-	ID                   types.String `tfsdk:"id"`
+	Id                   types.String `tfsdk:"id"`
 	Name                 types.String `tfsdk:"name"`
-	IPVersion            types.String `tfsdk:"ip_version"`
+	IpVersion            types.String `tfsdk:"ip_version"`
 	Security             types.String `tfsdk:"security"`
-	DNSLookupDomain      types.String `tfsdk:"dns_lookup_domain"`
-	DisableEDNS          types.Bool   `tfsdk:"disable_edns"`
-	UseDNS64             types.Bool   `tfsdk:"use_dns64"`
+	DnsLookupDomain      types.String `tfsdk:"dns_lookup_domain"`
+	DisableEdns          types.Bool   `tfsdk:"disable_edns"`
+	UseDns64             types.Bool   `tfsdk:"use_dns64"`
 	ExternalConnectivity types.Bool   `tfsdk:"external_connectivity"`
-	VlanID               types.Int32  `tfsdk:"vlan_id"`
+	VlanId               types.Int32  `tfsdk:"vlan_id"`
 }
 
 func NewWiredNetworkResource() resource.Resource {
@@ -151,7 +151,7 @@ func (r *wiredNetworkResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		WiredNetworksGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -169,15 +169,15 @@ func (r *wiredNetworkResource) Read(
 
 	network := networkResponse.Items[0]
 
-	state.ID = types.StringValue(network.Id)
+	state.Id = types.StringValue(network.Id)
 	state.Name = types.StringValue(network.Name)
-	state.IPVersion = types.StringValue(network.IpVersion)
+	state.IpVersion = types.StringValue(network.IpVersion)
 	state.Security = types.StringPointerValue(network.Security.Get())
-	state.DNSLookupDomain = types.StringPointerValue(network.DnsLookupDomain.Get())
-	state.DisableEDNS = types.BoolValue(network.DisableEdns)
-	state.UseDNS64 = types.BoolValue(network.UseDns64)
+	state.DnsLookupDomain = types.StringPointerValue(network.DnsLookupDomain.Get())
+	state.DisableEdns = types.BoolValue(network.DisableEdns)
+	state.UseDns64 = types.BoolValue(network.UseDns64)
 	state.ExternalConnectivity = types.BoolValue(network.ExternalConnectivity)
-	state.VlanID = types.Int32PointerValue(network.VLanId.Get())
+	state.VlanId = types.Int32PointerValue(network.VLanId.Get())
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)

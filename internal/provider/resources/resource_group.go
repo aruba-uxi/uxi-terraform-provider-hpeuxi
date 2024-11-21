@@ -28,7 +28,7 @@ var (
 type groupResourceModel struct {
 	ID            types.String `tfsdk:"id"`
 	Name          types.String `tfsdk:"name"`
-	ParentGroupID types.String `tfsdk:"parent_group_id"`
+	ParentGroupId types.String `tfsdk:"parent_group_id"`
 }
 
 func NewGroupResource() resource.Resource {
@@ -115,8 +115,8 @@ func (r *groupResource) Create(
 	}
 
 	groups_post_request := config_api_client.NewGroupsPostRequest(plan.Name.ValueString())
-	if !plan.ParentGroupID.IsUnknown() && !plan.ParentGroupID.IsNull() {
-		groups_post_request.SetParentId(plan.ParentGroupID.ValueString())
+	if !plan.ParentGroupId.IsUnknown() && !plan.ParentGroupId.IsNull() {
+		groups_post_request.SetParentId(plan.ParentGroupId.ValueString())
 	}
 	request := r.client.ConfigurationAPI.
 		GroupsPost(ctx).
@@ -134,7 +134,7 @@ func (r *groupResource) Create(
 	// only update parent if not attached to root node (else leave it as null)
 	parentGroup, _ := r.getGroup(ctx, group.Parent.Id)
 	if parentGroup != nil && !util.IsRoot(*parentGroup) {
-		plan.ParentGroupID = types.StringValue(group.Parent.Id)
+		plan.ParentGroupId = types.StringValue(group.Parent.Id)
 	}
 
 	diags = resp.State.Set(ctx, plan)
@@ -178,7 +178,7 @@ func (r *groupResource) Read(
 	state.Name = types.StringValue(group.Name)
 	parentGroup, _ := r.getGroup(ctx, group.Parent.Get().Id)
 	if parentGroup != nil && !util.IsRoot(*parentGroup) {
-		state.ParentGroupID = types.StringValue(group.Parent.Get().Id)
+		state.ParentGroupId = types.StringValue(group.Parent.Get().Id)
 	}
 
 	diags = resp.State.Set(ctx, &state)
@@ -220,7 +220,7 @@ func (r *groupResource) Update(
 	// only update parent if not attached to root node (else leave it as null)
 	parentGroup, _ := r.getGroup(ctx, group.Parent.Id)
 	if parentGroup != nil && !util.IsRoot(*parentGroup) {
-		state.ParentGroupID = types.StringValue(group.Parent.Id)
+		state.ParentGroupId = types.StringValue(group.Parent.Id)
 	}
 
 	diags = resp.State.Set(ctx, plan)

@@ -122,7 +122,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 			// Importing a agent
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUXIURL).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Get(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -153,7 +153,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 				PreConfig: func() {
 					// original
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
-					mockTooManyRequests = gock.New(util.MockUXIURL).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Patch(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -184,7 +184,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
-					mockTooManyRequests = gock.New(util.MockUXIURL).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Delete("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -219,7 +219,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			// Read HTTP error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUXIURL).
+					gock.New(util.MockUxiUrl).
 						Get(shared.AgentPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -289,7 +289,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					// original
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 					// patch agent - with error
-					gock.New(util.MockUXIURL).
+					gock.New(util.MockUxiUrl).
 						Patch("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{
@@ -316,7 +316,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					// existing agent
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 					// delete agent - with error
-					gock.New(util.MockUXIURL).
+					gock.New(util.MockUxiUrl).
 						Delete("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusUnprocessableEntity).
 						JSON(map[string]interface{}{

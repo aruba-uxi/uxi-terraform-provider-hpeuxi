@@ -63,7 +63,7 @@ func TestServiceTestDataSourceTooManyRequestsHandling(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUXIURL).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Get(shared.ServiceTestPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -103,7 +103,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 			// HTTP error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUXIURL).
+					gock.New(util.MockUxiUrl).
 						Get(shared.ServiceTestPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{

@@ -13,7 +13,7 @@ import (
 const (
 	mockToken  = "mock_token"
 	MockDomain = "test.api.capenetworks.com"
-	MockUXIURL = "https://" + MockDomain
+	MockUxiUrl = "https://" + MockDomain
 )
 
 var RateLimitingHeaders = map[string]string{

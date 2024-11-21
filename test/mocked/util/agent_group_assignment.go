@@ -53,7 +53,7 @@ func GenerateAgentGroupAssignmentsResponse(
 }
 
 func MockGetAgentGroupAssignment(id string, response interface{}, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Get(shared.AgentGroupAssignmentPath).
 		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
@@ -67,7 +67,7 @@ func MockPostAgentGroupAssignment(
 	response config_api_client.AgentGroupAssignmentResponse,
 	times int,
 ) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Post(shared.AgentGroupAssignmentPath).
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", mockToken).
@@ -78,7 +78,7 @@ func MockPostAgentGroupAssignment(
 }
 
 func MockDeleteAgentGroupAssignment(id string, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Delete(shared.AgentGroupAssignmentPath+"/"+id).
 		MatchHeader("Authorization", mockToken).
 		Times(times).

@@ -53,7 +53,7 @@ func GenerateServiceTestGroupAssignmentPostResponse(
 }
 
 func MockGetServiceTestGroupAssignment(id string, response interface{}, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Get(shared.ServiceTestGroupAssignmentPath).
 		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
@@ -67,7 +67,7 @@ func MockPostServiceTestGroupAssignment(
 	response config_api_client.ServiceTestGroupAssignmentsPostResponse,
 	times int,
 ) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Post(shared.ServiceTestGroupAssignmentPath).
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", mockToken).
@@ -78,7 +78,7 @@ func MockPostServiceTestGroupAssignment(
 }
 
 func MockDeleteServiceTestGroupAssignment(id string, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Delete(shared.ServiceTestGroupAssignmentPath+"/"+id).
 		MatchHeader("Authorization", mockToken).
 		Times(times).

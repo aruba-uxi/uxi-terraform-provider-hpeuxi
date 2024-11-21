@@ -23,7 +23,7 @@ var (
 )
 
 type serviceTestResourceModel struct {
-	ID        types.String `tfsdk:"id"`
+	Id        types.String `tfsdk:"id"`
 	Category  types.String `tfsdk:"category"`
 	Name      types.String `tfsdk:"name"`
 	Target    types.String `tfsdk:"target"`
@@ -136,7 +136,7 @@ func (r *serviceTestResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		ServiceTestsGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -153,7 +153,7 @@ func (r *serviceTestResource) Read(
 	}
 	serviceTest := sensorResponse.Items[0]
 
-	state.ID = types.StringValue(serviceTest.Id)
+	state.Id = types.StringValue(serviceTest.Id)
 	state.Category = types.StringValue(serviceTest.Category)
 	state.Name = types.StringValue(serviceTest.Name)
 	state.Target = types.StringPointerValue(serviceTest.Target.Get())

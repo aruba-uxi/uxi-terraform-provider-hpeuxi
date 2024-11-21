@@ -53,7 +53,7 @@ func GenerateSensorGroupAssignmentPostResponse(
 }
 
 func MockGetSensorGroupAssignment(id string, response interface{}, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Get(shared.SensorGroupAssignmentPath).
 		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
@@ -67,7 +67,7 @@ func MockPostSensorGroupAssignment(
 	response config_api_client.SensorGroupAssignmentResponse,
 	times int,
 ) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Post(shared.SensorGroupAssignmentPath).
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", mockToken).
@@ -78,7 +78,7 @@ func MockPostSensorGroupAssignment(
 }
 
 func MockDeleteSensorGroupAssignment(id string, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Delete(shared.SensorGroupAssignmentPath+"/"+id).
 		MatchHeader("Authorization", mockToken).
 		Times(times).

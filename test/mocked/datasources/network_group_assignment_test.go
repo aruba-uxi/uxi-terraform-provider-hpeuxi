@@ -76,7 +76,7 @@ func TestNetworkGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 			// Read testing
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUXIURL).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Get(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -119,7 +119,7 @@ func TestNetworkGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				PreConfig: func() {
-					gock.New(util.MockUXIURL).
+					gock.New(util.MockUxiUrl).
 						Get(shared.NetworkGroupAssignmentPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{

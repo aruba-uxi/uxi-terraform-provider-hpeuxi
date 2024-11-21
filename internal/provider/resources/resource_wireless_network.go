@@ -23,16 +23,16 @@ var (
 )
 
 type wirelessNetworkResourceModel struct {
-	ID                   types.String `tfsdk:"id"`
-	SSID                 types.String `tfsdk:"ssid"`
+	Id                   types.String `tfsdk:"id"`
+	Ssid                 types.String `tfsdk:"ssid"`
 	Name                 types.String `tfsdk:"name"`
-	IPVersion            types.String `tfsdk:"ip_version"`
+	IpVersion            types.String `tfsdk:"ip_version"`
 	Security             types.String `tfsdk:"security"`
 	Hidden               types.Bool   `tfsdk:"hidden"`
 	BandLocking          types.String `tfsdk:"band_locking"`
-	DNSLookupDomain      types.String `tfsdk:"dns_lookup_domain"`
-	DisableEDNS          types.Bool   `tfsdk:"disable_edns"`
-	UseDNS64             types.Bool   `tfsdk:"use_dns64"`
+	DnsLookupDomain      types.String `tfsdk:"dns_lookup_domain"`
+	DisableEdns          types.Bool   `tfsdk:"disable_edns"`
+	UseDns64             types.Bool   `tfsdk:"use_dns64"`
 	ExternalConnectivity types.Bool   `tfsdk:"external_connectivity"`
 }
 
@@ -162,7 +162,7 @@ func (r *wirelessNetworkResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		WirelessNetworksGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -180,16 +180,16 @@ func (r *wirelessNetworkResource) Read(
 
 	network := networkResponse.Items[0]
 
-	state.ID = types.StringValue(network.Id)
-	state.SSID = types.StringValue(network.Ssid)
+	state.Id = types.StringValue(network.Id)
+	state.Ssid = types.StringValue(network.Ssid)
 	state.Name = types.StringValue(network.Name)
-	state.IPVersion = types.StringValue(network.IpVersion)
+	state.IpVersion = types.StringValue(network.IpVersion)
 	state.Security = types.StringPointerValue(network.Security.Get())
 	state.Hidden = types.BoolValue(network.Hidden)
 	state.BandLocking = types.StringValue(network.BandLocking)
-	state.DNSLookupDomain = types.StringPointerValue(network.DnsLookupDomain.Get())
-	state.DisableEDNS = types.BoolValue(network.DisableEdns)
-	state.UseDNS64 = types.BoolValue(network.UseDns64)
+	state.DnsLookupDomain = types.StringPointerValue(network.DnsLookupDomain.Get())
+	state.DisableEdns = types.BoolValue(network.DisableEdns)
+	state.UseDns64 = types.BoolValue(network.UseDns64)
 	state.ExternalConnectivity = types.BoolValue(network.ExternalConnectivity)
 
 	diags = resp.State.Set(ctx, &state)

@@ -34,7 +34,7 @@ func GenerateServiceTestResponse(
 }
 
 func MockGetServiceTest(id string, response interface{}, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Get(shared.ServiceTestPath).
 		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).

@@ -40,7 +40,7 @@ func GenerateWiredNetworkResponse(
 }
 
 func MockGetWiredNetwork(id string, response interface{}, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Get(shared.WiredNetworkPath).
 		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).

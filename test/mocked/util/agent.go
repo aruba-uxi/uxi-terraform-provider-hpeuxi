@@ -70,7 +70,7 @@ func GenerateAgentResponse(id string, postfix string) config_api_client.AgentsRe
 }
 
 func MockGetAgent(id string, response interface{}, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Get(shared.AgentPath).
 		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
@@ -80,7 +80,7 @@ func MockGetAgent(id string, response interface{}, times int) {
 }
 
 func MockDeleteAgent(id string, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Delete(shared.AgentPath+"/"+id).
 		MatchHeader("Authorization", mockToken).
 		Times(times).
@@ -93,7 +93,7 @@ func MockUpdateAgent(
 	response config_api_client.AgentsPatchResponse,
 	times int,
 ) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Patch(shared.AgentPath+"/"+id).
 		MatchHeader("Content-Type", "application/merge-patch+json").
 		MatchHeader("Authorization", mockToken).

@@ -28,7 +28,7 @@ type agentDataSource struct {
 }
 
 type agentDataSourceModel struct {
-	ID                 types.String `tfsdk:"id"`
+	Id                 types.String `tfsdk:"id"`
 	Serial             types.String `tfsdk:"serial"`
 	Name               types.String `tfsdk:"name"`
 	ModelNumber        types.String `tfsdk:"model_number"`
@@ -138,7 +138,7 @@ func (d *agentDataSource) Read(
 
 	agent := agentResponse.Items[0]
 
-	state.ID = types.StringValue(agent.Id)
+	state.Id = types.StringValue(agent.Id)
 	state.Name = types.StringValue(agent.Name)
 	state.Serial = types.StringValue(agent.Serial)
 	state.ModelNumber = types.StringPointerValue(agent.ModelNumber.Get())

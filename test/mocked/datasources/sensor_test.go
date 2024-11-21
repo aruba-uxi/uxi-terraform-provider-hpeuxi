@@ -59,7 +59,7 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUXIURL).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Get(shared.SensorPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -95,7 +95,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 			// HTTP error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUXIURL).
+					gock.New(util.MockUxiUrl).
 						Get(shared.SensorPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{

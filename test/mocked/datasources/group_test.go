@@ -71,7 +71,7 @@ func TestGroupDataSourceTooManyRequestsHandling(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUXIURL).
+					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Get("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -107,7 +107,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 			// HTTP error
 			{
 				PreConfig: func() {
-					gock.New(util.MockUXIURL).
+					gock.New(util.MockUxiUrl).
 						Get("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{

@@ -64,7 +64,7 @@ func GenerateSensorPatchResponse(id string, postfix string) config_api_client.Se
 }
 
 func MockGetSensor(id string, response interface{}, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Get(shared.SensorPath).
 		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
@@ -79,7 +79,7 @@ func MockUpdateSensor(
 	response config_api_client.SensorsPatchResponse,
 	times int,
 ) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Patch(shared.SensorPath+"/"+id).
 		MatchHeader("Content-Type", "application/merge-patch+json").
 		MatchHeader("Authorization", mockToken).

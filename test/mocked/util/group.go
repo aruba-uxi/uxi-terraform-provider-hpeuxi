@@ -149,7 +149,7 @@ func MockPostGroup(
 	response config_api_client.GroupsPostResponse,
 	times int,
 ) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Post("/networking-uxi/v1alpha1/groups").
 		MatchHeader("Content-Type", "application/json").
 		MatchHeader("Authorization", mockToken).
@@ -160,7 +160,7 @@ func MockPostGroup(
 }
 
 func MockGetGroup(id string, response interface{}, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Get("/networking-uxi/v1alpha1/groups").
 		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).
@@ -175,7 +175,7 @@ func MockPatchGroup(
 	response config_api_client.GroupsPatchResponse,
 	times int,
 ) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Patch(shared.GroupPath+"/"+id).
 		MatchHeader("Authorization", mockToken).
 		MatchHeader("Content-Type", "application/merge-patch+json").
@@ -186,7 +186,7 @@ func MockPatchGroup(
 }
 
 func MockDeleteGroup(id string, times int) {
-	gock.New(MockUXIURL).
+	gock.New(MockUxiUrl).
 		Delete(shared.GroupPath+"/"+id).
 		MatchHeader("Authorization", mockToken).
 		Times(times).
