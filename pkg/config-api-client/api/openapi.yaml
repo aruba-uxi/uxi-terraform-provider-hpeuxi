@@ -9,7 +9,7 @@ info:
     name: "No idea, but we need something"
   termsOfService: http://we.dont.care.yet.com/term-of-service
   title: Configuration Api
-  version: 5.13.0
+  version: 5.15.0
 servers:
 - url: https://api.capenetworks.com
 - url: https://api.staging.capedev.io
@@ -537,6 +537,8 @@ paths:
         required: false
         schema:
           default: 50
+          maximum: 100
+          minimum: 0
           title: Limit
           type: integer
         style: form
@@ -1044,6 +1046,8 @@ paths:
         required: false
         schema:
           default: 50
+          maximum: 100
+          minimum: 0
           title: Limit
           type: integer
         style: form
