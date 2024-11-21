@@ -151,7 +151,7 @@ func (r *wiredNetworkResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		WiredNetworksGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -169,7 +169,7 @@ func (r *wiredNetworkResource) Read(
 
 	network := networkResponse.Items[0]
 
-	state.ID = types.StringValue(network.Id)
+	state.Id = types.StringValue(network.Id)
 	state.Name = types.StringValue(network.Name)
 	state.IPVersion = types.StringValue(network.IpVersion)
 	state.Security = types.StringPointerValue(network.Security.Get())

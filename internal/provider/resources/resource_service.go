@@ -136,7 +136,7 @@ func (r *serviceTestResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		ServiceTestsGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
