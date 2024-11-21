@@ -28,7 +28,7 @@ type wiredNetworkDataSource struct {
 }
 
 type wiredNetworkDataSourceModel struct {
-	Id                   types.String `tfsdk:"id"`
+	ID                   types.String `tfsdk:"id"`
 	Name                 types.String `tfsdk:"name"`
 	IPVersion            types.String `tfsdk:"ip_version"`
 	Security             types.String `tfsdk:"security"`
@@ -141,7 +141,7 @@ func (d *wiredNetworkDataSource) Read(
 	}
 
 	network := networkResponse.Items[0]
-	state.Id = types.StringValue(network.Id)
+	state.ID = types.StringValue(network.Id)
 	state.Name = types.StringValue(network.Name)
 	state.IPVersion = types.StringValue(network.IpVersion)
 	state.Security = types.StringPointerValue(network.Security.Get())

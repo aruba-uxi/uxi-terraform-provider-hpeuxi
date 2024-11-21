@@ -21,8 +21,8 @@ import (
 
 func TestAgentResource(t *testing.T) {
 	// we provision an agent here so that we have something to delete later on
-	agentId, err := util.ProvisionAgent{
-		CustomerId:        config.CustomerId,
+	agentID, err := util.ProvisionAgent{
+		CustomerID:        config.CustomerId,
 		ProvisionToken:    os.Getenv("UXI_PROVISION_TOKEN"),
 		DeviceSerial:      config.AgentCreateSerial,
 		DeviceGatewayHost: config.DeviceGatewayHost,
@@ -31,7 +31,7 @@ func TestAgentResource(t *testing.T) {
 		panic(err)
 	}
 
-	agent := util.GetAgent(agentId)
+	agent := util.GetAgent(agentID)
 	updated_agent := agent
 	updated_notes := "notes"
 	updated_pcapMode := "off"
@@ -62,7 +62,7 @@ func TestAgentResource(t *testing.T) {
 
 					import {
 						to = uxi_agent.my_agent
-						id = "` + agentId + `"
+						id = "` + agentID + `"
 					}`,
 				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
 			},
@@ -88,7 +88,7 @@ func TestAgentResource(t *testing.T) {
 			},
 		},
 		CheckDestroy: func(s *terraform.State) error {
-			assert.Equal(t, util.GetAgent(agentId), nil)
+			assert.Equal(t, util.GetAgent(agentID), nil)
 			return nil
 		},
 	})

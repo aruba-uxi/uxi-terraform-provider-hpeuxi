@@ -32,15 +32,15 @@ func GetAgent(id string) config_api_client.AgentItem {
 }
 
 type ProvisionAgent struct {
-	CustomerId        string
+	CustomerID        string
 	ProvisionToken    string
 	DeviceSerial      string
 	DeviceGatewayHost string
 }
 
 type provisionAgentRequest struct {
-	Uid            string `json:"uid"`
-	CustomerUid    string `json:"customer_uid"`
+	UID            string `json:"uid"`
+	CustomerUID    string `json:"customer_uid"`
 	ProvisionToken string `json:"provision_token"`
 	PlatformName   string `json:"platform_name"`
 	DeviceSerial   string `json:"device_serial"`
@@ -48,14 +48,14 @@ type provisionAgentRequest struct {
 
 func (p ProvisionAgent) Provision() (string, error) {
 	url := p.DeviceGatewayHost + "/provision-zebra-device"
-	id, err := p.generateId()
+	id, err := p.generateID()
 	if err != nil {
 		return id, err
 	}
 
 	request := provisionAgentRequest{
-		Uid:            id,
-		CustomerUid:    p.CustomerId,
+		UID:            id,
+		CustomerUID:    p.CustomerID,
 		ProvisionToken: p.ProvisionToken,
 		PlatformName:   "zebra",
 		DeviceSerial:   p.DeviceSerial,
@@ -90,7 +90,7 @@ func (p ProvisionAgent) Provision() (string, error) {
 	return id, nil
 }
 
-func (p ProvisionAgent) generateId() (string, error) {
+func (p ProvisionAgent) generateID() (string, error) {
 	// Create an MD5 hash of the serial string
 	hasher := md5.New()
 	hasher.Write([]byte(p.DeviceSerial))
