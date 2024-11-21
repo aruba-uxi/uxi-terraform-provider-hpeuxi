@@ -21,4 +21,8 @@ Manages a service test.
 
 ### Read-Only
 
+- `category` (String) The category of the service test.
 - `id` (String) The identifier of the service test.
+- `is_enabled` (Boolean) Whether the service test is enabled or not.
+- `target` (String) The target of the service test.
+- `template` (String) The template of the service test.

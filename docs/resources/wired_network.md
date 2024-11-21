@@ -21,4 +21,11 @@ Manages a wired network.
 
 ### Read-Only
 
+- `disable_edns` (Boolean) Whether EDNS is disabled on the wired network.
+- `dns_lookup_domain` (String) The DNS lookup domain of the wired network.
+- `external_connectivity` (Boolean) Whether the wired network has external connectivity.
 - `id` (String) The identifier of the wired network.
+- `ip_version` (String) The ip version of the wired network.
+- `security` (String) The security protocol of the wired network.
+- `use_dns64` (Boolean) Whether the wired network is configured to use DNS64.
+- `vlan_id` (Number) The VLAN identifier of the wired network.

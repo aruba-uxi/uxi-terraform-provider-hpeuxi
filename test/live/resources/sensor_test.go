@@ -12,22 +12,17 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
 func TestSensorResource(t *testing.T) {
-	originalSensor := util.GetSensorProperties(config.SensorId)
-	updatedNotes := "tf_provider_acceptance_test_update_notes"
-	updatedAddressNote := "tf_provider_acceptance_test_update_address_note"
-	updatedPcapMode := "off"
-	updatedSensor := config_api_client.SensorItem{
-		Id:          config.SensorId,
-		Name:        "tf_provider_acceptance_test_update_name",
-		Notes:       *config_api_client.NewNullableString(&updatedNotes),
-		AddressNote: *config_api_client.NewNullableString(&updatedAddressNote),
-		PcapMode:    *config_api_client.NewNullableString(&updatedPcapMode),
-	}
+	originalSensor := util.GetSensor(config.SensorId)
+	updatedSensor := originalSensor
+	updatedSensor.Notes = *config_api_client.NewNullableString(config_api_client.PtrString("tf_provider_acceptance_test_update_notes"))
+	updatedSensor.AddressNote = *config_api_client.NewNullableString(config_api_client.PtrString("tf_provider_acceptance_test_update_address_note"))
+	updatedSensor.PcapMode = *config_api_client.NewNullableString(config_api_client.PtrString("off"))
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -59,7 +54,7 @@ func TestSensorResource(t *testing.T) {
 						id = "` + config.SensorId + `"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(),
+				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", originalSensor),
 			},
 			// ImportState testing
 			{
@@ -76,11 +71,7 @@ func TestSensorResource(t *testing.T) {
 					notes 		 = "` + updatedSensor.GetNotes() + `"
 					pcap_mode 	 = "` + updatedSensor.GetPcapMode() + `"
 				}`,
-				Check: util.CheckResourceStateAgainstSensor(
-					t,
-					"uxi_sensor.my_sensor",
-					updatedSensor,
-				),
+				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", updatedSensor),
 			},
 			// Update sensor back to original
 			{
@@ -91,11 +82,7 @@ func TestSensorResource(t *testing.T) {
 					notes 		 = "` + originalSensor.GetNotes() + `"
 					pcap_mode 	 = "` + originalSensor.GetPcapMode() + `"
 				}`,
-				Check: util.CheckResourceStateAgainstSensor(
-					t,
-					"uxi_sensor.my_sensor",
-					originalSensor,
-				),
+				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", originalSensor),
 			},
 			// Deleting a sensor is not allowed
 			{

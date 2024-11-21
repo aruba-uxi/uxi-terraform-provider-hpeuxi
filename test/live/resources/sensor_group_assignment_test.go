@@ -22,7 +22,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 	)
 
 	var (
-		existingSensorProperties = util.GetSensorProperties(config.SensorId)
+		existingSensorProperties = util.GetSensor(config.SensorId)
 		resourceIdBeforeRecreate string
 		resourceIdAfterRecreate  string
 	)

@@ -22,6 +22,8 @@ import (
 func TestAgentResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	agent := util.GenerateAgentResponse("id", "").Items[0]
+	updatedAgent := util.GenerateAgentResponse("id", "_2").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -56,12 +58,7 @@ func TestAgentResource(t *testing.T) {
 						id = "id"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "id"),
-				),
+				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
 			},
 			// ImportState testing
 			{
@@ -92,11 +89,7 @@ func TestAgentResource(t *testing.T) {
 					notes = "notes_2"
 					pcap_mode = "light"
 				}`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name_2"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "notes", "notes_2"),
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "pcap_mode", "light"),
-				),
+				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", updatedAgent),
 			},
 			// Delete testing
 			{
@@ -115,6 +108,8 @@ func TestAgentResource(t *testing.T) {
 func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	agent := util.GenerateAgentResponse("id", "").Items[0]
+	updatedAgent := util.GenerateAgentResponse("id", "_2").Items[0]
 	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
@@ -146,7 +141,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "id"),
+					shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
@@ -178,7 +173,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 					pcap_mode = "light"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "name", "name_2"),
+					shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", updatedAgent),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 						return nil
@@ -212,6 +207,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 func TestAgentResourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	agent := util.GenerateAgentResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -285,9 +281,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 						id = "id"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_agent.my_agent", "id", "id"),
-				),
+				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
 			},
 			// Update HTTP error
 			{

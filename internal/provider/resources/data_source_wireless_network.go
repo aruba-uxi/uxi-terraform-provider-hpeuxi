@@ -28,7 +28,7 @@ type wirelessNetworkDataSource struct {
 }
 
 type wirelessNetworkDataSourceModel struct {
-	ID                   types.String `tfsdk:"id"`
+	Id                   types.String `tfsdk:"id"`
 	Ssid                 types.String `tfsdk:"ssid"`
 	Name                 types.String `tfsdk:"name"`
 	IpVersion            types.String `tfsdk:"ip_version"`
@@ -39,8 +39,7 @@ type wirelessNetworkDataSourceModel struct {
 	DisableEdns          types.Bool   `tfsdk:"disable_edns"`
 	UseDns64             types.Bool   `tfsdk:"use_dns64"`
 	ExternalConnectivity types.Bool   `tfsdk:"external_connectivity"`
-
-	Filter struct {
+	Filter               struct {
 		WirelessNetworkID string `tfsdk:"wireless_network_id"`
 	} `tfsdk:"filter"`
 }
@@ -152,7 +151,7 @@ func (d *wirelessNetworkDataSource) Read(
 	}
 
 	network := networkResponse.Items[0]
-	state.ID = types.StringValue(network.Id)
+	state.Id = types.StringValue(network.Id)
 	state.Ssid = types.StringValue(network.Ssid)
 	state.Name = types.StringValue(network.Name)
 	state.IpVersion = types.StringValue(network.IpVersion)

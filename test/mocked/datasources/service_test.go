@@ -21,6 +21,7 @@ import (
 func TestServiceTestDataSource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	serviceTest := util.GenerateServiceTestResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -37,37 +38,10 @@ func TestServiceTestDataSource(t *testing.T) {
 						}
 					}
 				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(
-						"data.uxi_service_test.my_service_test",
-						"id",
-						"id",
-					),
-					resource.TestCheckResourceAttr(
-						"data.uxi_service_test.my_service_test",
-						"category",
-						"external",
-					),
-					resource.TestCheckResourceAttr(
-						"data.uxi_service_test.my_service_test",
-						"name",
-						"name",
-					),
-					resource.TestCheckResourceAttr(
-						"data.uxi_service_test.my_service_test",
-						"target",
-						"target",
-					),
-					resource.TestCheckResourceAttr(
-						"data.uxi_service_test.my_service_test",
-						"template",
-						"template",
-					),
-					resource.TestCheckResourceAttr(
-						"data.uxi_service_test.my_service_test",
-						"is_enabled",
-						"true",
-					),
+				Check: shared.CheckStateAgainstServiceTest(
+					t,
+					"data.uxi_service_test.my_service_test",
+					serviceTest,
 				),
 			},
 		},
@@ -80,6 +54,7 @@ func TestServiceTestDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
+	serviceTest := util.GenerateServiceTestResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -102,10 +77,10 @@ func TestServiceTestDataSourceTooManyRequestsHandling(t *testing.T) {
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(
+					shared.CheckStateAgainstServiceTest(
+						t,
 						"data.uxi_service_test.my_service_test",
-						"id",
-						"id",
+						serviceTest,
 					),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)

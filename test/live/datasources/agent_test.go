@@ -10,11 +10,12 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAgentDataSource(t *testing.T) {
-	agent := util.GetAgentProperties(config.AgentPermanentId)
+	agent := util.GetAgent(config.AgentPermanentId)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() {},
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -27,7 +28,7 @@ func TestAgentDataSource(t *testing.T) {
 						}
 					}
 				`,
-				Check: util.CheckStateAgainstAgent(t, agent),
+				Check: shared.CheckStateAgainstAgent(t, "data.uxi_agent.my_agent", agent),
 			},
 		},
 	})

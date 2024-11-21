@@ -5,16 +5,21 @@ Copyright 2024 Hewlett Packard Enterprise Development LP.
 package resource_test
 
 import (
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"regexp"
 	"testing"
+
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
 func TestWirelessNetworkResource(t *testing.T) {
+	wirelessNetwork := util.GetWirelessNetwork(config.WirelessNetworkId)
+
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -45,17 +50,10 @@ func TestWirelessNetworkResource(t *testing.T) {
 						id = "` + config.WirelessNetworkId + `"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(
-						"uxi_wireless_network.wireless_network_0",
-						"name",
-						config.WirelessNetworkName,
-					),
-					resource.TestCheckResourceAttr(
-						"uxi_wireless_network.wireless_network_0",
-						"id",
-						config.WirelessNetworkId,
-					),
+				Check: shared.CheckStateAgainstWirelessNetwork(
+					t,
+					"uxi_wireless_network.wireless_network_0",
+					wirelessNetwork,
 				),
 			},
 			// ImportState testing

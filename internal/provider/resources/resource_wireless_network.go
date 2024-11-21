@@ -23,8 +23,17 @@ var (
 )
 
 type wirelessNetworkResourceModel struct {
-	ID   types.String `tfsdk:"id"`
-	Name types.String `tfsdk:"name"`
+	Id                   types.String `tfsdk:"id"`
+	Ssid                 types.String `tfsdk:"ssid"`
+	Name                 types.String `tfsdk:"name"`
+	IpVersion            types.String `tfsdk:"ip_version"`
+	Security             types.String `tfsdk:"security"`
+	Hidden               types.Bool   `tfsdk:"hidden"`
+	BandLocking          types.String `tfsdk:"band_locking"`
+	DnsLookupDomain      types.String `tfsdk:"dns_lookup_domain"`
+	DisableEdns          types.Bool   `tfsdk:"disable_edns"`
+	UseDns64             types.Bool   `tfsdk:"use_dns64"`
+	ExternalConnectivity types.Bool   `tfsdk:"external_connectivity"`
 }
 
 func NewWirelessNetworkResource() resource.Resource {
@@ -58,9 +67,46 @@ func (r *wirelessNetworkResource) Schema(
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
+			"ssid": schema.StringAttribute{
+				Description: "The SSID of the wireless network.",
+				Computed:    true,
+			},
 			"name": schema.StringAttribute{
 				Description: "The name of the wireless network.",
 				Required:    true,
+			},
+
+			"ip_version": schema.StringAttribute{
+				Description: "The IP version of the wireless network.",
+				Computed:    true,
+			},
+			"security": schema.StringAttribute{
+				Description: "The security protocol of the wireless network.",
+				Computed:    true,
+			},
+			"hidden": schema.BoolAttribute{
+				Description: "Whether the wireless network is hidden.",
+				Computed:    true,
+			},
+			"band_locking": schema.StringAttribute{
+				Description: "The frequency band the wireless network is locked to.",
+				Computed:    true,
+			},
+			"dns_lookup_domain": schema.StringAttribute{
+				Description: "The DNS lookup domain of the wireless network.",
+				Computed:    true,
+			},
+			"disable_edns": schema.BoolAttribute{
+				Description: "Whether EDNS is disabled on the wireless network.",
+				Computed:    true,
+			},
+			"use_dns64": schema.BoolAttribute{
+				Description: "Whether the wireless network is configured to use DNS64.",
+				Computed:    true,
+			},
+			"external_connectivity": schema.BoolAttribute{
+				Description: "Whether the wireless network has external connectivity.",
+				Computed:    true,
 			},
 		},
 	}
@@ -116,7 +162,7 @@ func (r *wirelessNetworkResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		WirelessNetworksGet(ctx).
-		Id(state.ID.ValueString())
+		Id(state.Id.ValueString())
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -134,8 +180,17 @@ func (r *wirelessNetworkResource) Read(
 
 	network := networkResponse.Items[0]
 
-	state.ID = types.StringValue(network.Id)
+	state.Id = types.StringValue(network.Id)
+	state.Ssid = types.StringValue(network.Ssid)
 	state.Name = types.StringValue(network.Name)
+	state.IpVersion = types.StringValue(network.IpVersion)
+	state.Security = types.StringPointerValue(network.Security.Get())
+	state.Hidden = types.BoolValue(network.Hidden)
+	state.BandLocking = types.StringValue(network.BandLocking)
+	state.DnsLookupDomain = types.StringPointerValue(network.DnsLookupDomain.Get())
+	state.DisableEdns = types.BoolValue(network.DisableEdns)
+	state.UseDns64 = types.BoolValue(network.UseDns64)
+	state.ExternalConnectivity = types.BoolValue(network.ExternalConnectivity)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)

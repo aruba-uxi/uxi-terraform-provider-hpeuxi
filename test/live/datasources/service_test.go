@@ -10,6 +10,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
@@ -27,7 +28,11 @@ func TestServiceTestDataSource(t *testing.T) {
 						}
 					}
 				`,
-				Check: util.CheckStateAgainstServiceTest(t, serviceTest),
+				Check: shared.CheckStateAgainstServiceTest(
+					t,
+					"data.uxi_service_test.my_service_test",
+					serviceTest,
+				),
 			},
 		},
 	})

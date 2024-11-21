@@ -22,6 +22,7 @@ import (
 func TestWiredNetworkResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	wiredNetwork := util.GenerateWiredNetworkResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -56,17 +57,10 @@ func TestWiredNetworkResource(t *testing.T) {
 						id = "id"
 					}`,
 
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(
-						"uxi_wired_network.my_wired_network",
-						"name",
-						"name",
-					),
-					resource.TestCheckResourceAttr(
-						"uxi_wired_network.my_wired_network",
-						"id",
-						"id",
-					),
+				Check: shared.CheckStateAgainstWiredNetwork(
+					t,
+					"uxi_wired_network.my_wired_network",
+					wiredNetwork,
 				),
 			},
 			// ImportState testing
@@ -121,6 +115,7 @@ func TestWiredNetworkResource(t *testing.T) {
 func TestWiredNetworkResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
+	wiredNetwork := util.GenerateWiredNetworkResponse("id", "").Items[0]
 	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
@@ -150,10 +145,10 @@ func TestWiredNetworkResourceTooManyRequestsHandling(t *testing.T) {
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(
+					shared.CheckStateAgainstWiredNetwork(
+						t,
 						"uxi_wired_network.my_wired_network",
-						"id",
-						"id",
+						wiredNetwork,
 					),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
