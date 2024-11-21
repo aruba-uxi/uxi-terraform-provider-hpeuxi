@@ -26,8 +26,12 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 		case *url.Error:
 			detail = handleURLError(e)
 		case *config_api_client.GenericOpenAPIError:
-			if jsonDecodeErr := json.NewDecoder(response.Body).Decode(&data); jsonDecodeErr != nil {
-				detail = "Unexpected error: " + jsonDecodeErr.Error()
+			if err := json.NewDecoder(response.Body).Decode(&data); err != nil {
+				detail = fmt.Sprintf(
+					"Unexpected error: there was an error decoding the API response body for "+
+						"%d status code response.",
+					response.StatusCode,
+				)
 			} else if message, ok := data["message"]; ok {
 				detail = message.(string)
 				if debugId, ok := data["debugId"]; ok {
