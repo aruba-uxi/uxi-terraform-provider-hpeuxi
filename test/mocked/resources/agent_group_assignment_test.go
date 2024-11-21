@@ -293,7 +293,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetAgent("agent_id", util.GenerateAgentResponse("agent_id", ""), 2)
 
 					// required for agent group assignment create
-					mockTooManyRequests = gock.New(util.MockUxiUrl).
+					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Post(shared.AgentGroupAssignmentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -366,7 +366,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUxiUrl).
+					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Get(shared.AgentGroupAssignmentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -400,7 +400,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 					util.MockDeleteGroup("group_id", 1)
 					util.MockDeleteAgent("agent_id", 1)
-					mockTooManyRequests = gock.New(util.MockUxiUrl).
+					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Delete("/networking-uxi/v1alpha1/agent-group-assignments/agent_group_assignment_id").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -443,7 +443,7 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// agent group assignment create
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Post(shared.AgentGroupAssignmentPath).
 						Reply(http.StatusBadRequest).
 						JSON(map[string]interface{}{
@@ -550,7 +550,7 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// agent group assignment read
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Get(shared.AgentGroupAssignmentPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
@@ -677,7 +677,7 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 
 					// agent group assignment create
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Delete(shared.AgentGroupAssignmentPath).
 						Reply(http.StatusForbidden).
 						JSON(map[string]interface{}{

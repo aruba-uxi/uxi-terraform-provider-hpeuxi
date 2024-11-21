@@ -28,7 +28,7 @@ type sensorDataSource struct {
 }
 
 type sensorDataSourceModel struct {
-	Id                 types.String  `tfsdk:"id"`
+	ID                 types.String  `tfsdk:"id"`
 	Serial             types.String  `tfsdk:"serial"`
 	Name               types.String  `tfsdk:"name"`
 	ModelNumber        types.String  `tfsdk:"model_number"`
@@ -153,7 +153,7 @@ func (d *sensorDataSource) Read(
 
 	sensor := sensorResponse.Items[0]
 
-	state.Id = types.StringValue(sensor.Id)
+	state.ID = types.StringValue(sensor.Id)
 	state.Name = types.StringValue(sensor.Name)
 	state.Serial = types.StringValue(sensor.Serial)
 	state.ModelNumber = types.StringValue(sensor.ModelNumber)

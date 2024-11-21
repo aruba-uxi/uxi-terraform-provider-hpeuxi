@@ -42,7 +42,7 @@ func GenerateWirelessNetworkResponse(
 }
 
 func MockGetWirelessNetwork(id string, response interface{}, times int) {
-	gock.New(MockUxiUrl).
+	gock.New(MockUXIURL).
 		Get(shared.WirelessNetworkPath).
 		MatchHeader("Authorization", mockToken).
 		MatchParam("id", id).

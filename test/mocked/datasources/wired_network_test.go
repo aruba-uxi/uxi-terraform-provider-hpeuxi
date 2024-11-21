@@ -62,7 +62,7 @@ func TestWiredNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 			// Read testing
 			{
 				PreConfig: func() {
-					mockTooManyRequests = gock.New(util.MockUxiUrl).
+					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Get(shared.WiredNetworkPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
@@ -101,7 +101,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				PreConfig: func() {
-					gock.New(util.MockUxiUrl).
+					gock.New(util.MockUXIURL).
 						Get(shared.WiredNetworkPath).
 						Reply(http.StatusInternalServerError).
 						JSON(map[string]interface{}{
