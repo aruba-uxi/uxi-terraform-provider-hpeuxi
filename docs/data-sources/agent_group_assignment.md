@@ -30,4 +30,4 @@ Retrieves a specific agent group assignment.
 
 Required:
 
-- `agent_group_assignment_id` (String) The identifier of the agent group assignment.
+- `id` (String) The identifier of the agent group assignment.
