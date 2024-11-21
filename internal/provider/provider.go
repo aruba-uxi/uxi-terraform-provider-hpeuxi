@@ -113,8 +113,8 @@ func (p *uxiConfigurationProvider) Configure(
 			path.Root("client_id"),
 			"Missing Client ID",
 			"The provider cannot initialize as there is a missing or empty value for the Client ID. "+
-				"Set the Client ID value in the configuration or use the CLIENT_ID environment variable. "+
-				"If either is already set, ensure the value is not empty.",
+				"Set the Client ID value in the configuration or use the GREENLAKE_UXI_CLIENT_ID "+
+				"environment variable. If either is already set, ensure the value is not empty.",
 		)
 	}
 
@@ -123,8 +123,8 @@ func (p *uxiConfigurationProvider) Configure(
 			path.Root("client_secret"),
 			"Missing Client Secret",
 			"The provider cannot initialize as there is a missing or empty value for the Client Secret. "+
-				"Set the Client Secret value in the configuration or use the CLIENT_SECRET environment variable. "+
-				"If either is already set, ensure the value is not empty.",
+				"Set the Client Secret value in the configuration or use the GREENLAKE_UXI_CLIENT_SECRET "+
+				"environment variable. If either is already set, ensure the value is not empty.",
 		)
 	}
 
