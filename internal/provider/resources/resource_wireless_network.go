@@ -162,7 +162,7 @@ func (r *wirelessNetworkResource) Read(
 
 	request := r.client.ConfigurationAPI.
 		WirelessNetworksGet(ctx).
-		Id(state.Id.ValueString())
+		Id(state.ID.ValueString())
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
