@@ -35,4 +35,4 @@ Retrieves a specific agent.
 
 Required:
 
-- `agent_id` (String) The identifier of the agent.
+- `id` (String) The identifier of the agent.

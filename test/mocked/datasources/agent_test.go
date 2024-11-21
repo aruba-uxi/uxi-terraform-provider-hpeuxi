@@ -34,7 +34,7 @@ func TestAgentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -68,7 +68,7 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -108,7 +108,7 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -124,7 +124,7 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							agent_id = "id"
+							id = "id"
 						}
 					}
 				`,

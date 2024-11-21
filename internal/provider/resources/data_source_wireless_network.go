@@ -40,7 +40,7 @@ type wirelessNetworkDataSourceModel struct {
 	UseDNS64             types.Bool   `tfsdk:"use_dns64"`
 	ExternalConnectivity types.Bool   `tfsdk:"external_connectivity"`
 	Filter               struct {
-		WirelessNetworkID string `tfsdk:"wireless_network_id"`
+		ID string `tfsdk:"id"`
 	} `tfsdk:"filter"`
 }
 
@@ -108,7 +108,7 @@ func (d *wirelessNetworkDataSource) Schema(
 				Description: "The filter used to filter the specific wireless network.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"wireless_network_id": schema.StringAttribute{
+					"id": schema.StringAttribute{
 						Description: "The identifier of the wireless network.",
 						Required:    true,
 					},
@@ -133,7 +133,7 @@ func (d *wirelessNetworkDataSource) Read(
 
 	request := d.client.ConfigurationAPI.
 		WirelessNetworksGet(ctx).
-		Id(state.Filter.WirelessNetworkID)
+		Id(state.Filter.ID)
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 

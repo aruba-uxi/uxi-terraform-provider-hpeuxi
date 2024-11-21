@@ -38,7 +38,7 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wireless_network_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -79,7 +79,7 @@ func TestWirelessNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wireless_network_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -123,7 +123,7 @@ func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wireless_network_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -138,7 +138,7 @@ func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							wireless_network_id = "id"
+							id = "id"
 						}
 					}
 				`,

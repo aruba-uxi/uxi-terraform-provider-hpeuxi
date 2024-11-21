@@ -33,7 +33,7 @@ type groupDataSourceModel struct {
 	ParentGroupID types.String `tfsdk:"parent_group_id"`
 	Name          types.String `tfsdk:"name"`
 	Filter        struct {
-		GroupID *string `tfsdk:"group_id"`
+		ID *string `tfsdk:"id"`
 	} `tfsdk:"filter"`
 }
 
@@ -73,7 +73,7 @@ func (d *groupDataSource) Schema(
 				Description: "The filter used to filter the specific group.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"group_id": schema.StringAttribute{
+					"id": schema.StringAttribute{
 						Description: "The identifier of the group.",
 						Required:    true,
 					},
@@ -98,7 +98,7 @@ func (d *groupDataSource) Read(
 
 	request := d.client.ConfigurationAPI.
 		GroupsGet(ctx).
-		Id(*state.Filter.GroupID)
+		Id(*state.Filter.ID)
 
 	groupResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

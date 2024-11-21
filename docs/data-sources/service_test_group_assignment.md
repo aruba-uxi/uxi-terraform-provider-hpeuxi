@@ -30,4 +30,4 @@ Retrieves a specific service test group assignment.
 
 Required:
 
-- `service_test_group_assignment_id` (String) The identifier of the service test group assignment.
+- `id` (String) The identifier of the service test group assignment.

@@ -37,7 +37,7 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
-							sensor_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -89,7 +89,7 @@ func TestSensorGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
-							sensor_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -132,7 +132,7 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
-							sensor_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -147,7 +147,7 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
-							sensor_group_assignment_id = "id"
+							id = "id"
 						}
 					}
 				`,

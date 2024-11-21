@@ -40,7 +40,7 @@ type sensorDataSourceModel struct {
 	Notes              types.String  `tfsdk:"notes"`
 	PcapMode           types.String  `tfsdk:"pcap_mode"`
 	Filter             struct {
-		SensorID types.String `tfsdk:"sensor_id"`
+		ID types.String `tfsdk:"id"`
 	} `tfsdk:"filter"`
 }
 
@@ -108,7 +108,7 @@ func (d *sensorDataSource) Schema(
 				Description: "The filter used to filter the specific sensor.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"sensor_id": schema.StringAttribute{
+					"id": schema.StringAttribute{
 						Description: "The identifier of the sensor group assignment.",
 						Required:    true,
 					},
@@ -133,7 +133,7 @@ func (d *sensorDataSource) Read(
 
 	request := d.client.ConfigurationAPI.
 		SensorsGet(ctx).
-		Id(state.Filter.SensorID.ValueString())
+		Id(state.Filter.ID.ValueString())
 
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
