@@ -32,7 +32,7 @@ type sensorGroupAssignmentDataSourceModel struct {
 	SensorID types.String `tfsdk:"sensor_id"`
 	GroupID  types.String `tfsdk:"group_id"`
 	Filter   struct {
-		SensorGroupAssignmentID string `tfsdk:"sensor_group_assignment_id"`
+		ID string `tfsdk:"id"`
 	} `tfsdk:"filter"`
 }
 
@@ -68,7 +68,7 @@ func (d *sensorGroupAssignmentDataSource) Schema(
 				Description: "The filter used to filter the specific sensor group assignment.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"sensor_group_assignment_id": schema.StringAttribute{
+					"id": schema.StringAttribute{
 						Description: "The identifier of the sensor group assignment.",
 						Required:    true,
 					},
@@ -93,7 +93,7 @@ func (d *sensorGroupAssignmentDataSource) Read(
 
 	request := d.client.ConfigurationAPI.
 		SensorGroupAssignmentsGet(ctx).
-		Id(state.Filter.SensorGroupAssignmentID)
+		Id(state.Filter.ID)
 	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 

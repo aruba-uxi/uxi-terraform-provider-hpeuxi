@@ -32,7 +32,7 @@ func TestGroupDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -47,7 +47,7 @@ func TestGroupDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "my_root_group_id"
+							id = "my_root_group_id"
 						}
 					}
 				`,
@@ -80,7 +80,7 @@ func TestGroupDataSourceTooManyRequestsHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -120,7 +120,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "id"
+							id = "id"
 						}
 					}
 				`,
@@ -136,7 +136,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							group_id = "id"
+							id = "id"
 						}
 					}
 				`,

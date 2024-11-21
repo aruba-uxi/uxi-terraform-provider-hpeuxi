@@ -30,4 +30,4 @@ Retrieves a specific network group assignment.
 
 Required:
 
-- `network_group_assignment_id` (String) The identifier of the network group assignment.
+- `id` (String) The identifier of the network group assignment.

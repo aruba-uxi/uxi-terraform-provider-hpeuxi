@@ -29,7 +29,7 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							service_test_id = "` + config.ServiceTestId + `"
+							id = "` + config.ServiceTestId + `"
 						}
 					}
 
@@ -41,7 +41,7 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 					// the actual datasource
 					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
-							service_test_group_assignment_id = uxi_service_test_group_assignment.my_service_test_group_assignment.id
+							id = uxi_service_test_group_assignment.my_service_test_group_assignment.id
 						}
 					}
 				`,

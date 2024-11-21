@@ -38,7 +38,7 @@ type wiredNetworkDataSourceModel struct {
 	ExternalConnectivity types.Bool   `tfsdk:"external_connectivity"`
 	VlanID               types.Int32  `tfsdk:"vlan_id"`
 	Filter               struct {
-		WiredNetworkID string `tfsdk:"wired_network_id"`
+		ID string `tfsdk:"id"`
 	} `tfsdk:"filter"`
 }
 
@@ -98,7 +98,7 @@ func (d *wiredNetworkDataSource) Schema(
 				Description: "The filter used to filter the specific wired network.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
-					"wired_network_id": schema.StringAttribute{
+					"id": schema.StringAttribute{
 						Description: "The identifier of the wired network.",
 						Required:    true,
 					},
@@ -123,7 +123,7 @@ func (d *wiredNetworkDataSource) Read(
 
 	request := d.client.ConfigurationAPI.
 		WiredNetworksGet(ctx).
-		Id(state.Filter.WiredNetworkID)
+		Id(state.Filter.ID)
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 

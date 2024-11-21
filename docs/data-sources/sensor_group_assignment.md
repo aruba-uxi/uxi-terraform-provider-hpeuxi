@@ -30,4 +30,4 @@ Retrieves a specific sensor group assignment.
 
 Required:
 
-- `sensor_group_assignment_id` (String) The identifier of the sensor group assignment.
+- `id` (String) The identifier of the sensor group assignment.

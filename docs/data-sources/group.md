@@ -31,4 +31,4 @@ Retrieves a specific group.
 
 Required:
 
-- `group_id` (String) The identifier of the group.
+- `id` (String) The identifier of the group.
