@@ -7,6 +7,7 @@ package util
 import (
 	"net/http"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 )
@@ -14,19 +15,25 @@ import (
 func GenerateServiceTestResponse(
 	id string,
 	postfix string,
-) map[string]interface{} {
-	return map[string]interface{}{
-		"id":        id,
-		"category":  "external" + postfix,
-		"name":      "name" + postfix,
-		"target":    "target" + postfix,
-		"template":  "template" + postfix,
-		"isEnabled": true,
-		"type":      shared.ServiceTestType,
+) config_api_client.ServiceTestsListResponse {
+	return config_api_client.ServiceTestsListResponse{
+		Items: []config_api_client.ServiceTestsListItem{
+			{
+				Id:        id,
+				Category:  "external" + postfix,
+				Name:      "name" + postfix,
+				Target:    *config_api_client.NewNullableString(config_api_client.PtrString("target" + postfix)),
+				Template:  "template" + postfix,
+				IsEnabled: true,
+				Type:      shared.ServiceTestType,
+			},
+		},
+		Count: 1,
+		Next:  *config_api_client.NewNullableString(nil),
 	}
 }
 
-func MockGetServiceTest(id string, response map[string]interface{}, times int) {
+func MockGetServiceTest(id string, response interface{}, times int) {
 	gock.New(MockUxiUrl).
 		Get(shared.ServiceTestPath).
 		MatchHeader("Authorization", mockToken).

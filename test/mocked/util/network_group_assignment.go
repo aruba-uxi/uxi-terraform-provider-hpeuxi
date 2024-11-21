@@ -7,27 +7,52 @@ package util
 import (
 	"net/http"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 )
 
-func GenerateNetworkGroupAssignmentResponse(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"id":      id,
-		"group":   map[string]string{"id": "group_id" + postfix},
-		"network": map[string]string{"id": "network_id" + postfix},
-		"type":    shared.NetworkGroupAssignmentType,
+func GenerateNetworkGroupAssignmentResponse(
+	id string,
+	postfix string,
+) config_api_client.NetworkGroupAssignmentsResponse {
+	return config_api_client.NetworkGroupAssignmentsResponse{
+		Items: []config_api_client.NetworkGroupAssignmentsItem{
+			{
+				Id:      id,
+				Group:   *config_api_client.NewGroup("group_id" + postfix),
+				Network: *config_api_client.NewNetwork("network_id" + postfix),
+				Type:    shared.NetworkGroupAssignmentType,
+			},
+		},
+		Count: 1,
+		Next:  *config_api_client.NewNullableString(nil),
 	}
 }
 
-func GenerateNetworkGroupAssignmentRequest(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"groupId":   "group_id" + postfix,
-		"networkId": "network_id" + postfix,
+func GenerateNetworkGroupAssignmentPostRequest(
+	id string,
+	postfix string,
+) config_api_client.NetworkGroupAssignmentsPostRequest {
+	return config_api_client.NetworkGroupAssignmentsPostRequest{
+		GroupId:   *config_api_client.PtrString("group_id" + postfix),
+		NetworkId: *config_api_client.PtrString("network_id" + postfix),
 	}
 }
 
-func MockGetNetworkGroupAssignment(id string, response map[string]interface{}, times int) {
+func GenerateNetworkGroupAssignmentPostResponse(
+	id string,
+	postfix string,
+) config_api_client.NetworkGroupAssignmentsPostResponse {
+	return config_api_client.NetworkGroupAssignmentsPostResponse{
+		Id:      id,
+		Group:   *config_api_client.NewGroup("group_id" + postfix),
+		Network: *config_api_client.NewNetwork("network_id" + postfix),
+		Type:    shared.NetworkGroupAssignmentType,
+	}
+}
+
+func MockGetNetworkGroupAssignment(id string, response interface{}, times int) {
 	gock.New(MockUxiUrl).
 		Get(shared.NetworkGroupAssignmentPath).
 		MatchHeader("Authorization", mockToken).
@@ -38,8 +63,8 @@ func MockGetNetworkGroupAssignment(id string, response map[string]interface{}, t
 }
 
 func MockPostNetworkGroupAssignment(
-	request map[string]interface{},
-	response map[string]interface{},
+	request config_api_client.NetworkGroupAssignmentsPostRequest,
+	response config_api_client.NetworkGroupAssignmentsPostResponse,
 	times int,
 ) {
 	gock.New(MockUxiUrl).

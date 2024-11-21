@@ -31,35 +31,27 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						2,
 					)
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					// required for service test group assignment create
 					util.MockPostServiceTestGroupAssignment(
-						util.GenerateServiceTestGroupAssignmentRequest(
+						util.GenerateServiceTestGroupAssignmentPostRequest(
 							"service_test_group_assignment_id",
 							"",
 						),
-						util.GenerateServiceTestGroupAssignmentResponse(
+						util.GenerateServiceTestGroupAssignmentPostResponse(
 							"service_test_group_assignment_id",
 							"",
 						),
@@ -67,10 +59,8 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					)
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{
-							util.GenerateServiceTestGroupAssignmentResponse(
-								"service_test_group_assignment_id", "",
-							)},
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id", "",
 						),
 						1,
 					)
@@ -118,10 +108,8 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{
-							util.GenerateServiceTestGroupAssignmentResponse(
-								"service_test_group_assignment_id", "",
-							)},
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id", "",
 						),
 						1,
 					)
@@ -135,38 +123,22 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetServiceTest(
 						"service_test_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id_2", "_2"),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id_2", "_2"),
 						2,
 					)
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						2,
 					)
 					util.MockGetGroup(
 						"group_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						3,
 					)
 
@@ -175,36 +147,32 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 
 					// required for creating another group
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id_2", "_2", "_2"),
-						util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
+						util.GenerateNonRootGroupPostRequest("group_id_2", "_2", "_2"),
+						util.GenerateGroupPostResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 
 					// required for service test group assignment create
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id_2",
-						util.GeneratePaginatedResponse([]map[string]interface{}{
-							util.GenerateServiceTestGroupAssignmentResponse(
-								"service_test_group_assignment_id_2", "_2",
-							)},
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id_2", "_2",
 						),
 						2,
 					)
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{
-							util.GenerateServiceTestGroupAssignmentResponse(
-								"service_test_group_assignment_id", "",
-							)},
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id", "",
 						),
 						1,
 					)
 					util.MockPostServiceTestGroupAssignment(
-						util.GenerateServiceTestGroupAssignmentRequest(
+						util.GenerateServiceTestGroupAssignmentPostRequest(
 							"service_test_group_assignment_id_2",
 							"_2",
 						),
-						util.GenerateServiceTestGroupAssignmentResponse(
+						util.GenerateServiceTestGroupAssignmentPostResponse(
 							"service_test_group_assignment_id_2",
 							"_2",
 						),
@@ -270,20 +238,12 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id_2",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id_2", "_2", "_2"),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id_2", "_2", "_2"),
 						1,
 					)
 
@@ -331,27 +291,19 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						2,
 					)
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 
@@ -361,11 +313,11 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockPostServiceTestGroupAssignment(
-						util.GenerateServiceTestGroupAssignmentRequest(
+						util.GenerateServiceTestGroupAssignmentPostRequest(
 							"service_test_group_assignment_id",
 							"",
 						),
-						util.GenerateServiceTestGroupAssignmentResponse(
+						util.GenerateServiceTestGroupAssignmentPostResponse(
 							"service_test_group_assignment_id",
 							"",
 						),
@@ -373,10 +325,8 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 					)
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{
-							util.GenerateServiceTestGroupAssignmentResponse(
-								"service_test_group_assignment_id", "",
-							)},
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id", "",
 						),
 						1,
 					)
@@ -422,10 +372,8 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{
-							util.GenerateServiceTestGroupAssignmentResponse(
-								"service_test_group_assignment_id", "",
-							)},
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id", "",
 						),
 						1,
 					)
@@ -445,19 +393,13 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{
-							util.GenerateServiceTestGroupAssignmentResponse(
-								"service_test_group_assignment_id", "",
-							)},
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id", "",
 						),
 						1,
 					)
@@ -496,27 +438,19 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						1,
 					)
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 
@@ -560,26 +494,18 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
+						util.EmptyGetListResponse,
 						1,
 					)
 				},
@@ -610,35 +536,27 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						2,
 					)
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					// required for service test group assignment create
 					util.MockPostServiceTestGroupAssignment(
-						util.GenerateServiceTestGroupAssignmentRequest(
+						util.GenerateServiceTestGroupAssignmentPostRequest(
 							"service_test_group_assignment_id",
 							"",
 						),
-						util.GenerateServiceTestGroupAssignmentResponse(
+						util.GenerateServiceTestGroupAssignmentPostResponse(
 							"service_test_group_assignment_id",
 							"",
 						),
@@ -646,10 +564,8 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{
-							util.GenerateServiceTestGroupAssignmentResponse(
-								"service_test_group_assignment_id", "",
-							)},
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id", "",
 						),
 						1,
 					)
@@ -698,27 +614,19 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					// required for service test import
 					util.MockGetServiceTest(
 						"service_test_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestResponse("service_test_id", ""),
-							},
-						),
+						util.GenerateServiceTestResponse("service_test_id", ""),
 						1,
 					)
 
 					// required for group create
 					util.MockPostGroup(
-						util.GenerateGroupRequest("group_id", "", ""),
-						util.GenerateNonRootGroupResponse("group_id", "", ""),
+						util.GenerateNonRootGroupPostRequest("group_id", "", ""),
+						util.GenerateGroupPostResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 
@@ -762,22 +670,14 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestGroupAssignmentResponse(
-									"service_test_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id",
+							"",
 						),
 						1,
 					)
@@ -808,22 +708,14 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetGroup(
 						"group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("group_id", "", ""),
-							},
-						),
+						util.GenerateGroupGetResponse("group_id", "", ""),
 						1,
 					)
 					util.MockGetServiceTestGroupAssignment(
 						"service_test_group_assignment_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateServiceTestGroupAssignmentResponse(
-									"service_test_group_assignment_id",
-									"",
-								),
-							},
+						util.GenerateServiceTestGroupAssignmentResponse(
+							"service_test_group_assignment_id",
+							"",
 						),
 						1,
 					)

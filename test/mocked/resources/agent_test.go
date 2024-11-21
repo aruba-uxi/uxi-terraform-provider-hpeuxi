@@ -42,13 +42,7 @@ func TestAgentResource(t *testing.T) {
 			// Importing an agent
 			{
 				PreConfig: func() {
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
-						),
-						2,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_agent" "my_agent" {
@@ -72,13 +66,7 @@ func TestAgentResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
-						),
-						1,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 				},
 				ResourceName:      "uxi_agent.my_agent",
 				ImportState:       true,
@@ -88,27 +76,15 @@ func TestAgentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// original
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
-						),
-						1,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 					util.MockUpdateAgent(
 						"id",
-						util.GenerateAgentUpdateRequest("_2"),
-						util.GenerateAgentResponse("id", "_2"),
+						util.GenerateAgentPatchRequest("_2"),
+						util.GenerateAgentPatchResponse("id", "_2"),
 						1,
 					)
 					// updated
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponse("id", "_2")},
-						),
-						1,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_agent" "my_agent" {
@@ -125,10 +101,7 @@ func TestAgentResource(t *testing.T) {
 			// Delete testing
 			{
 				PreConfig: func() {
-					util.MockGetAgent("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
-						1,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 					util.MockDeleteAgent("id", 1)
 				},
 				Config: provider.ProviderConfig,
@@ -158,10 +131,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetAgent("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
-						2,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_agent" "my_agent" {
@@ -187,31 +157,19 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// original
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
-						),
-						1,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Patch(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockUpdateAgent(
 						"id",
-						util.GenerateAgentUpdateRequest("_2"),
-						util.GenerateAgentResponse("id", "_2"),
+						util.GenerateAgentPatchRequest("_2"),
+						util.GenerateAgentPatchResponse("id", "_2"),
 						1,
 					)
 					// updated
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponse("id", "_2")},
-						),
-						1,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_agent" "my_agent" {
@@ -230,10 +188,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 			// Delete testing
 			{
 				PreConfig: func() {
-					util.MockGetAgent("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
-						1,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 					mockTooManyRequests = gock.New(util.MockUxiUrl).
 						Delete("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusTooManyRequests).
@@ -297,11 +252,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			// Read not found
 			{
 				PreConfig: func() {
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetAgent("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_agent" "my_agent" {
@@ -320,13 +271,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			// Actually importing an agent for testing purposes
 			{
 				PreConfig: func() {
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
-						),
-						2,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_agent" "my_agent" {
@@ -348,13 +293,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// original
-					util.MockGetAgent(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateAgentResponse("id", "")},
-						),
-						1,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 					// patch agent - with error
 					gock.New(util.MockUxiUrl).
 						Patch("/networking-uxi/v1alpha1/agents/id").
@@ -381,10 +320,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing agent
-					util.MockGetAgent("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
-						1,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 					// delete agent - with error
 					gock.New(util.MockUxiUrl).
 						Delete("/networking-uxi/v1alpha1/agents/id").
@@ -405,10 +341,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetAgent("id", util.GeneratePaginatedResponse(
-						[]map[string]interface{}{util.GenerateAgentResponse("id", "")}),
-						1,
-					)
+					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 					// delete group
 					util.MockDeleteAgent("id", 1)
 				},

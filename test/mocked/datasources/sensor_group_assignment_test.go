@@ -30,11 +30,7 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetSensorGroupAssignment(
 						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse("id", ""),
-							},
-						),
+						util.GenerateSensorGroupAssignmentResponse("id", ""),
 						3,
 					)
 				},
@@ -86,11 +82,7 @@ func TestSensorGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensorGroupAssignment(
 						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateSensorGroupAssignmentResponse("id", ""),
-							},
-						),
+						util.GenerateSensorGroupAssignmentResponse("id", ""),
 						3,
 					)
 				},
@@ -150,11 +142,7 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					util.MockGetSensorGroupAssignment(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetSensorGroupAssignment("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {

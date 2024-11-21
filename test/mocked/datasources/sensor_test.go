@@ -28,13 +28,7 @@ func TestSensorDataSource(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					util.MockGetSensor(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateSensorResponse("id", "")},
-						),
-						3,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
@@ -99,13 +93,7 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.SensorPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetSensor(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateSensorResponse("id", "")},
-						),
-						3,
-					)
+					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
@@ -161,11 +149,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 			// Not found error
 			{
 				PreConfig: func() {
-					util.MockGetSensor(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetSensor("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {

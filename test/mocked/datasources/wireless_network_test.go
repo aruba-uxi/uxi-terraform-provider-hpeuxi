@@ -30,11 +30,7 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("id", ""),
-							},
-						),
+						util.GenerateWirelessNetworkResponse("id", ""),
 						3,
 					)
 				},
@@ -126,11 +122,7 @@ func TestWirelessNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetWirelessNetwork(
 						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWirelessNetworkResponse("id", ""),
-							},
-						),
+						util.GenerateWirelessNetworkResponse("id", ""),
 						3,
 					)
 				},
@@ -190,11 +182,7 @@ func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					util.MockGetWirelessNetwork(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetWirelessNetwork("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {

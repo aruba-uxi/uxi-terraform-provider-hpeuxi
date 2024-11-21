@@ -28,13 +28,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 			// Read testing
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
-						),
-						3,
-					)
+					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
@@ -112,13 +106,7 @@ func TestWiredNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.WiredNetworkPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetWiredNetwork(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
-						),
-						3,
-					)
+					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {
@@ -176,11 +164,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetWiredNetwork("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_wired_network" "my_wired_network" {

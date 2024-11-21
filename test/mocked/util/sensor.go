@@ -7,37 +7,63 @@ package util
 import (
 	"net/http"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 )
 
-func GenerateSensorResponse(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"id":                 id,
-		"serial":             "serial" + postfix,
-		"name":               "name" + postfix,
-		"modelNumber":        "model_number" + postfix,
-		"wifiMacAddress":     "wifi_mac_address" + postfix,
-		"ethernetMacAddress": "ethernet_mac_address" + postfix,
-		"addressNote":        "address_note" + postfix,
-		"longitude":          0.0,
-		"latitude":           0.0,
-		"notes":              "notes" + postfix,
-		"pcapMode":           "light",
-		"type":               shared.SensorType,
+func GenerateSensorResponse(id string, postfix string) config_api_client.SensorsResponse {
+	return config_api_client.SensorsResponse{
+		Items: []config_api_client.SensorItem{
+			{
+				Id:                 id,
+				Serial:             "serial" + postfix,
+				Name:               "name" + postfix,
+				ModelNumber:        "model_number" + postfix,
+				WifiMacAddress:     *config_api_client.NewNullableString(config_api_client.PtrString("wifi_mac_address" + postfix)),
+				EthernetMacAddress: *config_api_client.NewNullableString(config_api_client.PtrString("ethernet_mac_address" + postfix)),
+				AddressNote:        *config_api_client.NewNullableString(config_api_client.PtrString("address_note" + postfix)),
+				Longitude:          *config_api_client.NewNullableFloat32(config_api_client.PtrFloat32(0.0)),
+				Latitude:           *config_api_client.NewNullableFloat32(config_api_client.PtrFloat32(0.0)),
+				Notes:              *config_api_client.NewNullableString(config_api_client.PtrString("notes" + postfix)),
+				PcapMode:           *config_api_client.NewNullableString(config_api_client.PtrString("light")),
+				Type:               shared.SensorType,
+			},
+		},
+		Count: 1,
+		Next:  *config_api_client.NewNullableString(nil),
 	}
 }
 
-func GenerateSensorUpdateRequest(postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"name":        "name" + postfix,
-		"addressNote": "address_note" + postfix,
-		"notes":       "notes" + postfix,
-		"pcapMode":    "light",
+func GenerateSensorPatchRequest(postfix string) config_api_client.SensorsPatchRequest {
+	pcapMode, _ := config_api_client.NewPcapModeFromValue("light")
+	return config_api_client.SensorsPatchRequest{
+		Name:        config_api_client.PtrString("name" + postfix),
+		AddressNote: config_api_client.PtrString("address_note" + postfix),
+		Notes:       config_api_client.PtrString("notes" + postfix),
+		PcapMode:    pcapMode,
 	}
 }
 
-func MockGetSensor(id string, response map[string]interface{}, times int) {
+func GenerateSensorPatchResponse(id string, postfix string) config_api_client.SensorsPatchResponse {
+	pcapMode, _ := config_api_client.NewPcapModeFromValue("light")
+	return config_api_client.SensorsPatchResponse{
+		Id:                 id,
+		Serial:             "serial" + postfix,
+		Name:               "name" + postfix,
+		ModelNumber:        "model_number" + postfix,
+		WifiMacAddress:     *config_api_client.NewNullableString(config_api_client.PtrString("wifi_mac_address" + postfix)),
+		EthernetMacAddress: *config_api_client.NewNullableString(config_api_client.PtrString("ethernet_mac_address" + postfix)),
+		AddressNote:        *config_api_client.NewNullableString(config_api_client.PtrString("address_note" + postfix)),
+		Longitude:          *config_api_client.NewNullableFloat32(config_api_client.PtrFloat32(0.0)),
+		Latitude:           *config_api_client.NewNullableFloat32(config_api_client.PtrFloat32(0.0)),
+		Notes:              *config_api_client.NewNullableString(config_api_client.PtrString("notes" + postfix)),
+		PcapMode:           *config_api_client.NewNullablePcapMode(pcapMode),
+		Type:               shared.SensorType,
+	}
+}
+
+func MockGetSensor(id string, response interface{}, times int) {
 	gock.New(MockUxiUrl).
 		Get(shared.SensorPath).
 		MatchHeader("Authorization", mockToken).
@@ -49,8 +75,8 @@ func MockGetSensor(id string, response map[string]interface{}, times int) {
 
 func MockUpdateSensor(
 	id string,
-	request map[string]interface{},
-	response map[string]interface{},
+	request config_api_client.SensorsPatchRequest,
+	response config_api_client.SensorsPatchResponse,
 	times int,
 ) {
 	gock.New(MockUxiUrl).
