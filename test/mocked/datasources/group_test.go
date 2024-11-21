@@ -11,7 +11,6 @@ import (
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -28,15 +27,7 @@ func TestGroupDataSource(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("id", "", ""),
-							},
-						),
-						3,
-					)
+					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
@@ -51,21 +42,7 @@ func TestGroupDataSource(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"my_root_group_id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								{
-									"id":     "my_root_group_id",
-									"name":   "root",
-									"parent": nil,
-									"path":   "my_root_group_id",
-									"type":   shared.GroupType,
-								},
-							},
-						),
-						1,
-					)
+					util.MockGetGroup(util.MockRootGroupId, util.GenerateRootGroupGetResponse(), 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
@@ -98,15 +75,7 @@ func TestGroupDataSourceTooManyRequestsHandling(t *testing.T) {
 						Get("/networking-uxi/v1alpha1/groups").
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetGroup(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateNonRootGroupResponse("id", "", ""),
-							},
-						),
-						3,
-					)
+					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
@@ -162,11 +131,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 			// Not found error
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetGroup("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {

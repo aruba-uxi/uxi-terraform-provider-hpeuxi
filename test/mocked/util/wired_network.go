@@ -6,29 +6,40 @@ package util
 
 import (
 	"net/http"
+	"time"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 )
 
-func GenerateWiredNetworkResponse(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"id":                   id,
-		"name":                 "name" + postfix,
-		"createdAt":            "2024-09-11T12:00:00.000Z",
-		"updatedAt":            "2024-09-11T12:00:00.000Z",
-		"ipVersion":            "ip_version" + postfix,
-		"security":             "security" + postfix,
-		"dnsLookupDomain":      "dns_lookup_domain" + postfix,
-		"disableEdns":          false,
-		"useDns64":             false,
-		"externalConnectivity": false,
-		"vLanId":               123,
-		"type":                 shared.WiredNetworkType,
+func GenerateWiredNetworkResponse(
+	id string,
+	postfix string,
+) config_api_client.WiredNetworksResponse {
+	createdAt, _ := time.Parse(time.RFC3339, "2024-09-11T12:00:00.000Z")
+	updatedAt, _ := time.Parse(time.RFC3339, "2024-09-11T12:00:00.000Z")
+	return config_api_client.WiredNetworksResponse{
+		Items: []config_api_client.WiredNetworksItem{
+			{
+				Id:                   id,
+				Name:                 "name" + postfix,
+				CreatedAt:            createdAt,
+				UpdatedAt:            updatedAt,
+				IpVersion:            "ip_version" + postfix,
+				Security:             *config_api_client.NewNullableString(config_api_client.PtrString("security" + postfix)),
+				DnsLookupDomain:      *config_api_client.NewNullableString(config_api_client.PtrString("dns_lookup_domain" + postfix)),
+				DisableEdns:          false,
+				UseDns64:             false,
+				ExternalConnectivity: false,
+				VLanId:               *config_api_client.NewNullableInt32(config_api_client.PtrInt32(123)),
+				Type:                 shared.WiredNetworkType,
+			},
+		},
 	}
 }
 
-func MockGetWiredNetwork(id string, response map[string]interface{}, times int) {
+func MockGetWiredNetwork(id string, response interface{}, times int) {
 	gock.New(MockUxiUrl).
 		Get(shared.WiredNetworkPath).
 		MatchHeader("Authorization", mockToken).

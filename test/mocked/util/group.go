@@ -7,38 +7,148 @@ package util
 import (
 	"net/http"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 )
 
-func GenerateNonRootGroupResponse(
-	id string,
-	nonReplacementFieldPostfix string,
-	replacementFieldPostfix string,
-) map[string]interface{} {
-	parentId := "parent_id" + replacementFieldPostfix
+const MockRootGroupId = "root_group_id"
 
-	return map[string]interface{}{
-		"id":     id,
-		"name":   "name" + nonReplacementFieldPostfix,
-		"parent": map[string]string{"id": parentId},
-		"path":   parentId + "." + id,
-		"type":   shared.GroupType,
+func GenerateGroupPostResponse(
+	id string,
+	nameSuffix string,
+	parentIdSuffix string,
+) config_api_client.GroupsPostResponse {
+	parentId := "parent_id" + parentIdSuffix
+
+	return config_api_client.GroupsPostResponse{
+		Id:     id,
+		Name:   "name" + nameSuffix,
+		Parent: *config_api_client.NewParent(parentId),
+		Path:   parentId + "." + id,
+		Type:   shared.GroupType,
 	}
 }
 
-func GenerateGroupRequest(
+func GenerateGroupAttachedToRootGroupPostResponse(
 	id string,
-	nonReplacementFieldPostfix string,
-	replacementFieldPostfix string,
-) map[string]interface{} {
-	return map[string]interface{}{
-		"name":     "name" + nonReplacementFieldPostfix,
-		"parentId": "parent_id" + replacementFieldPostfix,
+	nameSuffix string,
+) config_api_client.GroupsPostResponse {
+	return config_api_client.GroupsPostResponse{
+		Id:     id,
+		Name:   "name" + nameSuffix,
+		Parent: *config_api_client.NewParent(MockRootGroupId),
+		Path:   "root_group_id." + id,
+		Type:   shared.GroupType,
 	}
 }
 
-func MockPostGroup(request map[string]interface{}, response map[string]interface{}, times int) {
+func GenerateGroupPatchResponse(
+	id string,
+	nameSuffix string,
+	parentIdSuffix string,
+) config_api_client.GroupsPatchResponse {
+	parentId := "parent_id" + parentIdSuffix
+
+	return config_api_client.GroupsPatchResponse{
+		Id:     id,
+		Name:   "name" + nameSuffix,
+		Parent: *config_api_client.NewParent(parentId),
+		Path:   parentId + "." + id,
+		Type:   shared.GroupType,
+	}
+}
+
+func GenerateGroupGetResponse(
+	id string,
+	nameSuffix string,
+	parentIdSuffix string,
+) config_api_client.GroupsGetResponse {
+	parentId := "parent_id" + parentIdSuffix
+
+	return config_api_client.GroupsGetResponse{
+		Items: []config_api_client.GroupsGetItem{
+			{
+				Id:     id,
+				Name:   "name" + nameSuffix,
+				Parent: *config_api_client.NewNullableParent(config_api_client.NewParent(parentId)),
+				Path:   parentId + "." + id,
+				Type:   shared.GroupType,
+			},
+		},
+		Count: 1,
+		Next:  *config_api_client.NewNullableString(nil),
+	}
+}
+
+func GenerateGroupAttachedToRootGroupGetResponse(
+	id string,
+	nameSuffix string,
+) config_api_client.GroupsGetResponse {
+	return config_api_client.GroupsGetResponse{
+		Items: []config_api_client.GroupsGetItem{
+			{
+				Id:     id,
+				Name:   "name" + nameSuffix,
+				Parent: *config_api_client.NewNullableParent(config_api_client.NewParent(MockRootGroupId)),
+				Path:   "root_group_id." + id,
+				Type:   shared.GroupType,
+			},
+		},
+		Count: 1,
+		Next:  *config_api_client.NewNullableString(nil),
+	}
+}
+
+func GenerateRootGroupGetResponse() config_api_client.GroupsGetResponse {
+	return config_api_client.GroupsGetResponse{
+		Items: []config_api_client.GroupsGetItem{
+			{
+				Id:     MockRootGroupId,
+				Name:   "root",
+				Parent: *config_api_client.NewNullableParent(nil),
+				Path:   MockRootGroupId,
+				Type:   shared.GroupType,
+			},
+		},
+		Count: 1,
+		Next:  *config_api_client.NewNullableString(nil),
+	}
+}
+
+func GenerateNonRootGroupPostRequest(
+	id string,
+	namePostfix string,
+	parentIdPostfix string,
+) config_api_client.GroupsPostRequest {
+	parentId := "parent_id" + parentIdPostfix
+
+	return config_api_client.GroupsPostRequest{
+		Name:     "name" + namePostfix,
+		ParentId: *config_api_client.NewNullableString(&parentId),
+	}
+}
+
+func GenerateGroupAttachedToRootGroupPostRequest(
+	id string,
+	namePostfix string,
+) config_api_client.GroupsPostRequest {
+	return config_api_client.GroupsPostRequest{
+		Name: "name" + namePostfix,
+	}
+}
+
+func GenerateGroupPatchRequest(postfix string) config_api_client.GroupsPatchRequest {
+	return config_api_client.GroupsPatchRequest{
+		Name: "name" + postfix,
+	}
+}
+
+func MockPostGroup(
+	request config_api_client.GroupsPostRequest,
+	response config_api_client.GroupsPostResponse,
+	times int,
+) {
 	gock.New(MockUxiUrl).
 		Post("/networking-uxi/v1alpha1/groups").
 		MatchHeader("Content-Type", "application/json").
@@ -49,7 +159,7 @@ func MockPostGroup(request map[string]interface{}, response map[string]interface
 		JSON(response)
 }
 
-func MockGetGroup(id string, response map[string]interface{}, times int) {
+func MockGetGroup(id string, response interface{}, times int) {
 	gock.New(MockUxiUrl).
 		Get("/networking-uxi/v1alpha1/groups").
 		MatchHeader("Authorization", mockToken).
@@ -59,10 +169,10 @@ func MockGetGroup(id string, response map[string]interface{}, times int) {
 		JSON(response)
 }
 
-func MockUpdateGroup(
+func MockPatchGroup(
 	id string,
-	request map[string]interface{},
-	response map[string]interface{},
+	request config_api_client.GroupsPatchRequest,
+	response config_api_client.GroupsPatchResponse,
 	times int,
 ) {
 	gock.New(MockUxiUrl).

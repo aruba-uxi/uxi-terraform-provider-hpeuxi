@@ -7,27 +7,52 @@ package util
 import (
 	"net/http"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 )
 
-func GenerateServiceTestGroupAssignmentResponse(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"id":          id,
-		"group":       map[string]string{"id": "group_id" + postfix},
-		"serviceTest": map[string]string{"id": "service_test_id" + postfix},
-		"type":        shared.ServiceTestGroupAssignmentType,
+func GenerateServiceTestGroupAssignmentResponse(
+	id string,
+	postfix string,
+) config_api_client.ServiceTestGroupAssignmentsResponse {
+	return config_api_client.ServiceTestGroupAssignmentsResponse{
+		Items: []config_api_client.ServiceTestGroupAssignmentsItem{
+			{
+				Id:          id,
+				Group:       *config_api_client.NewGroup("group_id" + postfix),
+				ServiceTest: *config_api_client.NewServiceTest("service_test_id" + postfix),
+				Type:        shared.ServiceTestGroupAssignmentType,
+			},
+		},
+		Count: 1,
+		Next:  *config_api_client.NewNullableString(nil),
 	}
 }
 
-func GenerateServiceTestGroupAssignmentRequest(id string, postfix string) map[string]interface{} {
-	return map[string]interface{}{
-		"groupId":       "group_id" + postfix,
-		"serviceTestId": "service_test_id" + postfix,
+func GenerateServiceTestGroupAssignmentPostRequest(
+	id string,
+	postfix string,
+) config_api_client.ServiceTestGroupAssignmentsPostRequest {
+	return config_api_client.ServiceTestGroupAssignmentsPostRequest{
+		GroupId:       "group_id" + postfix,
+		ServiceTestId: "service_test_id" + postfix,
 	}
 }
 
-func MockGetServiceTestGroupAssignment(id string, response map[string]interface{}, times int) {
+func GenerateServiceTestGroupAssignmentPostResponse(
+	id string,
+	postfix string,
+) config_api_client.ServiceTestGroupAssignmentsPostResponse {
+	return config_api_client.ServiceTestGroupAssignmentsPostResponse{
+		Id:          id,
+		Group:       *config_api_client.NewGroup("group_id" + postfix),
+		ServiceTest: *config_api_client.NewServiceTest("service_test_id" + postfix),
+		Type:        shared.ServiceTestGroupAssignmentType,
+	}
+}
+
+func MockGetServiceTestGroupAssignment(id string, response interface{}, times int) {
 	gock.New(MockUxiUrl).
 		Get(shared.ServiceTestGroupAssignmentPath).
 		MatchHeader("Authorization", mockToken).
@@ -38,8 +63,8 @@ func MockGetServiceTestGroupAssignment(id string, response map[string]interface{
 }
 
 func MockPostServiceTestGroupAssignment(
-	request map[string]interface{},
-	response map[string]interface{},
+	request config_api_client.ServiceTestGroupAssignmentsPostRequest,
+	response config_api_client.ServiceTestGroupAssignmentsPostResponse,
 	times int,
 ) {
 	gock.New(MockUxiUrl).

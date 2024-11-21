@@ -44,13 +44,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Importing a wired_network
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
-						),
-						2,
-					)
+					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_wired_network" "my_wired_network" {
@@ -78,13 +72,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
-						),
-						1,
-					)
+					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 1)
 				},
 				ResourceName:      "uxi_wired_network.my_wired_network",
 				ImportState:       true,
@@ -93,13 +81,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Updating a wired_network is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
-						),
-						1,
-					)
+					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_wired_network" "my_wired_network" {
@@ -112,13 +94,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Deleting a wired_network is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{util.GenerateWiredNetworkResponse("id", "")},
-						),
-						2,
-					)
+					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(
@@ -161,15 +137,7 @@ func TestWiredNetworkResourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.WiredNetworkPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetWiredNetwork(
-						"id",
-						util.GeneratePaginatedResponse(
-							[]map[string]interface{}{
-								util.GenerateWiredNetworkResponse("id", ""),
-							},
-						),
-						2,
-					)
+					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_wired_network" "my_wired_network" {
@@ -223,11 +191,7 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				PreConfig: func() {
-					util.MockGetWiredNetwork(
-						"id",
-						util.GeneratePaginatedResponse([]map[string]interface{}{}),
-						1,
-					)
+					util.MockGetWiredNetwork("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
 					resource "uxi_wired_network" "my_wired_network" {
