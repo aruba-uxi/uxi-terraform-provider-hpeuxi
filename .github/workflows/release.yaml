@@ -1,12 +1,18 @@
 # Terraform Provider release workflow.
 name: Release
 
-# This GitHub action creates a release when a tag that matches the pattern
-# "v*" (e.g. v0.1.0) is created.
+# This GitHub action creates a release when manually run with signer details
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+    inputs:
+      CS_ID:
+        description: "Code Signing ID"
+        required: true
+        type: string
+      CS_API_TOKEN:
+        description: "Code Signing API Token"
+        required: true
+        type: string
 
 # Releases need permissions to read and write the repository contents.
 # GitHub considers creating releases and uploading assets as writing contents.
@@ -15,7 +21,7 @@ permissions:
 
 jobs:
   goreleaser:
-    runs-on: ubuntu-latest
+    runs-on: Signer
     steps:
       - uses: actions/checkout@v4.2.2
         with:
@@ -32,3 +38,5 @@ jobs:
         env:
           # GitHub sets the GITHUB_TOKEN secret automatically.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CS_ID: ${{ inputs.CS_ID }}
+          CS_API_TOKEN:  ${{ inputs.CS_API_TOKEN }}

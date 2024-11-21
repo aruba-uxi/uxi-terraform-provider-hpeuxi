@@ -37,7 +37,8 @@ build-local:
   goreleaser release --clean --skip=publish,validate
 
 sign:
-  signhpe --in dist/$(ls dist | grep SHA256SUMS) --keyring --project "HPE Aruba Networking UXI Terraform Provider" --out ./dist
+  mkdir -p logs
+  signhpe --logdir ./logs --in dist/$(ls dist | grep SHA256SUMS) --env --project "HPE Aruba Networking UXI Terraform Provider" --out ./dist
 
 test-client +ARGS='':
   cd {{ CONFIG_API_CLIENT_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
