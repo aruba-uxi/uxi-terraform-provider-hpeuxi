@@ -16,7 +16,7 @@ Retrieves a specific group.
 # Retrieve data for level 1 group
 data "uxi_group" "level_1" {
   filter = {
-    id = "<group_id>"
+    id = "<level_1_group_id>"
   }
 }
 ```
