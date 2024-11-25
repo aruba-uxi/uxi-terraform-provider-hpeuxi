@@ -8,8 +8,9 @@ import (
 	"context"
 	"testing"
 
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func GetServiceTestGroupAssignment(id string) config_api_client.ServiceTestGroupAssignmentsItem {

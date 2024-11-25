@@ -9,14 +9,15 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
+	"github.com/stretchr/testify/assert"
+
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
-	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestAgentResource(t *testing.T) {

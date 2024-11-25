@@ -8,15 +8,16 @@ import (
 	"context"
 	"net/http"
 
-	configuration "github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
-	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	configuration "github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
