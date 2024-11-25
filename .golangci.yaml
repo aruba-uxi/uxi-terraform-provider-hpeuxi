@@ -1,0 +1,113 @@
+---
+linters:
+  # See the dedicated "linters" documentation section.
+  # All available settings of specific linters.
+  enable:
+    - asasalint
+    - asciicheck
+    - bidichk
+    # - bodyclose
+    # canonicalheader
+    - containedctx
+    # - contextcheck
+    # - copyloopvar if we update to later than go 1.22
+    - cyclop
+    - decorder
+    # - depguard for banning specific dependencies
+    - dogsled
+    # - dupl
+    # - dupword
+    - durationcheck
+    # - err113
+    - errchkjson
+    - errcheck
+    - errname
+    # - errorlint
+    - exhaustive
+    # - exhaustruct
+    - fatcontext
+    - forbidigo
+    # - forcetypeassert
+    # - funlen
+    # - gci
+    - ginkgolinter
+    - gocheckcompilerdirectives
+    # - gochecknoglobals
+    - gochecknoinits
+    - gochecksumtype
+    - gocognit
+    # - goconst
+    # - gocritic
+    - gocyclo
+    # - godot
+    - godox
+    - gofmt
+    # - gofumpt
+    - goheader
+    # - goimports
+    - gomoddirectives
+    - gomodguard
+    - goprintffuncname
+    # - gosec
+    - gosmopolitan
+    - grouper
+    - importas
+    - inamedparam
+    - interfacebloat
+    # - intrange
+    # - ireturn
+    # - lll
+    - loggercheck
+    # - maintidx
+    - makezero
+    - mirror
+    - misspell
+    # - mnd
+    - musttag
+    - nakedret
+    - nilerr
+    - nilnil
+    # - nlreturn
+    # - noctx
+    - nolintlint
+    - nonamedreturns
+    - nosprintfhostport
+    # - paralleltest
+    - perfsprint
+    - prealloc
+    - predeclared
+    - promlinter
+    - protogetter
+    - reassign
+    # - revive
+    - rowserrcheck
+    - sloglint
+    - spancheck
+    - sqlclosecheck
+    # - stylecheck
+    - tagalign
+    # - tagliatelle
+    - tenv
+    - testableexamples
+    # - testifylint
+    # - testpackage
+    # - thelper
+    - tparallel
+    - unconvert
+    - unparam
+    # - usestdlibvars
+    # - varnamelen
+    - wastedassign
+    # - whitespace
+    # - wrapcheck
+    # - wsl
+    - zerologlint
+    - exportloopref
+
+severity:
+  default-severity: error
+  case-sensitive: true
+  rules:
+    - linters:
+        - dupl
+      severity: info
