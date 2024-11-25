@@ -30,13 +30,11 @@ generate-config-api-client: retrieve-config-api-openapi-spec
   just tidy-client
   just fmt-client
 
+#setup dev env, empty for now but here for consistency
 setup-dev:
-  curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.60.1
-  go install github.com/segmentio/golines@latest
 
 build-local:
-  go install github.com/goreleaser/goreleaser/v2@latest
-  goreleaser release --clean --skip=publish,validate
+  go run github.com/goreleaser/goreleaser/v2@latest release --clean --skip=publish,validate
 
 sign:
   mkdir -p logs
@@ -51,7 +49,7 @@ coverage-client:
 fmt-client:
   python -m tools.lint-attribution format
   gofmt -w {{ CONFIG_API_CLIENT_DIR }}
-  golines -w {{ CONFIG_API_CLIENT_DIR }}
+  go run github.com/segmentio/golines@v0.12.2 -w {{ CONFIG_API_CLIENT_DIR }}
 
 tidy-client:
   cd {{ CONFIG_API_CLIENT_DIR }} && go mod tidy
@@ -66,21 +64,21 @@ lint:
     exit 1
   fi
 
-  output=$(golines . --dry-run)
+  output=$(go run github.com/segmentio/golines@v0.12.2 . --dry-run)
   if [ -n "$output" ]; then
     echo "$output"
     echo "Error: (golines) formatting required" >&2
     exit 1
   fi
 
-  golangci-lint run
+  go run github.com/golangci/golangci-lint/cmd/golangci-lint@v1.60.1 run
 
   python -m tools.lint-attribution lint
 
 fmt:
   python -m tools.lint-attribution format
   gofmt -w .
-  golines -w .
+  go run github.com/segmentio/golines@v0.12.2 -w .
 
 tidy-provider:
   cd {{ CONFIG_API_PROVIDER_DIR }} go mod tidy
