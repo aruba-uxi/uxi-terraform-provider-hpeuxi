@@ -40,7 +40,6 @@ linters:
     - goconst # we want this
     - gocritic # we want this
     - gofumpt # we want this
-    - goimports # we want this
     - gosec # we want this
     - intrange # later version of go
     - ireturn # we want this
