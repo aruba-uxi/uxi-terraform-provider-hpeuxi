@@ -8,9 +8,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/h2non/gock"
+
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
-	"github.com/h2non/gock"
 )
 
 func GenerateWirelessNetworkResponse(

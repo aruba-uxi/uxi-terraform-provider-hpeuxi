@@ -9,13 +9,12 @@ import (
 	"flag"
 	"log"
 
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
+
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider"
 )
 
-var (
-	version string = "dev"
-)
+var version string = "dev"
 
 func main() {
 	var debug bool

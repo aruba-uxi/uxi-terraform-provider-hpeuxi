@@ -7,11 +7,12 @@ package data_source_test
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
-	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestSensorDataSource(t *testing.T) {

@@ -13,8 +13,9 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/google/uuid"
+
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func GetAgent(id string) config_api_client.AgentItem {

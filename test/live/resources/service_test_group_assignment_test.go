@@ -7,12 +7,13 @@ package resource_test
 import (
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/live/util"
 )
 
 func TestServiceTestGroupAssignmentResource(t *testing.T) {
