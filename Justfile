@@ -1,29 +1,32 @@
-TMP_DIR := "tmp"
-CONFIG_API_CLIENT_DIR := "pkg/config-api-client"
-CONFIG_API_PROVIDER_DIR := "."
+OPEN_API_TMP_DIR := "tmp"
+CLIENT_DIR := "pkg/config-api-client"
 TOOLS_PROVIDER_DIR := "tools"
 OPENAPI_SPEC := "pkg/config-api-client/api"
 SOURCE_OPEN_API_SPEC_FILE := ".openapi.source.yaml"
 
-retrieve-config-api-openapi-spec:
-  rm -rf {{ TMP_DIR }}
-  git clone git@github.com:aruba-uxi/configuration-api.git --depth=1 {{ TMP_DIR }}
+# Show this message and exit.
+help:
+	@just --list
+
+_retrieve-config-api-openapi-spec:
+  rm -rf {{ OPEN_API_TMP_DIR }}
+  git clone git@github.com:aruba-uxi/configuration-api.git --depth=1 {{ OPEN_API_TMP_DIR }}
   mkdir -p {{ OPENAPI_SPEC }}
-  cp {{ TMP_DIR }}/oas/openapi.yaml {{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }}
-  rm -rf {{ TMP_DIR }}
+  cp {{ OPEN_API_TMP_DIR }}/oas/openapi.yaml {{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }}
+  rm -rf {{ OPEN_API_TMP_DIR }}
 
-cleanup-old-client-files:
-  cd {{ CONFIG_API_CLIENT_DIR }} && cat .openapi-generator/FILES | xargs -n 1 rm -f
+_remove-client-files:
+  cd {{ CLIENT_DIR }} && cat .openapi-generator/FILES | xargs -n 1 rm -f
 
-generate-config-api-client: retrieve-config-api-openapi-spec
-  just cleanup-old-client-files
+generate-config-api-client: _retrieve-config-api-openapi-spec
+  just _remove-client-files
   docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
   --input-spec /local/{{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }} \
   --generator-name go \
-  --output /local/{{ CONFIG_API_CLIENT_DIR }} \
+  --output /local/{{ CLIENT_DIR }} \
   --package-name config_api_client \
   --git-user-id aruba-uxi \
-  --git-repo-id terraform-provider-hpeuxi/{{ CONFIG_API_CLIENT_DIR }} \
+  --git-repo-id terraform-provider-hpeuxi/{{ CLIENT_DIR }} \
   --openapi-normalizer SET_TAGS_FOR_ALL_OPERATIONS=configuration
   rm ./pkg/config-api-client/go.mod
   rm ./pkg/config-api-client/go.sum
@@ -32,6 +35,11 @@ generate-config-api-client: retrieve-config-api-openapi-spec
 
 #setup dev env, empty for now but here for consistency
 setup-dev:
+  grep -q "registry.terraform.io/arubauxi/hpeuxi" ~/.terraformrc && echo "Dev override found - installing provider locally" || { echo "Dev override not found - please follow README setup guide"; exit 1; }
+  go install .
+
+remove-dev-override:
+  sed -i '' '/registry\.terraform\.io\/arubauxi\/hpeuxi/d' ~/.terraformrc
 
 build-local:
   go run github.com/goreleaser/goreleaser/v2@latest release --clean --skip=publish,validate
@@ -41,18 +49,18 @@ sign:
   signhpe --logdir ./logs --in dist/$(ls dist | grep SHA256SUMS) --env --project "HPE Aruba Networking UXI Terraform Provider" --out ./dist
 
 test-client +ARGS='':
-  cd {{ CONFIG_API_CLIENT_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
+  cd {{ CLIENT_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 coverage-client:
-  cd {{ CONFIG_API_CLIENT_DIR }} && go tool cover -html=.coverage -o=.coverage.html
+  cd {{ CLIENT_DIR }} && go tool cover -html=.coverage -o=.coverage.html
 
 fmt-client:
   python -m tools.lint-attribution format
-  gofmt -w {{ CONFIG_API_CLIENT_DIR }}
-  go run github.com/segmentio/golines@v0.12.2 -w {{ CONFIG_API_CLIENT_DIR }}
+  gofmt -w {{ CLIENT_DIR }}
+  go run github.com/segmentio/golines@v0.12.2 -w {{ CLIENT_DIR }}
 
 tidy-client:
-  cd {{ CONFIG_API_CLIENT_DIR }} && go mod tidy
+  cd {{ CLIENT_DIR }} && go mod tidy
 
 lint:
   #!/usr/bin/env bash
@@ -81,20 +89,20 @@ fmt:
   go run github.com/segmentio/golines@v0.12.2 -w .
 
 tidy-provider:
-  cd {{ CONFIG_API_PROVIDER_DIR }} go mod tidy
+  go mod tidy
 
 test-provider +ARGS='':
-  cd {{ CONFIG_API_PROVIDER_DIR }} && TF_ACC=1 go test -v ./test/mocked/... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
+  TF_ACC=1 go test -v ./test/mocked/... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 generate-provider-docs:
-  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} --provider-name uxi
-  sed -i.backup '/subcategory: ""/d' ./{{ CONFIG_API_PROVIDER_DIR }}/docs/index.md && rm ./{{ CONFIG_API_PROVIDER_DIR }}/docs/index.md.backup
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../. --provider-name uxi
+  sed -i.backup '/subcategory: ""/d' docs/index.md && rm docs/index.md.backup
 
 validate-provider-docs:
-  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../{{ CONFIG_API_PROVIDER_DIR }} --provider-name uxi
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../. --provider-name uxi
 
 coverage-provider:
-  cd {{ CONFIG_API_PROVIDER_DIR }} && go tool cover -html=.coverage -o=.coverage.html
+  go tool cover -html=.coverage -o=.coverage.html
 
 tidy-tools:
   cd {{ TOOLS_PROVIDER_DIR }} && go mod tidy
@@ -135,9 +143,9 @@ clean:
 DEFAULT_EXAMPLE := "full-demo"
 
 plan example=DEFAULT_EXAMPLE +ARGS='':
-  cd {{ CONFIG_API_PROVIDER_DIR }} && go install .
-  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/{{example}} && terraform plan {{ ARGS }}
+  go install .
+  cd examples/{{example}} && terraform plan {{ ARGS }}
 
 apply example=DEFAULT_EXAMPLE +ARGS='':
-  cd {{ CONFIG_API_PROVIDER_DIR }} && go install .
-  cd {{ CONFIG_API_PROVIDER_DIR }}/examples/{{example}} && terraform apply {{ ARGS }}
+  go install .
+  cd examples/{{example}} && terraform apply {{ ARGS }}
