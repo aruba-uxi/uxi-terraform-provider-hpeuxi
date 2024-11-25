@@ -139,8 +139,9 @@ func GenerateGroupAttachedToRootGroupPostRequest(
 }
 
 func GenerateGroupPatchRequest(postfix string) config_api_client.GroupsPatchRequest {
+	name := "name" + postfix
 	return config_api_client.GroupsPatchRequest{
-		Name: "name" + postfix,
+		Name: &name,
 	}
 }
 

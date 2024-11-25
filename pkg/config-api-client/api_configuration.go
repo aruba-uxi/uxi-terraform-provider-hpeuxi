@@ -7,7 +7,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.15.0
+API version: 5.17.0
 Contact: support@capenetworks.com
 */
 
@@ -1381,6 +1381,11 @@ func (a *ConfigurationAPIService) GroupsPatchExecute(
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.groupsPatchRequest == nil {
+		return localVarReturnValue, nil, reportError(
+			"groupsPatchRequest is required and must be specified",
+		)
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/merge-patch+json"}
