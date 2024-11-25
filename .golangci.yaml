@@ -39,7 +39,6 @@ linters:
     - funlen # we want this
     - goconst # we want this
     - gocritic # we want this
-    - gofumpt # we want this
     - gosec # we want this
     - intrange # later version of go
     - ireturn # we want this
