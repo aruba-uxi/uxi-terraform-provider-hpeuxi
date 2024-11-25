@@ -72,8 +72,11 @@ func (d *serviceTestDataSource) Schema(
 				Computed:    true,
 			},
 			"template": schema.StringAttribute{
-				Description: "The template of the service test.",
-				Computed:    true,
+				Description: "The template of the service test. See " +
+					"[Custom Test Template](https://help.capenetworks.com/en/articles/2744766-custom-test-templates) and " +
+					"[Predefined Test Template](https://help.capenetworks.com/en/articles/2792424-predefined-tests) " +
+					"for more information.",
+				Computed: true,
 			},
 			"is_enabled": schema.BoolAttribute{
 				Description: "Whether the service test is enabled or not.",

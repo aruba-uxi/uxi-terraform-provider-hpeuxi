@@ -26,7 +26,7 @@ Retrieves a specific service test.
 - `is_enabled` (Boolean) Whether the service test is enabled or not.
 - `name` (String) The name of the service test.
 - `target` (String) The target of the service test.
-- `template` (String) The template of the service test.
+- `template` (String) The template of the service test. See [Custom Test Template](https://help.capenetworks.com/en/articles/2744766-custom-test-templates) and [Predefined Test Template](https://help.capenetworks.com/en/articles/2792424-predefined-tests) for more information.
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`
