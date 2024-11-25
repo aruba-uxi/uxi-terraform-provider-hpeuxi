@@ -27,8 +27,8 @@ linters:
     - cyclop # we have gocyclo, apparently its better
     - execinquery # deprecated
 
-    - bodyclose # we want this
     - canonicalheader # for checking copyright headers
+    - bodyclose # we want this
     - contextcheck # we want this
     - copyloopvar # if we update to later than go 1.22
     - depguard # for banning specific dependencies
@@ -60,15 +60,12 @@ linters:
     - wrapcheck # we want this
 
     - canonicalheader # for checking copyright headers
-    - copyloopvar # if we update to later than go 1.22
-    - depguard # for banning specific dependencies
     - err113 # disabled in gl provider
     - exhaustruct # disabled in gl provider
     - gci # disabled in gl provider
     - gochecknoglobals # disabled in gl provider
     - godot # disabled in gl provider
     - intrange # later version of go
-    - mnd # we want this  todo: also see gomnd
     - gomnd # disabled in gl provider  todo: also see mnd
     - paralleltest # disabled in gl provider
     - testpackage # disabled in gl provider
