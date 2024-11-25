@@ -202,8 +202,8 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 	})
 
 	mockOAuth.Mock.Disable()
-
 }
+
 func TestAgentResourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()

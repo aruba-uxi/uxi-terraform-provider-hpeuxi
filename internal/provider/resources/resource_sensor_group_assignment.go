@@ -104,7 +104,6 @@ func (r *sensorGroupAssignmentResource) Configure(
 	}
 
 	r.client = client
-
 }
 
 func (r *sensorGroupAssignmentResource) Create(

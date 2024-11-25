@@ -22,9 +22,7 @@ import (
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-var (
-	_ provider.Provider = &uxiConfigurationProvider{}
-)
+var _ provider.Provider = &uxiConfigurationProvider{}
 
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
@@ -76,7 +74,8 @@ func (p *uxiConfigurationProvider) Schema(
 				Optional:  true,
 				Sensitive: true,
 			},
-		}}
+		},
+	}
 }
 
 func (p *uxiConfigurationProvider) Configure(

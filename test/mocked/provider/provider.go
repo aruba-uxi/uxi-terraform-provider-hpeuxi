@@ -17,8 +17,6 @@ const (
 	}`
 )
 
-var (
-	TestAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
-		"uxi": providerserver.NewProtocol6WithError(provider.New("test")()),
-	}
-)
+var TestAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
+	"uxi": providerserver.NewProtocol6WithError(provider.New("test")()),
+}

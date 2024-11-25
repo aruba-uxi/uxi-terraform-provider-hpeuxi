@@ -1036,7 +1036,6 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 							"message":        "Forbidden - user has insufficient permissions to complete the request",
 							"debugId":        "12312-123123-123123-1231212",
 						})
-
 				},
 				Config: provider.ProviderConfig + `
 					removed {

@@ -17,7 +17,6 @@ import (
 )
 
 func TestConfigurationAPI(t *testing.T) {
-
 	configuration := config_api_client.NewConfiguration()
 	configuration.Host = "localhost:80"
 	configuration.Scheme = "http"
@@ -188,7 +187,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI GroupsPost", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/groups").
 			JSON(map[string]interface{}{
@@ -386,7 +384,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI AgentGroupAssignmentsGet", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/agent-group-assignments").
 			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
@@ -427,7 +424,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI AgentGroupAssignmentsPost", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/agent-group-assignments").
 			JSON(map[string]interface{}{
@@ -475,7 +471,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI SensorGroupAssignmentsGet", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/sensor-group-assignments").
 			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
@@ -516,7 +511,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI SensorGroupAssignmentsPost", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/sensor-group-assignments").
 			JSON(map[string]interface{}{
@@ -564,7 +558,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI WiredNetworksGet", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/wired-networks").
 			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
@@ -625,7 +618,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI WirelessNetworksGet", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/wireless-networks").
 			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
@@ -689,7 +681,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI NetworkGroupAssignmentsGet", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/network-group-assignments").
 			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
@@ -730,7 +721,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI NetworkGroupAssignmentsPost", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/network-group-assignments").
 			JSON(map[string]interface{}{
@@ -778,7 +768,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI ServiceTestGroupAssignmentsGet", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Get("/networking-uxi/v1alpha1/service-test-group-assignments").
 			MatchParams(map[string]string{"id": "uid", "limit": "10", "next": "some-cursor"}).
@@ -819,7 +808,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI ServiceTestGroupAssignmentsPost", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Post("/networking-uxi/v1alpha1/service-test-group-assignments").
 			JSON(map[string]interface{}{
@@ -854,7 +842,6 @@ func TestConfigurationAPI(t *testing.T) {
 	})
 
 	t.Run("Test ConfigurationAPI ServiceTestGroupAssignmentsDelete", func(t *testing.T) {
-
 		gock.New(configuration.Scheme + "://" + configuration.Host).
 			Delete("/networking-uxi/v1alpha1/service-test-group-assignments/uid").
 			Reply(http.StatusNoContent)

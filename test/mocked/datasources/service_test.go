@@ -59,7 +59,6 @@ func TestServiceTestDataSourceTooManyRequestsHandling(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-
 			// Test Read
 			{
 				PreConfig: func() {

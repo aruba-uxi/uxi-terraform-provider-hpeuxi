@@ -217,8 +217,8 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 	})
 
 	mockOAuth.Mock.Disable()
-
 }
+
 func TestSensorResourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
