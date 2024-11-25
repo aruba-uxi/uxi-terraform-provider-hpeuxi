@@ -55,7 +55,6 @@ linters:
     - testifylint # we want this
     - thelper # we want this
     - usestdlibvars # we want this
-    - varnamelen # disabled in gl provider, but we may want it... seems like good
     - whitespace # we want this
     - wrapcheck # we want this
 
