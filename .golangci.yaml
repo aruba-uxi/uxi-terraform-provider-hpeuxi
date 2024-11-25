@@ -1,108 +1,94 @@
 ---
+run:
+  deadline: 240s
+  tests: true
+
+linters-settings:
+  dupl:
+    threshold: 110
+  lll:
+    line-length: 128
+  goimports:
+    local-prefixes: "github.com/HPE"
+  godox:
+    keywords:
+      - OPTIMIZE
+  exhaustive:
+    default-signifies-exhaustive: true
+  funlen:
+    lines: 90
+    statements: 60
+  depguard: # we need to investigate this, it could be important
+    rules:
+      Main:
+        allow:
+          - $gostd
+          - github.com/hashicorp/terraform-plugin-go
+          - github.com/hashicorp/terraform-plugin-mux
+          - github.com/hashicorp/terraform-plugin-sdk
+          - github.com/HPE/terraform-provider-hpegl
+          - github.com/hewlettpackard/hpegl-provider-lib
+          - github.com/hewlettpackard/hpegl-metal-terraform-resources
+          - github.com/HewlettPackard/hpegl-containers-terraform-resources
+          - github.com/HewlettPackard/hpegl-vmaas-terraform-resources
+
 linters:
   # See the dedicated "linters" documentation section.
   # All available settings of specific linters.
-  enable:
-    - asasalint
-    - asciicheck
-    - bidichk
-    # - bodyclose
-    # canonicalheader
-    - containedctx
-    # - contextcheck
-    # - copyloopvar if we update to later than go 1.22
-    - cyclop
-    - decorder
-    # - depguard for banning specific dependencies
-    - dogsled
-    # - dupl
-    # - dupword
-    - durationcheck
-    # - err113
-    - errchkjson
-    - errcheck
-    - errname
-    # - errorlint
-    - exhaustive
-    # - exhaustruct
-    - fatcontext
-    - forbidigo
-    # - forcetypeassert
-    # - funlen
-    # - gci
-    - ginkgolinter
-    - gocheckcompilerdirectives
-    # - gochecknoglobals
-    - gochecknoinits
-    - gochecksumtype
-    - gocognit
-    # - goconst
-    # - gocritic
-    - gocyclo
-    # - godot
-    - godox
-    - gofmt
-    # - gofumpt
-    - goheader
-    # - goimports
-    - gomoddirectives
-    - gomodguard
-    - goprintffuncname
-    # - gosec
-    - gosmopolitan
-    - grouper
-    - importas
-    - inamedparam
-    - interfacebloat
-    # - intrange
-    # - ireturn
-    # - lll
-    - loggercheck
-    # - maintidx
-    - makezero
-    - mirror
-    - misspell
-    # - mnd
-    - musttag
-    - nakedret
-    - nilerr
-    - nilnil
-    # - nlreturn
-    # - noctx
-    - nolintlint
-    - nonamedreturns
-    - nosprintfhostport
-    # - paralleltest
-    - perfsprint
-    - prealloc
-    - predeclared
-    - promlinter
-    - protogetter
-    - reassign
-    # - revive
-    - rowserrcheck
-    - sloglint
-    - spancheck
-    - sqlclosecheck
-    # - stylecheck
-    - tagalign
-    # - tagliatelle
-    - tenv
-    - testableexamples
-    # - testifylint
-    # - testpackage
-    # - thelper
-    - tparallel
-    - unconvert
-    - unparam
-    # - usestdlibvars
-    # - varnamelen
-    - wastedassign
-    # - whitespace
-    # - wrapcheck
-    # - wsl
-    - zerologlint
-    - exportloopref
+  enable-all: true
+  disable:
+    - cyclop # we have gocyclo, apparently its better
+    - execinquery # deprecated
+
+    - bodyclose # we want this
+    - canonicalheader # for checking copyright headers
+    - contextcheck # we want this
+    - copyloopvar # if we update to later than go 1.22
+    - depguard # for banning specific dependencies
+    - dupl # we want this
+    - dupword # we want this
+    - errorlint # we want this
+    - forcetypeassert # we want this
+    - funlen # we want this
+    - goconst # we want this
+    - gocritic # we want this
+    - gofumpt # we want this
+    - goimports # we want this
+    - gosec # we want this
+    - intrange # later version of go
+    - ireturn # we want this
+    - lll # we want this
+    - maintidx # we want this
+    - mnd # we want this  todo: also see gomnd
+    - gomnd # disabled in gl provider  todo: also see mnd
+    - nlreturn # we want this
+    - noctx # we want this
+    - nestif # we want this
+    - revive # we want this
+    - stylecheck # we want this
+    - tagliatelle # we want this
+    - testifylint # we want this
+    - thelper # we want this
+    - usestdlibvars # we want this
+    - varnamelen # disabled in gl provider, but we may want it... seems like good
+    - whitespace # we want this
+    - wrapcheck # we want this
+
+    - canonicalheader # for checking copyright headers
+    - copyloopvar # if we update to later than go 1.22
+    - depguard # for banning specific dependencies
+    - err113 # disabled in gl provider
+    - exhaustruct # disabled in gl provider
+    - gci # disabled in gl provider
+    - gochecknoglobals # disabled in gl provider
+    - godot # disabled in gl provider
+    - intrange # later version of go
+    - mnd # we want this  todo: also see gomnd
+    - gomnd # disabled in gl provider  todo: also see mnd
+    - paralleltest # disabled in gl provider
+    - testpackage # disabled in gl provider
+    - varnamelen # disabled in gl provider, but we may want it... seems like good
+    - wsl # disabled in gl provider
 
 severity:
   default-severity: error
@@ -111,3 +97,35 @@ severity:
     - linters:
         - dupl
       severity: info
+
+issues:
+  exclude-rules:
+    # Exclude lll issues for long lines with go:generate
+    - linters:
+        - lll
+      source: "^//go:generate "
+
+    # ignore function length for tests as look up tables typically exceed.
+    - linters:
+        - funlen
+        - goerr113
+        - dupl
+      path: _test\.go
+
+    - linters:
+        - dupl
+      path: ".*generated.*go"
+
+    - linters:
+        - goconst
+      path: ".*generated.*go"
+
+    - linters:
+        - staticcheck
+      text: "SA9003:"
+
+    - linters:
+        - stylecheck
+      text: "ST1005:"
+
+  max-same-issues: 0
