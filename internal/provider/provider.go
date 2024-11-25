@@ -10,7 +10,7 @@ import (
 
 	configuration "github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"

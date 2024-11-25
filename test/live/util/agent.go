@@ -13,7 +13,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/google/uuid"
 )
 
