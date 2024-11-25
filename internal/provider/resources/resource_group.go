@@ -202,7 +202,8 @@ func (r *groupResource) Update(
 		return
 	}
 
-	patchRequest := config_api_client.NewGroupsPatchRequest(plan.Name.ValueString())
+	patchRequest := config_api_client.NewGroupsPatchRequest()
+	patchRequest.Name = plan.Name.ValueStringPointer()
 	request := r.client.ConfigurationAPI.
 		GroupsPatch(ctx, plan.ID.ValueString()).
 		GroupsPatchRequest(*patchRequest)

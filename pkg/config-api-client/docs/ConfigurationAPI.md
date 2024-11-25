@@ -611,7 +611,7 @@ import (
 
 func main() {
 	groupUid := "groupUid_example" // string | 
-	groupsPatchRequest := *openapiclient.NewGroupsPatchRequest("Name_example") // GroupsPatchRequest |  (optional)
+	groupsPatchRequest := *openapiclient.NewGroupsPatchRequest() // GroupsPatchRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

@@ -7,7 +7,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.15.0
+API version: 5.17.0
 Contact: support@capenetworks.com
 */
 
@@ -22,7 +22,7 @@ import (
 // checks if the AgentsPatchRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &AgentsPatchRequest{}
 
-// AgentsPatchRequest Request body for patching an agent.  Fields:     name: Optional string     notes: Optional string     pcap_mode: Optional PcapMode
+// AgentsPatchRequest Request body for patching an agent.
 type AgentsPatchRequest struct {
 	Name     *string   `json:"name,omitempty"`
 	Notes    *string   `json:"notes,omitempty"`

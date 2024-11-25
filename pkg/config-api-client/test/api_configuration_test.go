@@ -232,7 +232,9 @@ func TestConfigurationAPI(t *testing.T) {
 				"path":   "parent.uid.node",
 				"type":   "networking-uxi/group",
 			})
-		groupsPatchRequest := config_api_client.NewGroupsPatchRequest("new_name")
+		name := "new_name"
+		groupsPatchRequest := config_api_client.NewGroupsPatchRequest()
+		groupsPatchRequest.Name = &name
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GroupsPatch(context.Background(), "node").
 			GroupsPatchRequest(*groupsPatchRequest).Execute()
