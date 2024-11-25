@@ -7,10 +7,11 @@ package util
 import (
 	"context"
 
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
+
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func NewClient() *config_api_client.APIClient {

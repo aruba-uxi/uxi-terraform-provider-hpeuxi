@@ -9,13 +9,14 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 )
 
 func TestAgentGroupAssignmentResource(t *testing.T) {
@@ -686,7 +687,6 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 							"message":        "Forbidden - user has insufficient permissions to complete the request",
 							"debugId":        "12312-123123-123123-1231212",
 						})
-
 				},
 				Config: provider.ProviderConfig + `
 					removed {

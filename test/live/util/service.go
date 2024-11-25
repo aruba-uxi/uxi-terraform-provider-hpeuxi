@@ -7,7 +7,7 @@ package util
 import (
 	"context"
 
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
 func GetServiceTest(id string) config_api_client.ServiceTestsListItem {

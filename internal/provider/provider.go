@@ -8,9 +8,6 @@ import (
 	"context"
 	"net/http"
 
-	configuration "github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -18,13 +15,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
+	configuration "github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/config"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/resources"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-var (
-	_ provider.Provider = &uxiConfigurationProvider{}
-)
+var _ provider.Provider = &uxiConfigurationProvider{}
 
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
@@ -76,7 +75,8 @@ func (p *uxiConfigurationProvider) Schema(
 				Optional:  true,
 				Sensitive: true,
 			},
-		}}
+		},
+	}
 }
 
 func (p *uxiConfigurationProvider) Configure(

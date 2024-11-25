@@ -58,7 +58,6 @@ func TestOptionalFloatValue(
 	tfKey string,
 	property *float32,
 ) resource.TestCheckFunc {
-
 	if property == nil {
 		return resource.TestCheckNoResourceAttr(tfResource, tfKey)
 	}

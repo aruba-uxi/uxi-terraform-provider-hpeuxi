@@ -9,7 +9,7 @@ import (
 	"net/http"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
-	"github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
