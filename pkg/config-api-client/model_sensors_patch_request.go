@@ -7,7 +7,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.15.0
+API version: 5.17.0
 Contact: support@capenetworks.com
 */
 
@@ -22,7 +22,7 @@ import (
 // checks if the SensorsPatchRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &SensorsPatchRequest{}
 
-// SensorsPatchRequest Request body for patching a sensor.  Fields:     name: Optional string     address_note: Optional string     notes: Optional string     pcap_mode: Optional PcapMode
+// SensorsPatchRequest Request body for patching a sensor.
 type SensorsPatchRequest struct {
 	Name        *string   `json:"name,omitempty"`
 	AddressNote *string   `json:"addressNote,omitempty"`
