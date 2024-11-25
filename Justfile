@@ -33,7 +33,6 @@ generate-config-api-client: _retrieve-config-api-openapi-spec
   just tidy-client
   just fmt-client
 
-#setup dev env, empty for now but here for consistency
 setup-dev:
   grep -q "registry.terraform.io/arubauxi/hpeuxi" ~/.terraformrc && echo "Dev override found - installing provider locally" || { echo "Dev override not found - please follow README setup guide"; exit 1; }
   go install .
