@@ -15,10 +15,11 @@ Manages a sensor.
 ```terraform
 resource "uxi_sensor" "my_sensor" {
   name         = "name"
-  address_note = "address_note"
+  address_note = "Example 3rd Floor"
   notes        = "notes"
-  pcap_mode    = "pcap_mode"
+  pcap_mode    = "light"
 
+  # Deleting a sensor is not supported
   lifecycle {
     prevent_destroy = true
   }
@@ -59,6 +60,6 @@ terraform import uxi_sensor.my_sensor <my_sensor_id>
 # Import sensor using its ID with an import block
 import {
     to = uxi_sensor.my_sensor
-    id = "uid"
+    id = "<my_sensor_id>"
 }
 ```
