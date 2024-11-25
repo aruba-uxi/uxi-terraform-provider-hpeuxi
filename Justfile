@@ -56,7 +56,7 @@ coverage-client:
 fmt-client:
   python -m tools.lint-attribution format
   go run github.com/segmentio/golines@v0.12.2 -w {{ CLIENT_DIR }}
-  go run golang.org/x/tools/cmd/goimports@latest -w {{ CLIENT_DIR }}
+  go run golang.org/x/tools/cmd/goimports@latest -local github.com/aruba-uxi -w {{ CLIENT_DIR }}
   go run mvdan.cc/gofumpt@latest -w {{ CLIENT_DIR }}
 
 tidy-client:
@@ -86,7 +86,7 @@ lint:
 fmt:
   python -m tools.lint-attribution format
   go run github.com/segmentio/golines@v0.12.2 -w .
-  go run golang.org/x/tools/cmd/goimports@latest -w .
+  go run golang.org/x/tools/cmd/goimports@latest -local github.com/aruba-uxi -w .
   go run mvdan.cc/gofumpt@latest -w .
 
 tidy-provider:
