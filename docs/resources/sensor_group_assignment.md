@@ -14,8 +14,8 @@ Manages a sensor group assignment.
 
 ```terraform
 resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-  sensor_id = "<my_sensor_id>"
-  group_id = "<my_group_id>"
+    sensor_id = uxi_sensor.my_sensor.id
+    group_id = uxi_group.my_group.id
 }
 ```
 
