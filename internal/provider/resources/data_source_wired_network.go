@@ -132,12 +132,14 @@ func (d *wiredNetworkDataSource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(networkResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -175,6 +177,7 @@ func (d *wiredNetworkDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: Wired Network. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

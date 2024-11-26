@@ -121,12 +121,14 @@ func (d *serviceTestDataSource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(serviceTestResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -162,6 +164,7 @@ func (d *serviceTestDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: ServiceTest. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

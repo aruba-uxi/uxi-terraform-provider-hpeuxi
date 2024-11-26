@@ -108,18 +108,21 @@ func (d *groupDataSource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(groupResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
 	group := groupResponse.Items[0]
 	if util.IsRoot(group) {
 		resp.Diagnostics.AddError(errorSummary, "The root group cannot be used as a data source")
+
 		return
 	}
 
@@ -151,6 +154,7 @@ func (d *groupDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: Group. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

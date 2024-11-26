@@ -110,6 +110,7 @@ func (d *serviceTestGroupAssignmentDataSource) Read(
 	if len(serviceTestGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -141,6 +142,7 @@ func (d *serviceTestGroupAssignmentDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: ServiceTest Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
