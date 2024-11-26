@@ -97,6 +97,7 @@ func (r *groupResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Group. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -127,6 +128,7 @@ func (r *groupResource) Create(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_group"), errorDetail)
+
 		return
 	}
 
@@ -164,14 +166,17 @@ func (r *groupResource) Read(
 	if errorDetail != nil {
 		if *errorDetail == groupNotFoundError {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(errorSummary, *errorDetail)
+
 		return
 	}
 
 	if util.IsRoot(*group) {
 		resp.Diagnostics.AddError(errorSummary, "The root group cannot be used as a resource")
+
 		return
 	}
 
@@ -214,6 +219,7 @@ func (r *groupResource) Update(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_group"), errorDetail)
+
 		return
 	}
 
@@ -252,9 +258,11 @@ func (r *groupResource) Delete(
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_group"), errorDetail)
+
 		return
 	}
 }
@@ -281,6 +289,7 @@ func (r *groupResource) getGroup(
 
 	if len(groupResponse.Items) != 1 {
 		notFound := groupNotFoundError
+
 		return nil, &notFound
 	}
 

@@ -128,12 +128,14 @@ func (d *agentDataSource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(agentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -171,6 +173,7 @@ func (d *agentDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: Agent. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

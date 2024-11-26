@@ -116,6 +116,7 @@ func (r *agentResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Group. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -158,11 +159,13 @@ func (r *agentResource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(agentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	agent := agentResponse.Items[0]
@@ -206,6 +209,7 @@ func (r *agentResource) Update(
 		pcapMode, err := config_api_client.NewPcapModeFromValue(*plannedPcapMode)
 		if err != nil {
 			resp.Diagnostics.AddError(errorSummary, err.Error())
+
 			return
 		}
 		patchRequest.PcapMode = pcapMode
@@ -219,6 +223,7 @@ func (r *agentResource) Update(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
@@ -260,9 +265,11 @@ func (r *agentResource) Delete(
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_agent"), errorDetail)
+
 		return
 	}
 }

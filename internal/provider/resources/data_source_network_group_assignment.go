@@ -102,12 +102,14 @@ func (d *networkGroupAssignmentDataSource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(networkGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -139,6 +141,7 @@ func (d *networkGroupAssignmentDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: Network Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

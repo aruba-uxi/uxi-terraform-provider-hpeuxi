@@ -101,6 +101,7 @@ func (r *agentGroupAssignmentResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Network Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -134,6 +135,7 @@ func (r *agentGroupAssignmentResource) Create(
 			util.GenerateErrorSummary("create", "uxi_agent_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
 
@@ -170,11 +172,13 @@ func (r *agentGroupAssignmentResource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(agentGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	agentGroupAssignment := agentGroupAssignmentResponse.Items[0]
@@ -224,12 +228,14 @@ func (r *agentGroupAssignmentResource) Delete(
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("delete", "uxi_agent_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
 }
