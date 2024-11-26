@@ -11,11 +11,11 @@ import (
 )
 
 func GetWirelessNetwork(id string) config_api_client.WirelessNetworksItem {
-	result, response, err := Client.ConfigurationAPI.
+	result, _, err := Client.ConfigurationAPI.
 		WirelessNetworksGet(context.Background()).
 		Id(id).
 		Execute()
-	defer response.Body.Close()
+	// defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}

@@ -115,7 +115,7 @@ func (d *serviceTestDataSource) Read(
 		Id(state.Filter.ID.ValueString())
 
 	serviceTestResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
+	// defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")

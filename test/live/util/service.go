@@ -11,11 +11,11 @@ import (
 )
 
 func GetServiceTest(id string) config_api_client.ServiceTestsListItem {
-	result, response, err := Client.ConfigurationAPI.
+	result, _, err := Client.ConfigurationAPI.
 		ServiceTestsGet(context.Background()).
 		Id(id).
 		Execute()
-	defer response.Body.Close()
+	// defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}

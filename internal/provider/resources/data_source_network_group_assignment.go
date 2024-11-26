@@ -96,7 +96,7 @@ func (d *networkGroupAssignmentDataSource) Read(
 		NetworkGroupAssignmentsGet(ctx).
 		Id(state.Filter.ID)
 	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
+	// defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")

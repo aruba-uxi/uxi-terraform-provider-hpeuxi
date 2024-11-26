@@ -14,11 +14,11 @@ import (
 )
 
 func GetSensorGroupAssignment(id string) config_api_client.SensorGroupAssignmentsItem {
-	result, response, err := Client.ConfigurationAPI.
+	result, _, err := Client.ConfigurationAPI.
 		SensorGroupAssignmentsGet(context.Background()).
 		Id(id).
 		Execute()
-	defer response.Body.Close()
+	// defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}

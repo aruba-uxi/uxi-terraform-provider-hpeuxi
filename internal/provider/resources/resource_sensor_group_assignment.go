@@ -128,7 +128,7 @@ func (r *sensorGroupAssignmentResource) Create(
 		SensorGroupAssignmentsPost(ctx).
 		SensorGroupAssignmentsPostRequest(*postRequest)
 	sensorGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
+	// defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -167,7 +167,7 @@ func (r *sensorGroupAssignmentResource) Read(
 		SensorGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
 	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
+	// defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
@@ -226,7 +226,7 @@ func (r *sensorGroupAssignmentResource) Delete(
 	request := r.client.ConfigurationAPI.
 		SensorGroupAssignmentsDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
+	// defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {

@@ -23,7 +23,7 @@ func GetAgent(id string) config_api_client.AgentItem {
 		AgentsGet(context.Background()).
 		Id(id).
 		Execute()
-	defer response.Body.Close()
+	// defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}
@@ -79,7 +79,7 @@ func (p ProvisionAgent) Provision() (string, error) {
 	if err != nil {
 		return id, err
 	}
-	defer resp.Body.Close()
+	// defer resp.Body.Close()
 
 	body, _ := io.ReadAll(resp.Body)
 	if resp.StatusCode != http.StatusCreated {
