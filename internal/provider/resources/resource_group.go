@@ -116,13 +116,13 @@ func (r *groupResource) Create(
 		return
 	}
 
-	groups_post_request := config_api_client.NewGroupsPostRequest(plan.Name.ValueString())
+	groupsPostRequest := config_api_client.NewGroupsPostRequest(plan.Name.ValueString())
 	if !plan.ParentGroupID.IsUnknown() && !plan.ParentGroupID.IsNull() {
-		groups_post_request.SetParentId(plan.ParentGroupID.ValueString())
+		groupsPostRequest.SetParentId(plan.ParentGroupID.ValueString())
 	}
 	request := r.client.ConfigurationAPI.
 		GroupsPost(ctx).
-		GroupsPostRequest(*groups_post_request)
+		GroupsPostRequest(*groupsPostRequest)
 	group, response, err := util.RetryForTooManyRequests(request.Execute)
 	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

@@ -32,7 +32,7 @@ func TestGroupResource(t *testing.T) {
 		groupNameGrandChildMovedToRoot   = groupNameGrandChild + "_moved_to_root"
 	)
 
-	var resourceIdBeforeRecreate string
+	var resourceIDBeforeRecreate string
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -135,10 +135,10 @@ func TestGroupResource(t *testing.T) {
 						"uxi_group.grandchild",
 						"id",
 						func(value string) error {
-							resourceIdBeforeRecreate = util.GetGroupByName(
+							resourceIDBeforeRecreate = util.GetGroupByName(
 								groupNameGrandChild,
 							).Id
-							assert.Equal(t, value, resourceIdBeforeRecreate)
+							assert.Equal(t, value, resourceIDBeforeRecreate)
 
 							return nil
 						},
@@ -205,7 +205,7 @@ func TestGroupResource(t *testing.T) {
 						"uxi_group.grandchild",
 						"id",
 						func(value string) error {
-							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+							assert.NotEqual(t, value, resourceIDBeforeRecreate)
 
 							return nil
 						},
@@ -271,7 +271,7 @@ func TestRootGroupResource(t *testing.T) {
 
 				import {
 					to = uxi_group.my_root_group
-					id = "` + config.GroupIdRoot + `"
+					id = "` + config.GroupIDRoot + `"
 				}`,
 				ExpectError: regexp.MustCompile(`The root group cannot be used as a resource`),
 			},
@@ -279,14 +279,14 @@ func TestRootGroupResource(t *testing.T) {
 	})
 }
 
-func checkGroupIsChildOfNode(actualParentGroupId, expectedParentName string) error {
-	expectedParentGroupId := util.GetGroupByName(expectedParentName).GetId()
+func checkGroupIsChildOfNode(actualParentGroupID, expectedParentName string) error {
+	expectedParentGroupID := util.GetGroupByName(expectedParentName).GetId()
 
-	if expectedParentGroupId != actualParentGroupId {
+	if expectedParentGroupID != actualParentGroupID {
 		return fmt.Errorf(
 			"expected \"%s\", but got \"%s\"",
-			expectedParentGroupId,
-			actualParentGroupId,
+			expectedParentGroupID,
+			actualParentGroupID,
 		)
 	}
 

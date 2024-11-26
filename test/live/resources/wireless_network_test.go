@@ -18,7 +18,7 @@ import (
 )
 
 func TestWirelessNetworkResource(t *testing.T) {
-	wirelessNetwork := util.GetWirelessNetwork(config.WirelessNetworkId)
+	wirelessNetwork := util.GetWirelessNetwork(config.WirelessNetworkID)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -47,7 +47,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 
 					import {
 						to = uxi_wireless_network.wireless_network_0
-						id = "` + config.WirelessNetworkId + `"
+						id = "` + config.WirelessNetworkID + `"
 					}`,
 
 				Check: shared.CheckStateAgainstWirelessNetwork(

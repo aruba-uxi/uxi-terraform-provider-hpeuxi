@@ -30,7 +30,7 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 
 					data "uxi_agent" "my_agent" {
 						filter = {
-							id = "` + config.AgentPermanentId + `"
+							id = "` + config.AgentPermanentID + `"
 						}
 					}
 

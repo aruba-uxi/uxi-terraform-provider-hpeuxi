@@ -16,7 +16,7 @@ import (
 )
 
 func TestAgentDataSource(t *testing.T) {
-	agent := util.GetAgent(config.AgentPermanentId)
+	agent := util.GetAgent(config.AgentPermanentID)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() {},
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -25,7 +25,7 @@ func TestAgentDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_agent" "my_agent" {
 						filter = {
-							id = "` + config.AgentPermanentId + `"
+							id = "` + config.AgentPermanentID + `"
 						}
 					}
 				`,

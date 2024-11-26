@@ -23,9 +23,9 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 	)
 
 	var (
-		existingSensorProperties = util.GetSensor(config.SensorId)
-		resourceIdBeforeRecreate string
-		resourceIdAfterRecreate  string
+		existingSensorProperties = util.GetSensor(config.SensorID)
+		resourceIDBeforeRecreate string
+		resourceIDAfterRecreate  string
 	)
 
 	resource.Test(t, resource.TestCase{
@@ -47,7 +47,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 
 					import {
 						to = uxi_sensor.my_sensor
-						id = "` + config.SensorId + `"
+						id = "` + config.SensorID + `"
 					}
 
 					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
@@ -59,7 +59,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
-						config.SensorId,
+						config.SensorID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
@@ -74,12 +74,12 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdBeforeRecreate = rs.Primary.ID
+						resourceIDBeforeRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
 							"uxi_sensor_group_assignment.my_sensor_group_assignment",
-							util.GetSensorGroupAssignment(resourceIdBeforeRecreate),
+							util.GetSensorGroupAssignment(resourceIDBeforeRecreate),
 						)(s)
 					},
 				),
@@ -120,7 +120,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
-						config.SensorId,
+						config.SensorID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_sensor_group_assignment.my_sensor_group_assignment",
@@ -135,12 +135,12 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdAfterRecreate = rs.Primary.ID
+						resourceIDAfterRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
 							"uxi_sensor_group_assignment.my_sensor_group_assignment",
-							util.GetSensorGroupAssignment(resourceIdAfterRecreate),
+							util.GetSensorGroupAssignment(resourceIDAfterRecreate),
 						)(s)
 					},
 				),
@@ -160,8 +160,8 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 		CheckDestroy: func(s *terraform.State) error {
 			assert.Equal(t, util.GetGroupByName(groupName), nil)
 			assert.Equal(t, util.GetGroupByName(group2Name), nil)
-			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
-			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIDBeforeRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIDAfterRecreate), nil)
 
 			return nil
 		},

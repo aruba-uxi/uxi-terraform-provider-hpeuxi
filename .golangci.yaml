@@ -37,7 +37,6 @@ linters:
     - funlen # we want this
     - goconst # we want this
     - gocritic # we want this
-    # - gosec # we want this
     - intrange # later version of go
     - ireturn # we want this
     - lll # we want this
@@ -47,7 +46,7 @@ linters:
     - noctx # we want this
     - nestif # we want this
     - revive # we want this
-    - stylecheck # we want this
+    # - stylecheck # we want this
     - tagliatelle # we want this
     - testifylint # we want this
     - thelper # we want this
@@ -89,6 +88,10 @@ issues:
         - goerr113
         - dupl
       path: _test\.go
+
+    - linters:
+        - stylecheck
+      path: pkg/config-api-client
 
     - linters:
         - dupl

@@ -16,7 +16,7 @@ import (
 )
 
 func TestWirelessNetworkDataSource(t *testing.T) {
-	wirelessNetwork := util.GetWirelessNetwork(config.WirelessNetworkId)
+	wirelessNetwork := util.GetWirelessNetwork(config.WirelessNetworkID)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -25,7 +25,7 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_wireless_network" "my_wireless_network" {
 						filter = {
-							id = "` + config.WirelessNetworkId + `"
+							id = "` + config.WirelessNetworkID + `"
 						}
 					}
 				`,
