@@ -27,6 +27,7 @@ func CheckStateAgainstSensor(
 			"name",
 			func(value string) error {
 				assert.Equal(t, value, sensor.Name)
+
 				return nil
 			},
 		),

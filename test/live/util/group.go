@@ -17,5 +17,6 @@ func GetGroupByName(name string) *config_api_client.GroupsGetItem {
 			return &group
 		}
 	}
+
 	return nil
 }

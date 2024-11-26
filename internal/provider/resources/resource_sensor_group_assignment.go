@@ -101,6 +101,7 @@ func (r *sensorGroupAssignmentResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Sensor Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -134,6 +135,7 @@ func (r *sensorGroupAssignmentResource) Create(
 			util.GenerateErrorSummary("create", "uxi_sensor_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
 
@@ -170,11 +172,13 @@ func (r *sensorGroupAssignmentResource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(sensorGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -225,12 +229,14 @@ func (r *sensorGroupAssignmentResource) Delete(
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("delete", "uxi_sensor_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
 }

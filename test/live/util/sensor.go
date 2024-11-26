@@ -21,5 +21,6 @@ func GetSensor(id string) config_api_client.SensorItem {
 	if len(result.Items) != 1 {
 		panic("sensor with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }

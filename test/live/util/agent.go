@@ -29,6 +29,7 @@ func GetAgent(id string) config_api_client.AgentItem {
 	if len(result.Items) != 1 {
 		panic("agent with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }
 

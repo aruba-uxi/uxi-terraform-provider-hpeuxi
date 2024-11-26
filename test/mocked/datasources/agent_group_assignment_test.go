@@ -102,6 +102,7 @@ func TestAgentGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 					),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),

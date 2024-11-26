@@ -88,6 +88,7 @@ func TestGroupDataSourceTooManyRequestsHandling(t *testing.T) {
 					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),

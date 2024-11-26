@@ -76,6 +76,7 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 					shared.CheckStateAgainstSensor(t, "data.uxi_sensor.my_sensor", sensor),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),

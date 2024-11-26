@@ -46,6 +46,7 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 
 		return true, detail
 	}
+
 	return false, ""
 }
 

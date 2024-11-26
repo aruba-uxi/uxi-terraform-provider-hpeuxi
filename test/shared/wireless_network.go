@@ -27,6 +27,7 @@ func CheckStateAgainstWirelessNetwork(
 			"name",
 			func(value string) error {
 				assert.Equal(t, value, wirelessNetwork.Name)
+
 				return nil
 			},
 		),

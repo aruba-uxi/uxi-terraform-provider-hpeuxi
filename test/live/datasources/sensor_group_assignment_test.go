@@ -50,6 +50,7 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
+
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
 							"data.uxi_sensor_group_assignment.my_sensor_group_assignment",

@@ -101,6 +101,7 @@ func (r *serviceTestGroupAssignmentResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Service Test Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -134,6 +135,7 @@ func (r *serviceTestGroupAssignmentResource) Create(
 			util.GenerateErrorSummary("create", "uxi_service_test_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
 
@@ -172,11 +174,13 @@ func (r *serviceTestGroupAssignmentResource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(serviceTestGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	serviceTestGroupAssignment := serviceTestGroupAssignmentResponse.Items[0]
@@ -230,12 +234,14 @@ func (r *serviceTestGroupAssignmentResource) Delete(
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
 }

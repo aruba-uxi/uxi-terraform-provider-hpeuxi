@@ -266,6 +266,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),
@@ -292,6 +293,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),
@@ -329,6 +331,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),

@@ -118,6 +118,7 @@ func (r *wiredNetworkResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Wired Network. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -160,11 +161,13 @@ func (r *wiredNetworkResource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(networkResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 

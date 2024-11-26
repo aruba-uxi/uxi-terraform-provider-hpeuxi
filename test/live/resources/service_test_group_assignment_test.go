@@ -62,6 +62,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
+
 							return nil
 						},
 					),
@@ -70,6 +71,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIdBeforeRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
 							"uxi_service_test_group_assignment.my_service_test_group_assignment",
@@ -118,6 +120,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(group2Name).Id)
+
 							return nil
 						},
 					),
@@ -126,6 +129,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIdAfterRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
 							"uxi_service_test_group_assignment.my_service_test_group_assignment",
@@ -138,6 +142,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						"id",
 						func(value string) error {
 							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+
 							return nil
 						},
 					),
@@ -160,6 +165,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			assert.Equal(t, util.GetGroupByName(group2Name), nil)
 			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
 			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+
 			return nil
 		},
 	})

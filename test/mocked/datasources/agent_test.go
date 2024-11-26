@@ -76,6 +76,7 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 					shared.CheckStateAgainstAgent(t, "data.uxi_agent.my_agent", agent),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),

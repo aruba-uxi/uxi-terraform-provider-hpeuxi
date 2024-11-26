@@ -104,6 +104,7 @@ func (d *serviceTestGroupAssignmentDataSource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 

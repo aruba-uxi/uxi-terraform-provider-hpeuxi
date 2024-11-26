@@ -50,6 +50,7 @@ func TestGroupResource(t *testing.T) {
 						"id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupNameParent).Id)
+
 							return nil
 						},
 					),
@@ -77,6 +78,7 @@ func TestGroupResource(t *testing.T) {
 						"id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupNameParentUpdated).Id)
+
 							return nil
 						},
 					),
@@ -113,6 +115,7 @@ func TestGroupResource(t *testing.T) {
 						"id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupNameChild).Id)
+
 							return nil
 						},
 					),
@@ -136,6 +139,7 @@ func TestGroupResource(t *testing.T) {
 								groupNameGrandChild,
 							).Id
 							assert.Equal(t, value, resourceIdBeforeRecreate)
+
 							return nil
 						},
 					),
@@ -180,6 +184,7 @@ func TestGroupResource(t *testing.T) {
 								value,
 								util.GetGroupByName(groupNameGrandChildMovedToParent).Id,
 							)
+
 							return nil
 						},
 					),
@@ -201,6 +206,7 @@ func TestGroupResource(t *testing.T) {
 						"id",
 						func(value string) error {
 							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+
 							return nil
 						},
 					),
@@ -246,6 +252,7 @@ func TestGroupResource(t *testing.T) {
 			assert.Equal(t, util.GetGroupByName(groupNameGrandChild), nil)
 			assert.Equal(t, util.GetGroupByName(groupNameGrandChildMovedToParent), nil)
 			assert.Equal(t, util.GetGroupByName(groupNameGrandChildMovedToRoot), nil)
+
 			return nil
 		},
 	})

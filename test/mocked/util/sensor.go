@@ -38,6 +38,7 @@ func GenerateSensorResponse(id string, postfix string) config_api_client.Sensors
 
 func GenerateSensorPatchRequest(postfix string) config_api_client.SensorsPatchRequest {
 	pcapMode, _ := config_api_client.NewPcapModeFromValue("light")
+
 	return config_api_client.SensorsPatchRequest{
 		Name:        config_api_client.PtrString("name" + postfix),
 		AddressNote: config_api_client.PtrString("address_note" + postfix),
@@ -48,6 +49,7 @@ func GenerateSensorPatchRequest(postfix string) config_api_client.SensorsPatchRe
 
 func GenerateSensorPatchResponse(id string, postfix string) config_api_client.SensorsPatchResponse {
 	pcapMode, _ := config_api_client.NewPcapModeFromValue("light")
+
 	return config_api_client.SensorsPatchResponse{
 		Id:                 id,
 		Serial:             "serial" + postfix,
