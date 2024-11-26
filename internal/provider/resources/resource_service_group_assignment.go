@@ -128,6 +128,7 @@ func (r *serviceTestGroupAssignmentResource) Create(
 		ServiceTestGroupAssignmentsPost(ctx).
 		ServiceTestGroupAssignmentsPostRequest(*postRequest)
 	serviceTestGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
+	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -168,6 +169,7 @@ func (r *serviceTestGroupAssignmentResource) Read(
 	serviceTestGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(
 		request.Execute,
 	)
+	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
@@ -229,6 +231,7 @@ func (r *serviceTestGroupAssignmentResource) Delete(
 		ServiceTestGroupAssignmentsDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
+	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {

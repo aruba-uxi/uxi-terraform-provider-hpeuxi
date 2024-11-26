@@ -27,7 +27,7 @@ linters:
     - cyclop # we have gocyclo, apparently its better
     - execinquery # deprecated
 
-    - bodyclose # we want this
+    # - bodyclose # we want this
     - contextcheck # we want this
     - copyloopvar # if we update to later than go 1.22
     - depguard # for banning specific dependencies

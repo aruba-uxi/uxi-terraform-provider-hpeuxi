@@ -53,6 +53,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
+		defer httpRes.Body.Close()
 
 		modelNumber := "model_number"
 		wifiMacAddress := "wifi_mac_address"
@@ -111,6 +112,7 @@ func TestConfigurationAPI(t *testing.T) {
 			AgentsPatch(context.Background(), "uid").
 			AgentsPatchRequest(agentsPatchRequest).
 			Execute()
+		defer httpRes.Body.Close()
 
 		wifiMacAddress := "wifi_mac_address"
 		ethernetMacAddress := "ethernet_mac_address"
@@ -139,6 +141,7 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			AgentsDelete(context.Background(), "uid").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
@@ -169,6 +172,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -207,6 +211,7 @@ func TestConfigurationAPI(t *testing.T) {
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GroupsPost(context.Background()).
 			GroupsPostRequest(*groupsPostRequest).Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -237,6 +242,7 @@ func TestConfigurationAPI(t *testing.T) {
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GroupsPatch(context.Background(), "node").
 			GroupsPatchRequest(*groupsPatchRequest).Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -257,6 +263,7 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			GroupsDelete(context.Background(), "uid").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
@@ -294,6 +301,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
+		defer httpRes.Body.Close()
 
 		WifiMacAddress := "wifi_mac_address"
 		EthernetMacAddress := "ethernet_mac_address"
@@ -362,6 +370,7 @@ func TestConfigurationAPI(t *testing.T) {
 			SensorsPatch(context.Background(), "uid").
 			SensorsPatchRequest(sensorsPatchRequest).
 			Execute()
+		defer httpRes.Body.Close()
 
 		wifiMacAddress := "wifi_mac_address"
 		ethernetMacAddress := "ethernet_mac_address"
@@ -409,6 +418,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -449,6 +459,7 @@ func TestConfigurationAPI(t *testing.T) {
 			AgentGroupAssignmentsPost(context.Background()).
 			AgentGroupAssignmentsPostRequest(*postRequest).
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -468,6 +479,7 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			AgentGroupAssignmentDelete(context.Background(), "uid").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
@@ -496,6 +508,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -536,6 +549,7 @@ func TestConfigurationAPI(t *testing.T) {
 			SensorGroupAssignmentsPost(context.Background()).
 			SensorGroupAssignmentsPostRequest(*postRequest).
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -555,6 +569,7 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			SensorGroupAssignmentsDelete(context.Background(), "uid").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
@@ -591,6 +606,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
+		defer httpRes.Body.Close()
 
 		security := "security"
 		dnsLookupDomain := "dns_lookup_domain"
@@ -653,6 +669,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
+		defer httpRes.Body.Close()
 
 		security := "security"
 		dnsLookupDomain := "dns_lookup_domain"
@@ -706,6 +723,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -746,6 +764,7 @@ func TestConfigurationAPI(t *testing.T) {
 			NetworkGroupAssignmentsPost(context.Background()).
 			NetworkGroupAssignmentsPostRequest(*postRequest).
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -765,6 +784,7 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			NetworkGroupAssignmentsDelete(context.Background(), "uid").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
@@ -793,6 +813,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -833,6 +854,7 @@ func TestConfigurationAPI(t *testing.T) {
 			ServiceTestGroupAssignmentsPost(context.Background()).
 			ServiceTestGroupAssignmentsPostRequest(*postRequest).
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
@@ -852,6 +874,7 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			ServiceTestGroupAssignmentsDelete(context.Background(), "uid").
 			Execute()
+		defer httpRes.Body.Close()
 
 		require.Nil(t, err)
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)

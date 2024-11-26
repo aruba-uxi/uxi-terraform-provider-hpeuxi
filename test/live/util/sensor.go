@@ -11,10 +11,11 @@ import (
 )
 
 func GetSensor(id string) config_api_client.SensorItem {
-	result, _, err := Client.ConfigurationAPI.
+	result, response, err := Client.ConfigurationAPI.
 		SensorsGet(context.Background()).
 		Id(id).
 		Execute()
+	defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}

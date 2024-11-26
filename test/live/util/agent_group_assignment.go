@@ -14,10 +14,11 @@ import (
 )
 
 func GetAgentGroupAssignment(id string) *config_api_client.AgentGroupAssignmentsItem {
-	result, _, err := Client.ConfigurationAPI.
+	result, response, err := Client.ConfigurationAPI.
 		AgentGroupAssignmentsGet(context.Background()).
 		Id(id).
 		Execute()
+	defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}
