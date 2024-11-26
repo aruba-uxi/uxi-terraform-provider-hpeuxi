@@ -145,6 +145,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 					shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),
@@ -177,6 +178,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 					shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", updatedAgent),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),
@@ -195,6 +197,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),

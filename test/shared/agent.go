@@ -27,6 +27,7 @@ func CheckStateAgainstAgent(
 			"name",
 			func(value string) error {
 				assert.Equal(t, value, agent.Name)
+
 				return nil
 			},
 		),

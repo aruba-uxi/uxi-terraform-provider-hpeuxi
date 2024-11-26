@@ -24,6 +24,7 @@ func GetNetworkGroupAssignment(id string) config_api_client.NetworkGroupAssignme
 	if len(result.Items) != 1 {
 		panic("network_group_assignment with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }
 

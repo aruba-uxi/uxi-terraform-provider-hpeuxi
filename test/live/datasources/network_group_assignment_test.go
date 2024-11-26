@@ -50,6 +50,7 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
+
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
 							"data.uxi_network_group_assignment.my_network_group_assignment",

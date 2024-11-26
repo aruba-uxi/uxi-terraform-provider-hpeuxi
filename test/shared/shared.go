@@ -71,6 +71,7 @@ func TestOptionalFloatValue(
 			if have != want {
 				return fmt.Errorf("have `%f`; but want `%f`", have, want)
 			}
+
 			return nil
 		},
 	)
@@ -78,6 +79,7 @@ func TestOptionalFloatValue(
 
 func stringToFloat64(s string) float64 {
 	val, _ := strconv.ParseFloat(s, 32)
+
 	return float64(val)
 }
 
@@ -86,5 +88,6 @@ func Int32PtrToStringPtr(value *int32) *string {
 		return nil
 	}
 	result := strconv.Itoa(int(*value))
+
 	return &result
 }

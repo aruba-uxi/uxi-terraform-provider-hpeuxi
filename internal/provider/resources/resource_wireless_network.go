@@ -129,6 +129,7 @@ func (r *wirelessNetworkResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Wireless Network. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -171,11 +172,13 @@ func (r *wirelessNetworkResource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(networkResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 

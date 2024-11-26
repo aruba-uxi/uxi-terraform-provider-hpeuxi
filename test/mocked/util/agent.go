@@ -17,6 +17,7 @@ func GenerateAgentPatchRequest(postfix string) config_api_client.AgentsPatchRequ
 	name := "name" + postfix
 	notes := "notes" + postfix
 	pcapMode, _ := config_api_client.NewPcapModeFromValue("light")
+
 	return config_api_client.AgentsPatchRequest{
 		Name:     &name,
 		Notes:    &notes,

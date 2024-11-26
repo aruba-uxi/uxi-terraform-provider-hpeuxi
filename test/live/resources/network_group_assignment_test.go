@@ -63,6 +63,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						"group_id",
 						func(group_id string) error {
 							assert.Equal(t, group_id, util.GetGroupByName(groupName).Id)
+
 							return nil
 						},
 					),
@@ -71,6 +72,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIdBeforeRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
 							"uxi_network_group_assignment.my_network_group_assignment",
@@ -124,6 +126,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						"group_id",
 						func(group_id string) error {
 							assert.Equal(t, group_id, util.GetGroupByName(group2Name).Id)
+
 							return nil
 						},
 					),
@@ -132,6 +135,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIdAfterRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
 							"uxi_network_group_assignment.my_network_group_assignment",
@@ -144,6 +148,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						"id",
 						func(value string) error {
 							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+
 							return nil
 						},
 					),
@@ -166,6 +171,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 			assert.Equal(t, util.GetGroupByName(group2Name), nil)
 			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
 			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+
 			return nil
 		},
 	})
@@ -218,6 +224,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						"group_id",
 						func(group_id string) error {
 							assert.Equal(t, group_id, util.GetGroupByName(groupName).Id)
+
 							return nil
 						},
 					),
@@ -226,6 +233,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIdBeforeRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
 							"uxi_network_group_assignment.my_network_group_assignment",
@@ -279,6 +287,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						"group_id",
 						func(group_id string) error {
 							assert.Equal(t, group_id, util.GetGroupByName(group2Name).Id)
+
 							return nil
 						},
 					),
@@ -287,6 +296,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIdAfterRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
 							"uxi_network_group_assignment.my_network_group_assignment",
@@ -299,6 +309,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						"id",
 						func(value string) error {
 							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+
 							return nil
 						},
 					),
@@ -321,6 +332,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 			assert.Equal(t, util.GetGroupByName(group2Name), nil)
 			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
 			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+
 			return nil
 		},
 	})

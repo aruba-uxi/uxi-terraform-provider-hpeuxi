@@ -134,6 +134,7 @@ func (r *sensorResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Group. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -176,11 +177,13 @@ func (r *sensorResource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(sensorResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	sensor := sensorResponse.Items[0]
@@ -226,6 +229,7 @@ func (r *sensorResource) Update(
 		pcapMode, err := config_api_client.NewPcapModeFromValue(*plannedPcapMode)
 		if err != nil {
 			resp.Diagnostics.AddError(errorSummary, err.Error())
+
 			return
 		}
 		patchRequest.PcapMode = pcapMode
@@ -240,6 +244,7 @@ func (r *sensorResource) Update(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 

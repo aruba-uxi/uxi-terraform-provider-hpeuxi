@@ -21,5 +21,6 @@ func GetServiceTest(id string) config_api_client.ServiceTestsListItem {
 	if len(result.Items) != 1 {
 		panic("service_test with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }

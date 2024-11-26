@@ -24,6 +24,7 @@ func GetServiceTestGroupAssignment(id string) config_api_client.ServiceTestGroup
 	if len(result.Items) != 1 {
 		panic("service_test_group_assignment with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }
 

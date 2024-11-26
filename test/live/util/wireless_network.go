@@ -21,5 +21,6 @@ func GetWirelessNetwork(id string) config_api_client.WirelessNetworksItem {
 	if len(result.Items) != 1 {
 		panic("wireless_network with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }

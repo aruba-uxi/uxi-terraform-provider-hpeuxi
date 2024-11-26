@@ -106,6 +106,7 @@ func (r *serviceTestResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Group. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -148,11 +149,13 @@ func (r *serviceTestResource) Read(
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
 	if len(sensorResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	serviceTest := sensorResponse.Items[0]

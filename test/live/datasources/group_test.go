@@ -51,6 +51,7 @@ func TestGroupDataSource(t *testing.T) {
 						"id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
+
 							return nil
 						},
 					),
@@ -60,6 +61,7 @@ func TestGroupDataSource(t *testing.T) {
 						"path",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Path)
+
 							return nil
 						},
 					),

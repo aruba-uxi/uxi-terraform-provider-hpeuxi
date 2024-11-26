@@ -24,6 +24,7 @@ func GetSensorGroupAssignment(id string) config_api_client.SensorGroupAssignment
 	if len(result.Items) != 1 {
 		panic("sensor_group_assignment with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }
 

@@ -24,6 +24,7 @@ func GetAgentGroupAssignment(id string) *config_api_client.AgentGroupAssignments
 	if len(result.Items) != 1 {
 		return nil
 	}
+
 	return &result.Items[0]
 }
 

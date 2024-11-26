@@ -50,6 +50,7 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
+
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
 							"data.uxi_service_test_group_assignment.my_service_test_group_assignment",

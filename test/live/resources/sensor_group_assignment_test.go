@@ -66,6 +66,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
+
 							return nil
 						},
 					),
@@ -74,6 +75,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIdBeforeRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
 							"uxi_sensor_group_assignment.my_sensor_group_assignment",
@@ -125,6 +127,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(group2Name).Id)
+
 							return nil
 						},
 					),
@@ -133,6 +136,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIdAfterRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
 							"uxi_sensor_group_assignment.my_sensor_group_assignment",
@@ -158,6 +162,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			assert.Equal(t, util.GetGroupByName(group2Name), nil)
 			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
 			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+
 			return nil
 		},
 	})
