@@ -19,10 +19,11 @@ import (
 )
 
 func GetAgent(id string) config_api_client.AgentItem {
-	result, _, err := Client.ConfigurationAPI.
+	result, response, err := Client.ConfigurationAPI.
 		AgentsGet(context.Background()).
 		Id(id).
 		Execute()
+	defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}

@@ -11,10 +11,11 @@ import (
 )
 
 func GetWiredNetwork(id string) config_api_client.WiredNetworksItem {
-	result, _, err := Client.ConfigurationAPI.
+	result, response, err := Client.ConfigurationAPI.
 		WiredNetworksGet(context.Background()).
 		Id(id).
 		Execute()
+	defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}
