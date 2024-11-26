@@ -16,7 +16,7 @@ import (
 )
 
 func TestSensorDataSource(t *testing.T) {
-	sensor := util.GetSensor(config.SensorId)
+	sensor := util.GetSensor(config.SensorID)
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
@@ -24,7 +24,7 @@ func TestSensorDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_sensor" "my_sensor" {
 						filter = {
-							id = "` + config.SensorId + `"
+							id = "` + config.SensorID + `"
 						}
 					}
 				`,

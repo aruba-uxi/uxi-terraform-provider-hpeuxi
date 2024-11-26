@@ -18,7 +18,7 @@ import (
 )
 
 func TestServiceTestResource(t *testing.T) {
-	serviceTest := util.GetServiceTest(config.ServiceTestId)
+	serviceTest := util.GetServiceTest(config.ServiceTestID)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -47,7 +47,7 @@ func TestServiceTestResource(t *testing.T) {
 
 					import {
 						to = uxi_service_test.my_service_test
-						id = "` + config.ServiceTestId + `"
+						id = "` + config.ServiceTestID + `"
 					}`,
 
 				Check: shared.CheckStateAgainstServiceTest(

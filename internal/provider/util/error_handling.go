@@ -34,8 +34,8 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 				)
 			} else if message, ok := data["message"]; ok {
 				detail = message.(string)
-				if debugId, ok := data["debugId"]; ok {
-					detail += "\nDebugID: " + debugId.(string)
+				if debugID, ok := data["debugId"]; ok {
+					detail += "\nDebugID: " + debugID.(string)
 				}
 			} else {
 				detail = "Unexpected error: " + e.Error()

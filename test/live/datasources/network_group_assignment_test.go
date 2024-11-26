@@ -30,7 +30,7 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 
 					data "uxi_wired_network" "my_network" {
 						filter = {
-							id = "` + config.WiredNetworkId + `"
+							id = "` + config.WiredNetworkID + `"
 						}
 					}
 

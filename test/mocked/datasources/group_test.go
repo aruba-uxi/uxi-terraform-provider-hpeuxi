@@ -43,7 +43,7 @@ func TestGroupDataSource(t *testing.T) {
 			},
 			{
 				PreConfig: func() {
-					util.MockGetGroup(util.MockRootGroupId, util.GenerateRootGroupGetResponse(), 1)
+					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
 				},
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {

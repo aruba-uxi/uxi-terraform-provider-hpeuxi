@@ -23,7 +23,7 @@ import (
 func TestAgentResource(t *testing.T) {
 	// we provision an agent here so that we have something to delete later on
 	agentID, err := util.ProvisionAgent{
-		CustomerID:        config.CustomerId,
+		CustomerID:        config.CustomerID,
 		ProvisionToken:    os.Getenv("UXI_PROVISION_TOKEN"),
 		DeviceSerial:      config.AgentCreateSerial,
 		DeviceGatewayHost: config.DeviceGatewayHost,
@@ -33,12 +33,12 @@ func TestAgentResource(t *testing.T) {
 	}
 
 	agent := util.GetAgent(agentID)
-	updated_agent := agent
-	updated_notes := "notes"
-	updated_pcapMode := "off"
-	updated_agent.Name = "tf_provider_acceptance_test_agent_resource_updated_name"
-	updated_agent.Notes = *config_api_client.NewNullableString(&updated_notes)
-	updated_agent.PcapMode = *config_api_client.NewNullableString(&updated_pcapMode)
+	updatedAgent := agent
+	updatedNotes := "notes"
+	updatedPcapMode := "off"
+	updatedAgent.Name = "tf_provider_acceptance_test_agent_resource_updated_name"
+	updatedAgent.Notes = *config_api_client.NewNullableString(&updatedNotes)
+	updatedAgent.PcapMode = *config_api_client.NewNullableString(&updatedPcapMode)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -81,7 +81,7 @@ func TestAgentResource(t *testing.T) {
 						notes = "notes"
 						pcap_mode = "off"
 					}`,
-				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", updated_agent),
+				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", updatedAgent),
 			},
 			// Delete
 			{

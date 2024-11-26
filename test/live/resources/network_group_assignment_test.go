@@ -23,8 +23,8 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 	)
 
 	var (
-		resourceIdBeforeRecreate string
-		resourceIdAfterRecreate  string
+		resourceIDBeforeRecreate string
+		resourceIDAfterRecreate  string
 	)
 
 	// Test Wired Network Group Assignment
@@ -44,7 +44,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 
 					import {
 						to = uxi_wired_network.my_network
-						id = "` + config.WiredNetworkId + `"
+						id = "` + config.WiredNetworkID + `"
 					}
 
 					resource "uxi_network_group_assignment" "my_network_group_assignment" {
@@ -56,7 +56,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
-						config.WiredNetworkId,
+						config.WiredNetworkID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_network_group_assignment.my_network_group_assignment",
@@ -71,12 +71,12 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdBeforeRecreate = rs.Primary.ID
+						resourceIDBeforeRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
 							"uxi_network_group_assignment.my_network_group_assignment",
-							util.GetNetworkGroupAssignment(resourceIdBeforeRecreate),
+							util.GetNetworkGroupAssignment(resourceIDBeforeRecreate),
 						)(s)
 					},
 				),
@@ -101,7 +101,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 
 					import {
 						to = uxi_wired_network.my_network
-						id = "` + config.WiredNetworkId + `"
+						id = "` + config.WiredNetworkID + `"
 					}
 
 					// the new resources we wanna update the assignment to
@@ -119,7 +119,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
-						config.WiredNetworkId,
+						config.WiredNetworkID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_network_group_assignment.my_network_group_assignment",
@@ -134,12 +134,12 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdAfterRecreate = rs.Primary.ID
+						resourceIDAfterRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
 							"uxi_network_group_assignment.my_network_group_assignment",
-							util.GetNetworkGroupAssignment(resourceIdAfterRecreate),
+							util.GetNetworkGroupAssignment(resourceIDAfterRecreate),
 						)(s)
 					},
 					// Check that resource has been recreated
@@ -147,7 +147,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"id",
 						func(value string) error {
-							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+							assert.NotEqual(t, value, resourceIDBeforeRecreate)
 
 							return nil
 						},
@@ -169,8 +169,8 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 		CheckDestroy: func(s *terraform.State) error {
 			assert.Equal(t, util.GetGroupByName(groupName), nil)
 			assert.Equal(t, util.GetGroupByName(group2Name), nil)
-			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
-			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIDBeforeRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIDAfterRecreate), nil)
 
 			return nil
 		},
@@ -184,8 +184,8 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 	)
 
 	var (
-		resourceIdBeforeRecreate string
-		resourceIdAfterRecreate  string
+		resourceIDBeforeRecreate string
+		resourceIDAfterRecreate  string
 	)
 
 	// Test Wired Network Group Assignment
@@ -205,7 +205,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 
 					import {
 						to = uxi_wireless_network.my_network
-						id = "` + config.WirelessNetworkId + `"
+						id = "` + config.WirelessNetworkID + `"
 					}
 
 					resource "uxi_network_group_assignment" "my_network_group_assignment" {
@@ -217,7 +217,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
-						config.WirelessNetworkId,
+						config.WirelessNetworkID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_network_group_assignment.my_network_group_assignment",
@@ -232,12 +232,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdBeforeRecreate = rs.Primary.ID
+						resourceIDBeforeRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
 							"uxi_network_group_assignment.my_network_group_assignment",
-							util.GetNetworkGroupAssignment(resourceIdBeforeRecreate),
+							util.GetNetworkGroupAssignment(resourceIDBeforeRecreate),
 						)(s)
 					},
 				),
@@ -262,7 +262,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 
 					import {
 						to = uxi_wireless_network.my_network
-						id = "` + config.WirelessNetworkId + `"
+						id = "` + config.WirelessNetworkID + `"
 					}
 
 					// the new resources we wanna update the assignment to
@@ -280,7 +280,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
-						config.WirelessNetworkId,
+						config.WirelessNetworkID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_network_group_assignment.my_network_group_assignment",
@@ -295,12 +295,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdAfterRecreate = rs.Primary.ID
+						resourceIDAfterRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
 							"uxi_network_group_assignment.my_network_group_assignment",
-							util.GetNetworkGroupAssignment(resourceIdAfterRecreate),
+							util.GetNetworkGroupAssignment(resourceIDAfterRecreate),
 						)(s)
 					},
 					// Check that resource has been recreated
@@ -308,7 +308,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						"uxi_network_group_assignment.my_network_group_assignment",
 						"id",
 						func(value string) error {
-							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+							assert.NotEqual(t, value, resourceIDBeforeRecreate)
 
 							return nil
 						},
@@ -330,8 +330,8 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 		CheckDestroy: func(s *terraform.State) error {
 			assert.Equal(t, util.GetGroupByName(groupName), nil)
 			assert.Equal(t, util.GetGroupByName(group2Name), nil)
-			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
-			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIDBeforeRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIDAfterRecreate), nil)
 
 			return nil
 		},
