@@ -7,7 +7,7 @@ package util
 import (
 	"bytes"
 	"context"
-	"crypto/md5"
+	"crypto/md5" // #nosec G501
 	"encoding/json"
 	"fmt"
 	"io"
@@ -95,7 +95,7 @@ func (p ProvisionAgent) Provision() (string, error) {
 
 func (p ProvisionAgent) generateID() (string, error) {
 	// Create an MD5 hash of the serial string
-	hasher := md5.New()
+	hasher := md5.New() // #nosec G401
 	hasher.Write([]byte(p.DeviceSerial))
 	digest := hasher.Sum(nil)
 
