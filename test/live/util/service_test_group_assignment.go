@@ -14,11 +14,11 @@ import (
 )
 
 func GetServiceTestGroupAssignment(id string) config_api_client.ServiceTestGroupAssignmentsItem {
-	result, response, err := Client.ConfigurationAPI.
+	result, _, err := Client.ConfigurationAPI.
 		ServiceTestGroupAssignmentsGet(context.Background()).
 		Id(id).
 		Execute()
-	defer response.Body.Close()
+	// defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}
