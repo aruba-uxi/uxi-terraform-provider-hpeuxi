@@ -11,8 +11,8 @@ import (
 )
 
 func GetGroupByName(name string) *config_api_client.GroupsGetItem {
-	groups, _, _ := Client.ConfigurationAPI.GroupsGet(context.Background()).Execute()
-	// defer response.Body.Close()
+	groups, response, _ := Client.ConfigurationAPI.GroupsGet(context.Background()).Execute()
+	defer response.Body.Close()
 	for _, group := range groups.Items {
 		if group.Name == name {
 			return &group
