@@ -1,0 +1,2592 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: support@capenetworks.com
+    name: We need a person
+    url: http://we.dont.care.yet.com/contact
+  description: Nice description goes here
+  license:
+    name: "No idea, but we need something"
+  termsOfService: http://we.dont.care.yet.com/term-of-service
+  title: Configuration Api
+  version: 5.17.0
+servers:
+- url: https://api.capenetworks.com
+- url: https://api.staging.capedev.io
+tags:
+- name: api
+- name: v1
+- name: v1alpha1
+- name: configuration
+- name: agents
+- name: agent-group-assignments
+- name: groups
+- name: health
+- name: network-group-assignments
+- name: sensors
+- name: sensor-group-assignments
+- name: service-tests
+- name: service-test-group-assignments
+- name: wired-networks
+- name: wireless-networks
+paths:
+  /networking-uxi/v1alpha1/agent-group-assignments:
+    get:
+      description: Get a list of agent group assignments
+      operationId: agent_group_assignments_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentGroupAssignmentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agent Group Assignments Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+    post:
+      description: Create agent group assignment
+      operationId: agent_group_assignments_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentGroupAssignmentsPostRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentGroupAssignmentResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agent Group Assignments Post
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/agent-group-assignments/{uid}:
+    delete:
+      description: Delete an agent group assignment.
+      operationId: agent_group_assignment_delete
+      parameters:
+      - explode: false
+        in: path
+        name: uid
+        required: true
+        schema:
+          title: Uid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agent Group Assignment Delete
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/agents/{agent_uid}:
+    delete:
+      description: Delete an existing agent.
+      operationId: agents_delete
+      parameters:
+      - explode: false
+        in: path
+        name: agent_uid
+        required: true
+        schema:
+          title: Agent Uid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agents Delete
+      tags:
+      - configuration
+    patch:
+      description: Update an existing agent.
+      operationId: agents_patch
+      parameters:
+      - explode: false
+        in: path
+        name: agent_uid
+        required: true
+        schema:
+          title: Agent Uid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/AgentsPatchRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsPatchResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agents Patch
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/agents:
+    get:
+      description: Get a list of agents
+      operationId: agents_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Agents Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/groups/{group_uid}:
+    delete:
+      description: Delete an existing group.
+      operationId: groups_delete
+      parameters:
+      - explode: false
+        in: path
+        name: group_uid
+        required: true
+        schema:
+          title: Group Uid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Groups Delete
+      tags:
+      - configuration
+      x-stability-level: alpha
+    patch:
+      description: Update an existing group.
+      operationId: groups_patch
+      parameters:
+      - explode: false
+        in: path
+        name: group_uid
+        required: true
+        schema:
+          title: Group Uid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/GroupsPatchRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupsPatchResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Groups Patch
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/groups:
+    get:
+      description: Lists groups matching provided criteria
+      operationId: groups_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupsGetResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Groups Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+    post:
+      description: Create a new group with the group identified in `parentId` as its
+        parent
+      operationId: groups_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupsPostRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupsPostResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Groups Post
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/network-group-assignments/{id}:
+    delete:
+      description: Delete a network group assignment
+      operationId: network_group_assignments_delete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          title: Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Network Group Assignments Delete
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/network-group-assignments:
+    get:
+      description: Get a list of network group assignments
+      operationId: network_group_assignments_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkGroupAssignmentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Network Group Assignments Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+    post:
+      description: Create a network group assignment
+      operationId: network_group_assignments_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkGroupAssignmentsPostRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkGroupAssignmentsPostResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Network Group Assignments Post
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/sensor-group-assignments:
+    get:
+      description: Get a list of sensor group assignments
+      operationId: sensor_group_assignments_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorGroupAssignmentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Sensor Group Assignments Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+    post:
+      description: Create sensor group assignment
+      operationId: sensor_group_assignments_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SensorGroupAssignmentsPostRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorGroupAssignmentResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Sensor Group Assignments Post
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/sensor-group-assignments/{id}:
+    delete:
+      description: Delete a sensor group assignment
+      operationId: sensor_group_assignments_delete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          title: Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Sensor Group Assignments Delete
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/sensors:
+    get:
+      description: Get a list of sensors
+      operationId: sensors_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Sensors Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/sensors/{sensor_uid}:
+    patch:
+      description: Update an existing sensor.
+      operationId: sensors_patch
+      parameters:
+      - explode: false
+        in: path
+        name: sensor_uid
+        required: true
+        schema:
+          title: Sensor Uid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/SensorsPatchRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorsPatchResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Sensors Patch
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/service-test-group-assignments/{id}:
+    delete:
+      description: Delete a service test group assignment
+      operationId: service_test_group_assignments_delete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          title: Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "204":
+          description: No Content
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Service Test Group Assignments Delete
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/service-test-group-assignments:
+    get:
+      description: Get a list of service test group assignments
+      operationId: service_test_group_assignments_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTestGroupAssignmentsResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Service Test Group Assignments Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+    post:
+      description: Create a service-test group assignment
+      operationId: service_test_group_assignments_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceTestGroupAssignmentsPostRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTestGroupAssignmentsPostResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Service Test Group Assignments Post
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/service-tests:
+    get:
+      description: Lists service-tests matching provided criteria
+      operationId: service_tests_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTestsListResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Service Tests Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/wired-networks:
+    get:
+      description: Get a list of wired networks
+      operationId: wired_networks_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WiredNetworksResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Wired Networks Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/wireless-networks:
+    get:
+      description: Get a list of wireless networks
+      operationId: wireless_networks_get
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: next
+        required: false
+        schema:
+          nullable: true
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 0
+          title: Limit
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WirelessNetworksResponse'
+          description: Successful Response
+        "4XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client Error
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+      security:
+      - HTTPBearer: []
+      summary: Wireless Networks Get
+      tags:
+      - configuration
+      x-stability-level: alpha
+components:
+  schemas:
+    Agent:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: Agent
+      type: object
+    AgentGroupAssignmentResponse:
+      example:
+        agent:
+          id: id
+        id: id
+        type: networking-uxi/agent-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        agent:
+          $ref: '#/components/schemas/Agent'
+        type:
+          enum:
+          - networking-uxi/agent-group-assignment
+          title: Type
+          type: string
+      required:
+      - agent
+      - group
+      - id
+      - type
+      title: AgentGroupAssignmentResponse
+      type: object
+    AgentGroupAssignmentsItem:
+      example:
+        agent:
+          id: id
+        id: id
+        type: networking-uxi/agent-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        agent:
+          $ref: '#/components/schemas/Agent'
+        type:
+          enum:
+          - networking-uxi/agent-group-assignment
+          title: Type
+          type: string
+      required:
+      - agent
+      - group
+      - id
+      - type
+      title: AgentGroupAssignmentsItem
+      type: object
+    AgentGroupAssignmentsPostRequest:
+      example:
+        agentId: agentId
+        groupId: groupId
+      properties:
+        groupId:
+          title: Groupid
+          type: string
+        agentId:
+          title: Agentid
+          type: string
+      required:
+      - agentId
+      - groupId
+      title: AgentGroupAssignmentsPostRequest
+      type: object
+    AgentGroupAssignmentsResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - agent:
+            id: id
+          id: id
+          type: networking-uxi/agent-group-assignment
+          group:
+            id: id
+        - agent:
+            id: id
+          id: id
+          type: networking-uxi/agent-group-assignment
+          group:
+            id: id
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/AgentGroupAssignmentsItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: AgentGroupAssignmentsResponse
+      type: object
+    AgentItem:
+      example:
+        notes: notes
+        pcapMode: pcapMode
+        serial: serial
+        ethernetMacAddress: ethernetMacAddress
+        name: name
+        modelNumber: modelNumber
+        id: id
+        type: networking-uxi/agent
+        wifiMacAddress: wifiMacAddress
+      properties:
+        id:
+          title: Id
+          type: string
+        serial:
+          title: Serial
+          type: string
+        name:
+          title: Name
+          type: string
+        modelNumber:
+          nullable: true
+          type: string
+        wifiMacAddress:
+          nullable: true
+          type: string
+        ethernetMacAddress:
+          nullable: true
+          type: string
+        notes:
+          nullable: true
+          type: string
+        pcapMode:
+          nullable: true
+          type: string
+        type:
+          enum:
+          - networking-uxi/agent
+          title: Type
+          type: string
+      required:
+      - ethernetMacAddress
+      - id
+      - modelNumber
+      - name
+      - notes
+      - pcapMode
+      - serial
+      - type
+      - wifiMacAddress
+      title: AgentItem
+      type: object
+    AgentsPatchRequest:
+      description: Request body for patching an agent.
+      properties:
+        name:
+          maxLength: 100
+          minLength: 1
+          title: Name
+          type: string
+        notes:
+          title: Notes
+          type: string
+        pcapMode:
+          $ref: '#/components/schemas/PcapMode'
+      title: AgentsPatchRequest
+      type: object
+    AgentsPatchResponse:
+      example:
+        notes: notes
+        pcapMode: light
+        serial: serial
+        ethernetMacAddress: ethernetMacAddress
+        name: name
+        modelNumber: modelNumber
+        id: id
+        type: networking-uxi/agent
+        wifiMacAddress: wifiMacAddress
+      properties:
+        id:
+          title: Id
+          type: string
+        serial:
+          title: Serial
+          type: string
+        name:
+          title: Name
+          type: string
+        modelNumber:
+          nullable: true
+          type: string
+        wifiMacAddress:
+          nullable: true
+          type: string
+        ethernetMacAddress:
+          nullable: true
+          type: string
+        notes:
+          nullable: true
+          type: string
+        pcapMode:
+          $ref: '#/components/schemas/PcapMode'
+        type:
+          enum:
+          - networking-uxi/agent
+          title: Type
+          type: string
+      required:
+      - ethernetMacAddress
+      - id
+      - modelNumber
+      - name
+      - notes
+      - pcapMode
+      - serial
+      - type
+      - wifiMacAddress
+      title: AgentsPatchResponse
+      type: object
+    AgentsResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - notes: notes
+          pcapMode: pcapMode
+          serial: serial
+          ethernetMacAddress: ethernetMacAddress
+          name: name
+          modelNumber: modelNumber
+          id: id
+          type: networking-uxi/agent
+          wifiMacAddress: wifiMacAddress
+        - notes: notes
+          pcapMode: pcapMode
+          serial: serial
+          ethernetMacAddress: ethernetMacAddress
+          name: name
+          modelNumber: modelNumber
+          id: id
+          type: networking-uxi/agent
+          wifiMacAddress: wifiMacAddress
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/AgentItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: AgentsResponse
+      type: object
+    ErrorDetail:
+      example:
+        type: type
+        issues:
+        - subject: field
+          description: description
+          source: source
+        - subject: field
+          description: description
+          source: source
+      properties:
+        issues:
+          items:
+            $ref: '#/components/schemas/Issue'
+          title: Issues
+          type: array
+        type:
+          title: Type
+          type: string
+      required:
+      - issues
+      - type
+      title: ErrorDetail
+      type: object
+    ErrorResponse:
+      example:
+        errorCode: errorCode
+        debugId: debugId
+        message: message
+        httpStatusCode: 6
+        errorDetails:
+        - type: type
+          issues:
+          - subject: field
+            description: description
+            source: source
+          - subject: field
+            description: description
+            source: source
+        - type: type
+          issues:
+          - subject: field
+            description: description
+            source: source
+          - subject: field
+            description: description
+            source: source
+      properties:
+        debugId:
+          title: Debugid
+          type: string
+        errorCode:
+          title: Errorcode
+          type: string
+        httpStatusCode:
+          title: Httpstatuscode
+          type: integer
+        message:
+          title: Message
+          type: string
+        errorDetails:
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          nullable: true
+          type: array
+      required:
+      - debugId
+      - errorCode
+      - httpStatusCode
+      - message
+      title: ErrorResponse
+      type: object
+    Group:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: Group
+      type: object
+    GroupsGetItem:
+      example:
+        parent:
+          id: id
+        path: path
+        name: name
+        id: id
+        type: networking-uxi/group
+      properties:
+        id:
+          title: Id
+          type: string
+        name:
+          title: Name
+          type: string
+        parent:
+          $ref: '#/components/schemas/Parent'
+        path:
+          title: Path
+          type: string
+        type:
+          enum:
+          - networking-uxi/group
+          title: Type
+          type: string
+      required:
+      - id
+      - name
+      - parent
+      - path
+      - type
+      title: GroupsGetItem
+      type: object
+    GroupsGetResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - parent:
+            id: id
+          path: path
+          name: name
+          id: id
+          type: networking-uxi/group
+        - parent:
+            id: id
+          path: path
+          name: name
+          id: id
+          type: networking-uxi/group
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/GroupsGetItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: GroupsGetResponse
+      type: object
+    GroupsPatchRequest:
+      properties:
+        name:
+          minLength: 1
+          title: Name
+          type: string
+      title: GroupsPatchRequest
+      type: object
+    GroupsPatchResponse:
+      example:
+        path: path
+        parent:
+          id: id
+        name: name
+        id: id
+        type: networking-uxi/group
+      properties:
+        id:
+          title: Id
+          type: string
+        name:
+          title: Name
+          type: string
+        path:
+          title: Path
+          type: string
+        parent:
+          $ref: '#/components/schemas/Parent'
+        type:
+          enum:
+          - networking-uxi/group
+          title: Type
+          type: string
+      required:
+      - id
+      - name
+      - parent
+      - path
+      - type
+      title: GroupsPatchResponse
+      type: object
+    GroupsPostRequest:
+      example:
+        name: name
+        parentId: parentId
+      properties:
+        parentId:
+          maxLength: 12
+          minLength: 12
+          nullable: true
+          type: string
+        name:
+          title: Name
+          type: string
+      required:
+      - name
+      title: GroupsPostRequest
+      type: object
+    GroupsPostResponse:
+      example:
+        path: path
+        parent:
+          id: id
+        name: name
+        id: id
+        type: networking-uxi/group
+      properties:
+        id:
+          title: Id
+          type: string
+        name:
+          title: Name
+          type: string
+        path:
+          title: Path
+          type: string
+        parent:
+          $ref: '#/components/schemas/Parent'
+        type:
+          enum:
+          - networking-uxi/group
+          title: Type
+          type: string
+      required:
+      - id
+      - name
+      - parent
+      - path
+      - type
+      title: GroupsPostResponse
+      type: object
+    Issue:
+      example:
+        subject: field
+        description: description
+        source: source
+      properties:
+        description:
+          title: Description
+          type: string
+        subject:
+          $ref: '#/components/schemas/IssueSubject'
+        source:
+          title: Source
+          type: string
+      required:
+      - description
+      - source
+      - subject
+      title: Issue
+      type: object
+    IssueSubject:
+      enum:
+      - field
+      - header
+      - query.parameter
+      title: IssueSubject
+      type: string
+    Network:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: Network
+      type: object
+    NetworkGroupAssignmentsItem:
+      example:
+        id: id
+        type: networking-uxi/network-group-assignment
+        group:
+          id: id
+        network:
+          id: id
+      properties:
+        id:
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        network:
+          $ref: '#/components/schemas/Network'
+        type:
+          enum:
+          - networking-uxi/network-group-assignment
+          title: Type
+          type: string
+      required:
+      - group
+      - id
+      - network
+      - type
+      title: NetworkGroupAssignmentsItem
+      type: object
+    NetworkGroupAssignmentsPostRequest:
+      example:
+        groupId: groupId
+        networkId: networkId
+      properties:
+        groupId:
+          title: Groupid
+          type: string
+        networkId:
+          title: Networkid
+          type: string
+      required:
+      - groupId
+      - networkId
+      title: NetworkGroupAssignmentsPostRequest
+      type: object
+    NetworkGroupAssignmentsPostResponse:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: networking-uxi/network-group-assignment
+        group:
+          id: id
+        network:
+          id: id
+      properties:
+        id:
+          format: uuid
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        network:
+          $ref: '#/components/schemas/Network'
+        type:
+          enum:
+          - networking-uxi/network-group-assignment
+          title: Type
+          type: string
+      required:
+      - group
+      - id
+      - network
+      - type
+      title: NetworkGroupAssignmentsPostResponse
+      type: object
+    NetworkGroupAssignmentsResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - id: id
+          type: networking-uxi/network-group-assignment
+          group:
+            id: id
+          network:
+            id: id
+        - id: id
+          type: networking-uxi/network-group-assignment
+          group:
+            id: id
+          network:
+            id: id
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/NetworkGroupAssignmentsItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: NetworkGroupAssignmentsResponse
+      type: object
+    Parent:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: Parent
+      type: object
+    PcapMode:
+      enum:
+      - light
+      - full
+      - "off"
+      title: PcapMode
+      type: string
+    Sensor:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: Sensor
+      type: object
+    SensorGroupAssignmentResponse:
+      example:
+        sensor:
+          id: id
+        id: id
+        type: networking-uxi/sensor-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        sensor:
+          $ref: '#/components/schemas/Sensor'
+        type:
+          enum:
+          - networking-uxi/sensor-group-assignment
+          title: Type
+          type: string
+      required:
+      - group
+      - id
+      - sensor
+      - type
+      title: SensorGroupAssignmentResponse
+      type: object
+    SensorGroupAssignmentsItem:
+      example:
+        sensor:
+          id: id
+        id: id
+        type: networking-uxi/sensor-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        sensor:
+          $ref: '#/components/schemas/Sensor'
+        type:
+          enum:
+          - networking-uxi/sensor-group-assignment
+          title: Type
+          type: string
+      required:
+      - group
+      - id
+      - sensor
+      - type
+      title: SensorGroupAssignmentsItem
+      type: object
+    SensorGroupAssignmentsPostRequest:
+      example:
+        groupId: groupId
+        sensorId: sensorId
+      properties:
+        groupId:
+          title: Groupid
+          type: string
+        sensorId:
+          title: Sensorid
+          type: string
+      required:
+      - groupId
+      - sensorId
+      title: SensorGroupAssignmentsPostRequest
+      type: object
+    SensorGroupAssignmentsResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - sensor:
+            id: id
+          id: id
+          type: networking-uxi/sensor-group-assignment
+          group:
+            id: id
+        - sensor:
+            id: id
+          id: id
+          type: networking-uxi/sensor-group-assignment
+          group:
+            id: id
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/SensorGroupAssignmentsItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: SensorGroupAssignmentsResponse
+      type: object
+    SensorItem:
+      example:
+        addressNote: addressNote
+        notes: notes
+        pcapMode: pcapMode
+        serial: serial
+        ethernetMacAddress: ethernetMacAddress
+        latitude: 6.027456183070403
+        name: name
+        modelNumber: modelNumber
+        id: id
+        type: networking-uxi/sensor
+        wifiMacAddress: wifiMacAddress
+        longitude: 0.8008281904610115
+      properties:
+        id:
+          title: Id
+          type: string
+        serial:
+          title: Serial
+          type: string
+        name:
+          title: Name
+          type: string
+        modelNumber:
+          title: Modelnumber
+          type: string
+        wifiMacAddress:
+          nullable: true
+          type: string
+        ethernetMacAddress:
+          nullable: true
+          type: string
+        addressNote:
+          nullable: true
+          type: string
+        longitude:
+          nullable: true
+          type: number
+        latitude:
+          nullable: true
+          type: number
+        notes:
+          nullable: true
+          type: string
+        pcapMode:
+          nullable: true
+          type: string
+        type:
+          enum:
+          - networking-uxi/sensor
+          title: Type
+          type: string
+      required:
+      - addressNote
+      - ethernetMacAddress
+      - id
+      - latitude
+      - longitude
+      - modelNumber
+      - name
+      - notes
+      - pcapMode
+      - serial
+      - type
+      - wifiMacAddress
+      title: SensorItem
+      type: object
+    SensorsPatchRequest:
+      description: Request body for patching a sensor.
+      properties:
+        name:
+          maxLength: 100
+          minLength: 1
+          title: Name
+          type: string
+        addressNote:
+          title: Addressnote
+          type: string
+        notes:
+          title: Notes
+          type: string
+        pcapMode:
+          $ref: '#/components/schemas/PcapMode'
+      title: SensorsPatchRequest
+      type: object
+    SensorsPatchResponse:
+      example:
+        addressNote: addressNote
+        notes: notes
+        pcapMode: light
+        serial: serial
+        ethernetMacAddress: ethernetMacAddress
+        latitude: 6.027456183070403
+        name: name
+        modelNumber: modelNumber
+        id: id
+        type: networking-uxi/sensor
+        wifiMacAddress: wifiMacAddress
+        longitude: 0.8008281904610115
+      properties:
+        id:
+          title: Id
+          type: string
+        serial:
+          title: Serial
+          type: string
+        name:
+          title: Name
+          type: string
+        modelNumber:
+          title: Modelnumber
+          type: string
+        wifiMacAddress:
+          nullable: true
+          type: string
+        ethernetMacAddress:
+          nullable: true
+          type: string
+        addressNote:
+          nullable: true
+          type: string
+        longitude:
+          nullable: true
+          type: number
+        latitude:
+          nullable: true
+          type: number
+        notes:
+          nullable: true
+          type: string
+        pcapMode:
+          $ref: '#/components/schemas/PcapMode'
+        type:
+          enum:
+          - networking-uxi/sensor
+          title: Type
+          type: string
+      required:
+      - addressNote
+      - ethernetMacAddress
+      - id
+      - latitude
+      - longitude
+      - modelNumber
+      - name
+      - notes
+      - pcapMode
+      - serial
+      - type
+      - wifiMacAddress
+      title: SensorsPatchResponse
+      type: object
+    SensorsResponse:
+      example:
+        next: next
+        count: 1
+        items:
+        - addressNote: addressNote
+          notes: notes
+          pcapMode: pcapMode
+          serial: serial
+          ethernetMacAddress: ethernetMacAddress
+          latitude: 6.027456183070403
+          name: name
+          modelNumber: modelNumber
+          id: id
+          type: networking-uxi/sensor
+          wifiMacAddress: wifiMacAddress
+          longitude: 0.8008281904610115
+        - addressNote: addressNote
+          notes: notes
+          pcapMode: pcapMode
+          serial: serial
+          ethernetMacAddress: ethernetMacAddress
+          latitude: 6.027456183070403
+          name: name
+          modelNumber: modelNumber
+          id: id
+          type: networking-uxi/sensor
+          wifiMacAddress: wifiMacAddress
+          longitude: 0.8008281904610115
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/SensorItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: SensorsResponse
+      type: object
+    ServiceTest:
+      example:
+        id: id
+      properties:
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      title: ServiceTest
+      type: object
+    ServiceTestGroupAssignmentsItem:
+      example:
+        serviceTest:
+          id: id
+        id: id
+        type: networking-uxi/service-test-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        serviceTest:
+          $ref: '#/components/schemas/ServiceTest'
+        type:
+          enum:
+          - networking-uxi/service-test-group-assignment
+          title: Type
+          type: string
+      required:
+      - group
+      - id
+      - serviceTest
+      - type
+      title: ServiceTestGroupAssignmentsItem
+      type: object
+    ServiceTestGroupAssignmentsPostRequest:
+      example:
+        groupId: groupId
+        serviceTestId: serviceTestId
+      properties:
+        groupId:
+          title: Groupid
+          type: string
+        serviceTestId:
+          title: Servicetestid
+          type: string
+      required:
+      - groupId
+      - serviceTestId
+      title: ServiceTestGroupAssignmentsPostRequest
+      type: object
+    ServiceTestGroupAssignmentsPostResponse:
+      example:
+        serviceTest:
+          id: id
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: networking-uxi/service-test-group-assignment
+        group:
+          id: id
+      properties:
+        id:
+          format: uuid
+          title: Id
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        serviceTest:
+          $ref: '#/components/schemas/ServiceTest'
+        type:
+          enum:
+          - networking-uxi/service-test-group-assignment
+          title: Type
+          type: string
+      required:
+      - group
+      - id
+      - serviceTest
+      - type
+      title: ServiceTestGroupAssignmentsPostResponse
+      type: object
+    ServiceTestGroupAssignmentsResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - serviceTest:
+            id: id
+          id: id
+          type: networking-uxi/service-test-group-assignment
+          group:
+            id: id
+        - serviceTest:
+            id: id
+          id: id
+          type: networking-uxi/service-test-group-assignment
+          group:
+            id: id
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ServiceTestGroupAssignmentsItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: ServiceTestGroupAssignmentsResponse
+      type: object
+    ServiceTestsListItem:
+      example:
+        template: template
+        isEnabled: true
+        name: name
+        id: id
+        category: category
+        type: networking-uxi/service-test
+        target: target
+      properties:
+        id:
+          title: Id
+          type: string
+        category:
+          title: Category
+          type: string
+        name:
+          title: Name
+          type: string
+        target:
+          nullable: true
+          type: string
+        template:
+          title: Template
+          type: string
+        isEnabled:
+          title: Isenabled
+          type: boolean
+        type:
+          enum:
+          - networking-uxi/service-test
+          title: Type
+          type: string
+      required:
+      - category
+      - id
+      - isEnabled
+      - name
+      - target
+      - template
+      - type
+      title: ServiceTestsListItem
+      type: object
+    ServiceTestsListResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - template: template
+          isEnabled: true
+          name: name
+          id: id
+          category: category
+          type: networking-uxi/service-test
+          target: target
+        - template: template
+          isEnabled: true
+          name: name
+          id: id
+          category: category
+          type: networking-uxi/service-test
+          target: target
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ServiceTestsListItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: ServiceTestsListResponse
+      type: object
+    WiredNetworksItem:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        useDns64: true
+        security: security
+        ipVersion: ipVersion
+        externalConnectivity: true
+        dnsLookupDomain: dnsLookupDomain
+        vLanId: 0
+        name: name
+        id: id
+        type: networking-uxi/wired-network
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+        disableEdns: true
+      properties:
+        id:
+          title: Id
+          type: string
+        name:
+          title: Name
+          type: string
+        ipVersion:
+          title: Ipversion
+          type: string
+        createdAt:
+          format: date-time
+          title: Createdat
+          type: string
+        updatedAt:
+          format: date-time
+          title: Updatedat
+          type: string
+        security:
+          nullable: true
+          type: string
+        dnsLookupDomain:
+          nullable: true
+          type: string
+        disableEdns:
+          title: Disableedns
+          type: boolean
+        useDns64:
+          title: Usedns64
+          type: boolean
+        externalConnectivity:
+          title: Externalconnectivity
+          type: boolean
+        vLanId:
+          nullable: true
+          type: integer
+        type:
+          enum:
+          - networking-uxi/wired-network
+          title: Type
+          type: string
+      required:
+      - createdAt
+      - disableEdns
+      - dnsLookupDomain
+      - externalConnectivity
+      - id
+      - ipVersion
+      - name
+      - security
+      - type
+      - updatedAt
+      - useDns64
+      - vLanId
+      title: WiredNetworksItem
+      type: object
+    WiredNetworksResponse:
+      example:
+        next: next
+        count: 6
+        items:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          useDns64: true
+          security: security
+          ipVersion: ipVersion
+          externalConnectivity: true
+          dnsLookupDomain: dnsLookupDomain
+          vLanId: 0
+          name: name
+          id: id
+          type: networking-uxi/wired-network
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+          disableEdns: true
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          useDns64: true
+          security: security
+          ipVersion: ipVersion
+          externalConnectivity: true
+          dnsLookupDomain: dnsLookupDomain
+          vLanId: 0
+          name: name
+          id: id
+          type: networking-uxi/wired-network
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+          disableEdns: true
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/WiredNetworksItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: WiredNetworksResponse
+      type: object
+    WirelessNetworksItem:
+      example:
+        useDns64: true
+        hidden: true
+        bandLocking: bandLocking
+        type: networking-uxi/wireless-network
+        ssid: ssid
+        disableEdns: true
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        security: security
+        ipVersion: ipVersion
+        externalConnectivity: true
+        dnsLookupDomain: dnsLookupDomain
+        name: name
+        id: id
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          title: Id
+          type: string
+        name:
+          title: Name
+          type: string
+        ssid:
+          title: Ssid
+          type: string
+        security:
+          nullable: true
+          type: string
+        ipVersion:
+          title: Ipversion
+          type: string
+        createdAt:
+          format: date-time
+          title: Createdat
+          type: string
+        updatedAt:
+          format: date-time
+          title: Updatedat
+          type: string
+        hidden:
+          title: Hidden
+          type: boolean
+        bandLocking:
+          title: Bandlocking
+          type: string
+        dnsLookupDomain:
+          nullable: true
+          type: string
+        disableEdns:
+          title: Disableedns
+          type: boolean
+        useDns64:
+          title: Usedns64
+          type: boolean
+        externalConnectivity:
+          title: Externalconnectivity
+          type: boolean
+        type:
+          enum:
+          - networking-uxi/wireless-network
+          title: Type
+          type: string
+      required:
+      - bandLocking
+      - createdAt
+      - disableEdns
+      - dnsLookupDomain
+      - externalConnectivity
+      - hidden
+      - id
+      - ipVersion
+      - name
+      - security
+      - ssid
+      - type
+      - updatedAt
+      - useDns64
+      title: WirelessNetworksItem
+      type: object
+    WirelessNetworksResponse:
+      example:
+        next: next
+        count: 0
+        items:
+        - useDns64: true
+          hidden: true
+          bandLocking: bandLocking
+          type: networking-uxi/wireless-network
+          ssid: ssid
+          disableEdns: true
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          security: security
+          ipVersion: ipVersion
+          externalConnectivity: true
+          dnsLookupDomain: dnsLookupDomain
+          name: name
+          id: id
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - useDns64: true
+          hidden: true
+          bandLocking: bandLocking
+          type: networking-uxi/wireless-network
+          ssid: ssid
+          disableEdns: true
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          security: security
+          ipVersion: ipVersion
+          externalConnectivity: true
+          dnsLookupDomain: dnsLookupDomain
+          name: name
+          id: id
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/WirelessNetworksItem'
+          title: Items
+          type: array
+        count:
+          title: Count
+          type: integer
+        next:
+          nullable: true
+          type: string
+      required:
+      - count
+      - items
+      - next
+      title: WirelessNetworksResponse
+      type: object
+  securitySchemes:
+    HTTPBearer:
+      scheme: bearer
+      type: http
