@@ -172,6 +172,6 @@ Note: it is possible to run acceptance tests against any UXI customer, if the co
 
 ## Building and Distribution
 
-All builds must be signed by HPE Code Sign before distribution.
+All builds must be signed by HPE before distribution.
 Read the [Notices Report](public/README.md) and ensure a report is added to every build which is published
 All open source sourcecode must be submitted to the HPE DSM to make this available for customers to download on request.
