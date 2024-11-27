@@ -137,9 +137,7 @@ func (d *sensorDataSource) Read(
 		Id(state.Filter.ID.ValueString())
 
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor")
 
 	if errorPresent {
@@ -147,6 +145,8 @@ func (d *sensorDataSource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(sensorResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")

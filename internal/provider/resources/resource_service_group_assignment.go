@@ -128,9 +128,7 @@ func (r *serviceTestGroupAssignmentResource) Create(
 		ServiceTestGroupAssignmentsPost(ctx).
 		ServiceTestGroupAssignmentsPostRequest(*postRequest)
 	serviceTestGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("create", "uxi_service_test_group_assignment"),
@@ -139,6 +137,8 @@ func (r *serviceTestGroupAssignmentResource) Create(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(serviceTestGroupAssignment.Id)
 	plan.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
@@ -169,9 +169,7 @@ func (r *serviceTestGroupAssignmentResource) Read(
 	serviceTestGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(
 		request.Execute,
 	)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
 
 	if errorPresent {
@@ -179,6 +177,8 @@ func (r *serviceTestGroupAssignmentResource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(serviceTestGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
@@ -231,9 +231,7 @@ func (r *serviceTestGroupAssignmentResource) Delete(
 		ServiceTestGroupAssignmentsDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
@@ -247,6 +245,8 @@ func (r *serviceTestGroupAssignmentResource) Delete(
 
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *serviceTestGroupAssignmentResource) ImportState(

@@ -96,9 +96,7 @@ func (d *sensorGroupAssignmentDataSource) Read(
 		SensorGroupAssignmentsGet(ctx).
 		Id(state.Filter.ID)
 	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
 
 	if errorPresent {
@@ -106,6 +104,8 @@ func (d *sensorGroupAssignmentDataSource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(sensorGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")

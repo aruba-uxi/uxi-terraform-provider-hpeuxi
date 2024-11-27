@@ -102,9 +102,7 @@ func (d *groupDataSource) Read(
 		Id(*state.Filter.ID)
 
 	groupResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_group")
 
 	if errorPresent {
@@ -112,6 +110,8 @@ func (d *groupDataSource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(groupResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")

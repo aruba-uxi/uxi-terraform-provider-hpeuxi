@@ -98,9 +98,7 @@ func (d *serviceTestGroupAssignmentDataSource) Read(
 	serviceTestGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(
 		request.Execute,
 	)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
 
 	if errorPresent {
@@ -108,6 +106,8 @@ func (d *serviceTestGroupAssignmentDataSource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(serviceTestGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")

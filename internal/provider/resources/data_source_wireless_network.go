@@ -136,9 +136,7 @@ func (d *wirelessNetworkDataSource) Read(
 		WirelessNetworksGet(ctx).
 		Id(state.Filter.ID)
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_wireless_network")
 
 	if errorPresent {
@@ -146,6 +144,8 @@ func (d *wirelessNetworkDataSource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(networkResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")

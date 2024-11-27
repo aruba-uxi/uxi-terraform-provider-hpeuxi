@@ -15,10 +15,10 @@ func GetWiredNetwork(id string) config_api_client.WiredNetworksItem {
 		WiredNetworksGet(context.Background()).
 		Id(id).
 		Execute()
-	defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}
+	defer response.Body.Close()
 	if len(result.Items) != 1 {
 		panic("wired_network with id `" + id + "` could not be found")
 	}

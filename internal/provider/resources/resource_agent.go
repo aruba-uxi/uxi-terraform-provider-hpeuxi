@@ -153,9 +153,7 @@ func (r *agentResource) Read(
 		AgentsGet(ctx).
 		Id(state.ID.ValueString())
 	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent")
 
 	if errorPresent {
@@ -163,6 +161,8 @@ func (r *agentResource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(agentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
@@ -219,8 +219,6 @@ func (r *agentResource) Update(
 		AgentsPatch(ctx, plan.ID.ValueString()).
 		AgentsPatchRequest(*patchRequest)
 	agent, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
-
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -228,6 +226,8 @@ func (r *agentResource) Update(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(agent.Id)
 	plan.Name = types.StringValue(agent.Name)
@@ -262,9 +262,7 @@ func (r *agentResource) Delete(
 	request := r.client.ConfigurationAPI.AgentsDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
@@ -275,6 +273,8 @@ func (r *agentResource) Delete(
 
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *agentResource) ImportState(

@@ -115,9 +115,7 @@ func (d *serviceTestDataSource) Read(
 		Id(state.Filter.ID.ValueString())
 
 	serviceTestResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")
 
 	if errorPresent {
@@ -125,6 +123,8 @@ func (d *serviceTestDataSource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(serviceTestResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")

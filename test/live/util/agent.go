@@ -23,10 +23,10 @@ func GetAgent(id string) config_api_client.AgentItem {
 		AgentsGet(context.Background()).
 		Id(id).
 		Execute()
-	defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}
+	defer response.Body.Close()
 	if len(result.Items) != 1 {
 		panic("agent with id `" + id + "` could not be found")
 	}

@@ -96,9 +96,7 @@ func (d *networkGroupAssignmentDataSource) Read(
 		NetworkGroupAssignmentsGet(ctx).
 		Id(state.Filter.ID)
 	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
 
 	if errorPresent {
@@ -106,6 +104,8 @@ func (d *networkGroupAssignmentDataSource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(networkGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
