@@ -128,9 +128,7 @@ func (r *agentGroupAssignmentResource) Create(
 		AgentGroupAssignmentsPost(ctx).
 		AgentGroupAssignmentsPostRequest(*postRequest)
 	agentGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("create", "uxi_agent_group_assignment"),
@@ -139,6 +137,8 @@ func (r *agentGroupAssignmentResource) Create(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(agentGroupAssignment.Id)
 	plan.GroupID = types.StringValue(agentGroupAssignment.Group.Id)
@@ -167,9 +167,7 @@ func (r *agentGroupAssignmentResource) Read(
 		AgentGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
 	agentGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent_group_assignment")
 
 	if errorPresent {
@@ -177,6 +175,8 @@ func (r *agentGroupAssignmentResource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(agentGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
@@ -225,9 +225,7 @@ func (r *agentGroupAssignmentResource) Delete(
 	request := r.client.ConfigurationAPI.
 		AgentGroupAssignmentDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
@@ -241,6 +239,8 @@ func (r *agentGroupAssignmentResource) Delete(
 
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *agentGroupAssignmentResource) ImportState(

@@ -131,9 +131,7 @@ func (r *networkGroupAssignmentResource) Create(
 		NetworkGroupAssignmentsPost(ctx).
 		NetworkGroupAssignmentsPostRequest(*postRequest)
 	networkGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("create", "uxi_network_group_assignment"),
@@ -142,6 +140,8 @@ func (r *networkGroupAssignmentResource) Create(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(networkGroupAssignment.Id)
 	plan.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
@@ -170,9 +170,7 @@ func (r *networkGroupAssignmentResource) Read(
 		NetworkGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
 	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
 
 	if errorPresent {
@@ -180,6 +178,8 @@ func (r *networkGroupAssignmentResource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(networkGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
@@ -231,9 +231,7 @@ func (r *networkGroupAssignmentResource) Delete(
 	request := r.client.ConfigurationAPI.
 		NetworkGroupAssignmentsDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
@@ -247,6 +245,8 @@ func (r *networkGroupAssignmentResource) Delete(
 
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *networkGroupAssignmentResource) ImportState(

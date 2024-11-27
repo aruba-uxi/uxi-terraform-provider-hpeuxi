@@ -125,14 +125,14 @@ func (r *groupResource) Create(
 		GroupsPost(ctx).
 		GroupsPostRequest(*groupsPostRequest)
 	group, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_group"), errorDetail)
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
@@ -216,14 +216,14 @@ func (r *groupResource) Update(
 		GroupsPatch(ctx, plan.ID.ValueString()).
 		GroupsPatchRequest(*patchRequest)
 	group, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_group"), errorDetail)
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
@@ -255,9 +255,7 @@ func (r *groupResource) Delete(
 	request := r.client.ConfigurationAPI.GroupsDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
@@ -268,6 +266,8 @@ func (r *groupResource) Delete(
 
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *groupResource) ImportState(
@@ -291,13 +291,13 @@ func (r *groupResource) getGroup(
 	if errorPresent {
 		return nil, errors.New(errorDetail)
 	}
-	defer response.Body.Close()
-
 	if len(groupResponse.Items) != 1 {
 		notFound := groupNotFoundError
 
 		return nil, errors.New(notFound)
 	}
+
+	defer response.Body.Close()
 
 	return &groupResponse.Items[0], nil
 }

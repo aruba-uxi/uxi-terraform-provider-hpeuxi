@@ -18,10 +18,10 @@ func GetSensorGroupAssignment(id string) config_api_client.SensorGroupAssignment
 		SensorGroupAssignmentsGet(context.Background()).
 		Id(id).
 		Execute()
-	defer response.Body.Close()
 	if err != nil {
 		panic(err)
 	}
+	defer response.Body.Close()
 	if len(result.Items) != 1 {
 		panic("sensor_group_assignment with id `" + id + "` could not be found")
 	}

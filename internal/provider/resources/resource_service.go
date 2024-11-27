@@ -143,9 +143,7 @@ func (r *serviceTestResource) Read(
 		ServiceTestsGet(ctx).
 		Id(state.ID.ValueString())
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")
 
 	if errorPresent {
@@ -153,6 +151,8 @@ func (r *serviceTestResource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(sensorResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)

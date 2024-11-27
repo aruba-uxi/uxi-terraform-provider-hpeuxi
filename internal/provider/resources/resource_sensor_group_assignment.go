@@ -128,9 +128,7 @@ func (r *sensorGroupAssignmentResource) Create(
 		SensorGroupAssignmentsPost(ctx).
 		SensorGroupAssignmentsPostRequest(*postRequest)
 	sensorGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("create", "uxi_sensor_group_assignment"),
@@ -139,6 +137,8 @@ func (r *sensorGroupAssignmentResource) Create(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(sensorGroupAssignment.Id)
 	plan.GroupID = types.StringValue(sensorGroupAssignment.Group.Id)
@@ -167,9 +167,7 @@ func (r *sensorGroupAssignmentResource) Read(
 		SensorGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
 	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
 
 	if errorPresent {
@@ -177,6 +175,8 @@ func (r *sensorGroupAssignmentResource) Read(
 
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(sensorGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
@@ -226,9 +226,7 @@ func (r *sensorGroupAssignmentResource) Delete(
 	request := r.client.ConfigurationAPI.
 		SensorGroupAssignmentsDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
-	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
@@ -242,6 +240,8 @@ func (r *sensorGroupAssignmentResource) Delete(
 
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *sensorGroupAssignmentResource) ImportState(
