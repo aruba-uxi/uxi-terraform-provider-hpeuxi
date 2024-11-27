@@ -131,7 +131,7 @@ func (r *networkGroupAssignmentResource) Create(
 		NetworkGroupAssignmentsPost(ctx).
 		NetworkGroupAssignmentsPostRequest(*postRequest)
 	networkGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
-	// defer response.Body.Close()
+	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
@@ -170,7 +170,7 @@ func (r *networkGroupAssignmentResource) Read(
 		NetworkGroupAssignmentsGet(ctx).
 		Id(state.ID.ValueString())
 	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	// defer response.Body.Close()
+	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
@@ -231,7 +231,7 @@ func (r *networkGroupAssignmentResource) Delete(
 	request := r.client.ConfigurationAPI.
 		NetworkGroupAssignmentsDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
-	// defer response.Body.Close()
+	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
