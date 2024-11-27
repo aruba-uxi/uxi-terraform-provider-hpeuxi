@@ -1,4 +1,3 @@
-OPEN_API_TMP_DIR := "tmp"
 CLIENT_DIR := "pkg/config-api-client"
 TOOLS_PROVIDER_DIR := "tools"
 OPENAPI_SPEC := "pkg/config-api-client/api"
@@ -8,18 +7,10 @@ SOURCE_OPEN_API_SPEC_FILE := ".openapi.source.yaml"
 help:
 	@just --list
 
-_retrieve-config-api-openapi-spec:
-  rm -rf {{ OPEN_API_TMP_DIR }}
-  git clone git@github.com:aruba-uxi/configuration-api.git --depth=1 {{ OPEN_API_TMP_DIR }}
-  mkdir -p {{ OPENAPI_SPEC }}
-  cp {{ OPEN_API_TMP_DIR }}/oas/openapi.yaml {{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }}
-  rm -rf {{ OPEN_API_TMP_DIR }}
-
 _remove-client-files:
   cd {{ CLIENT_DIR }} && cat .openapi-generator/FILES | xargs -n 1 rm -f
 
-generate-config-api-client: _retrieve-config-api-openapi-spec
-  just _remove-client-files
+generate-config-api-client: _remove-client-files
   docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
   --input-spec /local/{{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }} \
   --generator-name go \
@@ -33,11 +24,11 @@ generate-config-api-client: _retrieve-config-api-openapi-spec
   just tidy-client
   just fmt-client
 
-setup-dev:
+setup-run:
   grep -q "registry.terraform.io/arubauxi/hpeuxi" ~/.terraformrc && echo "Dev override found - installing provider locally" || { echo "Dev override not found - please follow README setup guide"; exit 1; }
   go install .
 
-remove-dev-override:
+remove-setup-run-dev-override:
   sed -i '' '/registry\.terraform\.io\/arubauxi\/hpeuxi/d' ~/.terraformrc
 
 build-local:
@@ -140,13 +131,3 @@ tidy:
 
 clean:
   find . -name ".coverage*" -type f -delete
-
-DEFAULT_EXAMPLE := "full-demo"
-
-plan example=DEFAULT_EXAMPLE +ARGS='':
-  go install .
-  cd examples/{{example}} && terraform plan {{ ARGS }}
-
-apply example=DEFAULT_EXAMPLE +ARGS='':
-  go install .
-  cd examples/{{example}} && terraform apply {{ ARGS }}
