@@ -287,12 +287,11 @@ func (r *groupResource) getGroup(
 	groupResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	// groupResponse, response, err := request.Execute()
 	// this causes a segfault
-	// defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		return nil, errors.New(errorDetail)
 	}
+	defer response.Body.Close()
 
 	if len(groupResponse.Items) != 1 {
 		notFound := groupNotFoundError
