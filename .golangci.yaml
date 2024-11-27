@@ -46,7 +46,6 @@ linters:
     - noctx # we want this
     - nestif # we want this
     - revive # we want this
-    # - stylecheck # we want this
     - tagliatelle # we want this
     - testifylint # we want this
     - thelper # we want this
