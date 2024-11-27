@@ -6,6 +6,7 @@ package resources
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -165,12 +166,12 @@ func (r *groupResource) Read(
 	errorSummary := util.GenerateErrorSummary("read", "uxi_group")
 
 	if errorDetail != nil {
-		if *errorDetail == groupNotFoundError {
+		if errorDetail.Error() == groupNotFoundError {
 			resp.State.RemoveResource(ctx)
 
 			return
 		}
-		resp.Diagnostics.AddError(errorSummary, *errorDetail)
+		resp.Diagnostics.AddError(errorSummary, errorDetail.Error())
 
 		return
 	}
@@ -280,21 +281,23 @@ func (r *groupResource) ImportState(
 func (r *groupResource) getGroup(
 	ctx context.Context,
 	id string,
-) (*config_api_client.GroupsGetItem, *string) {
+) (*config_api_client.GroupsGetItem, error) {
 	request := r.client.ConfigurationAPI.GroupsGet(ctx).Id(id)
+
 	groupResponse, response, err := util.RetryForTooManyRequests(request.Execute)
+	// groupResponse, response, err := request.Execute()
 	// this causes a segfault
 	// defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
-		return nil, &errorDetail
+		return nil, errors.New(errorDetail)
 	}
 
 	if len(groupResponse.Items) != 1 {
 		notFound := groupNotFoundError
 
-		return nil, &notFound
+		return nil, errors.New(notFound)
 	}
 
 	return &groupResponse.Items[0], nil
