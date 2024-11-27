@@ -153,7 +153,7 @@ func (r *agentResource) Read(
 		AgentsGet(ctx).
 		Id(state.ID.ValueString())
 	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	// defer response.Body.Close()
+	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent")
@@ -219,7 +219,7 @@ func (r *agentResource) Update(
 		AgentsPatch(ctx, plan.ID.ValueString()).
 		AgentsPatchRequest(*patchRequest)
 	agent, response, err := util.RetryForTooManyRequests(request.Execute)
-	// defer response.Body.Close()
+	defer response.Body.Close()
 
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -262,7 +262,7 @@ func (r *agentResource) Delete(
 	request := r.client.ConfigurationAPI.AgentsDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
-	// defer response.Body.Close()
+	defer response.Body.Close()
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
