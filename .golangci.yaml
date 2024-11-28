@@ -31,7 +31,6 @@ linters:
     - copyloopvar # if we update to later than go 1.22
     - depguard # for banning specific dependencies
     - dupl # we want this
-    - errorlint # we want this
     - forcetypeassert # we want this
     - funlen # we want this
     - goconst # we want this

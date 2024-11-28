@@ -6,6 +6,7 @@ package util
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -22,10 +23,13 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 		var detail string
 		var data map[string]interface{}
 
-		switch e := err.(type) {
-		case *url.Error:
-			detail = handleURLError(e)
-		case *config_api_client.GenericOpenAPIError:
+		var uErr *url.Error
+		var apiErr *config_api_client.GenericOpenAPIError
+
+		switch {
+		case errors.As(err, &uErr):
+			detail = handleURLError(uErr)
+		case errors.As(err, &apiErr):
 			if err := json.NewDecoder(response.Body).Decode(&data); err != nil {
 				detail = fmt.Sprintf(
 					"Unexpected error: there was an error decoding the API response body for "+
@@ -38,10 +42,10 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 					detail += "\nDebugID: " + debugID.(string)
 				}
 			} else {
-				detail = "Unexpected error: " + e.Error()
+				detail = "Unexpected error: " + apiErr.Error()
 			}
 		default:
-			detail = "Unexpected error: " + e.Error()
+			detail = "Unexpected error: " + err.Error()
 		}
 
 		return true, detail
