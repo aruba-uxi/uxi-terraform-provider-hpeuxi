@@ -35,7 +35,7 @@ func TestSensorResource(t *testing.T) {
 			// Creating a sensor is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name = "` + originalSensor.Name + `"
 					}`,
 
@@ -46,44 +46,44 @@ func TestSensorResource(t *testing.T) {
 			// Importing a sensor
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name = "` + originalSensor.Name + `"
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "` + config.SensorID + `"
 					}`,
 
-				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", originalSensor),
+				Check: shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", originalSensor),
 			},
 			// ImportState testing
 			{
-				ResourceName:      "uxi_sensor.my_sensor",
+				ResourceName:      "hpeuxi_sensor.my_sensor",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			// Update testing
 			{
 				Config: provider.ProviderConfig + `
-				resource "uxi_sensor" "my_sensor" {
+				resource "hpeuxi_sensor" "my_sensor" {
 					name 		 = "` + updatedSensor.Name + `"
 					address_note = "` + updatedSensor.GetAddressNote() + `"
 					notes 		 = "` + updatedSensor.GetNotes() + `"
 					pcap_mode 	 = "` + updatedSensor.GetPcapMode() + `"
 				}`,
-				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", updatedSensor),
+				Check: shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", updatedSensor),
 			},
 			// Update sensor back to original
 			{
 				Config: provider.ProviderConfig + `
-				resource "uxi_sensor" "my_sensor" {
+				resource "hpeuxi_sensor" "my_sensor" {
 					name 		 = "` + originalSensor.Name + `"
 					address_note = "` + originalSensor.GetAddressNote() + `"
 					notes 		 = "` + originalSensor.GetNotes() + `"
 					pcap_mode 	 = "` + originalSensor.GetPcapMode() + `"
 				}`,
-				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", originalSensor),
+				Check: shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", originalSensor),
 			},
 			// Deleting a sensor is not allowed
 			{
@@ -96,7 +96,7 @@ func TestSensorResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_sensor.my_sensor
+						from = hpeuxi_sensor.my_sensor
 
 						lifecycle {
 							destroy = false

@@ -30,7 +30,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Creating a wired_network is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "my_wired_network" {
+					resource "hpeuxi_wired_network" "my_wired_network" {
 						name = "name"
 					}`,
 
@@ -41,31 +41,31 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Importing a wired_network
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "wired_network_0" {
+					resource "hpeuxi_wired_network" "wired_network_0" {
 						name = "` + config.WiredNetworkName + `"
 					}
 
 					import {
-						to = uxi_wired_network.wired_network_0
+						to = hpeuxi_wired_network.wired_network_0
 						id = "` + config.WiredNetworkID + `"
 					}`,
 
 				Check: shared.CheckStateAgainstWiredNetwork(
 					t,
-					"uxi_wired_network.wired_network_0",
+					"hpeuxi_wired_network.wired_network_0",
 					wiredNetwork,
 				),
 			},
 			// ImportState testing
 			{
-				ResourceName:      "uxi_wired_network.wired_network_0",
+				ResourceName:      "hpeuxi_wired_network.wired_network_0",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			// Updating a wired_network is not allowed
 			{
 				Config: provider.ProviderConfig + `
-				resource "uxi_wired_network" "wired_network_0" {
+				resource "hpeuxi_wired_network" "wired_network_0" {
 					name = "` + config.WiredNetworkID + `-updated-name"
 				}`,
 				ExpectError: regexp.MustCompile(
@@ -83,7 +83,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wired_network.wired_network_0
+						from = hpeuxi_wired_network.wired_network_0
 
 						lifecycle {
 							destroy = false

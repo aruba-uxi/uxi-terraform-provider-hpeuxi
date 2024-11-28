@@ -99,7 +99,7 @@ func (d *serviceTestGroupAssignmentDataSource) Read(
 		request.Execute,
 	)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_service_test_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)

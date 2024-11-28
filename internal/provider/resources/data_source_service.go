@@ -116,7 +116,7 @@ func (d *serviceTestDataSource) Read(
 
 	serviceTestResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_service_test")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)

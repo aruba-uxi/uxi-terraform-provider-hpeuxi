@@ -22,13 +22,13 @@ func TestSensorDataSource(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor" "my_sensor" {
+					data "hpeuxi_sensor" "my_sensor" {
 						filter = {
 							id = "` + config.SensorID + `"
 						}
 					}
 				`,
-				Check: shared.CheckStateAgainstSensor(t, "data.uxi_sensor.my_sensor", sensor),
+				Check: shared.CheckStateAgainstSensor(t, "data.hpeuxi_sensor.my_sensor", sensor),
 			},
 		},
 	})

@@ -97,7 +97,7 @@ func (d *agentGroupAssignmentDataSource) Read(
 		Id(state.Filter.ID)
 	agentGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_agent_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_agent_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)

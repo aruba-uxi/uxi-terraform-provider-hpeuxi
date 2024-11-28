@@ -31,14 +31,14 @@ func TestGroupDataSource(t *testing.T) {
 					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_group" "my_group" {
+					data "hpeuxi_group" "my_group" {
 						filter = {
 							id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("data.hpeuxi_group.my_group", "id", "id"),
 				),
 			},
 			{
@@ -46,7 +46,7 @@ func TestGroupDataSource(t *testing.T) {
 					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_group" "my_group" {
+					data "hpeuxi_group" "my_group" {
 						filter = {
 							id = "my_root_group_id"
 						}
@@ -78,14 +78,14 @@ func TestGroupDataSourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_group" "my_group" {
+					data "hpeuxi_group" "my_group" {
 						filter = {
 							id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.uxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("data.hpeuxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 
@@ -119,7 +119,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_group" "my_group" {
+					data "hpeuxi_group" "my_group" {
 						filter = {
 							id = "id"
 						}
@@ -135,7 +135,7 @@ func TestGroupDataSourceHttpErrorHandling(t *testing.T) {
 					util.MockGetGroup("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_group" "my_group" {
+					data "hpeuxi_group" "my_group" {
 						filter = {
 							id = "id"
 						}

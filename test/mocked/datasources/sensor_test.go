@@ -33,13 +33,13 @@ func TestSensorDataSource(t *testing.T) {
 					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor" "my_sensor" {
+					data "hpeuxi_sensor" "my_sensor" {
 						filter = {
 							id = "id"
 						}
 					}
 				`,
-				Check: shared.CheckStateAgainstSensor(t, "data.uxi_sensor.my_sensor", sensor),
+				Check: shared.CheckStateAgainstSensor(t, "data.hpeuxi_sensor.my_sensor", sensor),
 			},
 		},
 	})
@@ -66,14 +66,14 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor" "my_sensor" {
+					data "hpeuxi_sensor" "my_sensor" {
 						filter = {
 							id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					shared.CheckStateAgainstSensor(t, "data.uxi_sensor.my_sensor", sensor),
+					shared.CheckStateAgainstSensor(t, "data.hpeuxi_sensor.my_sensor", sensor),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 
@@ -107,7 +107,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor" "my_sensor" {
+					data "hpeuxi_sensor" "my_sensor" {
 						filter = {
 							id = "id"
 						}
@@ -123,7 +123,7 @@ func TestSensorDataSourceHttpErrorHandling(t *testing.T) {
 					util.MockGetSensor("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor" "my_sensor" {
+					data "hpeuxi_sensor" "my_sensor" {
 						filter = {
 							id = "id"
 						}

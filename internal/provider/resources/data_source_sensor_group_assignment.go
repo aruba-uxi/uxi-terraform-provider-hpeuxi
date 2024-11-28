@@ -97,7 +97,7 @@ func (d *sensorGroupAssignmentDataSource) Read(
 		Id(state.Filter.ID)
 	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_sensor_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)

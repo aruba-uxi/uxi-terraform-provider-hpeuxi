@@ -67,12 +67,12 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name 			= "name"
 						address_note 	= "address_note"
 						notes 			= "notes"
@@ -80,27 +80,27 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "sensor_id"
 					}
 
-					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id       = uxi_sensor.my_sensor.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id       = hpeuxi_sensor.my_sensor.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
 						"sensor_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"group_id",
 						"group_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"id",
 						"sensor_group_assignment_id",
 					),
@@ -118,7 +118,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_sensor_group_assignment.my_sensor_group_assignment",
+				ResourceName:      "hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -183,12 +183,12 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					// the original resources
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name 			= "name"
 						address_note 	= "address_note"
 						notes 			= "notes"
@@ -196,17 +196,17 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "sensor_id"
 					}
 
 					// the new resources we wanna update the assignment to
-					resource "uxi_group" "my_group_2" {
+					resource "hpeuxi_group" "my_group_2" {
 						name            = "name_2"
 						parent_group_id = "parent_id_2"
 					}
 
-					resource "uxi_sensor" "my_sensor_2" {
+					resource "hpeuxi_sensor" "my_sensor_2" {
 						name 			= "name_2"
 						address_note 	= "address_note_2"
 						notes 			= "notes_2"
@@ -214,28 +214,28 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor_2
+						to = hpeuxi_sensor.my_sensor_2
 						id = "sensor_id_2"
 					}
 
 					// the assignment update, updated from sensor/group to sensor_2/group_2
-					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id       = uxi_sensor.my_sensor_2.id
-						group_id 		= uxi_group.my_group_2.id
+					resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id       = hpeuxi_sensor.my_sensor_2.id
+						group_id 		= hpeuxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
 						"sensor_id_2",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"group_id",
 						"group_id_2",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"id",
 						"sensor_group_assignment_id_2",
 					),
@@ -269,7 +269,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_sensor.my_sensor
+						from = hpeuxi_sensor.my_sensor
 
 						lifecycle {
 							destroy = false
@@ -277,7 +277,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					removed {
-						from = uxi_sensor.my_sensor_2
+						from = hpeuxi_sensor.my_sensor_2
 
 						lifecycle {
 							destroy = false
@@ -343,12 +343,12 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name 			= "name"
 						address_note 	= "address_note"
 						notes 			= "notes"
@@ -356,17 +356,17 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "sensor_id"
 					}
 
-					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id       = uxi_sensor.my_sensor.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id       = hpeuxi_sensor.my_sensor.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"id",
 						"sensor_group_assignment_id",
 					),
@@ -393,7 +393,7 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_sensor_group_assignment.my_sensor_group_assignment",
+				ResourceName:      "hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -430,7 +430,7 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_sensor.my_sensor
+						from = hpeuxi_sensor.my_sensor
 
 						lifecycle {
 							destroy = false
@@ -438,7 +438,7 @@ func TestSensorGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					}
 
 					removed {
-						from = uxi_sensor.my_sensor_2
+						from = hpeuxi_sensor.my_sensor_2
 
 						lifecycle {
 							destroy = false
@@ -496,12 +496,12 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name 			= "name"
 						address_note 	= "address_note"
 						notes 			= "notes"
@@ -509,13 +509,13 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "sensor_id"
 					}
 
-					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id       = uxi_sensor.my_sensor.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id       = hpeuxi_sensor.my_sensor.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
@@ -541,12 +541,12 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name 			= "name"
 						address_note 	= "address_note"
 						notes 			= "notes"
@@ -554,17 +554,17 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "sensor_id"
 					}
 
-					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id       = uxi_sensor.my_sensor.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id       = hpeuxi_sensor.my_sensor.id
+						group_id 		= hpeuxi_group.my_group.id
 					}
 
 					import {
-						to = uxi_sensor_group_assignment.my_sensor_group_assignment
+						to = hpeuxi_sensor_group_assignment.my_sensor_group_assignment
 						id = "sensor_group_assignment_id"
 					}
 				`,
@@ -600,12 +600,12 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name 			= "name"
 						address_note 	= "address_note"
 						notes 			= "notes"
@@ -613,17 +613,17 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "sensor_id"
 					}
 
-					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id       = uxi_sensor.my_sensor.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id       = hpeuxi_sensor.my_sensor.id
+						group_id 		= hpeuxi_group.my_group.id
 					}
 
 					import {
-						to = uxi_sensor_group_assignment.my_sensor_group_assignment
+						to = hpeuxi_sensor_group_assignment.my_sensor_group_assignment
 						id = "sensor_group_assignment_id"
 					}
 				`,
@@ -673,12 +673,12 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name 			= "name"
 						address_note 	= "address_note"
 						notes 			= "notes"
@@ -686,17 +686,17 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "sensor_id"
 					}
 
-					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id       = uxi_sensor.my_sensor.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id       = hpeuxi_sensor.my_sensor.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"id",
 						"sensor_group_assignment_id",
 					),
@@ -731,7 +731,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_sensor.my_sensor
+						from = hpeuxi_sensor.my_sensor
 
 						lifecycle {
 							destroy = false
@@ -762,7 +762,7 @@ func TestSensorGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_sensor.my_sensor
+						from = hpeuxi_sensor.my_sensor
 
 						lifecycle {
 							destroy = false

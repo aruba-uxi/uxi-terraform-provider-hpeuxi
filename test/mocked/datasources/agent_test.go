@@ -33,13 +33,13 @@ func TestAgentDataSource(t *testing.T) {
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent" "my_agent" {
+					data "hpeuxi_agent" "my_agent" {
 						filter = {
 							id = "id"
 						}
 					}
 				`,
-				Check: shared.CheckStateAgainstAgent(t, "data.uxi_agent.my_agent", agent),
+				Check: shared.CheckStateAgainstAgent(t, "data.hpeuxi_agent.my_agent", agent),
 			},
 		},
 	})
@@ -66,14 +66,14 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent" "my_agent" {
+					data "hpeuxi_agent" "my_agent" {
 						filter = {
 							id = "id"
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					shared.CheckStateAgainstAgent(t, "data.uxi_agent.my_agent", agent),
+					shared.CheckStateAgainstAgent(t, "data.hpeuxi_agent.my_agent", agent),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 
@@ -107,7 +107,7 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent" "my_agent" {
+					data "hpeuxi_agent" "my_agent" {
 						filter = {
 							id = "id"
 						}
@@ -123,7 +123,7 @@ func TestAgentDataSourceHttpErrorHandling(t *testing.T) {
 					util.MockGetAgent("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent" "my_agent" {
+					data "hpeuxi_agent" "my_agent" {
 						filter = {
 							id = "id"
 						}

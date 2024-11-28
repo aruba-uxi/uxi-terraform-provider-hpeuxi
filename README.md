@@ -60,12 +60,12 @@ terraform {
 }
 
 # create a group
-resource "uxi_group" "my_group" {
+resource "hpeuxi_group" "my_group" {
     name = "level_1"
 }
 
 # import a sensor
-resource "uxi_sensor" "my_sensor" {
+resource "hpeuxi_sensor" "my_sensor" {
     name = "my_sensor_name"
 
     lifecycle {
@@ -74,14 +74,14 @@ resource "uxi_sensor" "my_sensor" {
 }
 
 import {
-    to = uxi_sensor.my_sensor
+    to = hpeuxi_sensor.my_sensor
     id = "my_sensor_id"
 }
 
 # assign the sensor to a group
-resource "uxi_sensor_group_assignment" "my_uxi_sensor_group_assignment" {
-    sensor_id = uxi_sensor.my_sensor.id
-    group_id = uxi_group.my_group.id
+resource "hpeuxi_sensor_group_assignment" "my_uxi_sensor_group_assignment" {
+    sensor_id = hpeuxi_sensor.my_sensor.id
+    group_id = hpeuxi_group.my_group.id
 }
 ```
 

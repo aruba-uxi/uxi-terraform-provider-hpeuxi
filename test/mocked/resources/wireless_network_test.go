@@ -35,7 +35,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 			// Creating a wireless_network is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_wireless_network" "my_wireless_network" {
+					resource "hpeuxi_wireless_network" "my_wireless_network" {
 						name = "name"
 					}`,
 
@@ -53,18 +53,18 @@ func TestWirelessNetworkResource(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wireless_network" "my_wireless_network" {
+					resource "hpeuxi_wireless_network" "my_wireless_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wireless_network.my_wireless_network
+						to = hpeuxi_wireless_network.my_wireless_network
 						id = "id"
 					}`,
 
 				Check: shared.CheckStateAgainstWirelessNetwork(
 					t,
-					"uxi_wireless_network.my_wireless_network",
+					"hpeuxi_wireless_network.my_wireless_network",
 					wirelessNetwork,
 				),
 			},
@@ -77,7 +77,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_wireless_network.my_wireless_network",
+				ResourceName:      "hpeuxi_wireless_network.my_wireless_network",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,7 +91,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_wireless_network" "my_wireless_network" {
+				resource "hpeuxi_wireless_network" "my_wireless_network" {
 					name = "updated_name"
 				}`,
 				ExpectError: regexp.MustCompile(
@@ -123,7 +123,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wireless_network.my_wireless_network
+						from = hpeuxi_wireless_network.my_wireless_network
 
 						lifecycle {
 							destroy = false
@@ -163,19 +163,19 @@ func TestWirelessNetworkResourceTooManyRequestsHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wireless_network" "my_wireless_network" {
+					resource "hpeuxi_wireless_network" "my_wireless_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wireless_network.my_wireless_network
+						to = hpeuxi_wireless_network.my_wireless_network
 						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
 					shared.CheckStateAgainstWirelessNetwork(
 						t,
-						"uxi_wireless_network.my_wireless_network",
+						"hpeuxi_wireless_network.my_wireless_network",
 						wirelessNetwork,
 					),
 					func(s *terraform.State) error {
@@ -189,7 +189,7 @@ func TestWirelessNetworkResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wireless_network.my_wireless_network
+						from = hpeuxi_wireless_network.my_wireless_network
 
 						lifecycle {
 							destroy = false
@@ -219,12 +219,12 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 					util.MockGetWirelessNetwork("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wireless_network" "my_wireless_network" {
+					resource "hpeuxi_wireless_network" "my_wireless_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wireless_network.my_wireless_network
+						to = hpeuxi_wireless_network.my_wireless_network
 						id = "id"
 					}`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
@@ -243,12 +243,12 @@ func TestWirelessNetworkResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wireless_network" "my_wireless_network" {
+					resource "hpeuxi_wireless_network" "my_wireless_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wireless_network.my_wireless_network
+						to = hpeuxi_wireless_network.my_wireless_network
 						id = "id"
 					}`,
 				ExpectError: regexp.MustCompile(

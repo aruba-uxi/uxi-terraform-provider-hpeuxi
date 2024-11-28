@@ -167,7 +167,7 @@ func (r *wirelessNetworkResource) Read(
 		Id(state.ID.ValueString())
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_wireless_network")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_wireless_network")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)

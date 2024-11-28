@@ -24,36 +24,36 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					// create the resource to be used as a datasource
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					data "uxi_service_test" "my_service_test" {
+					data "hpeuxi_service_test" "my_service_test" {
 						filter = {
 							id = "` + config.ServiceTestID + `"
 						}
 					}
 
-					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
-						service_test_id = data.uxi_service_test.my_service_test.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = data.hpeuxi_service_test.my_service_test.id
+						group_id   = hpeuxi_group.my_group.id
 					}
 
 					// the actual datasource
-					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
+					data "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
-							id = uxi_service_test_group_assignment.my_service_test_group_assignment.id
+							id = hpeuxi_service_test_group_assignment.my_service_test_group_assignment.id
 						}
 					}
 				`,
 				Check: resource.ComposeTestCheckFunc(
 					func(s *terraform.State) error {
-						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
+						resourceName := "hpeuxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
-							"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
+							"data.hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 							util.GetServiceTestGroupAssignment(rs.Primary.ID),
 						)(
 							s,

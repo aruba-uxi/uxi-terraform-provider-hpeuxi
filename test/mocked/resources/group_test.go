@@ -46,18 +46,18 @@ func TestGroupResource(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_group" "my_group" {
+				resource "hpeuxi_group" "my_group" {
 					name            = "name"
 					parent_group_id = "parent_id"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
 					resource.TestCheckResourceAttr(
-						"uxi_group.my_group",
+						"hpeuxi_group.my_group",
 						"parent_group_id",
 						"parent_id",
 					),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
 				),
 			},
 			// ImportState
@@ -71,7 +71,7 @@ func TestGroupResource(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_group.my_group",
+				ResourceName:      "hpeuxi_group.my_group",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -95,18 +95,18 @@ func TestGroupResource(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name_2"
 						parent_group_id = "parent_id"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name_2"),
 					resource.TestCheckResourceAttr(
-						"uxi_group.my_group",
+						"hpeuxi_group.my_group",
 						"parent_group_id",
 						"parent_id",
 					),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
 				),
 			},
 			// Update that does trigger a recreate
@@ -129,18 +129,18 @@ func TestGroupResource(t *testing.T) {
 					util.MockDeleteGroup("id", 1)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id_2"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
 					resource.TestCheckResourceAttr(
-						"uxi_group.my_group",
+						"hpeuxi_group.my_group",
 						"parent_group_id",
 						"parent_id_2",
 					),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "new_id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "new_id"),
 				),
 			},
 			// Delete
@@ -174,12 +174,12 @@ func TestRootGroupResource(t *testing.T) {
 					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_group" "my_root_group" {
+				resource "hpeuxi_group" "my_root_group" {
 					name            = "name"
 				}
 
 				import {
-					to = uxi_group.my_root_group
+					to = hpeuxi_group.my_root_group
 					id = "` + util.MockRootGroupID + `"
 				}`,
 				ExpectError: regexp.MustCompile(`The root group cannot be used as a resource`),
@@ -201,13 +201,13 @@ func TestRootGroupResource(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_group" "my_group" {
+				resource "hpeuxi_group" "my_group" {
 					name = "name"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
-					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name"),
-					resource.TestCheckNoResourceAttr("uxi_group.my_group", "parent_group_id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
+					resource.TestCheckNoResourceAttr("hpeuxi_group.my_group", "parent_group_id"),
 				),
 			},
 			// Delete testing
@@ -258,12 +258,12 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_group" "my_group" {
+				resource "hpeuxi_group" "my_group" {
 					name            = "name"
 					parent_group_id = "parent_id"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 
@@ -286,11 +286,11 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_group.my_group",
+				ResourceName:      "hpeuxi_group.my_group",
 				ImportState:       true,
 				ImportStateVerify: true,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 
@@ -323,12 +323,12 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name_2"
 						parent_group_id = "parent_id"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name_2"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 
@@ -371,13 +371,13 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
 					import {
-						to = uxi_group.my_group
+						to = hpeuxi_group.my_group
 						id = "id"
 					}
 				`,
@@ -391,13 +391,13 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					util.MockGetGroup("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
 					import {
-						to = uxi_group.my_group
+						to = hpeuxi_group.my_group
 						id = "id"
 					}
 				`,
@@ -418,7 +418,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_group" "my_group" {
+				resource "hpeuxi_group" "my_group" {
 					name            = "name"
 					parent_group_id = "parent_id"
 				}`,
@@ -443,12 +443,12 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_group" "my_group" {
+				resource "hpeuxi_group" "my_group" {
 					name            = "name"
 					parent_group_id = "parent_id"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
 				),
 			},
 			// Update HTTP error
@@ -468,7 +468,7 @@ func TestGroupResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name_2"
 						parent_group_id = "parent_id"
 					}`,

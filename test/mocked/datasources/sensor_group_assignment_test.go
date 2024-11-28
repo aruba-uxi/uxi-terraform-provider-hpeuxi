@@ -36,7 +36,7 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+					data "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
 							id = "id"
 						}
@@ -44,17 +44,17 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"data.hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"id",
 						"id",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"data.hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"group_id",
 						"group_id",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"data.hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
 						"sensor_id",
 					),
@@ -88,7 +88,7 @@ func TestSensorGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+					data "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
 							id = "id"
 						}
@@ -96,7 +96,7 @@ func TestSensorGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"data.hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"id",
 						"id",
 					),
@@ -132,7 +132,7 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+					data "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
 							id = "id"
 						}
@@ -147,7 +147,7 @@ func TestSensorGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 					util.MockGetSensorGroupAssignment("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+					data "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
 							id = "id"
 						}

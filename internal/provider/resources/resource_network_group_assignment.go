@@ -134,7 +134,7 @@ func (r *networkGroupAssignmentResource) Create(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("create", "uxi_network_group_assignment"),
+			util.GenerateErrorSummary("create", "hpeuxi_network_group_assignment"),
 			errorDetail,
 		)
 
@@ -171,7 +171,7 @@ func (r *networkGroupAssignmentResource) Read(
 		Id(state.ID.ValueString())
 	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_network_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
@@ -239,7 +239,7 @@ func (r *networkGroupAssignmentResource) Delete(
 			return
 		}
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("delete", "uxi_network_group_assignment"),
+			util.GenerateErrorSummary("delete", "hpeuxi_network_group_assignment"),
 			errorDetail,
 		)
 

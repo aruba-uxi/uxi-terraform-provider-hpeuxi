@@ -103,7 +103,7 @@ func (d *groupDataSource) Read(
 
 	groupResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_group")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_group")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)

@@ -36,7 +36,7 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
+					data "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
 							id = "id"
 						}
@@ -44,17 +44,17 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"data.uxi_agent_group_assignment.my_agent_group_assignment",
+						"data.hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"id",
 						"id",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_agent_group_assignment.my_agent_group_assignment",
+						"data.hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"group_id",
 						"group_id",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_agent_group_assignment.my_agent_group_assignment",
+						"data.hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
 						"agent_id",
 					),
@@ -88,7 +88,7 @@ func TestAgentGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
+					data "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
 							id = "id"
 						}
@@ -96,7 +96,7 @@ func TestAgentGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"data.uxi_agent_group_assignment.my_agent_group_assignment",
+						"data.hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"id",
 						"id",
 					),
@@ -132,7 +132,7 @@ func TestAgentGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
+					data "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
 							id = "id"
 						}
@@ -147,7 +147,7 @@ func TestAgentGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 					util.MockGetAgentGroupAssignment("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
+					data "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
 							id = "id"
 						}

@@ -34,32 +34,32 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 			// Creating
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					resource "uxi_wired_network" "my_network" {
+					resource "hpeuxi_wired_network" "my_network" {
 						name = "` + config.WiredNetworkName + `"
 					}
 
 					import {
-						to = uxi_wired_network.my_network
+						to = hpeuxi_wired_network.my_network
 						id = "` + config.WiredNetworkID + `"
 					}
 
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id = uxi_wired_network.my_network.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = hpeuxi_wired_network.my_network.id
+						group_id   = hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check configured properties
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
 						config.WiredNetworkID,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						func(group_id string) error {
 							assert.Equal(t, group_id, util.GetGroupByName(groupName).Id)
@@ -69,13 +69,13 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					),
 					// Check properties match what is on backend
 					func(s *terraform.State) error {
-						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
+						resourceName := "hpeuxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIDBeforeRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
-							"uxi_network_group_assignment.my_network_group_assignment",
+							"hpeuxi_network_group_assignment.my_network_group_assignment",
 							util.GetNetworkGroupAssignment(resourceIDBeforeRecreate),
 						)(s)
 					},
@@ -83,7 +83,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 			},
 			// ImportState
 			{
-				ResourceName:      "uxi_network_group_assignment.my_network_group_assignment",
+				ResourceName:      "hpeuxi_network_group_assignment.my_network_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,38 +91,38 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					// the original resources
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					resource "uxi_wired_network" "my_network" {
+					resource "hpeuxi_wired_network" "my_network" {
 						name = "` + config.WiredNetworkName + `"
 					}
 
 					import {
-						to = uxi_wired_network.my_network
+						to = hpeuxi_wired_network.my_network
 						id = "` + config.WiredNetworkID + `"
 					}
 
 					// the new resources we wanna update the assignment to
-					resource "uxi_group" "my_group_2" {
+					resource "hpeuxi_group" "my_group_2" {
 						name            = "` + group2Name + `"
 					}
 
 					// the assignment update, updated from network/group to network/group_2
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id       = uxi_wired_network.my_network.id
-						group_id 		 = uxi_group.my_group_2.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id       = hpeuxi_wired_network.my_network.id
+						group_id 		 = hpeuxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check configured properties
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
 						config.WiredNetworkID,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						func(group_id string) error {
 							assert.Equal(t, group_id, util.GetGroupByName(group2Name).Id)
@@ -132,19 +132,19 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					),
 					// Check properties match what is on backend
 					func(s *terraform.State) error {
-						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
+						resourceName := "hpeuxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIDAfterRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
-							"uxi_network_group_assignment.my_network_group_assignment",
+							"hpeuxi_network_group_assignment.my_network_group_assignment",
 							util.GetNetworkGroupAssignment(resourceIDAfterRecreate),
 						)(s)
 					},
 					// Check that resource has been recreated
 					resource.TestCheckResourceAttrWith(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"id",
 						func(value string) error {
 							assert.NotEqual(t, value, resourceIDBeforeRecreate)
@@ -158,7 +158,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wired_network.my_network
+						from = hpeuxi_wired_network.my_network
 
 						lifecycle {
 							destroy = false
@@ -195,32 +195,32 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 			// Creating
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					resource "uxi_wireless_network" "my_network" {
+					resource "hpeuxi_wireless_network" "my_network" {
 						name = "` + config.WirelessNetworkName + `"
 					}
 
 					import {
-						to = uxi_wireless_network.my_network
+						to = hpeuxi_wireless_network.my_network
 						id = "` + config.WirelessNetworkID + `"
 					}
 
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id = uxi_wireless_network.my_network.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = hpeuxi_wireless_network.my_network.id
+						group_id   = hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check configured properties
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
 						config.WirelessNetworkID,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						func(group_id string) error {
 							assert.Equal(t, group_id, util.GetGroupByName(groupName).Id)
@@ -230,13 +230,13 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					),
 					// Check properties match what is on backend
 					func(s *terraform.State) error {
-						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
+						resourceName := "hpeuxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIDBeforeRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
-							"uxi_network_group_assignment.my_network_group_assignment",
+							"hpeuxi_network_group_assignment.my_network_group_assignment",
 							util.GetNetworkGroupAssignment(resourceIDBeforeRecreate),
 						)(s)
 					},
@@ -244,7 +244,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 			},
 			// ImportState
 			{
-				ResourceName:      "uxi_network_group_assignment.my_network_group_assignment",
+				ResourceName:      "hpeuxi_network_group_assignment.my_network_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -252,38 +252,38 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					// the original resources
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					resource "uxi_wireless_network" "my_network" {
+					resource "hpeuxi_wireless_network" "my_network" {
 						name = "` + config.WirelessNetworkName + `"
 					}
 
 					import {
-						to = uxi_wireless_network.my_network
+						to = hpeuxi_wireless_network.my_network
 						id = "` + config.WirelessNetworkID + `"
 					}
 
 					// the new resources we wanna update the assignment to
-					resource "uxi_group" "my_group_2" {
+					resource "hpeuxi_group" "my_group_2" {
 						name            = "` + group2Name + `"
 					}
 
 					// the assignment update, updated from network/group to network/group_2
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id       = uxi_wireless_network.my_network.id
-						group_id 		 = uxi_group.my_group_2.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id       = hpeuxi_wireless_network.my_network.id
+						group_id 		 = hpeuxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check configured properties
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
 						config.WirelessNetworkID,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						func(group_id string) error {
 							assert.Equal(t, group_id, util.GetGroupByName(group2Name).Id)
@@ -293,19 +293,19 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					),
 					// Check properties match what is on backend
 					func(s *terraform.State) error {
-						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
+						resourceName := "hpeuxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIDAfterRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
-							"uxi_network_group_assignment.my_network_group_assignment",
+							"hpeuxi_network_group_assignment.my_network_group_assignment",
 							util.GetNetworkGroupAssignment(resourceIDAfterRecreate),
 						)(s)
 					},
 					// Check that resource has been recreated
 					resource.TestCheckResourceAttrWith(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"id",
 						func(value string) error {
 							assert.NotEqual(t, value, resourceIDBeforeRecreate)
@@ -319,7 +319,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wireless_network.my_network
+						from = hpeuxi_wireless_network.my_network
 
 						lifecycle {
 							destroy = false
