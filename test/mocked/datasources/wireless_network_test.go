@@ -37,7 +37,7 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wireless_network" "my_wireless_network" {
+					data "hpeuxi_wireless_network" "my_wireless_network" {
 						filter = {
 							id = "id"
 						}
@@ -45,7 +45,7 @@ func TestWirelessNetworkDataSource(t *testing.T) {
 				`,
 				Check: shared.CheckStateAgainstWirelessNetwork(
 					t,
-					"data.uxi_wireless_network.my_wireless_network",
+					"data.hpeuxi_wireless_network.my_wireless_network",
 					wirelessNetwork,
 				),
 			},
@@ -78,7 +78,7 @@ func TestWirelessNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wireless_network" "my_wireless_network" {
+					data "hpeuxi_wireless_network" "my_wireless_network" {
 						filter = {
 							id = "id"
 						}
@@ -87,7 +87,7 @@ func TestWirelessNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					shared.CheckStateAgainstWirelessNetwork(
 						t,
-						"data.uxi_wireless_network.my_wireless_network",
+						"data.hpeuxi_wireless_network.my_wireless_network",
 						wirelessNetwork,
 					),
 					func(s *terraform.State) error {
@@ -123,7 +123,7 @@ func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wireless_network" "my_wireless_network" {
+					data "hpeuxi_wireless_network" "my_wireless_network" {
 						filter = {
 							id = "id"
 						}
@@ -138,7 +138,7 @@ func TestWirelessNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 					util.MockGetWirelessNetwork("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wireless_network" "my_wireless_network" {
+					data "hpeuxi_wireless_network" "my_wireless_network" {
 						filter = {
 							id = "id"
 						}

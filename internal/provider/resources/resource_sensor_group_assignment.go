@@ -131,7 +131,7 @@ func (r *sensorGroupAssignmentResource) Create(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("create", "uxi_sensor_group_assignment"),
+			util.GenerateErrorSummary("create", "hpeuxi_sensor_group_assignment"),
 			errorDetail,
 		)
 
@@ -168,7 +168,7 @@ func (r *sensorGroupAssignmentResource) Read(
 		Id(state.ID.ValueString())
 	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_sensor_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
@@ -234,7 +234,7 @@ func (r *sensorGroupAssignmentResource) Delete(
 			return
 		}
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("delete", "uxi_sensor_group_assignment"),
+			util.GenerateErrorSummary("delete", "hpeuxi_sensor_group_assignment"),
 			errorDetail,
 		)
 

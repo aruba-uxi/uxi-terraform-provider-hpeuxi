@@ -23,7 +23,7 @@ func TestServiceTestDataSource(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: provider.ProviderConfig + `
-					data "uxi_service_test" "my_service_test" {
+					data "hpeuxi_service_test" "my_service_test" {
 						filter = {
 							id = "` + config.ServiceTestID + `"
 						}
@@ -31,7 +31,7 @@ func TestServiceTestDataSource(t *testing.T) {
 				`,
 				Check: shared.CheckStateAgainstServiceTest(
 					t,
-					"data.uxi_service_test.my_service_test",
+					"data.hpeuxi_service_test.my_service_test",
 					serviceTest,
 				),
 			},

@@ -23,7 +23,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: provider.ProviderConfig + `
-					data "uxi_wired_network" "my_wired_network" {
+					data "hpeuxi_wired_network" "my_wired_network" {
 						filter = {
 							id = "` + config.WiredNetworkID + `"
 						}
@@ -31,7 +31,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				`,
 				Check: shared.CheckStateAgainstWiredNetwork(
 					t,
-					"data.uxi_wired_network.my_wired_network",
+					"data.hpeuxi_wired_network.my_wired_network",
 					wiredNetwork,
 				),
 			},

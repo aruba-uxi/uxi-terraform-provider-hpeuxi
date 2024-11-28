@@ -41,12 +41,12 @@ func TestGroupResource(t *testing.T) {
 			{
 				// Node without parent (attached to root)
 				Config: provider.ProviderConfig + `
-				resource "uxi_group" "parent" {
+				resource "hpeuxi_group" "parent" {
 					name = "` + groupNameParent + `"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrWith(
-						"uxi_group.parent",
+						"hpeuxi_group.parent",
 						"id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupNameParent).Id)
@@ -55,26 +55,26 @@ func TestGroupResource(t *testing.T) {
 						},
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_group.parent", "name", groupNameParent,
+						"hpeuxi_group.parent", "name", groupNameParent,
 					),
-					resource.TestCheckNoResourceAttr("uxi_group.parent", "parent_group_id"),
+					resource.TestCheckNoResourceAttr("hpeuxi_group.parent", "parent_group_id"),
 				),
 			},
 			// ImportState
 			{
-				ResourceName:      "uxi_group.parent",
+				ResourceName:      "hpeuxi_group.parent",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			// Update that does not trigger a recreate
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "parent" {
+					resource "hpeuxi_group" "parent" {
 						name = "` + groupNameParentUpdated + `"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrWith(
-						"uxi_group.parent",
+						"hpeuxi_group.parent",
 						"id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupNameParentUpdated).Id)
@@ -83,12 +83,12 @@ func TestGroupResource(t *testing.T) {
 						},
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_group.parent",
+						"hpeuxi_group.parent",
 						"name",
 						groupNameParentUpdated,
 					),
 					resource.TestCheckNoResourceAttr(
-						"uxi_group.parent",
+						"hpeuxi_group.parent",
 						"parent_group_id",
 					),
 				),
@@ -96,22 +96,22 @@ func TestGroupResource(t *testing.T) {
 			// Create nodes attached to non root node
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "parent" {
+					resource "hpeuxi_group" "parent" {
 						name = "` + groupNameParentUpdated + `"
 					}
 
-					resource "uxi_group" "child" {
+					resource "hpeuxi_group" "child" {
 						name            = "` + groupNameChild + `"
-						parent_group_id = uxi_group.parent.id
+						parent_group_id = hpeuxi_group.parent.id
 					}
 
-					resource "uxi_group" "grandchild" {
+					resource "hpeuxi_group" "grandchild" {
 						name            = "` + groupNameGrandChild + `"
-						parent_group_id = uxi_group.child.id
+						parent_group_id = hpeuxi_group.child.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrWith(
-						"uxi_group.child",
+						"hpeuxi_group.child",
 						"id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupNameChild).Id)
@@ -120,19 +120,19 @@ func TestGroupResource(t *testing.T) {
 						},
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_group.child",
+						"hpeuxi_group.child",
 						"name",
 						groupNameChild,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_group.child",
+						"hpeuxi_group.child",
 						"parent_group_id",
 						func(parentGroupId string) error {
 							return checkGroupIsChildOfNode(parentGroupId, groupNameParentUpdated)
 						},
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_group.grandchild",
+						"hpeuxi_group.grandchild",
 						"id",
 						func(value string) error {
 							resourceIDBeforeRecreate = util.GetGroupByName(
@@ -144,12 +144,12 @@ func TestGroupResource(t *testing.T) {
 						},
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_group.grandchild",
+						"hpeuxi_group.grandchild",
 						"name",
 						groupNameGrandChild,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_group.grandchild",
+						"hpeuxi_group.grandchild",
 						"parent_group_id",
 						func(parentGroupId string) error {
 							return checkGroupIsChildOfNode(parentGroupId, groupNameChild)
@@ -160,23 +160,23 @@ func TestGroupResource(t *testing.T) {
 			// Update that does trigger a recreate (moving group)
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "parent" {
+					resource "hpeuxi_group" "parent" {
 						name = "` + groupNameParentUpdated + `"
 					}
 
-					resource "uxi_group" "child" {
+					resource "hpeuxi_group" "child" {
 						name            = "` + groupNameChild + `"
-						parent_group_id = uxi_group.parent.id
+						parent_group_id = hpeuxi_group.parent.id
 					}
 
 					# move grandchild from child to parent
-					resource "uxi_group" "grandchild" {
+					resource "hpeuxi_group" "grandchild" {
 						name            = "` + groupNameGrandChildMovedToParent + `"
-						parent_group_id = uxi_group.parent.id
+						parent_group_id = hpeuxi_group.parent.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrWith(
-						"uxi_group.grandchild",
+						"hpeuxi_group.grandchild",
 						"id",
 						func(value string) error {
 							assert.Equal(
@@ -189,12 +189,12 @@ func TestGroupResource(t *testing.T) {
 						},
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_group.grandchild",
+						"hpeuxi_group.grandchild",
 						"name",
 						groupNameGrandChildMovedToParent,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_group.grandchild",
+						"hpeuxi_group.grandchild",
 						"parent_group_id",
 						func(parentGroupId string) error {
 							return checkGroupIsChildOfNode(parentGroupId, groupNameParentUpdated)
@@ -202,7 +202,7 @@ func TestGroupResource(t *testing.T) {
 					),
 					// Check that resource has been recreated
 					resource.TestCheckResourceAttrWith(
-						"uxi_group.grandchild",
+						"hpeuxi_group.grandchild",
 						"id",
 						func(value string) error {
 							assert.NotEqual(t, value, resourceIDBeforeRecreate)
@@ -215,27 +215,27 @@ func TestGroupResource(t *testing.T) {
 			// Update non root node group back to the root node by removing parent_group_id
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "parent" {
+					resource "hpeuxi_group" "parent" {
 						name = "` + groupNameParentUpdated + `"
 					}
 
-					resource "uxi_group" "child" {
+					resource "hpeuxi_group" "child" {
 						name            = "` + groupNameChild + `"
-						parent_group_id = uxi_group.parent.id
+						parent_group_id = hpeuxi_group.parent.id
 					}
 
 					# move grandchild from parent to root
-					resource "uxi_group" "grandchild" {
+					resource "hpeuxi_group" "grandchild" {
 						name = "` + groupNameGrandChildMovedToRoot + `"
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_group.grandchild",
+						"hpeuxi_group.grandchild",
 						"name",
 						groupNameGrandChildMovedToRoot,
 					),
 					resource.TestCheckNoResourceAttr(
-						"uxi_group.grandchild",
+						"hpeuxi_group.grandchild",
 						"parent_group_id",
 					),
 				),
@@ -265,12 +265,12 @@ func TestRootGroupResource(t *testing.T) {
 			// Importing the root group does not work
 			{
 				Config: provider.ProviderConfig + `
-				resource "uxi_group" "my_root_group" {
+				resource "hpeuxi_group" "my_root_group" {
 					name = "root"
 				}
 
 				import {
-					to = uxi_group.my_root_group
+					to = hpeuxi_group.my_root_group
 					id = "` + config.GroupIDRoot + `"
 				}`,
 				ExpectError: regexp.MustCompile(`The root group cannot be used as a resource`),

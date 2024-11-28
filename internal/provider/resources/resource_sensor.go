@@ -172,7 +172,7 @@ func (r *sensorResource) Read(
 		Id(state.ID.ValueString())
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_sensor")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
@@ -220,7 +220,7 @@ func (r *sensorResource) Update(
 		return
 	}
 
-	errorSummary := util.GenerateErrorSummary("update", "uxi_sensor")
+	errorSummary := util.GenerateErrorSummary("update", "hpeuxi_sensor")
 	patchRequest := config_api_client.NewSensorsPatchRequest()
 	patchRequest.Name = plan.Name.ValueStringPointer()
 	patchRequest.AddressNote = plan.AddressNote.ValueStringPointer()

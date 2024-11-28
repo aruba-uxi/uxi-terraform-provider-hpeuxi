@@ -24,36 +24,36 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					// create the resource to be used as a datasource
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					data "uxi_sensor" "my_sensor" {
+					data "hpeuxi_sensor" "my_sensor" {
 						filter = {
 							id = "` + config.SensorID + `"
 						}
 					}
 
-					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id = data.uxi_sensor.my_sensor.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id = data.hpeuxi_sensor.my_sensor.id
+						group_id   = hpeuxi_group.my_group.id
 					}
 
 					// the actual datasource
-					data "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
+					data "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
 						filter = {
-							id = uxi_sensor_group_assignment.my_sensor_group_assignment.id
+							id = hpeuxi_sensor_group_assignment.my_sensor_group_assignment.id
 						}
 					}
 				`,
 				Check: resource.ComposeTestCheckFunc(
 					func(s *terraform.State) error {
-						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
+						resourceName := "hpeuxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
-							"data.uxi_sensor_group_assignment.my_sensor_group_assignment",
+							"data.hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 							util.GetSensorGroupAssignment(rs.Primary.ID),
 						)(s)
 					},

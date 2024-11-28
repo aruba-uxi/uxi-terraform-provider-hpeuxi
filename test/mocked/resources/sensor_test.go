@@ -36,7 +36,7 @@ func TestSensorResource(t *testing.T) {
 			// Creating a sensor is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name = "name"
 						address_note = "address_note"
 						notes = "note"
@@ -53,7 +53,7 @@ func TestSensorResource(t *testing.T) {
 					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name = "name"
 						address_note = "address_note"
 						notes = "notes"
@@ -61,18 +61,18 @@ func TestSensorResource(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "id"
 					}`,
 
-				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", sensor),
+				Check: shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", sensor),
 			},
 			// ImportState testing
 			{
 				PreConfig: func() {
 					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 1)
 				},
-				ResourceName:      "uxi_sensor.my_sensor",
+				ResourceName:      "hpeuxi_sensor.my_sensor",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,13 +91,13 @@ func TestSensorResource(t *testing.T) {
 					util.MockGetSensor("id", util.GenerateSensorResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_sensor" "my_sensor" {
+				resource "hpeuxi_sensor" "my_sensor" {
 					name = "name_2"
 					address_note = "address_note_2"
 					notes = "notes_2"
 					pcap_mode = "light"
 				}`,
-				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", updatedSensor),
+				Check: shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", updatedSensor),
 			},
 			// Deleting a sensor is not allowed
 			{
@@ -113,7 +113,7 @@ func TestSensorResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_sensor.my_sensor
+						from = hpeuxi_sensor.my_sensor
 
 						lifecycle {
 							destroy = false
@@ -150,7 +150,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name = "name"
 						address_note = "address_note"
 						notes = "notes"
@@ -158,12 +158,12 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", sensor),
+					shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", sensor),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 
@@ -190,14 +190,14 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetSensor("id", util.GenerateSensorResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_sensor" "my_sensor" {
+				resource "hpeuxi_sensor" "my_sensor" {
 					name = "name_2"
 					address_note = "address_note_2"
 					notes = "notes_2"
 					pcap_mode = "light"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", updatedSensor),
+					shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", updatedSensor),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 
@@ -209,7 +209,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_sensor.my_sensor
+						from = hpeuxi_sensor.my_sensor
 
 						lifecycle {
 							destroy = false
@@ -248,7 +248,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name = "name"
 						address_note = "address_note"
 						notes = "notes"
@@ -256,7 +256,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "id"
 					}`,
 
@@ -270,7 +270,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					util.MockGetSensor("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name = "name"
 						address_note = "address_note"
 						notes = "notes"
@@ -278,7 +278,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "id"
 					}`,
 
@@ -290,7 +290,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name = "name"
 						address_note = "address_note"
 						notes = "notes"
@@ -298,11 +298,11 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "id"
 					}`,
 
-				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", sensor),
+				Check: shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", sensor),
 			},
 			// Update HTTP error
 			{
@@ -322,7 +322,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_sensor" "my_sensor" {
+				resource "hpeuxi_sensor" "my_sensor" {
 					name = "name_2"
 					address_note = "address_note_2"
 					notes = "notes_2"
@@ -336,7 +336,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_sensor.my_sensor
+						from = hpeuxi_sensor.my_sensor
 
 						lifecycle {
 							destroy = false

@@ -30,7 +30,7 @@ func TestServiceTestResource(t *testing.T) {
 			// Creating a service_test is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "` + config.ServiceTestName + `"
 					}`,
 
@@ -41,31 +41,31 @@ func TestServiceTestResource(t *testing.T) {
 			// Importing a service_test
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "` + config.ServiceTestName + `"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "` + config.ServiceTestID + `"
 					}`,
 
 				Check: shared.CheckStateAgainstServiceTest(
 					t,
-					"uxi_service_test.my_service_test",
+					"hpeuxi_service_test.my_service_test",
 					serviceTest,
 				),
 			},
 			// ImportState testing
 			{
-				ResourceName:      "uxi_service_test.my_service_test",
+				ResourceName:      "hpeuxi_service_test.my_service_test",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			// Updating a service_test is not allowed
 			{
 				Config: provider.ProviderConfig + `
-				resource "uxi_service_test" "my_service_test" {
+				resource "hpeuxi_service_test" "my_service_test" {
 					name = "` + config.ServiceTestName + `-updated-name"
 				}`,
 				ExpectError: regexp.MustCompile(
@@ -83,7 +83,7 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_service_test.my_service_test
+						from = hpeuxi_service_test.my_service_test
 
 						lifecycle {
 							destroy = false

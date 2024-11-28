@@ -35,7 +35,7 @@ func TestServiceTestResource(t *testing.T) {
 			// Creating a service_test is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}`,
 
@@ -49,18 +49,18 @@ func TestServiceTestResource(t *testing.T) {
 					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "id"
 					}`,
 
 				Check: shared.CheckStateAgainstServiceTest(
 					t,
-					"uxi_service_test.my_service_test",
+					"hpeuxi_service_test.my_service_test",
 					serviceTest,
 				),
 			},
@@ -69,7 +69,7 @@ func TestServiceTestResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 1)
 				},
-				ResourceName:      "uxi_service_test.my_service_test",
+				ResourceName:      "hpeuxi_service_test.my_service_test",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -79,7 +79,7 @@ func TestServiceTestResource(t *testing.T) {
 					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 1)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_service_test" "my_service_test" {
+				resource "hpeuxi_service_test" "my_service_test" {
 					name = "updated_name"
 				}`,
 				ExpectError: regexp.MustCompile(
@@ -100,7 +100,7 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_service_test.my_service_test
+						from = hpeuxi_service_test.my_service_test
 
 						lifecycle {
 							destroy = false
@@ -136,19 +136,19 @@ func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
 					shared.CheckStateAgainstServiceTest(
 						t,
-						"uxi_service_test.my_service_test",
+						"hpeuxi_service_test.my_service_test",
 						serviceTest,
 					),
 					func(s *terraform.State) error {
@@ -162,7 +162,7 @@ func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_service_test.my_service_test
+						from = hpeuxi_service_test.my_service_test
 
 						lifecycle {
 							destroy = false
@@ -192,12 +192,12 @@ func TestServiceTestResourceHttpErrorHandling(t *testing.T) {
 					util.MockGetServiceTest("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "id"
 					}`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
@@ -216,12 +216,12 @@ func TestServiceTestResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "id"
 					}`,
 				ExpectError: regexp.MustCompile(

@@ -30,7 +30,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 			// Creating a wireless_network is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_wireless_network" "wireless_network_0" {
+					resource "hpeuxi_wireless_network" "wireless_network_0" {
 						name = "name"
 					}`,
 
@@ -41,31 +41,31 @@ func TestWirelessNetworkResource(t *testing.T) {
 			// Importing a wireless_network
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_wireless_network" "wireless_network_0" {
+					resource "hpeuxi_wireless_network" "wireless_network_0" {
 						name = "` + config.WirelessNetworkName + `"
 					}
 
 					import {
-						to = uxi_wireless_network.wireless_network_0
+						to = hpeuxi_wireless_network.wireless_network_0
 						id = "` + config.WirelessNetworkID + `"
 					}`,
 
 				Check: shared.CheckStateAgainstWirelessNetwork(
 					t,
-					"uxi_wireless_network.wireless_network_0",
+					"hpeuxi_wireless_network.wireless_network_0",
 					wirelessNetwork,
 				),
 			},
 			// ImportState testing
 			{
-				ResourceName:      "uxi_wireless_network.wireless_network_0",
+				ResourceName:      "hpeuxi_wireless_network.wireless_network_0",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			// Updating a wireless_network is not allowed
 			{
 				Config: provider.ProviderConfig + `
-				resource "uxi_wireless_network" "wireless_network_0" {
+				resource "hpeuxi_wireless_network" "wireless_network_0" {
 					name = "` + config.WirelessNetworkName + `-updated-name"
 				}`,
 				ExpectError: regexp.MustCompile(
@@ -83,7 +83,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wireless_network.wireless_network_0
+						from = hpeuxi_wireless_network.wireless_network_0
 
 						lifecycle {
 							destroy = false

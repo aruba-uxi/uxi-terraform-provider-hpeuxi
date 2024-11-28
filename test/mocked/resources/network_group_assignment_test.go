@@ -71,37 +71,37 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_wired_network" "my_network" {
+					resource "hpeuxi_wired_network" "my_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_network
+						to = hpeuxi_wired_network.my_network
 						id = "network_id"
 					}
 
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id = uxi_wired_network.my_network.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = hpeuxi_wired_network.my_network.id
+						group_id   = hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
 						"network_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						"group_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"id",
 						"network_group_assignment_id",
 					),
@@ -119,7 +119,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_network_group_assignment.my_network_group_assignment",
+				ResourceName:      "hpeuxi_network_group_assignment.my_network_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -186,53 +186,53 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					// the original resources
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_wired_network" "my_network" {
+					resource "hpeuxi_wired_network" "my_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_network
+						to = hpeuxi_wired_network.my_network
 						id = "network_id"
 					}
 
 					// the new resources we wanna update the assignment to
-					resource "uxi_group" "my_group_2" {
+					resource "hpeuxi_group" "my_group_2" {
 						name            = "name_2"
 						parent_group_id = "parent_id_2"
 					}
 
-					resource "uxi_wired_network" "my_network_2" {
+					resource "hpeuxi_wired_network" "my_network_2" {
 						name = "name_2"
 					}
 
 					import {
-						to = uxi_wired_network.my_network_2
+						to = hpeuxi_wired_network.my_network_2
 						id = "network_id_2"
 					}
 
 					// the assignment update, updated from network/group to network_2/group_2
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id       = uxi_wired_network.my_network_2.id
-						group_id 		 = uxi_group.my_group_2.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id       = hpeuxi_wired_network.my_network_2.id
+						group_id 		 = hpeuxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
 						"network_id_2",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						"group_id_2",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"id",
 						"network_group_assignment_id_2",
 					),
@@ -285,7 +285,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wired_network.my_network
+						from = hpeuxi_wired_network.my_network
 
 						lifecycle {
 							destroy = false
@@ -293,7 +293,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					}
 
 					removed {
-						from = uxi_wired_network.my_network_2
+						from = hpeuxi_wired_network.my_network_2
 
 						lifecycle {
 							destroy = false
@@ -358,37 +358,37 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_wireless_network" "my_network" {
+					resource "hpeuxi_wireless_network" "my_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wireless_network.my_network
+						to = hpeuxi_wireless_network.my_network
 						id = "network_id"
 					}
 
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id = uxi_wireless_network.my_network.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = hpeuxi_wireless_network.my_network.id
+						group_id   = hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
 						"network_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						"group_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"id",
 						"network_group_assignment_id",
 					),
@@ -406,7 +406,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_network_group_assignment.my_network_group_assignment",
+				ResourceName:      "hpeuxi_network_group_assignment.my_network_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -473,53 +473,53 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					// the original resources
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_wireless_network" "my_network" {
+					resource "hpeuxi_wireless_network" "my_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wireless_network.my_network
+						to = hpeuxi_wireless_network.my_network
 						id = "network_id"
 					}
 
 					// the new resources we wanna update the assignment to
-					resource "uxi_group" "my_group_2" {
+					resource "hpeuxi_group" "my_group_2" {
 						name            = "name_2"
 						parent_group_id = "parent_id_2"
 					}
 
-					resource "uxi_wireless_network" "my_network_2" {
+					resource "hpeuxi_wireless_network" "my_network_2" {
 						name = "name_2"
 					}
 
 					import {
-						to = uxi_wireless_network.my_network_2
+						to = hpeuxi_wireless_network.my_network_2
 						id = "network_id_2"
 					}
 
 					// the assignment update, updated from network/group to network_2/group_2
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id       = uxi_wireless_network.my_network_2.id
-						group_id 		= uxi_group.my_group_2.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id       = hpeuxi_wireless_network.my_network_2.id
+						group_id 		= hpeuxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
 						"network_id_2",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"group_id",
 						"group_id_2",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"id",
 						"network_group_assignment_id_2",
 					),
@@ -572,7 +572,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wireless_network.my_network
+						from = hpeuxi_wireless_network.my_network
 
 						lifecycle {
 							destroy = false
@@ -580,7 +580,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					}
 
 					removed {
-						from = uxi_wireless_network.my_network_2
+						from = hpeuxi_wireless_network.my_network_2
 
 						lifecycle {
 							destroy = false
@@ -649,27 +649,27 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_wired_network" "my_network" {
+					resource "hpeuxi_wired_network" "my_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_network
+						to = hpeuxi_wired_network.my_network
 						id = "network_id"
 					}
 
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id = uxi_wired_network.my_network.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = hpeuxi_wired_network.my_network.id
+						group_id   = hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
 						"network_id",
 					),
@@ -696,7 +696,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_network_group_assignment.my_network_group_assignment",
+				ResourceName:      "hpeuxi_network_group_assignment.my_network_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -738,7 +738,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wired_network.my_network
+						from = hpeuxi_wired_network.my_network
 
 						lifecycle {
 							destroy = false
@@ -799,23 +799,23 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_wired_network" "my_network" {
+					resource "hpeuxi_wired_network" "my_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_network
+						to = hpeuxi_wired_network.my_network
 						id = "network_id"
 					}
 
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id = uxi_wired_network.my_network.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = hpeuxi_wired_network.my_network.id
+						group_id   = hpeuxi_group.my_group.id
 					}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
@@ -850,27 +850,27 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_wired_network" "my_network" {
+					resource "hpeuxi_wired_network" "my_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_network
+						to = hpeuxi_wired_network.my_network
 						id = "network_id"
 					}
 
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id = uxi_wired_network.my_network.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = hpeuxi_wired_network.my_network.id
+						group_id   = hpeuxi_group.my_group.id
 					}
 
 					import {
-						to = uxi_network_group_assignment.my_network_group_assignment
+						to = hpeuxi_network_group_assignment.my_network_group_assignment
 						id = "network_group_assignment_id"
 					}
 				`,
@@ -909,27 +909,27 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_wired_network" "my_network" {
+					resource "hpeuxi_wired_network" "my_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_network
+						to = hpeuxi_wired_network.my_network
 						id = "network_id"
 					}
 
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id = uxi_wired_network.my_network.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = hpeuxi_wired_network.my_network.id
+						group_id   = hpeuxi_group.my_group.id
 					}
 
 					import {
-						to = uxi_network_group_assignment.my_network_group_assignment
+						to = hpeuxi_network_group_assignment.my_network_group_assignment
 						id = "network_group_assignment_id"
 					}
 				`,
@@ -982,27 +982,27 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_wired_network" "my_network" {
+					resource "hpeuxi_wired_network" "my_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_network
+						to = hpeuxi_wired_network.my_network
 						id = "network_id"
 					}
 
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id = uxi_wired_network.my_network.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = hpeuxi_wired_network.my_network.id
+						group_id   = hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_network_group_assignment.my_network_group_assignment",
+						"hpeuxi_network_group_assignment.my_network_group_assignment",
 						"network_id",
 						"network_id",
 					),
@@ -1043,7 +1043,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wired_network.my_network
+						from = hpeuxi_wired_network.my_network
 
 						lifecycle {
 							destroy = false
@@ -1079,7 +1079,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wired_network.my_network
+						from = hpeuxi_wired_network.my_network
 
 						lifecycle {
 							destroy = false

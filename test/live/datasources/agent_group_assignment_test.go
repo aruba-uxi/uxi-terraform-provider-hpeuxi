@@ -24,36 +24,36 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					// create the resource to be used as a datasource
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					data "uxi_agent" "my_agent" {
+					data "hpeuxi_agent" "my_agent" {
 						filter = {
 							id = "` + config.AgentPermanentID + `"
 						}
 					}
 
-					resource "uxi_agent_group_assignment" "my_agent_group_assignment" {
-						agent_id = data.uxi_agent.my_agent.id
-						group_id = uxi_group.my_group.id
+					resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
+						agent_id = data.hpeuxi_agent.my_agent.id
+						group_id = hpeuxi_group.my_group.id
 					}
 
 					// the actual datasource
-					data "uxi_agent_group_assignment" "my_agent_group_assignment" {
+					data "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
 						filter = {
-							id = uxi_agent_group_assignment.my_agent_group_assignment.id
+							id = hpeuxi_agent_group_assignment.my_agent_group_assignment.id
 						}
 					}
 				`,
 				Check: resource.ComposeTestCheckFunc(
 					func(s *terraform.State) error {
-						resourceName := "uxi_agent_group_assignment.my_agent_group_assignment"
+						resourceName := "hpeuxi_agent_group_assignment.my_agent_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 
 						return util.CheckStateAgainstAgentGroupAssignment(
 							t,
-							"data.uxi_agent_group_assignment.my_agent_group_assignment",
+							"data.hpeuxi_agent_group_assignment.my_agent_group_assignment",
 							*util.GetAgentGroupAssignment(rs.Primary.ID),
 						)(s)
 					},

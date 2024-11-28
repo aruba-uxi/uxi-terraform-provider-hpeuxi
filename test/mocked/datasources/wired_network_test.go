@@ -33,7 +33,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wired_network" "my_wired_network" {
+					data "hpeuxi_wired_network" "my_wired_network" {
 						filter = {
 							id = "id"
 						}
@@ -41,7 +41,7 @@ func TestWiredNetworkDataSource(t *testing.T) {
 				`,
 				Check: shared.CheckStateAgainstWiredNetwork(
 					t,
-					"data.uxi_wired_network.my_wired_network",
+					"data.hpeuxi_wired_network.my_wired_network",
 					wiredNetwork,
 				),
 			},
@@ -70,7 +70,7 @@ func TestWiredNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wired_network" "my_wired_network" {
+					data "hpeuxi_wired_network" "my_wired_network" {
 						filter = {
 							id = "id"
 						}
@@ -79,7 +79,7 @@ func TestWiredNetworkDataSourceTooManyRequestsHandling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					shared.CheckStateAgainstWiredNetwork(
 						t,
-						"data.uxi_wired_network.my_wired_network",
+						"data.hpeuxi_wired_network.my_wired_network",
 						wiredNetwork,
 					),
 					func(s *terraform.State) error {
@@ -114,7 +114,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wired_network" "my_wired_network" {
+					data "hpeuxi_wired_network" "my_wired_network" {
 						filter = {
 							id = "id"
 						}
@@ -129,7 +129,7 @@ func TestWiredNetworkAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 					util.MockGetWiredNetwork("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_wired_network" "my_wired_network" {
+					data "hpeuxi_wired_network" "my_wired_network" {
 						filter = {
 							id = "id"
 						}

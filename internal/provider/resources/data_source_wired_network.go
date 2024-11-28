@@ -127,7 +127,7 @@ func (d *wiredNetworkDataSource) Read(
 		Id(state.Filter.ID)
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_wired_network")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_wired_network")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)

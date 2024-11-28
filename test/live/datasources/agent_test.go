@@ -23,13 +23,13 @@ func TestAgentDataSource(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: provider.ProviderConfig + `
-					data "uxi_agent" "my_agent" {
+					data "hpeuxi_agent" "my_agent" {
 						filter = {
 							id = "` + config.AgentPermanentID + `"
 						}
 					}
 				`,
-				Check: shared.CheckStateAgainstAgent(t, "data.uxi_agent.my_agent", agent),
+				Check: shared.CheckStateAgainstAgent(t, "data.hpeuxi_agent.my_agent", agent),
 			},
 		},
 	})

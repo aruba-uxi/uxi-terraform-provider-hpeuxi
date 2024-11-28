@@ -35,7 +35,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			// Creating a wired_network is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "my_wired_network" {
+					resource "hpeuxi_wired_network" "my_wired_network" {
 						name = "name"
 					}`,
 
@@ -49,18 +49,18 @@ func TestWiredNetworkResource(t *testing.T) {
 					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "my_wired_network" {
+					resource "hpeuxi_wired_network" "my_wired_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_wired_network
+						to = hpeuxi_wired_network.my_wired_network
 						id = "id"
 					}`,
 
 				Check: shared.CheckStateAgainstWiredNetwork(
 					t,
-					"uxi_wired_network.my_wired_network",
+					"hpeuxi_wired_network.my_wired_network",
 					wiredNetwork,
 				),
 			},
@@ -69,7 +69,7 @@ func TestWiredNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 1)
 				},
-				ResourceName:      "uxi_wired_network.my_wired_network",
+				ResourceName:      "hpeuxi_wired_network.my_wired_network",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -79,7 +79,7 @@ func TestWiredNetworkResource(t *testing.T) {
 					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 1)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_wired_network" "my_wired_network" {
+				resource "hpeuxi_wired_network" "my_wired_network" {
 					name = "updated_name"
 				}`,
 				ExpectError: regexp.MustCompile(
@@ -100,7 +100,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wired_network.my_wired_network
+						from = hpeuxi_wired_network.my_wired_network
 
 						lifecycle {
 							destroy = false
@@ -136,19 +136,19 @@ func TestWiredNetworkResourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetWiredNetwork("id", util.GenerateWiredNetworkResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "my_wired_network" {
+					resource "hpeuxi_wired_network" "my_wired_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_wired_network
+						to = hpeuxi_wired_network.my_wired_network
 						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
 					shared.CheckStateAgainstWiredNetwork(
 						t,
-						"uxi_wired_network.my_wired_network",
+						"hpeuxi_wired_network.my_wired_network",
 						wiredNetwork,
 					),
 					func(s *terraform.State) error {
@@ -162,7 +162,7 @@ func TestWiredNetworkResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_wired_network.my_wired_network
+						from = hpeuxi_wired_network.my_wired_network
 
 						lifecycle {
 							destroy = false
@@ -191,12 +191,12 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 					util.MockGetWiredNetwork("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "my_wired_network" {
+					resource "hpeuxi_wired_network" "my_wired_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_wired_network
+						to = hpeuxi_wired_network.my_wired_network
 						id = "id"
 					}`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
@@ -214,12 +214,12 @@ func TestWiredNetworkResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_wired_network" "my_wired_network" {
+					resource "hpeuxi_wired_network" "my_wired_network" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_wired_network.my_wired_network
+						to = hpeuxi_wired_network.my_wired_network
 						id = "id"
 					}`,
 				ExpectError: regexp.MustCompile(

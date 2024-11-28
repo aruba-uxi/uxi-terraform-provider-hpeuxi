@@ -154,7 +154,7 @@ func (r *agentResource) Read(
 		Id(state.ID.ValueString())
 	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_agent")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_agent")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
@@ -199,7 +199,7 @@ func (r *agentResource) Update(
 		return
 	}
 
-	errorSummary := util.GenerateErrorSummary("update", "uxi_agent")
+	errorSummary := util.GenerateErrorSummary("update", "hpeuxi_agent")
 	patchRequest := config_api_client.NewAgentsPatchRequest()
 	patchRequest.Name = plan.Name.ValueStringPointer()
 	if !plan.Notes.IsUnknown() {
@@ -269,7 +269,7 @@ func (r *agentResource) Delete(
 
 			return
 		}
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_agent"), errorDetail)
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "hpeuxi_agent"), errorDetail)
 
 		return
 	}
