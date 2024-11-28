@@ -142,7 +142,9 @@ func (p *hpeuxiConfigurationProvider) Configure(
 	resp.ResourceData = uxiClient
 }
 
-func (p *hpeuxiConfigurationProvider) DataSources(_ context.Context) []func() datasource.DataSource {
+func (p *hpeuxiConfigurationProvider) DataSources(
+	_ context.Context,
+) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		resources.NewAgentDataSource,
 		resources.NewAgentGroupAssignmentDataSource,
