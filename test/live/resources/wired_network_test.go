@@ -18,7 +18,7 @@ import (
 )
 
 func TestWiredNetworkResource(t *testing.T) {
-	wiredNetwork := util.GetWiredNetwork(config.WiredNetworkId)
+	wiredNetwork := util.GetWiredNetwork(config.WiredNetworkID)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -47,7 +47,7 @@ func TestWiredNetworkResource(t *testing.T) {
 
 					import {
 						to = uxi_wired_network.wired_network_0
-						id = "` + config.WiredNetworkId + `"
+						id = "` + config.WiredNetworkID + `"
 					}`,
 
 				Check: shared.CheckStateAgainstWiredNetwork(
@@ -66,7 +66,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 				resource "uxi_wired_network" "wired_network_0" {
-					name = "` + config.WiredNetworkId + `-updated-name"
+					name = "` + config.WiredNetworkID + `-updated-name"
 				}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)updating a wired_network is not supported; wired_networks can only be updated\s*through the dashboard`,

@@ -26,7 +26,7 @@ func TestGroupDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_group" "my_group" {
 						filter = {
-							id = "` + config.GroupIdRoot + `"
+							id = "` + config.GroupIDRoot + `"
 						}
 					}
 				`,
@@ -51,6 +51,7 @@ func TestGroupDataSource(t *testing.T) {
 						"id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
+
 							return nil
 						},
 					),
@@ -60,13 +61,14 @@ func TestGroupDataSource(t *testing.T) {
 						"path",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Path)
+
 							return nil
 						},
 					),
 					resource.TestCheckResourceAttr(
 						"data.uxi_group.my_group",
 						"parent_group_id",
-						config.GroupIdRoot,
+						config.GroupIDRoot,
 					),
 				),
 			},

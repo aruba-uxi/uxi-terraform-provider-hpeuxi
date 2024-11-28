@@ -97,17 +97,20 @@ func (d *sensorGroupAssignmentDataSource) Read(
 		Id(state.Filter.ID)
 	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(sensorGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -139,6 +142,7 @@ func (d *sensorGroupAssignmentDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: Sensor Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

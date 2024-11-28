@@ -97,17 +97,20 @@ func (d *agentGroupAssignmentDataSource) Read(
 		Id(state.Filter.ID)
 	agentGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(agentGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -139,6 +142,7 @@ func (d *agentGroupAssignmentDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: Agent Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

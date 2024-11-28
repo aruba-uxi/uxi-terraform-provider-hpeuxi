@@ -138,17 +138,20 @@ func (d *sensorDataSource) Read(
 
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(sensorResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -189,6 +192,7 @@ func (d *sensorDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: Sensor. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

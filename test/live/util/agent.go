@@ -7,7 +7,7 @@ package util
 import (
 	"bytes"
 	"context"
-	"crypto/md5"
+	"crypto/md5" // #nosec G501
 	"encoding/json"
 	"fmt"
 	"io"
@@ -19,16 +19,18 @@ import (
 )
 
 func GetAgent(id string) config_api_client.AgentItem {
-	result, _, err := Client.ConfigurationAPI.
+	result, response, err := Client.ConfigurationAPI.
 		AgentsGet(context.Background()).
 		Id(id).
 		Execute()
 	if err != nil {
 		panic(err)
 	}
+	defer response.Body.Close()
 	if len(result.Items) != 1 {
 		panic("agent with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }
 
@@ -93,7 +95,7 @@ func (p ProvisionAgent) Provision() (string, error) {
 
 func (p ProvisionAgent) generateID() (string, error) {
 	// Create an MD5 hash of the serial string
-	hasher := md5.New()
+	hasher := md5.New() // #nosec G401
 	hasher.Write([]byte(p.DeviceSerial))
 	digest := hasher.Sum(nil)
 

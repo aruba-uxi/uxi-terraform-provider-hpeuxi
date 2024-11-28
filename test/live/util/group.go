@@ -11,11 +11,16 @@ import (
 )
 
 func GetGroupByName(name string) *config_api_client.GroupsGetItem {
-	groups, _, _ := Client.ConfigurationAPI.GroupsGet(context.Background()).Execute()
+	groups, response, err := Client.ConfigurationAPI.GroupsGet(context.Background()).Execute()
+	if err != nil {
+		panic(err)
+	}
+	defer response.Body.Close()
 	for _, group := range groups.Items {
 		if group.Name == name {
 			return &group
 		}
 	}
+
 	return nil
 }

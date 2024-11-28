@@ -118,6 +118,7 @@ func (r *wiredNetworkResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Wired Network. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -155,16 +156,19 @@ func (r *wiredNetworkResource) Read(
 		Id(state.ID.ValueString())
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_wired_network")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
+	defer response.Body.Close()
+
 	if len(networkResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 

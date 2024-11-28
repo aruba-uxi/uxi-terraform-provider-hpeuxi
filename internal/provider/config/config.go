@@ -8,7 +8,7 @@ import "os"
 
 const (
 	MaxRetriesForTooManyRequests = 10
-	TokenURL                     = "https://sso.common.cloud.hpe.com/as/token.oauth2"
+	TokenURL                     = "https://sso.common.cloud.hpe.com/as/token.oauth2" // #nosec G101
 	UXIDefaultHost               = "api.capenetworks.com"
 )
 
@@ -23,6 +23,7 @@ func getEnv(key, fallback string) string {
 	if value == "" {
 		return fallback
 	}
+
 	return value
 }
 

@@ -20,6 +20,7 @@ func GenerateWirelessNetworkResponse(
 ) config_api_client.WirelessNetworksResponse {
 	createdAt, _ := time.Parse(time.RFC3339, "2024-09-11T12:00:00.000Z")
 	updatedAt, _ := time.Parse(time.RFC3339, "2024-09-11T12:00:00.000Z")
+
 	return config_api_client.WirelessNetworksResponse{
 		Items: []config_api_client.WirelessNetworksItem{
 			{

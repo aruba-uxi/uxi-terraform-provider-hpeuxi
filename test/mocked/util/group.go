@@ -13,20 +13,20 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 )
 
-const MockRootGroupId = "root_group_id"
+const MockRootGroupID = "root_group_id"
 
 func GenerateGroupPostResponse(
 	id string,
 	nameSuffix string,
-	parentIdSuffix string,
+	parentIDSuffix string,
 ) config_api_client.GroupsPostResponse {
-	parentId := "parent_id" + parentIdSuffix
+	parentID := "parent_id" + parentIDSuffix
 
 	return config_api_client.GroupsPostResponse{
 		Id:     id,
 		Name:   "name" + nameSuffix,
-		Parent: *config_api_client.NewParent(parentId),
-		Path:   parentId + "." + id,
+		Parent: *config_api_client.NewParent(parentID),
+		Path:   parentID + "." + id,
 		Type:   shared.GroupType,
 	}
 }
@@ -38,7 +38,7 @@ func GenerateGroupAttachedToRootGroupPostResponse(
 	return config_api_client.GroupsPostResponse{
 		Id:     id,
 		Name:   "name" + nameSuffix,
-		Parent: *config_api_client.NewParent(MockRootGroupId),
+		Parent: *config_api_client.NewParent(MockRootGroupID),
 		Path:   "root_group_id." + id,
 		Type:   shared.GroupType,
 	}
@@ -47,15 +47,15 @@ func GenerateGroupAttachedToRootGroupPostResponse(
 func GenerateGroupPatchResponse(
 	id string,
 	nameSuffix string,
-	parentIdSuffix string,
+	parentIDSuffix string,
 ) config_api_client.GroupsPatchResponse {
-	parentId := "parent_id" + parentIdSuffix
+	parentID := "parent_id" + parentIDSuffix
 
 	return config_api_client.GroupsPatchResponse{
 		Id:     id,
 		Name:   "name" + nameSuffix,
-		Parent: *config_api_client.NewParent(parentId),
-		Path:   parentId + "." + id,
+		Parent: *config_api_client.NewParent(parentID),
+		Path:   parentID + "." + id,
 		Type:   shared.GroupType,
 	}
 }
@@ -63,17 +63,17 @@ func GenerateGroupPatchResponse(
 func GenerateGroupGetResponse(
 	id string,
 	nameSuffix string,
-	parentIdSuffix string,
+	parentIDSuffix string,
 ) config_api_client.GroupsGetResponse {
-	parentId := "parent_id" + parentIdSuffix
+	parentID := "parent_id" + parentIDSuffix
 
 	return config_api_client.GroupsGetResponse{
 		Items: []config_api_client.GroupsGetItem{
 			{
 				Id:     id,
 				Name:   "name" + nameSuffix,
-				Parent: *config_api_client.NewNullableParent(config_api_client.NewParent(parentId)),
-				Path:   parentId + "." + id,
+				Parent: *config_api_client.NewNullableParent(config_api_client.NewParent(parentID)),
+				Path:   parentID + "." + id,
 				Type:   shared.GroupType,
 			},
 		},
@@ -91,7 +91,7 @@ func GenerateGroupAttachedToRootGroupGetResponse(
 			{
 				Id:     id,
 				Name:   "name" + nameSuffix,
-				Parent: *config_api_client.NewNullableParent(config_api_client.NewParent(MockRootGroupId)),
+				Parent: *config_api_client.NewNullableParent(config_api_client.NewParent(MockRootGroupID)),
 				Path:   "root_group_id." + id,
 				Type:   shared.GroupType,
 			},
@@ -105,10 +105,10 @@ func GenerateRootGroupGetResponse() config_api_client.GroupsGetResponse {
 	return config_api_client.GroupsGetResponse{
 		Items: []config_api_client.GroupsGetItem{
 			{
-				Id:     MockRootGroupId,
+				Id:     MockRootGroupID,
 				Name:   "root",
 				Parent: *config_api_client.NewNullableParent(nil),
-				Path:   MockRootGroupId,
+				Path:   MockRootGroupID,
 				Type:   shared.GroupType,
 			},
 		},
@@ -120,13 +120,13 @@ func GenerateRootGroupGetResponse() config_api_client.GroupsGetResponse {
 func GenerateNonRootGroupPostRequest(
 	id string,
 	namePostfix string,
-	parentIdPostfix string,
+	parentIDPostfix string,
 ) config_api_client.GroupsPostRequest {
-	parentId := "parent_id" + parentIdPostfix
+	parentID := "parent_id" + parentIDPostfix
 
 	return config_api_client.GroupsPostRequest{
 		Name:     "name" + namePostfix,
-		ParentId: *config_api_client.NewNullableString(&parentId),
+		ParentId: *config_api_client.NewNullableString(&parentID),
 	}
 }
 
@@ -141,6 +141,7 @@ func GenerateGroupAttachedToRootGroupPostRequest(
 
 func GenerateGroupPatchRequest(postfix string) config_api_client.GroupsPatchRequest {
 	name := "name" + postfix
+
 	return config_api_client.GroupsPatchRequest{
 		Name: &name,
 	}

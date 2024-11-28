@@ -16,7 +16,7 @@ import (
 )
 
 func TestServiceTestDataSource(t *testing.T) {
-	serviceTest := util.GetServiceTest(config.ServiceTestId)
+	serviceTest := util.GetServiceTest(config.ServiceTestID)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -25,7 +25,7 @@ func TestServiceTestDataSource(t *testing.T) {
 				Config: provider.ProviderConfig + `
 					data "uxi_service_test" "my_service_test" {
 						filter = {
-							id = "` + config.ServiceTestId + `"
+							id = "` + config.ServiceTestID + `"
 						}
 					}
 				`,

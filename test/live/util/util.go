@@ -8,5 +8,6 @@ func ConditionalProperty(property string, value *string) string {
 	if value == nil {
 		return ""
 	}
+
 	return property + `= "` + *value + `"`
 }

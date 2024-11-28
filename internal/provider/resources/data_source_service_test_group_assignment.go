@@ -99,17 +99,20 @@ func (d *serviceTestGroupAssignmentDataSource) Read(
 		request.Execute,
 	)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(serviceTestGroupAssignmentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -141,6 +144,7 @@ func (d *serviceTestGroupAssignmentDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: ServiceTest Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

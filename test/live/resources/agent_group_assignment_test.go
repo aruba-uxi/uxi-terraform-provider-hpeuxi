@@ -22,8 +22,8 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 		group2Name = "tf_provider_acceptance_test_agent_group_assignment_resource_two"
 	)
 	var (
-		resourceIdBeforeRecreate string
-		resourceIdAfterRecreate  string
+		resourceIDBeforeRecreate string
+		resourceIDAfterRecreate  string
 	)
 
 	resource.Test(t, resource.TestCase{
@@ -38,7 +38,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					data "uxi_agent" "my_agent" {
 						filter = {
-							id = "` + config.AgentPermanentId + `"
+							id = "` + config.AgentPermanentID + `"
 						}
 					}
 
@@ -51,13 +51,14 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
-						config.AgentPermanentId,
+						config.AgentPermanentID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_agent_group_assignment.my_agent_group_assignment",
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, util.GetGroupByName(groupName).Id, value)
+
 							return nil
 						},
 					),
@@ -65,11 +66,12 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_agent_group_assignment.my_agent_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdBeforeRecreate = rs.Primary.ID
+						resourceIDBeforeRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstAgentGroupAssignment(
 							t,
 							"uxi_agent_group_assignment.my_agent_group_assignment",
-							*util.GetAgentGroupAssignment(resourceIdBeforeRecreate),
+							*util.GetAgentGroupAssignment(resourceIDBeforeRecreate),
 						)(s)
 					},
 				),
@@ -90,7 +92,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					data "uxi_agent" "my_agent" {
 						filter = {
-							id = "` + config.AgentPermanentId + `"
+							id = "` + config.AgentPermanentID + `"
 						}
 					}
 
@@ -109,13 +111,14 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
-						config.AgentPermanentId,
+						config.AgentPermanentID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_agent_group_assignment.my_agent_group_assignment",
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, util.GetGroupByName(group2Name).Id, value)
+
 							return nil
 						},
 					),
@@ -123,11 +126,12 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_agent_group_assignment.my_agent_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdAfterRecreate = rs.Primary.ID
+						resourceIDAfterRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstAgentGroupAssignment(
 							t,
 							"uxi_agent_group_assignment.my_agent_group_assignment",
-							*util.GetAgentGroupAssignment(resourceIdAfterRecreate),
+							*util.GetAgentGroupAssignment(resourceIDAfterRecreate),
 						)(s)
 					},
 				),
@@ -142,14 +146,15 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			assert.Equal(t, util.GetGroupByName(group2Name), nil)
 			assert.Equal(
 				t,
-				util.GetAgentGroupAssignment(resourceIdBeforeRecreate),
+				util.GetAgentGroupAssignment(resourceIDBeforeRecreate),
 				nil,
 			)
 			assert.Equal(
 				t,
-				util.GetAgentGroupAssignment(resourceIdAfterRecreate),
+				util.GetAgentGroupAssignment(resourceIDAfterRecreate),
 				nil,
 			)
+
 			return nil
 		},
 	})

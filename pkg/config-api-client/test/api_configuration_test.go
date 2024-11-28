@@ -53,14 +53,15 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
-
 		modelNumber := "model_number"
+
 		wifiMacAddress := "wifi_mac_address"
 		ethernetMacAddress := "ethernet_mac_address"
 		notes := "notes"
 		pcapMode := "pcap_mode"
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.AgentsResponse{
 			Items: []config_api_client.AgentItem{
@@ -111,12 +112,13 @@ func TestConfigurationAPI(t *testing.T) {
 			AgentsPatch(context.Background(), "uid").
 			AgentsPatchRequest(agentsPatchRequest).
 			Execute()
-
 		wifiMacAddress := "wifi_mac_address"
+
 		ethernetMacAddress := "ethernet_mac_address"
 		modelNumber := "model_number"
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.AgentsPatchResponse{
 			Id:                 "uid",
@@ -139,8 +141,9 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			AgentsDelete(context.Background(), "uid").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
 	})
 
@@ -169,8 +172,9 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.GroupsGetResponse{
 			Items: []config_api_client.GroupsGetItem{
@@ -207,8 +211,9 @@ func TestConfigurationAPI(t *testing.T) {
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GroupsPost(context.Background()).
 			GroupsPostRequest(*groupsPostRequest).Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.GroupsPostResponse{
 			Id:     "node",
@@ -237,8 +242,9 @@ func TestConfigurationAPI(t *testing.T) {
 		resp, httpRes, err := apiClient.ConfigurationAPI.
 			GroupsPatch(context.Background(), "node").
 			GroupsPatchRequest(*groupsPatchRequest).Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.GroupsPatchResponse{
 			Id:     "node",
@@ -257,8 +263,9 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			GroupsDelete(context.Background(), "uid").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
 	})
 
@@ -294,16 +301,17 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
-
 		WifiMacAddress := "wifi_mac_address"
+
 		EthernetMacAddress := "ethernet_mac_address"
 		AddressNote := "address_note"
 		var Longitude float32 = 0.0
 		var Latitude float32 = 0.0
 		Notes := "notes"
 		pcapMode := "light"
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.SensorsResponse{
 			Items: []config_api_client.SensorItem{
@@ -362,13 +370,14 @@ func TestConfigurationAPI(t *testing.T) {
 			SensorsPatch(context.Background(), "uid").
 			SensorsPatchRequest(sensorsPatchRequest).
 			Execute()
-
 		wifiMacAddress := "wifi_mac_address"
+
 		ethernetMacAddress := "ethernet_mac_address"
 		var longitude float32 = 0.0
 		var latitude float32 = 0.0
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.SensorsPatchResponse{
 			Id:                 "uid",
@@ -409,8 +418,9 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.AgentGroupAssignmentsResponse{
 			Items: []config_api_client.AgentGroupAssignmentsItem{
@@ -449,8 +459,9 @@ func TestConfigurationAPI(t *testing.T) {
 			AgentGroupAssignmentsPost(context.Background()).
 			AgentGroupAssignmentsPostRequest(*postRequest).
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.AgentGroupAssignmentResponse{
 			Id:    "uid",
@@ -468,8 +479,9 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			AgentGroupAssignmentDelete(context.Background(), "uid").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
 	})
 
@@ -496,8 +508,9 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.SensorGroupAssignmentsResponse{
 			Items: []config_api_client.SensorGroupAssignmentsItem{
@@ -536,8 +549,9 @@ func TestConfigurationAPI(t *testing.T) {
 			SensorGroupAssignmentsPost(context.Background()).
 			SensorGroupAssignmentsPostRequest(*postRequest).
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.SensorGroupAssignmentResponse{
 			Id:     "uid",
@@ -555,8 +569,9 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			SensorGroupAssignmentsDelete(context.Background(), "uid").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
 	})
 
@@ -591,12 +606,13 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
-
 		security := "security"
+
 		dnsLookupDomain := "dns_lookup_domain"
 		var vlanId int32 = 1
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.WiredNetworksResponse{
 			Items: []config_api_client.WiredNetworksItem{
@@ -653,11 +669,12 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
-
 		security := "security"
-		dnsLookupDomain := "dns_lookup_domain"
 
+		dnsLookupDomain := "dns_lookup_domain"
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.WirelessNetworksResponse{
 			Items: []config_api_client.WirelessNetworksItem{
@@ -706,8 +723,9 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.NetworkGroupAssignmentsResponse{
 			Items: []config_api_client.NetworkGroupAssignmentsItem{
@@ -746,8 +764,9 @@ func TestConfigurationAPI(t *testing.T) {
 			NetworkGroupAssignmentsPost(context.Background()).
 			NetworkGroupAssignmentsPostRequest(*postRequest).
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.NetworkGroupAssignmentsPostResponse{
 			Id:      "uid",
@@ -765,8 +784,9 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			NetworkGroupAssignmentsDelete(context.Background(), "uid").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
 	})
 
@@ -793,8 +813,9 @@ func TestConfigurationAPI(t *testing.T) {
 			Limit(10).
 			Next("some-cursor").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.ServiceTestGroupAssignmentsResponse{
 			Items: []config_api_client.ServiceTestGroupAssignmentsItem{
@@ -833,8 +854,9 @@ func TestConfigurationAPI(t *testing.T) {
 			ServiceTestGroupAssignmentsPost(context.Background()).
 			ServiceTestGroupAssignmentsPostRequest(*postRequest).
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusOK, httpRes.StatusCode)
 		assert.Equal(t, resp, &config_api_client.ServiceTestGroupAssignmentsPostResponse{
 			Id:          "uid",
@@ -852,8 +874,9 @@ func TestConfigurationAPI(t *testing.T) {
 		_, httpRes, err := apiClient.ConfigurationAPI.
 			ServiceTestGroupAssignmentsDelete(context.Background(), "uid").
 			Execute()
-
 		require.Nil(t, err)
+
+		defer httpRes.Body.Close()
 		assert.Equal(t, http.StatusNoContent, httpRes.StatusCode)
 	})
 }

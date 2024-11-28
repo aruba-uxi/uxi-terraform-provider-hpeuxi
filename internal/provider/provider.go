@@ -135,7 +135,7 @@ func (p *uxiConfigurationProvider) Configure(
 	uxiConfiguration := config_api_client.NewConfiguration()
 	uxiConfiguration.Host = configuration.Host
 	uxiConfiguration.Scheme = "https"
-	uxiConfiguration.HTTPClient = getHttpClient(clientID, clientSecret, configuration.TokenURL)
+	uxiConfiguration.HTTPClient = getHTTPClient(clientID, clientSecret, configuration.TokenURL)
 	uxiClient := config_api_client.NewAPIClient(uxiConfiguration)
 
 	resp.DataSourceData = uxiClient
@@ -172,7 +172,7 @@ func (p *uxiConfigurationProvider) Resources(_ context.Context) []func() resourc
 	}
 }
 
-func getHttpClient(clientID string, clientSecret string, tokenURL string) *http.Client {
+func getHTTPClient(clientID string, clientSecret string, tokenURL string) *http.Client {
 	config := &clientcredentials.Config{
 		ClientID:     clientID,
 		ClientSecret: clientSecret,

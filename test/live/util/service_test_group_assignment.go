@@ -14,16 +14,18 @@ import (
 )
 
 func GetServiceTestGroupAssignment(id string) config_api_client.ServiceTestGroupAssignmentsItem {
-	result, _, err := Client.ConfigurationAPI.
+	result, response, err := Client.ConfigurationAPI.
 		ServiceTestGroupAssignmentsGet(context.Background()).
 		Id(id).
 		Execute()
 	if err != nil {
 		panic(err)
 	}
+	defer response.Body.Close()
 	if len(result.Items) != 1 {
 		panic("service_test_group_assignment with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }
 

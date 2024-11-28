@@ -6,6 +6,7 @@ package resources
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -97,6 +98,7 @@ func (r *groupResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Group. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -115,20 +117,22 @@ func (r *groupResource) Create(
 		return
 	}
 
-	groups_post_request := config_api_client.NewGroupsPostRequest(plan.Name.ValueString())
+	groupsPostRequest := config_api_client.NewGroupsPostRequest(plan.Name.ValueString())
 	if !plan.ParentGroupID.IsUnknown() && !plan.ParentGroupID.IsNull() {
-		groups_post_request.SetParentId(plan.ParentGroupID.ValueString())
+		groupsPostRequest.SetParentId(plan.ParentGroupID.ValueString())
 	}
 	request := r.client.ConfigurationAPI.
 		GroupsPost(ctx).
-		GroupsPostRequest(*groups_post_request)
+		GroupsPostRequest(*groupsPostRequest)
 	group, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_group"), errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
@@ -162,16 +166,19 @@ func (r *groupResource) Read(
 	errorSummary := util.GenerateErrorSummary("read", "uxi_group")
 
 	if errorDetail != nil {
-		if *errorDetail == groupNotFoundError {
+		if errorDetail.Error() == groupNotFoundError {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
-		resp.Diagnostics.AddError(errorSummary, *errorDetail)
+		resp.Diagnostics.AddError(errorSummary, errorDetail.Error())
+
 		return
 	}
 
 	if util.IsRoot(*group) {
 		resp.Diagnostics.AddError(errorSummary, "The root group cannot be used as a resource")
+
 		return
 	}
 
@@ -209,13 +216,14 @@ func (r *groupResource) Update(
 		GroupsPatch(ctx, plan.ID.ValueString()).
 		GroupsPatchRequest(*patchRequest)
 	group, response, err := util.RetryForTooManyRequests(request.Execute)
-
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_group"), errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
@@ -248,15 +256,18 @@ func (r *groupResource) Delete(
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_group"), errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *groupResource) ImportState(
@@ -270,19 +281,23 @@ func (r *groupResource) ImportState(
 func (r *groupResource) getGroup(
 	ctx context.Context,
 	id string,
-) (*config_api_client.GroupsGetItem, *string) {
+) (*config_api_client.GroupsGetItem, error) {
 	request := r.client.ConfigurationAPI.GroupsGet(ctx).Id(id)
+
 	groupResponse, response, err := util.RetryForTooManyRequests(request.Execute)
+	// groupResponse, response, err := request.Execute()
+	// this causes a segfault
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
-		return nil, &errorDetail
+		return nil, errors.New(errorDetail)
 	}
-
 	if len(groupResponse.Items) != 1 {
 		notFound := groupNotFoundError
-		return nil, &notFound
+
+		return nil, errors.New(notFound)
 	}
+
+	defer response.Body.Close()
 
 	return &groupResponse.Items[0], nil
 }

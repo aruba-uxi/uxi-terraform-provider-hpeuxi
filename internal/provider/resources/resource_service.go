@@ -106,6 +106,7 @@ func (r *serviceTestResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Group. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -143,16 +144,19 @@ func (r *serviceTestResource) Read(
 		Id(state.ID.ValueString())
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
+	defer response.Body.Close()
+
 	if len(sensorResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	serviceTest := sensorResponse.Items[0]

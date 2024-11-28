@@ -14,16 +14,18 @@ import (
 )
 
 func GetSensorGroupAssignment(id string) config_api_client.SensorGroupAssignmentsItem {
-	result, _, err := Client.ConfigurationAPI.
+	result, response, err := Client.ConfigurationAPI.
 		SensorGroupAssignmentsGet(context.Background()).
 		Id(id).
 		Execute()
 	if err != nil {
 		panic(err)
 	}
+	defer response.Body.Close()
 	if len(result.Items) != 1 {
 		panic("sensor_group_assignment with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }
 

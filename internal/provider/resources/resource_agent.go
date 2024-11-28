@@ -116,6 +116,7 @@ func (r *agentResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Group. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -153,16 +154,19 @@ func (r *agentResource) Read(
 		Id(state.ID.ValueString())
 	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
+	defer response.Body.Close()
+
 	if len(agentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	agent := agentResponse.Items[0]
@@ -206,6 +210,7 @@ func (r *agentResource) Update(
 		pcapMode, err := config_api_client.NewPcapModeFromValue(*plannedPcapMode)
 		if err != nil {
 			resp.Diagnostics.AddError(errorSummary, err.Error())
+
 			return
 		}
 		patchRequest.PcapMode = pcapMode
@@ -214,13 +219,15 @@ func (r *agentResource) Update(
 		AgentsPatch(ctx, plan.ID.ValueString()).
 		AgentsPatchRequest(*patchRequest)
 	agent, response, err := util.RetryForTooManyRequests(request.Execute)
-
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(agent.Id)
 	plan.Name = types.StringValue(agent.Name)
@@ -256,15 +263,18 @@ func (r *agentResource) Delete(
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_agent"), errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *agentResource) ImportState(

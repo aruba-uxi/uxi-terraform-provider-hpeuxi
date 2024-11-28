@@ -123,17 +123,20 @@ func (d *agentDataSource) Read(
 
 	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(agentResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -171,6 +174,7 @@ func (d *agentDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: Agent. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

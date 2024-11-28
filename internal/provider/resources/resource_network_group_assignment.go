@@ -104,6 +104,7 @@ func (r *networkGroupAssignmentResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Network Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -131,14 +132,16 @@ func (r *networkGroupAssignmentResource) Create(
 		NetworkGroupAssignmentsPostRequest(*postRequest)
 	networkGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("create", "uxi_network_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(networkGroupAssignment.Id)
 	plan.GroupID = types.StringValue(networkGroupAssignment.Group.Id)
@@ -168,16 +171,19 @@ func (r *networkGroupAssignmentResource) Read(
 		Id(state.ID.ValueString())
 	networkGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_network_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
+	defer response.Body.Close()
+
 	if len(networkGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	networkGroupAssignment := networkGroupAssignmentResponse.Items[0]
@@ -226,18 +232,21 @@ func (r *networkGroupAssignmentResource) Delete(
 		NetworkGroupAssignmentsDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("delete", "uxi_network_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *networkGroupAssignmentResource) ImportState(

@@ -11,15 +11,17 @@ import (
 )
 
 func GetServiceTest(id string) config_api_client.ServiceTestsListItem {
-	result, _, err := Client.ConfigurationAPI.
+	result, response, err := Client.ConfigurationAPI.
 		ServiceTestsGet(context.Background()).
 		Id(id).
 		Execute()
 	if err != nil {
 		panic(err)
 	}
+	defer response.Body.Close()
 	if len(result.Items) != 1 {
 		panic("service_test with id `" + id + "` could not be found")
 	}
+
 	return result.Items[0]
 }

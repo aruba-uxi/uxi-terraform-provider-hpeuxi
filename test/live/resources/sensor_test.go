@@ -19,7 +19,7 @@ import (
 )
 
 func TestSensorResource(t *testing.T) {
-	originalSensor := util.GetSensor(config.SensorId)
+	originalSensor := util.GetSensor(config.SensorID)
 	updatedSensor := originalSensor
 	updatedSensor.Notes = *config_api_client.NewNullableString(config_api_client.PtrString("tf_provider_acceptance_test_update_notes"))
 	updatedSensor.AddressNote = *config_api_client.NewNullableString(config_api_client.PtrString("tf_provider_acceptance_test_update_address_note"))
@@ -52,7 +52,7 @@ func TestSensorResource(t *testing.T) {
 
 					import {
 						to = uxi_sensor.my_sensor
-						id = "` + config.SensorId + `"
+						id = "` + config.SensorID + `"
 					}`,
 
 				Check: shared.CheckStateAgainstSensor(t, "uxi_sensor.my_sensor", originalSensor),

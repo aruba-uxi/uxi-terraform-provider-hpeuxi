@@ -171,7 +171,7 @@ func TestRootGroupResource(t *testing.T) {
 			// Importing the root group does not work
 			{
 				PreConfig: func() {
-					util.MockGetGroup(util.MockRootGroupId, util.GenerateRootGroupGetResponse(), 1)
+					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "uxi_group" "my_root_group" {
@@ -180,7 +180,7 @@ func TestRootGroupResource(t *testing.T) {
 
 				import {
 					to = uxi_group.my_root_group
-					id = "` + util.MockRootGroupId + `"
+					id = "` + util.MockRootGroupID + `"
 				}`,
 				ExpectError: regexp.MustCompile(`The root group cannot be used as a resource`),
 			},
@@ -193,7 +193,7 @@ func TestRootGroupResource(t *testing.T) {
 						1,
 					)
 					// to indicate the group has the root group as a parent
-					util.MockGetGroup(util.MockRootGroupId, util.GenerateRootGroupGetResponse(), 1)
+					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
 					util.MockGetGroup(
 						"id",
 						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
@@ -266,6 +266,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),
@@ -292,6 +293,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "id", "id"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),
@@ -329,6 +331,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 					resource.TestCheckResourceAttr("uxi_group.my_group", "name", "name_2"),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+
 						return nil
 					},
 				),

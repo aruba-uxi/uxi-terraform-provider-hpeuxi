@@ -101,6 +101,7 @@ func (r *sensorGroupAssignmentResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Sensor Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -128,14 +129,16 @@ func (r *sensorGroupAssignmentResource) Create(
 		SensorGroupAssignmentsPostRequest(*postRequest)
 	sensorGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("create", "uxi_sensor_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(sensorGroupAssignment.Id)
 	plan.GroupID = types.StringValue(sensorGroupAssignment.Group.Id)
@@ -165,16 +168,19 @@ func (r *sensorGroupAssignmentResource) Read(
 		Id(state.ID.ValueString())
 	sensorGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
+	defer response.Body.Close()
+
 	if len(sensorGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -221,18 +227,21 @@ func (r *sensorGroupAssignmentResource) Delete(
 		SensorGroupAssignmentsDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("delete", "uxi_sensor_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *sensorGroupAssignmentResource) ImportState(

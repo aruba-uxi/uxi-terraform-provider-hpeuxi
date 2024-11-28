@@ -101,6 +101,7 @@ func (r *serviceTestGroupAssignmentResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Service Test Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -128,14 +129,16 @@ func (r *serviceTestGroupAssignmentResource) Create(
 		ServiceTestGroupAssignmentsPostRequest(*postRequest)
 	serviceTestGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("create", "uxi_service_test_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(serviceTestGroupAssignment.Id)
 	plan.GroupID = types.StringValue(serviceTestGroupAssignment.Group.Id)
@@ -167,16 +170,19 @@ func (r *serviceTestGroupAssignmentResource) Read(
 		request.Execute,
 	)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
+	defer response.Body.Close()
+
 	if len(serviceTestGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	serviceTestGroupAssignment := serviceTestGroupAssignmentResponse.Items[0]
@@ -226,18 +232,21 @@ func (r *serviceTestGroupAssignmentResource) Delete(
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *serviceTestGroupAssignmentResource) ImportState(

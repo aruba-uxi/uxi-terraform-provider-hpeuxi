@@ -134,6 +134,7 @@ func (r *sensorResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Group. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -171,16 +172,19 @@ func (r *sensorResource) Read(
 		Id(state.ID.ValueString())
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
+	defer response.Body.Close()
+
 	if len(sensorResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	sensor := sensorResponse.Items[0]
@@ -226,6 +230,7 @@ func (r *sensorResource) Update(
 		pcapMode, err := config_api_client.NewPcapModeFromValue(*plannedPcapMode)
 		if err != nil {
 			resp.Diagnostics.AddError(errorSummary, err.Error())
+
 			return
 		}
 		patchRequest.PcapMode = pcapMode
@@ -235,13 +240,15 @@ func (r *sensorResource) Update(
 		SensorsPatch(ctx, plan.ID.ValueString()).
 		SensorsPatchRequest(*patchRequest)
 	sensor, response, err := util.RetryForTooManyRequests(request.Execute)
-
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(sensor.Id)
 	plan.Name = types.StringValue(sensor.Name)

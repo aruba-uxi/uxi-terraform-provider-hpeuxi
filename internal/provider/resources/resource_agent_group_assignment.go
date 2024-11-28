@@ -101,6 +101,7 @@ func (r *agentGroupAssignmentResource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Resource type: Network Group Assignment. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 
@@ -128,14 +129,16 @@ func (r *agentGroupAssignmentResource) Create(
 		AgentGroupAssignmentsPostRequest(*postRequest)
 	agentGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("create", "uxi_agent_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	plan.ID = types.StringValue(agentGroupAssignment.Id)
 	plan.GroupID = types.StringValue(agentGroupAssignment.Group.Id)
@@ -165,16 +168,19 @@ func (r *agentGroupAssignmentResource) Read(
 		Id(state.ID.ValueString())
 	agentGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_agent_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
 
+	defer response.Body.Close()
+
 	if len(agentGroupAssignmentResponse.Items) != 1 {
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 	agentGroupAssignment := agentGroupAssignmentResponse.Items[0]
@@ -220,18 +226,21 @@ func (r *agentGroupAssignmentResource) Delete(
 		AgentGroupAssignmentDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {
 			resp.State.RemoveResource(ctx)
+
 			return
 		}
 		resp.Diagnostics.AddError(
 			util.GenerateErrorSummary("delete", "uxi_agent_group_assignment"),
 			errorDetail,
 		)
+
 		return
 	}
+
+	defer response.Body.Close()
 }
 
 func (r *agentGroupAssignmentResource) ImportState(

@@ -23,8 +23,8 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 	)
 
 	var (
-		resourceIdBeforeRecreate string
-		resourceIdAfterRecreate  string
+		resourceIDBeforeRecreate string
+		resourceIDAfterRecreate  string
 	)
 
 	resource.Test(t, resource.TestCase{
@@ -43,7 +43,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 
 					import {
 						to = uxi_service_test.my_service_test
-						id = "` + config.ServiceTestId + `"
+						id = "` + config.ServiceTestID + `"
 					}
 
 					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
@@ -55,13 +55,14 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
-						config.ServiceTestId,
+						config.ServiceTestID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
+
 							return nil
 						},
 					),
@@ -69,7 +70,8 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdBeforeRecreate = rs.Primary.ID
+						resourceIDBeforeRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
 							"uxi_service_test_group_assignment.my_service_test_group_assignment",
@@ -111,13 +113,14 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
-						config.ServiceTestId,
+						config.ServiceTestID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(group2Name).Id)
+
 							return nil
 						},
 					),
@@ -125,7 +128,8 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					func(s *terraform.State) error {
 						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
-						resourceIdAfterRecreate = rs.Primary.ID
+						resourceIDAfterRecreate = rs.Primary.ID
+
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
 							"uxi_service_test_group_assignment.my_service_test_group_assignment",
@@ -137,7 +141,8 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						"uxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
 						func(value string) error {
-							assert.NotEqual(t, value, resourceIdBeforeRecreate)
+							assert.NotEqual(t, value, resourceIDBeforeRecreate)
+
 							return nil
 						},
 					),
@@ -158,8 +163,9 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 		CheckDestroy: func(s *terraform.State) error {
 			assert.Equal(t, util.GetGroupByName(groupName), nil)
 			assert.Equal(t, util.GetGroupByName(group2Name), nil)
-			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdBeforeRecreate), nil)
-			assert.Equal(t, util.GetAgentGroupAssignment(resourceIdAfterRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIDBeforeRecreate), nil)
+			assert.Equal(t, util.GetAgentGroupAssignment(resourceIDAfterRecreate), nil)
+
 			return nil
 		},
 	})

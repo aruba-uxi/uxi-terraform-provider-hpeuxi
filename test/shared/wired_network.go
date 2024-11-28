@@ -26,6 +26,7 @@ func CheckStateAgainstWiredNetwork(
 			"name",
 			func(value string) error {
 				assert.Equal(t, value, wiredNetwork.Name)
+
 				return nil
 			},
 		),

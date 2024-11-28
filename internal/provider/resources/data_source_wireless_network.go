@@ -137,17 +137,20 @@ func (d *wirelessNetworkDataSource) Read(
 		Id(state.Filter.ID)
 	networkResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-
 	errorSummary := util.GenerateErrorSummary("read", "uxi_wireless_network")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
+
 		return
 	}
+
+	defer response.Body.Close()
 
 	if len(networkResponse.Items) != 1 {
 		resp.Diagnostics.AddError(errorSummary, "Could not find specified data source")
 		resp.State.RemoveResource(ctx)
+
 		return
 	}
 
@@ -187,6 +190,7 @@ func (d *wirelessNetworkDataSource) Configure(
 			"Unexpected Data Source Configure Type",
 			"Data Source type: Wireless Network. Please report this issue to the provider developers.",
 		)
+
 		return
 	}
 

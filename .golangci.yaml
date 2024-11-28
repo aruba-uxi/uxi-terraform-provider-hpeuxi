@@ -27,8 +27,6 @@ linters:
     - cyclop # we have gocyclo, apparently its better
     - execinquery # deprecated
 
-    - canonicalheader # for checking copyright headers
-    - bodyclose # we want this
     - contextcheck # we want this
     - copyloopvar # if we update to later than go 1.22
     - depguard # for banning specific dependencies
@@ -39,18 +37,15 @@ linters:
     - funlen # we want this
     - goconst # we want this
     - gocritic # we want this
-    - gosec # we want this
     - intrange # later version of go
-    - ireturn # we want this
+    # - ireturn # we want this
     - lll # we want this
     - maintidx # we want this
     - mnd # we want this  todo: also see gomnd
     - gomnd # disabled in gl provider  todo: also see mnd
-    - nlreturn # we want this
     - noctx # we want this
     - nestif # we want this
     - revive # we want this
-    - stylecheck # we want this
     - tagliatelle # we want this
     - testifylint # we want this
     - thelper # we want this
@@ -94,6 +89,10 @@ issues:
       path: _test\.go
 
     - linters:
+        - stylecheck
+      path: pkg/config-api-client
+
+    - linters:
         - dupl
       path: ".*generated.*go"
 
@@ -108,5 +107,13 @@ issues:
     - linters:
         - stylecheck
       text: "ST1005:"
+
+    - linters:
+        - ireturn
+      path: internal/provider/resources
+
+    - linters:
+        - ireturn
+      path: internal/provider/util/retry.go
 
   max-same-issues: 0
