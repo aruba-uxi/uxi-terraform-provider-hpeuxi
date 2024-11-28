@@ -34,7 +34,6 @@ linters:
     - forcetypeassert # we want this
     - funlen # we want this
     - goconst # we want this
-    - gocritic # we want this
     - intrange # later version of go
     - lll # we want this
     - maintidx # we want this

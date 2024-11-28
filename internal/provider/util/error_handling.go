@@ -55,11 +55,12 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 }
 
 func handleURLError(uErr *url.Error) string {
-	if uErr.Timeout() {
+	switch {
+	case uErr.Timeout():
 		return "Error: Request timed out. Please check your network."
-	} else if uErr.Temporary() {
+	case uErr.Temporary():
 		return "Error: Temporary network error. Please try again later."
-	} else {
+	default:
 		return fmt.Sprintf("URL Error: %v\n", uErr)
 	}
 }
