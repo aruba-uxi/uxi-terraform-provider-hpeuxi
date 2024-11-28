@@ -38,7 +38,7 @@ linters:
     - goconst # we want this
     - gocritic # we want this
     - intrange # later version of go
-    - ireturn # we want this
+    # - ireturn # we want this
     - lll # we want this
     - maintidx # we want this
     - mnd # we want this  todo: also see gomnd
@@ -107,5 +107,13 @@ issues:
     - linters:
         - stylecheck
       text: "ST1005:"
+
+    - linters:
+        - ireturn
+      path: internal/provider/resources
+
+    - linters:
+        - ireturn
+      path: internal/provider/util/retry.go
 
   max-same-issues: 0
