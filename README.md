@@ -51,7 +51,7 @@ Create a Terraform file in your working directory, and reference the desired pro
 ```terraform
 terraform {
     required_providers {
-        uxi = {
+        hpeuxi = {
             source  = "aruba-uxi/hpeuxi"
             version = ">= 0.0.0-pre.alpha.3"
         }
