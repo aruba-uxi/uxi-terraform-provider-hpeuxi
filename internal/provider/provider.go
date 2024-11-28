@@ -50,7 +50,7 @@ func (p *uxiConfigurationProvider) Metadata(
 	_ provider.MetadataRequest,
 	resp *provider.MetadataResponse,
 ) {
-	resp.TypeName = "uxi"
+	resp.TypeName = "hpeuxi"
 	resp.Version = p.version
 }
 
