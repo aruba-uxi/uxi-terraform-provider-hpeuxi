@@ -24,36 +24,36 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					// create the resource to be used as a datasource
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					data "uxi_wired_network" "my_network" {
+					data "hpeuxi_wired_network" "my_network" {
 						filter = {
 							id = "` + config.WiredNetworkID + `"
 						}
 					}
 
-					resource "uxi_network_group_assignment" "my_network_group_assignment" {
-						network_id = data.uxi_wired_network.my_network.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
+						network_id = data.hpeuxi_wired_network.my_network.id
+						group_id   = hpeuxi_group.my_group.id
 					}
 
 					// the actual datasource
-					data "uxi_network_group_assignment" "my_network_group_assignment" {
+					data "hpeuxi_network_group_assignment" "my_network_group_assignment" {
 						filter = {
-							id = uxi_network_group_assignment.my_network_group_assignment.id
+							id = hpeuxi_network_group_assignment.my_network_group_assignment.id
 						}
 					}
 				`,
 				Check: resource.ComposeTestCheckFunc(
 					func(s *terraform.State) error {
-						resourceName := "uxi_network_group_assignment.my_network_group_assignment"
+						resourceName := "hpeuxi_network_group_assignment.my_network_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 
 						return util.CheckStateAgainstNetworkGroupAssignment(
 							t,
-							"data.uxi_network_group_assignment.my_network_group_assignment",
+							"data.hpeuxi_network_group_assignment.my_network_group_assignment",
 							util.GetNetworkGroupAssignment(rs.Primary.ID),
 						)(s)
 					},

@@ -24,7 +24,7 @@ func TestGroupDataSource(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: provider.ProviderConfig + `
-					data "uxi_group" "my_group" {
+					data "hpeuxi_group" "my_group" {
 						filter = {
 							id = "` + config.GroupIDRoot + `"
 						}
@@ -35,19 +35,19 @@ func TestGroupDataSource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					// create the resource to use subsequently as datasource
-					resource "uxi_group" "my_group_resource" {
+					resource "hpeuxi_group" "my_group_resource" {
 						name = "` + groupName + `"
 					}
 
-					data "uxi_group" "my_group" {
+					data "hpeuxi_group" "my_group" {
 						filter = {
-							id = uxi_group.my_group_resource.id
+							id = hpeuxi_group.my_group_resource.id
 						}
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrWith(
-						"data.uxi_group.my_group",
+						"data.hpeuxi_group.my_group",
 						"id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
@@ -55,9 +55,9 @@ func TestGroupDataSource(t *testing.T) {
 							return nil
 						},
 					),
-					resource.TestCheckResourceAttr("data.uxi_group.my_group", "name", groupName),
+					resource.TestCheckResourceAttr("data.hpeuxi_group.my_group", "name", groupName),
 					resource.TestCheckResourceAttrWith(
-						"data.uxi_group.my_group",
+						"data.hpeuxi_group.my_group",
 						"path",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Path)
@@ -66,7 +66,7 @@ func TestGroupDataSource(t *testing.T) {
 						},
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_group.my_group",
+						"data.hpeuxi_group.my_group",
 						"parent_group_id",
 						config.GroupIDRoot,
 					),

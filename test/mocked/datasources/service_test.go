@@ -33,7 +33,7 @@ func TestServiceTestDataSource(t *testing.T) {
 					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_service_test" "my_service_test" {
+					data "hpeuxi_service_test" "my_service_test" {
 						filter = {
 							id = "id"
 						}
@@ -41,7 +41,7 @@ func TestServiceTestDataSource(t *testing.T) {
 				`,
 				Check: shared.CheckStateAgainstServiceTest(
 					t,
-					"data.uxi_service_test.my_service_test",
+					"data.hpeuxi_service_test.my_service_test",
 					serviceTest,
 				),
 			},
@@ -70,7 +70,7 @@ func TestServiceTestDataSourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_service_test" "my_service_test" {
+					data "hpeuxi_service_test" "my_service_test" {
 						filter = {
 							id = "id"
 						}
@@ -79,7 +79,7 @@ func TestServiceTestDataSourceTooManyRequestsHandling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					shared.CheckStateAgainstServiceTest(
 						t,
-						"data.uxi_service_test.my_service_test",
+						"data.hpeuxi_service_test.my_service_test",
 						serviceTest,
 					),
 					func(s *terraform.State) error {
@@ -115,7 +115,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_service_test" "my_service_test" {
+					data "hpeuxi_service_test" "my_service_test" {
 						filter = {
 							id = "id"
 						}
@@ -131,7 +131,7 @@ func TestServiceTestDataSourceHttpErrorHandling(t *testing.T) {
 					util.MockGetServiceTest("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_service_test" "my_service_test" {
+					data "hpeuxi_service_test" "my_service_test" {
 						filter = {
 							id = "id"
 						}

@@ -32,7 +32,7 @@ func TestAgentResource(t *testing.T) {
 			// Creating an agent is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name = "name"
 						notes = "note"
 						pcap_mode = "light"
@@ -48,25 +48,25 @@ func TestAgentResource(t *testing.T) {
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name = "name"
 						notes = "notes"
 						pcap_mode = "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "id"
 					}`,
 
-				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
+				Check: shared.CheckStateAgainstAgent(t, "hpeuxi_agent.my_agent", agent),
 			},
 			// ImportState testing
 			{
 				PreConfig: func() {
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
 				},
-				ResourceName:      "uxi_agent.my_agent",
+				ResourceName:      "hpeuxi_agent.my_agent",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -85,12 +85,12 @@ func TestAgentResource(t *testing.T) {
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_agent" "my_agent" {
+				resource "hpeuxi_agent" "my_agent" {
 					name = "name_2"
 					notes = "notes_2"
 					pcap_mode = "light"
 				}`,
-				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", updatedAgent),
+				Check: shared.CheckStateAgainstAgent(t, "hpeuxi_agent.my_agent", updatedAgent),
 			},
 			// Delete testing
 			{
@@ -130,19 +130,19 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name = "name"
 						notes = "notes"
 						pcap_mode = "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "id"
 					}`,
 
 				Check: resource.ComposeAggregateTestCheckFunc(
-					shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
+					shared.CheckStateAgainstAgent(t, "hpeuxi_agent.my_agent", agent),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 
@@ -169,13 +169,13 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_agent" "my_agent" {
+				resource "hpeuxi_agent" "my_agent" {
 					name = "name_2"
 					notes = "notes_2"
 					pcap_mode = "light"
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", updatedAgent),
+					shared.CheckStateAgainstAgent(t, "hpeuxi_agent.my_agent", updatedAgent),
 					func(s *terraform.State) error {
 						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
 
@@ -234,14 +234,14 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name = "name"
 						notes = "notes"
 						pcap_mode = "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "id"
 					}`,
 
@@ -255,14 +255,14 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					util.MockGetAgent("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name = "name"
 						notes = "notes"
 						pcap_mode = "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "id"
 					}`,
 
@@ -274,18 +274,18 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name = "name"
 						notes = "notes"
 						pcap_mode = "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "id"
 					}`,
 
-				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
+				Check: shared.CheckStateAgainstAgent(t, "hpeuxi_agent.my_agent", agent),
 			},
 			// Update HTTP error
 			{
@@ -305,7 +305,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-				resource "uxi_agent" "my_agent" {
+				resource "hpeuxi_agent" "my_agent" {
 					name = "name_2"
 					notes = "notes_2"
 					pcap_mode = "light"

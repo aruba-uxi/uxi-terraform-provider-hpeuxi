@@ -131,7 +131,7 @@ func (r *agentGroupAssignmentResource) Create(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("create", "uxi_agent_group_assignment"),
+			util.GenerateErrorSummary("create", "hpeuxi_agent_group_assignment"),
 			errorDetail,
 		)
 
@@ -168,7 +168,7 @@ func (r *agentGroupAssignmentResource) Read(
 		Id(state.ID.ValueString())
 	agentGroupAssignmentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_agent_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_agent_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
@@ -233,7 +233,7 @@ func (r *agentGroupAssignmentResource) Delete(
 			return
 		}
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("delete", "uxi_agent_group_assignment"),
+			util.GenerateErrorSummary("delete", "hpeuxi_agent_group_assignment"),
 			errorDetail,
 		)
 

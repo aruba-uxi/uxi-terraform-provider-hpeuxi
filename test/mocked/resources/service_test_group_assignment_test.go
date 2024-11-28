@@ -68,37 +68,37 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "service_test_id"
 					}
 
-					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
-						service_test_id = uxi_service_test.my_service_test.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = hpeuxi_service_test.my_service_test.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
 						"service_test_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
 						"group_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
 						"service_test_group_assignment_id",
 					),
@@ -115,7 +115,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_service_test_group_assignment.my_service_test_group_assignment",
+				ResourceName:      "hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -182,53 +182,53 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					// the original resources
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "service_test_id"
 					}
 
 					// the new resources we wanna update the assignment to
-					resource "uxi_group" "my_group_2" {
+					resource "hpeuxi_group" "my_group_2" {
 						name            = "name_2"
 						parent_group_id = "parent_id_2"
 					}
 
-					resource "uxi_service_test" "my_service_test_2" {
+					resource "hpeuxi_service_test" "my_service_test_2" {
 						name = "name_2"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test_2
+						to = hpeuxi_service_test.my_service_test_2
 						id = "service_test_id_2"
 					}
 
 					// the assignment update, updated from service_test/group to service_test_2/group_2
-					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
-						service_test_id = uxi_service_test.my_service_test_2.id
-						group_id 		= uxi_group.my_group_2.id
+					resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = hpeuxi_service_test.my_service_test_2.id
+						group_id 		= hpeuxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
 						"service_test_id_2",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
 						"group_id_2",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
 						"service_test_group_assignment_id_2",
 					),
@@ -257,7 +257,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_service_test.my_service_test
+						from = hpeuxi_service_test.my_service_test
 
 						lifecycle {
 							destroy = false
@@ -265,7 +265,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					}
 
 					removed {
-						from = uxi_service_test.my_service_test_2
+						from = hpeuxi_service_test.my_service_test_2
 
 						lifecycle {
 							destroy = false
@@ -334,27 +334,27 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "service_test_id"
 					}
 
-					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
-						service_test_id = uxi_service_test.my_service_test.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = hpeuxi_service_test.my_service_test.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
 						"service_test_group_assignment_id",
 					),
@@ -380,7 +380,7 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 						1,
 					)
 				},
-				ResourceName:      "uxi_service_test_group_assignment.my_service_test_group_assignment",
+				ResourceName:      "hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -415,7 +415,7 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_service_test.my_service_test
+						from = hpeuxi_service_test.my_service_test
 
 						lifecycle {
 							destroy = false
@@ -470,23 +470,23 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "service_test_id"
 					}
 
-					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
-						service_test_id = uxi_service_test.my_service_test.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = hpeuxi_service_test.my_service_test.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
@@ -513,22 +513,22 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
-					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
-						service_test_id = uxi_service_test.my_service_test.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = hpeuxi_service_test.my_service_test.id
+						group_id 		= hpeuxi_group.my_group.id
 					}
 
 					import {
-						to = uxi_service_test_group_assignment.my_service_test_group_assignment
+						to = hpeuxi_service_test_group_assignment.my_service_test_group_assignment
 						id = "service_test_group_assignment_id"
 					}`,
 				ExpectError: regexp.MustCompile(`Error: Cannot import non-existent remote object`),
@@ -575,37 +575,37 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "service_test_id"
 					}
 
-					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
-						service_test_id = uxi_service_test.my_service_test.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = hpeuxi_service_test.my_service_test.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
 						"service_test_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
 						"group_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
 						"service_test_group_assignment_id",
 					),
@@ -645,22 +645,22 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "name"
 					}
 
-					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
-						service_test_id = uxi_service_test.my_service_test.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = hpeuxi_service_test.my_service_test.id
+						group_id 		= hpeuxi_group.my_group.id
 					}
 
 					import {
-						to = uxi_service_test_group_assignment.my_service_test_group_assignment
+						to = hpeuxi_service_test_group_assignment.my_service_test_group_assignment
 						id = "service_test_group_assignment_id"
 					}`,
 
@@ -696,7 +696,7 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_service_test.my_service_test
+						from = hpeuxi_service_test.my_service_test
 
 						lifecycle {
 							destroy = false
@@ -731,7 +731,7 @@ func TestServiceTestGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_service_test.my_service_test
+						from = hpeuxi_service_test.my_service_test
 
 						lifecycle {
 							destroy = false

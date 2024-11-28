@@ -138,7 +138,7 @@ func (d *sensorDataSource) Read(
 
 	sensorResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_sensor")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_sensor")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)

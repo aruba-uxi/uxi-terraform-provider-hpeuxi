@@ -34,11 +34,11 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			// Creating
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name 			= "` + existingSensorProperties.Name + `"
 						` + util.ConditionalProperty("address_note", existingSensorProperties.AddressNote.Get()) + `
 						` + util.ConditionalProperty("notes", existingSensorProperties.Notes.Get()) + `
@@ -46,23 +46,23 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					import {
-						to = uxi_sensor.my_sensor
+						to = hpeuxi_sensor.my_sensor
 						id = "` + config.SensorID + `"
 					}
 
-					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id = uxi_sensor.my_sensor.id
-						group_id  = uxi_group.my_group.id
+					resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id = hpeuxi_sensor.my_sensor.id
+						group_id  = hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check configured properties
 					resource.TestCheckResourceAttr(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
 						config.SensorID,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
@@ -72,13 +72,13 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					),
 					// Check properties match what is on backend
 					func(s *terraform.State) error {
-						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
+						resourceName := "hpeuxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIDBeforeRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
-							"uxi_sensor_group_assignment.my_sensor_group_assignment",
+							"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 							util.GetSensorGroupAssignment(resourceIDBeforeRecreate),
 						)(s)
 					},
@@ -86,7 +86,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			},
 			// ImportState
 			{
-				ResourceName:      "uxi_sensor_group_assignment.my_sensor_group_assignment",
+				ResourceName:      "hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -94,11 +94,11 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					// the original resources
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					resource "uxi_sensor" "my_sensor" {
+					resource "hpeuxi_sensor" "my_sensor" {
 						name 			= "` + existingSensorProperties.Name + `"
 						` + util.ConditionalProperty("address_note", existingSensorProperties.AddressNote.Get()) + `
 						` + util.ConditionalProperty("notes", existingSensorProperties.Notes.Get()) + `
@@ -106,24 +106,24 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					}
 
 					// the new resources we wanna update the assignment to
-					resource "uxi_group" "my_group_2" {
+					resource "hpeuxi_group" "my_group_2" {
 						name = "` + group2Name + `"
 					}
 
 					// the assignment update, updated from sensor/group to sensor/group_2
-					resource "uxi_sensor_group_assignment" "my_sensor_group_assignment" {
-						sensor_id = uxi_sensor.my_sensor.id
-						group_id  = uxi_group.my_group_2.id
+					resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
+						sensor_id = hpeuxi_sensor.my_sensor.id
+						group_id  = hpeuxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check configured properties
 					resource.TestCheckResourceAttr(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"sensor_id",
 						config.SensorID,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_sensor_group_assignment.my_sensor_group_assignment",
+						"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(group2Name).Id)
@@ -133,13 +133,13 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 					),
 					// Check properties match what is on backend
 					func(s *terraform.State) error {
-						resourceName := "uxi_sensor_group_assignment.my_sensor_group_assignment"
+						resourceName := "hpeuxi_sensor_group_assignment.my_sensor_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIDAfterRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstSensorGroupAssignment(
 							t,
-							"uxi_sensor_group_assignment.my_sensor_group_assignment",
+							"hpeuxi_sensor_group_assignment.my_sensor_group_assignment",
 							util.GetSensorGroupAssignment(resourceIDAfterRecreate),
 						)(s)
 					},
@@ -149,7 +149,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_sensor.my_sensor
+						from = hpeuxi_sensor.my_sensor
 
 						lifecycle {
 							destroy = false

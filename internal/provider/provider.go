@@ -23,38 +23,38 @@ import (
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-var _ provider.Provider = &uxiConfigurationProvider{}
+var _ provider.Provider = &hpeuxiConfigurationProvider{}
 
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
-		return &uxiConfigurationProvider{
+		return &hpeuxiConfigurationProvider{
 			version: version,
 		}
 	}
 }
 
-type uxiProviderModel struct {
+type hpeuxiProviderModel struct {
 	ClientID     types.String `tfsdk:"client_id"`
 	ClientSecret types.String `tfsdk:"client_secret"`
 }
 
-type uxiConfigurationProvider struct {
+type hpeuxiConfigurationProvider struct {
 	// version is set to the provider version on release, "dev" when the
 	// provider is built and ran locally, and "test" when running acceptance
 	// testing.
 	version string
 }
 
-func (p *uxiConfigurationProvider) Metadata(
+func (p *hpeuxiConfigurationProvider) Metadata(
 	_ context.Context,
 	_ provider.MetadataRequest,
 	resp *provider.MetadataResponse,
 ) {
-	resp.TypeName = "uxi"
+	resp.TypeName = "hpeuxi"
 	resp.Version = p.version
 }
 
-func (p *uxiConfigurationProvider) Schema(
+func (p *hpeuxiConfigurationProvider) Schema(
 	_ context.Context,
 	_ provider.SchemaRequest,
 	resp *provider.SchemaResponse,
@@ -79,13 +79,13 @@ func (p *uxiConfigurationProvider) Schema(
 	}
 }
 
-func (p *uxiConfigurationProvider) Configure(
+func (p *hpeuxiConfigurationProvider) Configure(
 	ctx context.Context,
 	req provider.ConfigureRequest,
 	resp *provider.ConfigureResponse,
 ) {
 	var (
-		config                 uxiProviderModel
+		config                 hpeuxiProviderModel
 		clientID, clientSecret string
 	)
 	diags := req.Config.Get(ctx, &config)
@@ -132,17 +132,19 @@ func (p *uxiConfigurationProvider) Configure(
 		return
 	}
 
-	uxiConfiguration := config_api_client.NewConfiguration()
-	uxiConfiguration.Host = configuration.Host
-	uxiConfiguration.Scheme = "https"
-	uxiConfiguration.HTTPClient = getHTTPClient(clientID, clientSecret, configuration.TokenURL)
-	uxiClient := config_api_client.NewAPIClient(uxiConfiguration)
+	hpeuxiConfiguration := config_api_client.NewConfiguration()
+	hpeuxiConfiguration.Host = configuration.Host
+	hpeuxiConfiguration.Scheme = "https"
+	hpeuxiConfiguration.HTTPClient = getHTTPClient(clientID, clientSecret, configuration.TokenURL)
+	uxiClient := config_api_client.NewAPIClient(hpeuxiConfiguration)
 
 	resp.DataSourceData = uxiClient
 	resp.ResourceData = uxiClient
 }
 
-func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datasource.DataSource {
+func (p *hpeuxiConfigurationProvider) DataSources(
+	_ context.Context,
+) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		resources.NewAgentDataSource,
 		resources.NewAgentGroupAssignmentDataSource,
@@ -157,7 +159,7 @@ func (p *uxiConfigurationProvider) DataSources(_ context.Context) []func() datas
 	}
 }
 
-func (p *uxiConfigurationProvider) Resources(_ context.Context) []func() resource.Resource {
+func (p *hpeuxiConfigurationProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		resources.NewAgentGroupAssignmentResource,
 		resources.NewAgentResource,

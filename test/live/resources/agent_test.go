@@ -24,7 +24,7 @@ func TestAgentResource(t *testing.T) {
 	// we provision an agent here so that we have something to delete later on
 	agentID, err := util.ProvisionAgent{
 		CustomerID:        config.CustomerID,
-		ProvisionToken:    os.Getenv("UXI_PROVISION_TOKEN"),
+		ProvisionToken:    os.Getenv("hpeuxi_PROVISION_TOKEN"),
 		DeviceSerial:      config.AgentCreateSerial,
 		DeviceGatewayHost: config.DeviceGatewayHost,
 	}.Provision()
@@ -46,7 +46,7 @@ func TestAgentResource(t *testing.T) {
 			// Creating an agent is not allowed
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name = "` + agent.Name + `"
 					}`,
 
@@ -57,31 +57,31 @@ func TestAgentResource(t *testing.T) {
 			// Importing an agent
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name = "` + agent.Name + `"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "` + agentID + `"
 					}`,
-				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", agent),
+				Check: shared.CheckStateAgainstAgent(t, "hpeuxi_agent.my_agent", agent),
 			},
 			// ImportState
 			{
-				ResourceName:      "uxi_agent.my_agent",
+				ResourceName:      "hpeuxi_agent.my_agent",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			// Update
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name = "tf_provider_acceptance_test_agent_resource_updated_name"
 						notes = "notes"
 						pcap_mode = "off"
 					}`,
-				Check: shared.CheckStateAgainstAgent(t, "uxi_agent.my_agent", updatedAgent),
+				Check: shared.CheckStateAgainstAgent(t, "hpeuxi_agent.my_agent", updatedAgent),
 			},
 			// Delete
 			{

@@ -64,39 +64,39 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name 			= "name"
 						notes 			= "notes"
 						pcap_mode 		= "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "agent_id"
 					}
 
-					resource "uxi_agent_group_assignment" "my_agent_group_assignment" {
-						agent_id       = uxi_agent.my_agent.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
+						agent_id       = hpeuxi_agent.my_agent.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
 						"agent_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"group_id",
 						"group_id",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"id",
 						"agent_group_assignment_id",
 					),
@@ -111,7 +111,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_agent_group_assignment.my_agent_group_assignment",
+				ResourceName:      "hpeuxi_agent_group_assignment.my_agent_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -174,57 +174,57 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					// the original resources
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name 			= "name"
 						notes 			= "notes"
 						pcap_mode 		= "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "agent_id"
 					}
 
 					// the new resources we wanna update the assignment to
-					resource "uxi_group" "my_group_2" {
+					resource "hpeuxi_group" "my_group_2" {
 						name            = "name_2"
 						parent_group_id = "parent_id_2"
 					}
 
-					resource "uxi_agent" "my_agent_2" {
+					resource "hpeuxi_agent" "my_agent_2" {
 						name 			= "name_2"
 						notes 			= "notes_2"
 						pcap_mode 		= "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent_2
+						to = hpeuxi_agent.my_agent_2
 						id = "agent_id_2"
 					}
 
 					// the assignment update, updated from agent/group to agent_2/group_2
-					resource "uxi_agent_group_assignment" "my_agent_group_assignment" {
-						agent_id       = uxi_agent.my_agent_2.id
-						group_id 		= uxi_group.my_group_2.id
+					resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
+						agent_id       = hpeuxi_agent.my_agent_2.id
+						group_id 		= hpeuxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
 						"agent_id_2",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"group_id",
 						"group_id_2",
 					),
 					resource.TestCheckResourceAttr(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"id",
 						"agent_group_assignment_id_2",
 					),
@@ -332,29 +332,29 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name 			= "name"
 						notes 			= "notes"
 						pcap_mode 		= "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "agent_id"
 					}
 
-					resource "uxi_agent_group_assignment" "my_agent_group_assignment" {
-						agent_id       = uxi_agent.my_agent.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
+						agent_id       = hpeuxi_agent.my_agent.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"id",
 						"agent_group_assignment_id",
 					),
@@ -378,7 +378,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						1,
 					)
 				},
-				ResourceName:      "uxi_agent_group_assignment.my_agent_group_assignment",
+				ResourceName:      "hpeuxi_agent_group_assignment.my_agent_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 				Check: func(s *terraform.State) error {
@@ -459,25 +459,25 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name      = "name"
 						notes 	  = "notes"
 						pcap_mode = "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "agent_id"
 					}
 
-					resource "uxi_agent_group_assignment" "my_agent_group_assignment" {
-						agent_id = uxi_agent.my_agent.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
+						agent_id = hpeuxi_agent.my_agent.id
+						group_id   = hpeuxi_group.my_group.id
 					}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)Validation error - bad request\s*DebugID: 12312-123123-123123-1231212`,
@@ -508,29 +508,29 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name 	  = "name"
 						notes 	  = "notes"
 						pcap_mode = "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "agent_id"
 					}
 
-					resource "uxi_agent_group_assignment" "my_agent_group_assignment" {
-						agent_id = uxi_agent.my_agent.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
+						agent_id = hpeuxi_agent.my_agent.id
+						group_id   = hpeuxi_group.my_group.id
 					}
 
 					import {
-						to = uxi_agent_group_assignment.my_agent_group_assignment
+						to = hpeuxi_agent_group_assignment.my_agent_group_assignment
 						id = "agent_group_assignment_id"
 					}
 				`,
@@ -565,29 +565,29 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name 	  = "name"
 						notes 	  = "notes"
 						pcap_mode = "light"
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "agent_id"
 					}
 
-					resource "uxi_agent_group_assignment" "my_agent_group_assignment" {
-						agent_id = uxi_agent.my_agent.id
-						group_id   = uxi_group.my_group.id
+					resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
+						agent_id = hpeuxi_agent.my_agent.id
+						group_id   = hpeuxi_group.my_group.id
 					}
 
 					import {
-						to = uxi_agent_group_assignment.my_agent_group_assignment
+						to = hpeuxi_agent_group_assignment.my_agent_group_assignment
 						id = "agent_group_assignment_id"
 					}
 				`,
@@ -636,12 +636,12 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "name"
 						parent_group_id = "parent_id"
 					}
 
-					resource "uxi_agent" "my_agent" {
+					resource "hpeuxi_agent" "my_agent" {
 						name 	  = "name"
 						notes 	  = "notes"
 						pcap_mode = "light"
@@ -649,17 +649,17 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					}
 
 					import {
-						to = uxi_agent.my_agent
+						to = hpeuxi_agent.my_agent
 						id = "agent_id"
 					}
 
-					resource "uxi_agent_group_assignment" "my_agent_group_assignment" {
-						agent_id = uxi_agent.my_agent.id
-						group_id = uxi_group.my_group.id
+					resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
+						agent_id = hpeuxi_agent.my_agent.id
+						group_id = hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
 						"agent_id",
 					),
@@ -693,7 +693,7 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_agent.my_agent
+						from = hpeuxi_agent.my_agent
 
 						lifecycle {
 							destroy = false
@@ -722,7 +722,7 @@ func TestAgentGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_agent.my_agent
+						from = hpeuxi_agent.my_agent
 
 						lifecycle {
 							destroy = false

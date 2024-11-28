@@ -70,7 +70,7 @@ func (r *groupResource) Schema(
 			},
 			"parent_group_id": schema.StringAttribute{
 				Description: "The identifier of the parent of this group. " +
-					"Use uxi_group resource or datasource id for this attribute. " +
+					"Use hpeuxi_group resource or datasource id for this attribute. " +
 					"Alternatively leave blank to set group to highest level configurable node.",
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
@@ -127,7 +127,7 @@ func (r *groupResource) Create(
 	group, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "uxi_group"), errorDetail)
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("create", "hpeuxi_group"), errorDetail)
 
 		return
 	}
@@ -163,7 +163,7 @@ func (r *groupResource) Read(
 
 	group, errorDetail := r.getGroup(ctx, state.ID.ValueString())
 
-	errorSummary := util.GenerateErrorSummary("read", "uxi_group")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_group")
 
 	if errorDetail != nil {
 		if errorDetail.Error() == groupNotFoundError {
@@ -218,7 +218,7 @@ func (r *groupResource) Update(
 	group, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "uxi_group"), errorDetail)
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("update", "hpeuxi_group"), errorDetail)
 
 		return
 	}
@@ -262,7 +262,7 @@ func (r *groupResource) Delete(
 
 			return
 		}
-		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "uxi_group"), errorDetail)
+		resp.Diagnostics.AddError(util.GenerateErrorSummary("delete", "hpeuxi_group"), errorDetail)
 
 		return
 	}

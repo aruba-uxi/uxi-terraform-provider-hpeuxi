@@ -12,12 +12,12 @@ import (
 )
 
 const (
-	ProviderConfig = `provider "uxi" {
+	ProviderConfig = `provider "hpeuxi" {
 		client_id     = "client_id"
 		client_secret = "client_secret"
 	}`
 )
 
 var TestAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
-	"uxi": providerserver.NewProtocol6WithError(provider.New("test")()),
+	"hpeuxi": providerserver.NewProtocol6WithError(provider.New("test")()),
 }

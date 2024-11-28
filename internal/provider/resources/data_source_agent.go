@@ -123,7 +123,7 @@ func (d *agentDataSource) Read(
 
 	agentResponse, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_agent")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_agent")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)

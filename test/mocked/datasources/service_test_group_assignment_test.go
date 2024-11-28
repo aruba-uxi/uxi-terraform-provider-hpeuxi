@@ -36,7 +36,7 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
+					data "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
 							id = "id"
 						}
@@ -44,17 +44,17 @@ func TestServiceTestGroupAssignmentDataSource(t *testing.T) {
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"data.hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
 						"id",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"data.hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
 						"group_id",
 					),
 					resource.TestCheckResourceAttr(
-						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"data.hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
 						"service_test_id",
 					),
@@ -88,7 +88,7 @@ func TestServiceTestGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.
 					)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
+					data "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
 							id = "id"
 						}
@@ -96,7 +96,7 @@ func TestServiceTestGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"data.uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"data.hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
 						"id",
 					),
@@ -132,7 +132,7 @@ func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 						})
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
+					data "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
 							id = "id"
 						}
@@ -147,7 +147,7 @@ func TestServiceTestGroupAssignmentDataSourceHttpErrorHandling(t *testing.T) {
 					util.MockGetServiceTestGroupAssignment("id", util.EmptyGetListResponse, 1)
 				},
 				Config: provider.ProviderConfig + `
-					data "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
+					data "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
 						filter = {
 							id = "id"
 						}

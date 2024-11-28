@@ -33,32 +33,32 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			// Creating
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "` + config.ServiceTestName + `"
 					}
 
 					import {
-						to = uxi_service_test.my_service_test
+						to = hpeuxi_service_test.my_service_test
 						id = "` + config.ServiceTestID + `"
 					}
 
-					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
-						service_test_id = uxi_service_test.my_service_test.id
-						group_id 		= uxi_group.my_group.id
+					resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = hpeuxi_service_test.my_service_test.id
+						group_id 		= hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check configured properties
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
 						config.ServiceTestID,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(groupName).Id)
@@ -68,13 +68,13 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					),
 					// Check properties match what is on backend
 					func(s *terraform.State) error {
-						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
+						resourceName := "hpeuxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIDBeforeRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
-							"uxi_service_test_group_assignment.my_service_test_group_assignment",
+							"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 							util.GetServiceTestGroupAssignment(rs.Primary.ID),
 						)(s)
 					},
@@ -82,7 +82,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			},
 			// ImportState
 			{
-				ResourceName:      "uxi_service_test_group_assignment.my_service_test_group_assignment",
+				ResourceName:      "hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -90,33 +90,33 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					// the original resources
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name            = "` + groupName + `"
 					}
 
-					resource "uxi_service_test" "my_service_test" {
+					resource "hpeuxi_service_test" "my_service_test" {
 						name = "` + config.ServiceTestName + `"
 					}
 
 					// the new resources we wanna update the assignment to
-					resource "uxi_group" "my_group_2" {
+					resource "hpeuxi_group" "my_group_2" {
 						name            = "` + group2Name + `"
 					}
 
 					// the assignment update, updated from service_test/group to service_test/group_2
-					resource "uxi_service_test_group_assignment" "my_service_test_group_assignment" {
-						service_test_id = uxi_service_test.my_service_test.id
-						group_id 		= uxi_group.my_group_2.id
+					resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
+						service_test_id = hpeuxi_service_test.my_service_test.id
+						group_id 		= hpeuxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check configured properties
 					resource.TestCheckResourceAttr(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"service_test_id",
 						config.ServiceTestID,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, value, util.GetGroupByName(group2Name).Id)
@@ -126,19 +126,19 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					),
 					// Check properties match what is on backend
 					func(s *terraform.State) error {
-						resourceName := "uxi_service_test_group_assignment.my_service_test_group_assignment"
+						resourceName := "hpeuxi_service_test_group_assignment.my_service_test_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIDAfterRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstServiceTestGroupAssignment(
 							t,
-							"uxi_service_test_group_assignment.my_service_test_group_assignment",
+							"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 							util.GetServiceTestGroupAssignment(rs.Primary.ID),
 						)(s)
 					},
 					// Check that resource has been recreated
 					resource.TestCheckResourceAttrWith(
-						"uxi_service_test_group_assignment.my_service_test_group_assignment",
+						"hpeuxi_service_test_group_assignment.my_service_test_group_assignment",
 						"id",
 						func(value string) error {
 							assert.NotEqual(t, value, resourceIDBeforeRecreate)
@@ -152,7 +152,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					removed {
-						from = uxi_service_test.my_service_test
+						from = hpeuxi_service_test.my_service_test
 
 						lifecycle {
 							destroy = false

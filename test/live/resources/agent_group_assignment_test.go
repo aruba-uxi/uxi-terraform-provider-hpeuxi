@@ -32,29 +32,29 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			// Creating
 			{
 				Config: provider.ProviderConfig + `
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					data "uxi_agent" "my_agent" {
+					data "hpeuxi_agent" "my_agent" {
 						filter = {
 							id = "` + config.AgentPermanentID + `"
 						}
 					}
 
-					resource "uxi_agent_group_assignment" "my_agent_group_assignment" {
-						agent_id = data.uxi_agent.my_agent.id
-						group_id = uxi_group.my_group.id
+					resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
+						agent_id = data.hpeuxi_agent.my_agent.id
+						group_id = hpeuxi_group.my_group.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check properties are what we configured
 					resource.TestCheckResourceAttr(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
 						config.AgentPermanentID,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, util.GetGroupByName(groupName).Id, value)
@@ -64,13 +64,13 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					),
 					// Check properties match what is on backend
 					func(s *terraform.State) error {
-						resourceName := "uxi_agent_group_assignment.my_agent_group_assignment"
+						resourceName := "hpeuxi_agent_group_assignment.my_agent_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIDBeforeRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstAgentGroupAssignment(
 							t,
-							"uxi_agent_group_assignment.my_agent_group_assignment",
+							"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 							*util.GetAgentGroupAssignment(resourceIDBeforeRecreate),
 						)(s)
 					},
@@ -78,7 +78,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			},
 			// ImportState
 			{
-				ResourceName:      "uxi_agent_group_assignment.my_agent_group_assignment",
+				ResourceName:      "hpeuxi_agent_group_assignment.my_agent_group_assignment",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -86,35 +86,35 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					// the original resources
-					resource "uxi_group" "my_group" {
+					resource "hpeuxi_group" "my_group" {
 						name = "` + groupName + `"
 					}
 
-					data "uxi_agent" "my_agent" {
+					data "hpeuxi_agent" "my_agent" {
 						filter = {
 							id = "` + config.AgentPermanentID + `"
 						}
 					}
 
 					// the new resources we wanna update the assignment to
-					resource "uxi_group" "my_group_2" {
+					resource "hpeuxi_group" "my_group_2" {
 						name            = "` + group2Name + `"
 					}
 
 					// the assignment update, updated from agent/group to agent/group_2
-					resource "uxi_agent_group_assignment" "my_agent_group_assignment" {
-						agent_id = data.uxi_agent.my_agent.id
-						group_id = uxi_group.my_group_2.id
+					resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
+						agent_id = data.hpeuxi_agent.my_agent.id
+						group_id = hpeuxi_group.my_group_2.id
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check properties are what we configured
 					resource.TestCheckResourceAttr(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
 						config.AgentPermanentID,
 					),
 					resource.TestCheckResourceAttrWith(
-						"uxi_agent_group_assignment.my_agent_group_assignment",
+						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"group_id",
 						func(value string) error {
 							assert.Equal(t, util.GetGroupByName(group2Name).Id, value)
@@ -124,13 +124,13 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					),
 					// Check properties match what is on backend
 					func(s *terraform.State) error {
-						resourceName := "uxi_agent_group_assignment.my_agent_group_assignment"
+						resourceName := "hpeuxi_agent_group_assignment.my_agent_group_assignment"
 						rs := s.RootModule().Resources[resourceName]
 						resourceIDAfterRecreate = rs.Primary.ID
 
 						return util.CheckStateAgainstAgentGroupAssignment(
 							t,
-							"uxi_agent_group_assignment.my_agent_group_assignment",
+							"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 							*util.GetAgentGroupAssignment(resourceIDAfterRecreate),
 						)(s)
 					},

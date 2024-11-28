@@ -131,7 +131,7 @@ func (r *serviceTestGroupAssignmentResource) Create(
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("create", "uxi_service_test_group_assignment"),
+			util.GenerateErrorSummary("create", "hpeuxi_service_test_group_assignment"),
 			errorDetail,
 		)
 
@@ -170,7 +170,7 @@ func (r *serviceTestGroupAssignmentResource) Read(
 		request.Execute,
 	)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
-	errorSummary := util.GenerateErrorSummary("read", "uxi_service_test_group_assignment")
+	errorSummary := util.GenerateErrorSummary("read", "hpeuxi_service_test_group_assignment")
 
 	if errorPresent {
 		resp.Diagnostics.AddError(errorSummary, errorDetail)
@@ -239,7 +239,7 @@ func (r *serviceTestGroupAssignmentResource) Delete(
 			return
 		}
 		resp.Diagnostics.AddError(
-			util.GenerateErrorSummary("delete", "uxi_service_test_group_assignment"),
+			util.GenerateErrorSummary("delete", "hpeuxi_service_test_group_assignment"),
 			errorDetail,
 		)
 

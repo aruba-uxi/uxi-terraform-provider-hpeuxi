@@ -87,11 +87,11 @@ test-provider +ARGS='':
   TF_ACC=1 go test -v ./test/mocked/... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 generate-provider-docs:
-  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../. --provider-name uxi
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../. --provider-name hpeuxi
   sed -i.backup '/subcategory: ""/d' docs/index.md && rm docs/index.md.backup
 
 validate-provider-docs:
-  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../. --provider-name uxi
+  cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate --provider-dir ../. --provider-name hpeuxi
 
 coverage-provider:
   go tool cover -html=.coverage -o=.coverage.html
