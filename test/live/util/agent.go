@@ -65,19 +65,19 @@ func (p ProvisionAgent) Provision() (string, error) {
 	}
 	jsonData, err := json.Marshal(request)
 	if err != nil {
-		return id, err
+		return id, fmt.Errorf("ProvisionAgent.Provision marshal json failled: %w", err)
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
-		return id, err
+		return id, fmt.Errorf("ProvisionAgent.Provision build request failled: %w", err)
 	}
 
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return id, err
+		return id, fmt.Errorf("ProvisionAgent.Provision request Do failled: %w", err)
 	}
 	defer resp.Body.Close()
 
@@ -102,7 +102,7 @@ func (p ProvisionAgent) generateID() (string, error) {
 	// Use the first 16 bytes of the digest to create a UUID v3
 	uuid, err := uuid.FromBytes(digest[:16])
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("Failed to create hash from bytes: %w", err)
 	}
 	uuid[6] = (uuid[6] & 0x0f) | 0x30 // Set the version to 3 (MD5-based UUID)
 	uuid[8] = (uuid[8] & 0x3f) | 0x80 // Set the variant to RFC 4122

@@ -48,7 +48,6 @@ linters:
     - thelper # we want this
     - usestdlibvars # we want this
     - whitespace # we want this
-    - wrapcheck # we want this
 
     - canonicalheader # for checking copyright headers
     - err113 # disabled in gl provider
