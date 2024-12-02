@@ -300,7 +300,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_UXI_INVALID_PCAP_MODE_ERROR",
 							"message":        "Unable to update agent - pcap_mode must be one the following ['light', 'full', 'off'].",
-							"debugId":        "12312-123123-123123-1231212",
+							"debugId":        "debugId",
 							"type":           "hpe.greenlake.uxi.invalid_pcap_mode",
 						})
 				},
@@ -311,7 +311,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 					pcap_mode = "light"
 				}`,
 				ExpectError: regexp.MustCompile(
-					`(?s)Unable to update agent - pcap_mode must be one the following \['light',\s*'full', 'off'\].\s*DebugID: 12312-123123-123123-1231212`,
+					`(?s)Unable to update agent - pcap_mode must be one the following \['light',\s*'full', 'off'\].\s*DebugID: debugId`,
 				),
 			},
 			// Delete HTTP error
