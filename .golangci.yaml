@@ -32,7 +32,6 @@ linters:
     - mnd # we want this  todo: also see gomnd
     - gomnd # disabled in gl provider  todo: also see mnd
     - noctx # we want this
-    - nestif # we want this
     - tagliatelle # we want this
     - testifylint # we want this
     - thelper # we want this
