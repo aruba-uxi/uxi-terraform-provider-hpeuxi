@@ -88,8 +88,14 @@ resource "hpeuxi_sensor_group_assignment" "my_uxi_sensor_group_assignment" {
 ### Export API client credentials as environment variables
 
 ```bash
-export GREENLAKE_UXI_CLIENT_ID=<greenlake_uxi_client_id>
-export GREENLAKE_UXI_CLIENT_SECRET=<greenlake_uxi_client_secret>
+export HPEUXI_CLIENT_ID=<hpeuxi_client_id>
+export HPEUXI_CLIENT_SECRET=<hpeuxi_client_secret>
+```
+
+To override the host against which the API requests are made, use the env var as shown below, else UXI production is used as the default.
+
+```bash
+export HPEUXI_HOST_OVERRIDE=https://api.staging.capedev.io
 ```
 
 ### Initialize Terraform working directory:
