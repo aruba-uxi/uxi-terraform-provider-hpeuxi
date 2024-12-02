@@ -42,15 +42,9 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 }
 
 func handleJSONError(response *http.Response, apiErr *config_api_client.GenericOpenAPIError) string {
-	var data map[string]interface{}
-
-	err := json.NewDecoder(response.Body).Decode(&data)
+	data, err := parseJSONResponse(response)
 	if err != nil {
-		return fmt.Sprintf(
-			"Unexpected error: there was an error decoding the API response body for "+
-				"%d status code response.",
-			response.StatusCode,
-		)
+		return err.Error()
 	}
 
 	message := buildJSONErrorMsg(data, apiErr)
@@ -60,7 +54,22 @@ func handleJSONError(response *http.Response, apiErr *config_api_client.GenericO
 	return strings.Join(parts, "\n")
 }
 
-func buildJSONErrorMsg(data map[string]interface{}, apiErr *config_api_client.GenericOpenAPIError) string {
+func parseJSONResponse(response *http.Response) (map[string]any, error) {
+	var data map[string]interface{}
+
+	err := json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		return map[string]any{}, fmt.Errorf(
+			"Unexpected error: there was an error decoding the API response body for "+
+				"%d status code response.",
+			response.StatusCode,
+		)
+	}
+
+	return data, nil
+}
+
+func buildJSONErrorMsg(data map[string]any, apiErr *config_api_client.GenericOpenAPIError) string {
 	message, found := data["message"]
 	if !found {
 		return "Unexpected error: " + apiErr.Error()
@@ -74,7 +83,7 @@ func buildJSONErrorMsg(data map[string]interface{}, apiErr *config_api_client.Ge
 	return messageStr
 }
 
-func buildJSONDebugID(data map[string]interface{}) string {
+func buildJSONDebugID(data map[string]any) string {
 	debugID, found := data["debugId"]
 	if !found {
 		return ""
