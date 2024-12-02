@@ -29,7 +29,6 @@ linters:
     - copyloopvar # if we update to later than go 1.22
     - intrange # later version of go
 
-    - goconst # we want this
     - lll # we want this
     - maintidx # we want this
     - mnd # we want this  todo: also see gomnd
@@ -83,6 +82,7 @@ issues:
 
     - linters:
         - stylecheck
+        - goconst
       path: pkg/config-api-client
 
     - linters:
