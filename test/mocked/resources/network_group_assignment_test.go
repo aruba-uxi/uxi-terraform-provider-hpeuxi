@@ -674,7 +674,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						"network_id",
 					),
 					func(s *terraform.State) error {
-						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 						return nil
 					},
@@ -701,7 +701,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 				ImportStateVerify: true,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					func(s *terraform.State) error {
-						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 						return nil
 					},
@@ -746,7 +746,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					func(s *terraform.State) error {
-						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 						return nil
 					},

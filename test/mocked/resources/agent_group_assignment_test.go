@@ -359,7 +359,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						"agent_group_assignment_id",
 					),
 					func(s *terraform.State) error {
-						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 						return nil
 					},
@@ -382,7 +382,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 				ImportState:       true,
 				ImportStateVerify: true,
 				Check: func(s *terraform.State) error {
-					assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+					assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 					return nil
 				},
@@ -411,7 +411,7 @@ func TestAgentGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 				},
 				Config: provider.ProviderConfig,
 				Check: func(s *terraform.State) error {
-					assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+					assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 					return nil
 				},
