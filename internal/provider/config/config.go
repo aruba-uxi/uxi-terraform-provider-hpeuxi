@@ -28,7 +28,7 @@ func getEnv(key, fallback string) string {
 }
 
 func InitializeConfig() {
-	Host = getEnv("UXI_HOST", UXIDefaultHost)
-	ClientID = os.Getenv("GREENLAKE_UXI_CLIENT_ID")
-	ClientSecret = os.Getenv("GREENLAKE_UXI_CLIENT_SECRET")
+	Host = getEnv("HPEUXI_HOST_OVERRIDE", UXIDefaultHost)
+	ClientID = os.Getenv("HPEUXI_CLIENT_ID")
+	ClientSecret = os.Getenv("HPEUXI_CLIENT_SECRET")
 }
