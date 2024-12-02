@@ -26,11 +26,8 @@ linters:
   disable:
     - cyclop # we have gocyclo, apparently its better
     - execinquery # deprecated
-
-    - contextcheck # we want this
     - copyloopvar # if we update to later than go 1.22
-    - depguard # for banning specific dependencies
-    - dupl # we want this
+
     - forcetypeassert # we want this
     - funlen # we want this
     - goconst # we want this
@@ -47,6 +44,9 @@ linters:
     - thelper # we want this
     - usestdlibvars # we want this
     - whitespace # we want this
+    - dupl # we want this
+    - contextcheck # we want this, but the "trivial" fix causes context cancelled errors in tests
+    - depguard # for banning specific dependencies
 
     - canonicalheader # for checking copyright headers
     - err113 # disabled in gl provider
