@@ -95,7 +95,7 @@ export HPEUXI_CLIENT_SECRET=<hpeuxi_client_secret>
 To override the host against which the API requests are made, use the env var as shown below, else UXI production is used as the default.
 
 ```bash
-export HPEUXI_HOST_OVERRIDE=https://api.staging.capedev.io
+export HPEUXI_HOST_OVERRIDE=api.staging.capedev.io
 ```
 
 ### Initialize Terraform working directory:
@@ -123,7 +123,7 @@ Example `~/.terraformrc` file
 ```
 provider_installation {
   dev_overrides {
-      "registry.terraform.io/arubauxi/hpeuxi" = "/Users/<user>/go/bin"
+      "registry.terraform.io/aruba-uxi/hpeuxi" = "/Users/<user>/go/bin"
   }
   direct {}
 }
@@ -164,9 +164,9 @@ Set the `GREENLAKE_UXI_CLIENT_ID` and `GREENLAKE_UXI_CLIENT_SECRET` environment 
 environment.
 
 ```bash
-export GREENLAKE_UXI_CLIENT_ID=<client_id>
-export GREENLAKE_UXI_CLIENT_SECRET=<client_secret>
-export UXI_HOST=api.staging.capedev.io
+export HPEUXI_CLIENT_ID=<client_id>
+export HPEUXI_CLIENT_SECRET=<client_secret>
+export HPEUXI_HOST_OVERRIDE=api.staging.capedev.io
 ```
 
 ```shell
