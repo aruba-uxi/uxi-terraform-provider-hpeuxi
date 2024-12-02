@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
@@ -21,7 +22,6 @@ func GenerateErrorSummary(actionName string, entityName string) string {
 func RaiseForStatus(response *http.Response, err error) (bool, string) {
 	if err != nil {
 		var detail string
-		var data map[string]interface{}
 
 		var uErr *url.Error
 		var apiErr *config_api_client.GenericOpenAPIError
@@ -30,20 +30,7 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 		case errors.As(err, &uErr):
 			detail = handleURLError(uErr)
 		case errors.As(err, &apiErr):
-			if err := json.NewDecoder(response.Body).Decode(&data); err != nil {
-				detail = fmt.Sprintf(
-					"Unexpected error: there was an error decoding the API response body for "+
-						"%d status code response.",
-					response.StatusCode,
-				)
-			} else if message, ok := data["message"]; ok {
-				detail = message.(string)
-				if debugID, ok := data["debugId"]; ok {
-					detail += "\nDebugID: " + debugID.(string)
-				}
-			} else {
-				detail = "Unexpected error: " + apiErr.Error()
-			}
+			detail = handleJSONError(response, apiErr)
 		default:
 			detail = "Unexpected error: " + err.Error()
 		}
@@ -52,6 +39,53 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 	}
 
 	return false, ""
+}
+
+func handleJSONError(response *http.Response, apiErr *config_api_client.GenericOpenAPIError) string {
+	var data map[string]interface{}
+
+	err := json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		return fmt.Sprintf(
+			"Unexpected error: there was an error decoding the API response body for "+
+				"%d status code response.",
+			response.StatusCode,
+		)
+	}
+
+	message := buildJSONErrorMsg(data, apiErr)
+	debugID := buildJSONDebugID(data)
+	parts := []string{message, debugID}
+
+	return strings.Join(parts, "\n")
+}
+
+func buildJSONErrorMsg(data map[string]interface{}, apiErr *config_api_client.GenericOpenAPIError) string {
+	message, found := data["message"]
+	if !found {
+		return "Unexpected error: " + apiErr.Error()
+	}
+
+	messageStr, castOK := message.(string)
+	if !castOK {
+		return "Unexpected error: " + apiErr.Error()
+	}
+
+	return messageStr
+}
+
+func buildJSONDebugID(data map[string]interface{}) string {
+	debugID, found := data["debugId"]
+	if !found {
+		return ""
+	}
+
+	debugIDStr, castOK := debugID.(string)
+	if !castOK {
+		return ""
+	}
+
+	return "DebugID: " + debugIDStr
 }
 
 func handleURLError(uErr *url.Error) string {

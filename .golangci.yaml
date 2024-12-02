@@ -28,7 +28,6 @@ linters:
     - execinquery # deprecated
     - copyloopvar # if we update to later than go 1.22
 
-    - forcetypeassert # we want this
     - funlen # we want this
     - goconst # we want this
     - intrange # later version of go
