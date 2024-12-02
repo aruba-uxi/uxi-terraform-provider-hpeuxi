@@ -29,17 +29,16 @@ linters:
     - copyloopvar # if we update to later than go 1.22
     - intrange # later version of go
 
-    - maintidx # we want this
     - mnd # we want this  todo: also see gomnd
     - gomnd # disabled in gl provider  todo: also see mnd
     - noctx # we want this
     - nestif # we want this
-    - revive # we want this
     - tagliatelle # we want this
     - testifylint # we want this
     - thelper # we want this
     - usestdlibvars # we want this
     - whitespace # we want this
+    - revive # we want this
     - dupl # we want this
     - contextcheck # we want this, but the "trivial" fix causes context cancelled errors in tests
     - depguard # for banning specific dependencies
@@ -82,6 +81,7 @@ issues:
     - linters:
         - stylecheck
         - goconst
+        - maintidx
       path: pkg/config-api-client
 
     - linters:
