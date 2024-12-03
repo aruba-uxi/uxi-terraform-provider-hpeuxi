@@ -65,13 +65,13 @@ func (p *hpeuxiConfigurationProvider) Schema(
 			"client_id": schema.StringAttribute{
 				Description: "The Client ID as obtained from HPE GreenLake API client credentials. " +
 					"It is recommended that this configuration is left blank and the Client ID " +
-					"is exported as the `GREENLAKE_UXI_CLIENT_ID` environment variable instead.",
+					"is exported as the `HPEUXI_CLIENT_ID` environment variable instead.",
 				Optional: true,
 			},
 			"client_secret": schema.StringAttribute{
 				Description: "The Client Secret as obtained from HPE GreenLake API client credentials. " +
 					"It is recommended that this configuration is left blank and the Client Secret " +
-					"is exported as the `GREENLAKE_UXI_CLIENT_SECRET` environment variable instead.",
+					"is exported as the `HPEUXI_CLIENT_SECRET` environment variable instead.",
 				Optional:  true,
 				Sensitive: true,
 			},
@@ -113,7 +113,7 @@ func (p *hpeuxiConfigurationProvider) Configure(
 			path.Root("client_id"),
 			"Missing Client ID",
 			"The provider cannot initialize as there is a missing or empty value for the Client ID. "+
-				"Set the client_id value in the provider configuration or use the GREENLAKE_UXI_CLIENT_ID "+
+				"Set the client_id value in the provider configuration or use the HPEUXI_CLIENT_ID "+
 				"environment variable (recommended). If either is already set, ensure the value is not empty.",
 		)
 	}
@@ -123,7 +123,7 @@ func (p *hpeuxiConfigurationProvider) Configure(
 			path.Root("client_secret"),
 			"Missing Client Secret",
 			"The provider cannot initialize as there is a missing or empty value for the Client Secret. "+
-				"Set the client_secret value in the provider configuration or use the GREENLAKE_UXI_CLIENT_SECRET "+
+				"Set the client_secret value in the provider configuration or use the HPEUXI_CLIENT_SECRET "+
 				"environment variable (recommended). If either is already set, ensure the value is not empty.",
 		)
 	}
