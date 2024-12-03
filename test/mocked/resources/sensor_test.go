@@ -165,7 +165,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", sensor),
 					func(s *terraform.State) error {
-						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 						return nil
 					},
@@ -199,7 +199,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", updatedSensor),
 					func(s *terraform.State) error {
-						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 						return nil
 					},
@@ -317,7 +317,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 							"httpStatusCode": http.StatusUnprocessableEntity,
 							"errorCode":      "HPE_GL_UXI_INVALID_PCAP_MODE_ERROR",
 							"message":        "Unable to update sensor - pcap_mode must be one the following ['light', 'full', 'off'].",
-							"debugId":        "12312-123123-123123-1231212",
+							"debugId":        "debugId",
 							"type":           "hpe.greenlake.uxi.invalid_pcap_mode",
 						})
 				},
@@ -329,7 +329,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 					pcap_mode = "light"
 				}`,
 				ExpectError: regexp.MustCompile(
-					`(?s)Unable to update sensor - pcap_mode must be one the following \['light',\s*'full', 'off'\].\s*DebugID: 12312-123123-123123-1231212`,
+					`(?s)Unable to update sensor - pcap_mode must be one the following \['light',\s*'full', 'off'\].\s*DebugID: debugId`,
 				),
 			},
 			// Remove sensor from state

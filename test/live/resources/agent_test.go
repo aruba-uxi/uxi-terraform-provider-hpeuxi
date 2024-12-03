@@ -89,7 +89,7 @@ func TestAgentResource(t *testing.T) {
 			},
 		},
 		CheckDestroy: func(s *terraform.State) error {
-			assert.Equal(t, util.GetAgent(agentID), nil)
+			assert.Nil(t, util.GetAgent(agentID))
 
 			return nil
 		},
