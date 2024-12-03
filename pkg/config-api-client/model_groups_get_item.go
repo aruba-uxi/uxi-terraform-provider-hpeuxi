@@ -7,7 +7,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.17.0
+API version: 5.18.0
 Contact: support@capenetworks.com
 */
 
@@ -26,11 +26,11 @@ var _ MappedNullable = &GroupsGetItem{}
 
 // GroupsGetItem struct for GroupsGetItem
 type GroupsGetItem struct {
-	Id     string         `json:"id"`
-	Name   string         `json:"name"`
-	Parent NullableParent `json:"parent"`
-	Path   string         `json:"path"`
-	Type   string         `json:"type"`
+	Id     string                  `json:"id"`
+	Name   string                  `json:"name"`
+	Parent NullableGroupsGetParent `json:"parent"`
+	Path   string                  `json:"path"`
+	Type   string                  `json:"type"`
 }
 
 type _GroupsGetItem GroupsGetItem
@@ -42,7 +42,7 @@ type _GroupsGetItem GroupsGetItem
 func NewGroupsGetItem(
 	id string,
 	name string,
-	parent NullableParent,
+	parent NullableGroupsGetParent,
 	path string,
 	type_ string,
 ) *GroupsGetItem {
@@ -112,10 +112,10 @@ func (o *GroupsGetItem) SetName(v string) {
 }
 
 // GetParent returns the Parent field value
-// If the value is explicit nil, the zero value for Parent will be returned
-func (o *GroupsGetItem) GetParent() Parent {
+// If the value is explicit nil, the zero value for GroupsGetParent will be returned
+func (o *GroupsGetItem) GetParent() GroupsGetParent {
 	if o == nil || o.Parent.Get() == nil {
-		var ret Parent
+		var ret GroupsGetParent
 		return ret
 	}
 
@@ -125,7 +125,7 @@ func (o *GroupsGetItem) GetParent() Parent {
 // GetParentOk returns a tuple with the Parent field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *GroupsGetItem) GetParentOk() (*Parent, bool) {
+func (o *GroupsGetItem) GetParentOk() (*GroupsGetParent, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -133,7 +133,7 @@ func (o *GroupsGetItem) GetParentOk() (*Parent, bool) {
 }
 
 // SetParent sets field value
-func (o *GroupsGetItem) SetParent(v Parent) {
+func (o *GroupsGetItem) SetParent(v GroupsGetParent) {
 	o.Parent.Set(&v)
 }
 

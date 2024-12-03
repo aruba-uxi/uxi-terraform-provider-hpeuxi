@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** |  | 
 **Name** | **string** |  | 
-**Parent** | [**NullableParent**](Parent.md) |  | 
+**Parent** | [**NullableGroupsGetParent**](GroupsGetParent.md) |  | 
 **Path** | **string** |  | 
 **Type** | **string** |  | 
 
@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 
 ### NewGroupsGetItem
 
-`func NewGroupsGetItem(id string, name string, parent NullableParent, path string, type_ string, ) *GroupsGetItem`
+`func NewGroupsGetItem(id string, name string, parent NullableGroupsGetParent, path string, type_ string, ) *GroupsGetItem`
 
 NewGroupsGetItem instantiates a new GroupsGetItem object
 This constructor will assign default values to properties that have it defined,
@@ -71,20 +71,20 @@ SetName sets Name field to given value.
 
 ### GetParent
 
-`func (o *GroupsGetItem) GetParent() Parent`
+`func (o *GroupsGetItem) GetParent() GroupsGetParent`
 
 GetParent returns the Parent field if non-nil, zero value otherwise.
 
 ### GetParentOk
 
-`func (o *GroupsGetItem) GetParentOk() (*Parent, bool)`
+`func (o *GroupsGetItem) GetParentOk() (*GroupsGetParent, bool)`
 
 GetParentOk returns a tuple with the Parent field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetParent
 
-`func (o *GroupsGetItem) SetParent(v Parent)`
+`func (o *GroupsGetItem) SetParent(v GroupsGetParent)`
 
 SetParent sets Parent field to given value.
 

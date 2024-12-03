@@ -13,16 +13,16 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 )
 
-func GenerateServiceTestGroupAssignmentResponse(
+func GenerateServiceTestGroupAssignmentsGetResponse(
 	id string,
 	postfix string,
-) config_api_client.ServiceTestGroupAssignmentsResponse {
-	return config_api_client.ServiceTestGroupAssignmentsResponse{
-		Items: []config_api_client.ServiceTestGroupAssignmentsItem{
+) config_api_client.ServiceTestGroupAssignmentsGetResponse {
+	return config_api_client.ServiceTestGroupAssignmentsGetResponse{
+		Items: []config_api_client.ServiceTestGroupAssignmentsGetItem{
 			{
 				Id:          id,
-				Group:       *config_api_client.NewGroup("group_id" + postfix),
-				ServiceTest: *config_api_client.NewServiceTest("service_test_id" + postfix),
+				Group:       *config_api_client.NewServiceTestGroupAssignmentsGetGroup("group_id" + postfix),
+				ServiceTest: *config_api_client.NewServiceTestGroupAssignmentsGetServiceTest("service_test_id" + postfix),
 				Type:        shared.ServiceTestGroupAssignmentType,
 			},
 		},
@@ -34,8 +34,8 @@ func GenerateServiceTestGroupAssignmentResponse(
 func GenerateServiceTestGroupAssignmentPostRequest(
 	id string,
 	postfix string,
-) config_api_client.ServiceTestGroupAssignmentsPostRequest {
-	return config_api_client.ServiceTestGroupAssignmentsPostRequest{
+) config_api_client.ServiceTestGroupAssignmentPostRequest {
+	return config_api_client.ServiceTestGroupAssignmentPostRequest{
 		GroupId:       "group_id" + postfix,
 		ServiceTestId: "service_test_id" + postfix,
 	}
@@ -44,11 +44,11 @@ func GenerateServiceTestGroupAssignmentPostRequest(
 func GenerateServiceTestGroupAssignmentPostResponse(
 	id string,
 	postfix string,
-) config_api_client.ServiceTestGroupAssignmentsPostResponse {
-	return config_api_client.ServiceTestGroupAssignmentsPostResponse{
+) config_api_client.ServiceTestGroupAssignmentPostResponse {
+	return config_api_client.ServiceTestGroupAssignmentPostResponse{
 		Id:          id,
-		Group:       *config_api_client.NewGroup("group_id" + postfix),
-		ServiceTest: *config_api_client.NewServiceTest("service_test_id" + postfix),
+		Group:       *config_api_client.NewServiceTestGroupAssignmentPostGroup("group_id" + postfix),
+		ServiceTest: *config_api_client.NewServiceTestGroupAssignmentPostServiceTest("service_test_id" + postfix),
 		Type:        shared.ServiceTestGroupAssignmentType,
 	}
 }
@@ -64,8 +64,8 @@ func MockGetServiceTestGroupAssignment(id string, response interface{}, times in
 }
 
 func MockPostServiceTestGroupAssignment(
-	request config_api_client.ServiceTestGroupAssignmentsPostRequest,
-	response config_api_client.ServiceTestGroupAssignmentsPostResponse,
+	request config_api_client.ServiceTestGroupAssignmentPostRequest,
+	response config_api_client.ServiceTestGroupAssignmentPostResponse,
 	times int,
 ) {
 	gock.New(MockUXIURL).

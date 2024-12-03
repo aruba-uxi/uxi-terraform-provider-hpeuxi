@@ -7,7 +7,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.17.0
+API version: 5.18.0
 Contact: support@capenetworks.com
 */
 
@@ -25,9 +25,9 @@ type IssueSubject string
 
 // List of IssueSubject
 const (
-	FIELD           IssueSubject = "field"
-	HEADER          IssueSubject = "header"
-	QUERY_PARAMETER IssueSubject = "query.parameter"
+	ISSUESUBJECT_FIELD           IssueSubject = "field"
+	ISSUESUBJECT_HEADER          IssueSubject = "header"
+	ISSUESUBJECT_QUERY_PARAMETER IssueSubject = "query.parameter"
 )
 
 // All allowed values of IssueSubject enum

@@ -13,16 +13,16 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 )
 
-func GenerateNetworkGroupAssignmentResponse(
+func GenerateNetworkGroupAssignmentsGetResponse(
 	id string,
 	postfix string,
-) config_api_client.NetworkGroupAssignmentsResponse {
-	return config_api_client.NetworkGroupAssignmentsResponse{
-		Items: []config_api_client.NetworkGroupAssignmentsItem{
+) config_api_client.NetworkGroupAssignmentsGetResponse {
+	return config_api_client.NetworkGroupAssignmentsGetResponse{
+		Items: []config_api_client.NetworkGroupAssignmentsGetItem{
 			{
 				Id:      id,
-				Group:   *config_api_client.NewGroup("group_id" + postfix),
-				Network: *config_api_client.NewNetwork("network_id" + postfix),
+				Group:   *config_api_client.NewNetworkGroupAssignmentsGetGroup("group_id" + postfix),
+				Network: *config_api_client.NewNetworkGroupAssignmentsGetNetwork("network_id" + postfix),
 				Type:    shared.NetworkGroupAssignmentType,
 			},
 		},
@@ -34,8 +34,8 @@ func GenerateNetworkGroupAssignmentResponse(
 func GenerateNetworkGroupAssignmentPostRequest(
 	id string,
 	postfix string,
-) config_api_client.NetworkGroupAssignmentsPostRequest {
-	return config_api_client.NetworkGroupAssignmentsPostRequest{
+) config_api_client.NetworkGroupAssignmentPostRequest {
+	return config_api_client.NetworkGroupAssignmentPostRequest{
 		GroupId:   *config_api_client.PtrString("group_id" + postfix),
 		NetworkId: *config_api_client.PtrString("network_id" + postfix),
 	}
@@ -44,11 +44,11 @@ func GenerateNetworkGroupAssignmentPostRequest(
 func GenerateNetworkGroupAssignmentPostResponse(
 	id string,
 	postfix string,
-) config_api_client.NetworkGroupAssignmentsPostResponse {
-	return config_api_client.NetworkGroupAssignmentsPostResponse{
+) config_api_client.NetworkGroupAssignmentPostResponse {
+	return config_api_client.NetworkGroupAssignmentPostResponse{
 		Id:      id,
-		Group:   *config_api_client.NewGroup("group_id" + postfix),
-		Network: *config_api_client.NewNetwork("network_id" + postfix),
+		Group:   *config_api_client.NewNetworkGroupAssignmentPostGroup("group_id" + postfix),
+		Network: *config_api_client.NewNetworkGroupAssignmentPostNetwork("network_id" + postfix),
 		Type:    shared.NetworkGroupAssignmentType,
 	}
 }
@@ -64,8 +64,8 @@ func MockGetNetworkGroupAssignment(id string, response interface{}, times int) {
 }
 
 func MockPostNetworkGroupAssignment(
-	request config_api_client.NetworkGroupAssignmentsPostRequest,
-	response config_api_client.NetworkGroupAssignmentsPostResponse,
+	request config_api_client.NetworkGroupAssignmentPostRequest,
+	response config_api_client.NetworkGroupAssignmentPostResponse,
 	times int,
 ) {
 	gock.New(MockUXIURL).

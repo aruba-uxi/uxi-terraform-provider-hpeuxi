@@ -167,7 +167,7 @@ func (d *sensorDataSource) Read(
 	state.Latitude = types.Float32PointerValue(sensor.Latitude.Get())
 	state.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
-	state.PcapMode = types.StringPointerValue(sensor.PcapMode.Get())
+	state.PcapMode = types.StringPointerValue((*string)(sensor.GetPcapMode().Ptr()))
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)

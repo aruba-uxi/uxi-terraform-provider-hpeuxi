@@ -31,7 +31,7 @@ func TestAgentGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetAgentGroupAssignment(
 						"id",
-						util.GenerateAgentGroupAssignmentsResponse("id", ""),
+						util.GenerateAgentGroupAssignmentsGetResponse("id", ""),
 						3,
 					)
 				},
@@ -83,7 +83,7 @@ func TestAgentGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetAgentGroupAssignment(
 						"id",
-						util.GenerateAgentGroupAssignmentsResponse("id", ""),
+						util.GenerateAgentGroupAssignmentsGetResponse("id", ""),
 						3,
 					)
 				},

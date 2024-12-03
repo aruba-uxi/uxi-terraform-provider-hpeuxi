@@ -199,7 +199,7 @@ func (r *sensorResource) Read(
 	state.Latitude = types.Float32PointerValue(sensor.Latitude.Get())
 	state.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
-	state.PcapMode = types.StringPointerValue(sensor.PcapMode.Get())
+	state.PcapMode = types.StringPointerValue((*string)(sensor.GetPcapMode().Ptr()))
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -221,13 +221,13 @@ func (r *sensorResource) Update(
 	}
 
 	errorSummary := util.GenerateErrorSummary("update", "hpeuxi_sensor")
-	patchRequest := config_api_client.NewSensorsPatchRequest()
+	patchRequest := config_api_client.NewSensorPatchRequest()
 	patchRequest.Name = plan.Name.ValueStringPointer()
 	patchRequest.AddressNote = plan.AddressNote.ValueStringPointer()
 	patchRequest.Notes = plan.Notes.ValueStringPointer()
 	plannedPcapMode := plan.PcapMode.ValueStringPointer()
 	if !plan.PcapMode.IsUnknown() && plannedPcapMode != nil {
-		pcapMode, err := config_api_client.NewPcapModeFromValue(*plannedPcapMode)
+		pcapMode, err := config_api_client.NewSensorPcapModeFromValue(*plannedPcapMode)
 		if err != nil {
 			resp.Diagnostics.AddError(errorSummary, err.Error())
 
@@ -237,8 +237,8 @@ func (r *sensorResource) Update(
 	}
 
 	request := r.client.ConfigurationAPI.
-		SensorsPatch(ctx, plan.ID.ValueString()).
-		SensorsPatchRequest(*patchRequest)
+		SensorPatch(ctx, plan.ID.ValueString()).
+		SensorPatchRequest(*patchRequest)
 	sensor, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -260,9 +260,7 @@ func (r *sensorResource) Update(
 	plan.Latitude = types.Float32PointerValue(sensor.Latitude.Get())
 	plan.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	plan.Notes = types.StringPointerValue(sensor.Notes.Get())
-	if sensor.PcapMode.Get() != nil {
-		plan.PcapMode = types.StringValue(string(*sensor.PcapMode.Get()))
-	}
+	plan.PcapMode = types.StringPointerValue((*string)(sensor.GetPcapMode().Ptr()))
 
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)

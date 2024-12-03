@@ -123,13 +123,13 @@ func (r *networkGroupAssignmentResource) Create(
 		return
 	}
 
-	postRequest := config_api_client.NewNetworkGroupAssignmentsPostRequest(
+	postRequest := config_api_client.NewNetworkGroupAssignmentPostRequest(
 		plan.GroupID.ValueString(),
 		plan.NetworkID.ValueString(),
 	)
 	request := r.client.ConfigurationAPI.
-		NetworkGroupAssignmentsPost(ctx).
-		NetworkGroupAssignmentsPostRequest(*postRequest)
+		NetworkGroupAssignmentPost(ctx).
+		NetworkGroupAssignmentPostRequest(*postRequest)
 	networkGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
@@ -229,7 +229,7 @@ func (r *networkGroupAssignmentResource) Delete(
 	}
 
 	request := r.client.ConfigurationAPI.
-		NetworkGroupAssignmentsDelete(ctx, state.ID.ValueString())
+		NetworkGroupAssignmentDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {

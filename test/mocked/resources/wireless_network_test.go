@@ -23,7 +23,7 @@ import (
 func TestWirelessNetworkResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	wirelessNetwork := util.GenerateWirelessNetworkResponse("id", "").Items[0]
+	wirelessNetwork := util.GenerateWirelessNetworksGetResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -48,7 +48,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"id",
-						util.GenerateWirelessNetworkResponse("id", ""),
+						util.GenerateWirelessNetworksGetResponse("id", ""),
 						2,
 					)
 				},
@@ -73,7 +73,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"id",
-						util.GenerateWirelessNetworkResponse("id", ""),
+						util.GenerateWirelessNetworksGetResponse("id", ""),
 						1,
 					)
 				},
@@ -86,7 +86,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"id",
-						util.GenerateWirelessNetworkResponse("id", ""),
+						util.GenerateWirelessNetworksGetResponse("id", ""),
 						1,
 					)
 				},
@@ -103,7 +103,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"id",
-						util.GenerateWirelessNetworkResponse("id", ""),
+						util.GenerateWirelessNetworksGetResponse("id", ""),
 						1,
 					)
 				},
@@ -117,7 +117,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"id",
-						util.GenerateWirelessNetworkResponse("id", ""),
+						util.GenerateWirelessNetworksGetResponse("id", ""),
 						1,
 					)
 				},
@@ -140,7 +140,7 @@ func TestWirelessNetworkResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
-	wirelessNetwork := util.GenerateWirelessNetworkResponse("id", "").Items[0]
+	wirelessNetwork := util.GenerateWirelessNetworksGetResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -158,7 +158,7 @@ func TestWirelessNetworkResourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetWirelessNetwork(
 						"id",
-						util.GenerateWirelessNetworkResponse("id", ""),
+						util.GenerateWirelessNetworksGetResponse("id", ""),
 						2,
 					)
 				},

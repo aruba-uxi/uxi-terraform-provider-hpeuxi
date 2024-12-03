@@ -16,8 +16,8 @@ import (
 func GenerateAgentGroupAssignmentPostRequest(
 	id string,
 	postfix string,
-) config_api_client.AgentGroupAssignmentsPostRequest {
-	return config_api_client.AgentGroupAssignmentsPostRequest{
+) config_api_client.AgentGroupAssignmentPostRequest {
+	return config_api_client.AgentGroupAssignmentPostRequest{
 		GroupId: "group_id" + postfix,
 		AgentId: "agent_id" + postfix,
 	}
@@ -26,25 +26,25 @@ func GenerateAgentGroupAssignmentPostRequest(
 func GenerateAgentGroupAssignmentPostResponse(
 	id string,
 	postfix string,
-) config_api_client.AgentGroupAssignmentResponse {
-	return config_api_client.AgentGroupAssignmentResponse{
+) config_api_client.AgentGroupAssignmentPostResponse {
+	return config_api_client.AgentGroupAssignmentPostResponse{
 		Id:    id,
-		Group: *config_api_client.NewGroup("group_id" + postfix),
-		Agent: *config_api_client.NewAgent("agent_id" + postfix),
+		Group: *config_api_client.NewAgentGroupAssignmentPostGroup("group_id" + postfix),
+		Agent: *config_api_client.NewAgentGroupAssignmentPostAgent("agent_id" + postfix),
 		Type:  shared.AgentGroupAssignmentType,
 	}
 }
 
-func GenerateAgentGroupAssignmentsResponse(
+func GenerateAgentGroupAssignmentsGetResponse(
 	id string,
 	postfix string,
-) config_api_client.AgentGroupAssignmentsResponse {
-	return config_api_client.AgentGroupAssignmentsResponse{
-		Items: []config_api_client.AgentGroupAssignmentsItem{
+) config_api_client.AgentGroupAssignmentsGetResponse {
+	return config_api_client.AgentGroupAssignmentsGetResponse{
+		Items: []config_api_client.AgentGroupAssignmentsGetItem{
 			{
 				Id:    id,
-				Group: *config_api_client.NewGroup("group_id" + postfix),
-				Agent: *config_api_client.NewAgent("agent_id" + postfix),
+				Group: *config_api_client.NewAgentGroupAssignmentsGetGroup("group_id" + postfix),
+				Agent: *config_api_client.NewAgentGroupAssignmentsGetAgent("agent_id" + postfix),
 				Type:  shared.AgentGroupAssignmentType,
 			},
 		},
@@ -64,8 +64,8 @@ func MockGetAgentGroupAssignment(id string, response interface{}, times int) {
 }
 
 func MockPostAgentGroupAssignment(
-	request config_api_client.AgentGroupAssignmentsPostRequest,
-	response config_api_client.AgentGroupAssignmentResponse,
+	request config_api_client.AgentGroupAssignmentPostRequest,
+	response config_api_client.AgentGroupAssignmentPostResponse,
 	times int,
 ) {
 	gock.New(MockUXIURL).

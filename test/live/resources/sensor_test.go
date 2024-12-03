@@ -27,7 +27,9 @@ func TestSensorResource(t *testing.T) {
 	updatedSensor.AddressNote = *config_api_client.NewNullableString(
 		config_api_client.PtrString("tf_provider_acceptance_test_update_address_note"),
 	)
-	updatedSensor.PcapMode = *config_api_client.NewNullableString(config_api_client.PtrString("off"))
+	updatedSensor.PcapMode = *config_api_client.NewNullableSensorPcapMode(
+		config_api_client.SENSORPCAPMODE_OFF.Ptr(),
+	)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -74,7 +76,7 @@ func TestSensorResource(t *testing.T) {
 					name 		 = "` + updatedSensor.Name + `"
 					address_note = "` + updatedSensor.GetAddressNote() + `"
 					notes 		 = "` + updatedSensor.GetNotes() + `"
-					pcap_mode 	 = "` + updatedSensor.GetPcapMode() + `"
+					pcap_mode 	 = "` + string(updatedSensor.GetPcapMode()) + `"
 				}`,
 				Check: shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", updatedSensor),
 			},
@@ -85,7 +87,7 @@ func TestSensorResource(t *testing.T) {
 					name 		 = "` + originalSensor.Name + `"
 					address_note = "` + originalSensor.GetAddressNote() + `"
 					notes 		 = "` + originalSensor.GetNotes() + `"
-					pcap_mode 	 = "` + originalSensor.GetPcapMode() + `"
+					pcap_mode 	 = "` + string(originalSensor.GetPcapMode()) + `"
 				}`,
 				Check: shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", originalSensor),
 			},

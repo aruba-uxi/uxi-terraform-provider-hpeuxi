@@ -17,18 +17,18 @@ import (
 func GenerateWiredNetworkResponse(
 	id string,
 	postfix string,
-) config_api_client.WiredNetworksResponse {
+) config_api_client.WiredNetworksGetResponse {
 	createdAt, _ := time.Parse(time.RFC3339, "2024-09-11T12:00:00.000Z")
 	updatedAt, _ := time.Parse(time.RFC3339, "2024-09-11T12:00:00.000Z")
 
-	return config_api_client.WiredNetworksResponse{
-		Items: []config_api_client.WiredNetworksItem{
+	return config_api_client.WiredNetworksGetResponse{
+		Items: []config_api_client.WiredNetworksGetItem{
 			{
 				Id:                   id,
 				Name:                 "name" + postfix,
 				CreatedAt:            createdAt,
 				UpdatedAt:            updatedAt,
-				IpVersion:            "ip_version" + postfix,
+				IpVersion:            config_api_client.IPVERSION_IPV4,
 				Security:             *config_api_client.NewNullableString(config_api_client.PtrString("security" + postfix)),
 				DnsLookupDomain:      *config_api_client.NewNullableString(config_api_client.PtrString("dns_lookup_domain" + postfix)),
 				DisableEdns:          false,

@@ -9,29 +9,152 @@ info:
     email: support@capenetworks.com
   license:
     name: No idea, but we need something
-  version: 5.17.0
+  version: 5.18.0
 servers:
   - url: https://api.capenetworks.com
   - url: https://api.staging.capedev.io
 paths:
-  /networking-uxi/v1alpha1/agent-group-assignments:
-    post:
-      operationId: agent_group_assignments_post
-      summary: Agent Group Assignments Post
-      description: Create agent group assignment
+  /networking-uxi/v1alpha1/agents/{agent_uid}:
+    delete:
+      operationId: agent_delete
+      summary: Agent Delete
+      description: Delete an existing agent.
+      parameters:
+        - name: agent_uid
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Agent Uid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '204':
+          description: No Content
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - agents
+    patch:
+      operationId: agent_patch
+      summary: Agent Patch
+      description: Update an existing agent.
+      parameters:
+        - name: agent_uid
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Agent Uid
       requestBody:
         required: true
         content:
-          application/json:
+          application/merge-patch+json:
             schema:
-              $ref: '#/components/schemas/AgentGroupAssignmentsPostRequest'
+              $ref: '#/components/schemas/AgentPatchRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AgentGroupAssignmentResponse'
+                $ref: '#/components/schemas/AgentPatchResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - agents
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/agent-group-assignments/{uid}:
+    delete:
+      operationId: agent_group_assignment_delete
+      summary: Agent Group Assignment Delete
+      description: Delete an agent group assignment.
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Uid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '204':
+          description: No Content
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - agent-group-assignments
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/agent-group-assignments:
+    post:
+      operationId: agent_group_assignment_post
+      summary: Agent Group Assignment Post
+      description: Create agent group assignment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentGroupAssignmentPostRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentGroupAssignmentPostResponse'
         4XX:
           description: Client Error
           content:
@@ -88,7 +211,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AgentGroupAssignmentsResponse'
+                $ref: '#/components/schemas/AgentGroupAssignmentsGetResponse'
         4XX:
           description: Client Error
           content:
@@ -108,129 +231,6 @@ paths:
         - configuration
         - v1alpha1
         - agent-group-assignments
-      x-stability-level: alpha
-  /networking-uxi/v1alpha1/agent-group-assignments/{uid}:
-    delete:
-      operationId: agent_group_assignment_delete
-      summary: Agent Group Assignment Delete
-      description: Delete an agent group assignment.
-      parameters:
-        - name: uid
-          in: path
-          required: true
-          schema:
-            type: string
-            title: Uid
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '204':
-          description: No Content
-        4XX:
-          description: Client Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      security:
-        - HTTPBearer: []
-      tags:
-        - api
-        - configuration
-        - v1alpha1
-        - agent-group-assignments
-      x-stability-level: alpha
-  /networking-uxi/v1alpha1/agents/{agent_uid}:
-    delete:
-      operationId: agents_delete
-      summary: Agents Delete
-      description: Delete an existing agent.
-      parameters:
-        - name: agent_uid
-          in: path
-          required: true
-          schema:
-            type: string
-            title: Agent Uid
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '204':
-          description: No Content
-        4XX:
-          description: Client Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      security:
-        - HTTPBearer: []
-      tags:
-        - api
-        - configuration
-        - v1alpha1
-        - agents
-    patch:
-      operationId: agents_patch
-      summary: Agents Patch
-      description: Update an existing agent.
-      parameters:
-        - name: agent_uid
-          in: path
-          required: true
-          schema:
-            type: string
-            title: Agent Uid
-      requestBody:
-        required: true
-        content:
-          application/merge-patch+json:
-            schema:
-              $ref: '#/components/schemas/AgentsPatchRequest'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgentsPatchResponse'
-        4XX:
-          description: Client Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      security:
-        - HTTPBearer: []
-      tags:
-        - api
-        - configuration
-        - v1alpha1
-        - agents
       x-stability-level: alpha
   /networking-uxi/v1alpha1/agents:
     get:
@@ -269,7 +269,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AgentsResponse'
+                $ref: '#/components/schemas/AgentsGetResponse'
         4XX:
           description: Client Error
           content:
@@ -292,8 +292,8 @@ paths:
       x-stability-level: alpha
   /networking-uxi/v1alpha1/groups/{group_uid}:
     delete:
-      operationId: groups_delete
-      summary: Groups Delete
+      operationId: group_delete
+      summary: Group Delete
       description: Delete an existing group.
       parameters:
         - name: group_uid
@@ -331,8 +331,8 @@ paths:
         - groups
       x-stability-level: alpha
     patch:
-      operationId: groups_patch
-      summary: Groups Patch
+      operationId: group_patch
+      summary: Group Patch
       description: Update an existing group.
       parameters:
         - name: group_uid
@@ -346,14 +346,14 @@ paths:
         content:
           application/merge-patch+json:
             schema:
-              $ref: '#/components/schemas/GroupsPatchRequest'
+              $ref: '#/components/schemas/GroupPatchRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupsPatchResponse'
+                $ref: '#/components/schemas/GroupPatchResponse'
         4XX:
           description: Client Error
           content:
@@ -375,6 +375,43 @@ paths:
         - groups
       x-stability-level: alpha
   /networking-uxi/v1alpha1/groups:
+    post:
+      operationId: group_post
+      summary: Group Post
+      description: Create a new group with the group identified in `parentId` as its parent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupPostRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupPostResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - groups
+      x-stability-level: alpha
     get:
       operationId: groups_get
       summary: Groups Get
@@ -432,47 +469,10 @@ paths:
         - v1alpha1
         - groups
       x-stability-level: alpha
-    post:
-      operationId: groups_post
-      summary: Groups Post
-      description: Create a new group with the group identified in `parentId` as its parent
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GroupsPostRequest'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GroupsPostResponse'
-        4XX:
-          description: Client Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      security:
-        - HTTPBearer: []
-      tags:
-        - api
-        - configuration
-        - v1alpha1
-        - groups
-      x-stability-level: alpha
   /networking-uxi/v1alpha1/network-group-assignments/{id}:
     delete:
-      operationId: network_group_assignments_delete
-      summary: Network Group Assignments Delete
+      operationId: network_group_assignment_delete
+      summary: Network Group Assignment Delete
       description: Delete a network group assignment
       parameters:
         - name: id
@@ -510,6 +510,43 @@ paths:
         - network-group-assignments
       x-stability-level: alpha
   /networking-uxi/v1alpha1/network-group-assignments:
+    post:
+      operationId: network_group_assignment_post
+      summary: Network Group Assignment Post
+      description: Create a network group assignment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkGroupAssignmentPostRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkGroupAssignmentPostResponse'
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - network-group-assignments
+      x-stability-level: alpha
     get:
       operationId: network_group_assignments_get
       summary: Network Group Assignments Get
@@ -546,7 +583,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NetworkGroupAssignmentsResponse'
+                $ref: '#/components/schemas/NetworkGroupAssignmentsGetResponse'
         4XX:
           description: Client Error
           content:
@@ -567,23 +604,64 @@ paths:
         - v1alpha1
         - network-group-assignments
       x-stability-level: alpha
+  /networking-uxi/v1alpha1/sensor-group-assignments/{id}:
+    delete:
+      operationId: sensor_group_assignment_delete
+      summary: Sensor Group Assignment Delete
+      description: Delete a sensor group assignment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '204':
+          description: No Content
+        4XX:
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - HTTPBearer: []
+      tags:
+        - api
+        - configuration
+        - v1alpha1
+        - sensor-group-assignments
+      x-stability-level: alpha
+  /networking-uxi/v1alpha1/sensor-group-assignments:
     post:
-      operationId: network_group_assignments_post
-      summary: Network Group Assignments Post
-      description: Create a network group assignment
+      operationId: sensor_group_assignment_post
+      summary: Sensor Group Assignment Post
+      description: Create sensor group assignment
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NetworkGroupAssignmentsPostRequest'
+              $ref: '#/components/schemas/SensorGroupAssignmentPostRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NetworkGroupAssignmentsPostResponse'
+                $ref: '#/components/schemas/SensorGroupAssignmentPostResponse'
         4XX:
           description: Client Error
           content:
@@ -602,9 +680,8 @@ paths:
         - api
         - configuration
         - v1alpha1
-        - network-group-assignments
+        - sensor-group-assignments
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/sensor-group-assignments:
     get:
       operationId: sensor_group_assignments_get
       summary: Sensor Group Assignments Get
@@ -641,7 +718,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SensorGroupAssignmentsResponse'
+                $ref: '#/components/schemas/SensorGroupAssignmentsGetResponse'
         4XX:
           description: Client Error
           content:
@@ -662,63 +739,31 @@ paths:
         - v1alpha1
         - sensor-group-assignments
       x-stability-level: alpha
-    post:
-      operationId: sensor_group_assignments_post
-      summary: Sensor Group Assignments Post
-      description: Create sensor group assignment
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SensorGroupAssignmentsPostRequest'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SensorGroupAssignmentResponse'
-        4XX:
-          description: Client Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      security:
-        - HTTPBearer: []
-      tags:
-        - api
-        - configuration
-        - v1alpha1
-        - sensor-group-assignments
-      x-stability-level: alpha
-  /networking-uxi/v1alpha1/sensor-group-assignments/{id}:
-    delete:
-      operationId: sensor_group_assignments_delete
-      summary: Sensor Group Assignments Delete
-      description: Delete a sensor group assignment
+  /networking-uxi/v1alpha1/sensors/{sensor_uid}:
+    patch:
+      operationId: sensor_patch
+      summary: Sensor Patch
+      description: Update an existing sensor.
       parameters:
-        - name: id
+        - name: sensor_uid
           in: path
           required: true
           schema:
             type: string
-            title: Id
+            title: Sensor Uid
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/SensorPatchRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema: {}
-        '204':
-          description: No Content
+              schema:
+                $ref: '#/components/schemas/SensorPatchResponse'
         4XX:
           description: Client Error
           content:
@@ -736,8 +781,8 @@ paths:
       tags:
         - api
         - configuration
-        - v1alpha1
-        - sensor-group-assignments
+        - v1
+        - sensors
       x-stability-level: alpha
   /networking-uxi/v1alpha1/sensors:
     get:
@@ -776,7 +821,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SensorsResponse'
+                $ref: '#/components/schemas/SensorsGetResponse'
         4XX:
           description: Client Error
           content:
@@ -797,55 +842,10 @@ paths:
         - v1alpha1
         - sensors
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/sensors/{sensor_uid}:
-    patch:
-      operationId: sensors_patch
-      summary: Sensors Patch
-      description: Update an existing sensor.
-      parameters:
-        - name: sensor_uid
-          in: path
-          required: true
-          schema:
-            type: string
-            title: Sensor Uid
-      requestBody:
-        required: true
-        content:
-          application/merge-patch+json:
-            schema:
-              $ref: '#/components/schemas/SensorsPatchRequest'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SensorsPatchResponse'
-        4XX:
-          description: Client Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      security:
-        - HTTPBearer: []
-      tags:
-        - api
-        - configuration
-        - v1
-        - sensors
-      x-stability-level: alpha
   /networking-uxi/v1alpha1/service-test-group-assignments/{id}:
     delete:
-      operationId: service_test_group_assignments_delete
-      summary: Service Test Group Assignments Delete
+      operationId: service_test_group_assignment_delete
+      summary: Service Test Group Assignment Delete
       description: Delete a service test group assignment
       parameters:
         - name: id
@@ -884,22 +884,22 @@ paths:
       x-stability-level: alpha
   /networking-uxi/v1alpha1/service-test-group-assignments:
     post:
-      operationId: service_test_group_assignments_post
-      summary: Service Test Group Assignments Post
+      operationId: service_test_group_assignment_post
+      summary: Service Test Group Assignment Post
       description: Create a service-test group assignment
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ServiceTestGroupAssignmentsPostRequest'
+              $ref: '#/components/schemas/ServiceTestGroupAssignmentPostRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ServiceTestGroupAssignmentsPostResponse'
+                $ref: '#/components/schemas/ServiceTestGroupAssignmentPostResponse'
         4XX:
           description: Client Error
           content:
@@ -956,7 +956,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ServiceTestGroupAssignmentsResponse'
+                $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetResponse'
         4XX:
           description: Client Error
           content:
@@ -1014,7 +1014,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ServiceTestsListResponse'
+                $ref: '#/components/schemas/ServiceTestsGetResponse'
         4XX:
           description: Client Error
           content:
@@ -1072,7 +1072,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WiredNetworksResponse'
+                $ref: '#/components/schemas/WiredNetworksGetResponse'
         4XX:
           description: Client Error
           content:
@@ -1130,7 +1130,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WirelessNetworksResponse'
+                $ref: '#/components/schemas/WirelessNetworksGetResponse'
         4XX:
           description: Client Error
           content:
@@ -1153,7 +1153,7 @@ paths:
       x-stability-level: alpha
 components:
   schemas:
-    Agent:
+    AgentGroupAssignmentPostAgent:
       type: object
       properties:
         id:
@@ -1161,50 +1161,17 @@ components:
           title: Id
       required:
         - id
-      title: Agent
-    AgentGroupAssignmentResponse:
+      title: AgentGroupAssignmentPostAgent
+    AgentGroupAssignmentPostGroup:
       type: object
       properties:
         id:
           type: string
           title: Id
-        group:
-          $ref: '#/components/schemas/Group'
-        agent:
-          $ref: '#/components/schemas/Agent'
-        type:
-          type: string
-          enum:
-            - networking-uxi/agent-group-assignment
-          title: Type
       required:
         - id
-        - group
-        - agent
-        - type
-      title: AgentGroupAssignmentResponse
-    AgentGroupAssignmentsItem:
-      type: object
-      properties:
-        id:
-          type: string
-          title: Id
-        group:
-          $ref: '#/components/schemas/Group'
-        agent:
-          $ref: '#/components/schemas/Agent'
-        type:
-          type: string
-          enum:
-            - networking-uxi/agent-group-assignment
-          title: Type
-      required:
-        - id
-        - group
-        - agent
-        - type
-      title: AgentGroupAssignmentsItem
-    AgentGroupAssignmentsPostRequest:
+      title: AgentGroupAssignmentPostGroup
+    AgentGroupAssignmentPostRequest:
       type: object
       properties:
         groupId:
@@ -1216,14 +1183,74 @@ components:
       required:
         - groupId
         - agentId
-      title: AgentGroupAssignmentsPostRequest
-    AgentGroupAssignmentsResponse:
+      title: AgentGroupAssignmentPostRequest
+    AgentGroupAssignmentPostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        group:
+          $ref: '#/components/schemas/AgentGroupAssignmentPostGroup'
+        agent:
+          $ref: '#/components/schemas/AgentGroupAssignmentPostAgent'
+        type:
+          type: string
+          enum:
+            - networking-uxi/agent-group-assignment
+          title: Type
+      required:
+        - id
+        - group
+        - agent
+        - type
+      title: AgentGroupAssignmentPostResponse
+    AgentGroupAssignmentsGetAgent:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: AgentGroupAssignmentsGetAgent
+    AgentGroupAssignmentsGetGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: AgentGroupAssignmentsGetGroup
+    AgentGroupAssignmentsGetItem:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        group:
+          $ref: '#/components/schemas/AgentGroupAssignmentsGetGroup'
+        agent:
+          $ref: '#/components/schemas/AgentGroupAssignmentsGetAgent'
+        type:
+          type: string
+          enum:
+            - networking-uxi/agent-group-assignment
+          title: Type
+      required:
+        - id
+        - group
+        - agent
+        - type
+      title: AgentGroupAssignmentsGetItem
+    AgentGroupAssignmentsGetResponse:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/AgentGroupAssignmentsItem'
+            $ref: '#/components/schemas/AgentGroupAssignmentsGetItem'
           title: Items
         count:
           type: integer
@@ -1237,61 +1264,8 @@ components:
         - items
         - count
         - next
-      title: AgentGroupAssignmentsResponse
-    AgentItem:
-      type: object
-      properties:
-        id:
-          type: string
-          title: Id
-        serial:
-          type: string
-          title: Serial
-        name:
-          type: string
-          title: Name
-        modelNumber:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Modelnumber
-        wifiMacAddress:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Wifimacaddress
-        ethernetMacAddress:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Ethernetmacaddress
-        notes:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Notes
-        pcapMode:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Pcapmode
-        type:
-          type: string
-          enum:
-            - networking-uxi/agent
-          title: Type
-      required:
-        - id
-        - serial
-        - name
-        - modelNumber
-        - wifiMacAddress
-        - ethernetMacAddress
-        - notes
-        - pcapMode
-        - type
-      title: AgentItem
-    AgentsPatchRequest:
+      title: AgentGroupAssignmentsGetResponse
+    AgentPatchRequest:
       description: Request body for patching an agent.
       type: object
       properties:
@@ -1304,9 +1278,9 @@ components:
           type: string
           title: Notes
         pcapMode:
-          $ref: '#/components/schemas/PcapMode'
-      title: AgentsPatchRequest
-    AgentsPatchResponse:
+          $ref: '#/components/schemas/AgentPcapMode'
+      title: AgentPatchRequest
+    AgentPatchResponse:
       type: object
       properties:
         id:
@@ -1340,7 +1314,7 @@ components:
           title: Notes
         pcapMode:
           anyOf:
-            - $ref: '#/components/schemas/PcapMode'
+            - $ref: '#/components/schemas/AgentPcapMode'
           nullable: true
         type:
           type: string
@@ -1357,14 +1331,73 @@ components:
         - notes
         - pcapMode
         - type
-      title: AgentsPatchResponse
-    AgentsResponse:
+      title: AgentPatchResponse
+    AgentPcapMode:
+      type: string
+      enum:
+        - light
+        - full
+        - 'off'
+      title: AgentPcapMode
+    AgentsGetItem:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        serial:
+          type: string
+          title: Serial
+        name:
+          type: string
+          title: Name
+        modelNumber:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Modelnumber
+        wifiMacAddress:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Wifimacaddress
+        ethernetMacAddress:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Ethernetmacaddress
+        notes:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Notes
+        pcapMode:
+          anyOf:
+            - $ref: '#/components/schemas/AgentPcapMode'
+          nullable: true
+        type:
+          type: string
+          enum:
+            - networking-uxi/agent
+          title: Type
+      required:
+        - id
+        - serial
+        - name
+        - modelNumber
+        - wifiMacAddress
+        - ethernetMacAddress
+        - notes
+        - pcapMode
+        - type
+      title: AgentsGetItem
+    AgentsGetResponse:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/AgentItem'
+            $ref: '#/components/schemas/AgentsGetItem'
           title: Items
         count:
           type: integer
@@ -1378,7 +1411,7 @@ components:
         - items
         - count
         - next
-      title: AgentsResponse
+      title: AgentsGetResponse
     ErrorDetail:
       type: object
       properties:
@@ -1422,7 +1455,7 @@ components:
         - httpStatusCode
         - message
       title: ErrorResponse
-    Group:
+    GroupPatchParent:
       type: object
       properties:
         id:
@@ -1430,7 +1463,92 @@ components:
           title: Id
       required:
         - id
-      title: Group
+      title: GroupPatchParent
+    GroupPatchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+      title: GroupPatchRequest
+    GroupPatchResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        path:
+          type: string
+          title: Path
+        parent:
+          $ref: '#/components/schemas/GroupPatchParent'
+        type:
+          type: string
+          enum:
+            - networking-uxi/group
+          title: Type
+      required:
+        - id
+        - name
+        - path
+        - parent
+        - type
+      title: GroupPatchResponse
+    GroupPostParent:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: GroupPostParent
+    GroupPostRequest:
+      type: object
+      properties:
+        parentId:
+          anyOf:
+            - type: string
+              maxLength: 12
+              minLength: 12
+          nullable: true
+          title: Parentid
+        name:
+          type: string
+          title: Name
+      required:
+        - name
+      title: GroupPostRequest
+    GroupPostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        path:
+          type: string
+          title: Path
+        parent:
+          $ref: '#/components/schemas/GroupPostParent'
+        type:
+          type: string
+          enum:
+            - networking-uxi/group
+          title: Type
+      required:
+        - id
+        - name
+        - path
+        - parent
+        - type
+      title: GroupPostResponse
     GroupsGetItem:
       type: object
       properties:
@@ -1442,7 +1560,7 @@ components:
           title: Name
         parent:
           anyOf:
-            - $ref: '#/components/schemas/Parent'
+            - $ref: '#/components/schemas/GroupsGetParent'
           nullable: true
         path:
           type: string
@@ -1459,6 +1577,15 @@ components:
         - path
         - type
       title: GroupsGetItem
+    GroupsGetParent:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: GroupsGetParent
     GroupsGetResponse:
       type: object
       properties:
@@ -1480,82 +1607,12 @@ components:
         - count
         - next
       title: GroupsGetResponse
-    GroupsPatchRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          title: Name
-      title: GroupsPatchRequest
-    GroupsPatchResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          title: Id
-        name:
-          type: string
-          title: Name
-        path:
-          type: string
-          title: Path
-        parent:
-          $ref: '#/components/schemas/Parent'
-        type:
-          type: string
-          enum:
-            - networking-uxi/group
-          title: Type
-      required:
-        - id
-        - name
-        - path
-        - parent
-        - type
-      title: GroupsPatchResponse
-    GroupsPostRequest:
-      type: object
-      properties:
-        parentId:
-          anyOf:
-            - type: string
-              maxLength: 12
-              minLength: 12
-          nullable: true
-          title: Parentid
-        name:
-          type: string
-          title: Name
-      required:
-        - name
-      title: GroupsPostRequest
-    GroupsPostResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          title: Id
-        name:
-          type: string
-          title: Name
-        path:
-          type: string
-          title: Path
-        parent:
-          $ref: '#/components/schemas/Parent'
-        type:
-          type: string
-          enum:
-            - networking-uxi/group
-          title: Type
-      required:
-        - id
-        - name
-        - path
-        - parent
-        - type
-      title: GroupsPostResponse
+    IpVersion:
+      type: string
+      enum:
+        - ipv4
+        - ipv6
+      title: IpVersion
     Issue:
       type: object
       properties:
@@ -1579,7 +1636,7 @@ components:
         - header
         - query.parameter
       title: IssueSubject
-    Network:
+    NetworkGroupAssignmentPostGroup:
       type: object
       properties:
         id:
@@ -1587,29 +1644,17 @@ components:
           title: Id
       required:
         - id
-      title: Network
-    NetworkGroupAssignmentsItem:
+      title: NetworkGroupAssignmentPostGroup
+    NetworkGroupAssignmentPostNetwork:
       type: object
       properties:
         id:
           type: string
           title: Id
-        group:
-          $ref: '#/components/schemas/Group'
-        network:
-          $ref: '#/components/schemas/Network'
-        type:
-          type: string
-          enum:
-            - networking-uxi/network-group-assignment
-          title: Type
       required:
         - id
-        - group
-        - network
-        - type
-      title: NetworkGroupAssignmentsItem
-    NetworkGroupAssignmentsPostRequest:
+      title: NetworkGroupAssignmentPostNetwork
+    NetworkGroupAssignmentPostRequest:
       type: object
       properties:
         groupId:
@@ -1621,8 +1666,8 @@ components:
       required:
         - groupId
         - networkId
-      title: NetworkGroupAssignmentsPostRequest
-    NetworkGroupAssignmentsPostResponse:
+      title: NetworkGroupAssignmentPostRequest
+    NetworkGroupAssignmentPostResponse:
       type: object
       properties:
         id:
@@ -1630,9 +1675,9 @@ components:
           format: uuid
           title: Id
         group:
-          $ref: '#/components/schemas/Group'
+          $ref: '#/components/schemas/NetworkGroupAssignmentPostGroup'
         network:
-          $ref: '#/components/schemas/Network'
+          $ref: '#/components/schemas/NetworkGroupAssignmentPostNetwork'
         type:
           type: string
           enum:
@@ -1643,14 +1688,53 @@ components:
         - group
         - network
         - type
-      title: NetworkGroupAssignmentsPostResponse
-    NetworkGroupAssignmentsResponse:
+      title: NetworkGroupAssignmentPostResponse
+    NetworkGroupAssignmentsGetGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: NetworkGroupAssignmentsGetGroup
+    NetworkGroupAssignmentsGetItem:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        group:
+          $ref: '#/components/schemas/NetworkGroupAssignmentsGetGroup'
+        network:
+          $ref: '#/components/schemas/NetworkGroupAssignmentsGetNetwork'
+        type:
+          type: string
+          enum:
+            - networking-uxi/network-group-assignment
+          title: Type
+      required:
+        - id
+        - group
+        - network
+        - type
+      title: NetworkGroupAssignmentsGetItem
+    NetworkGroupAssignmentsGetNetwork:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: NetworkGroupAssignmentsGetNetwork
+    NetworkGroupAssignmentsGetResponse:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/NetworkGroupAssignmentsItem'
+            $ref: '#/components/schemas/NetworkGroupAssignmentsGetItem'
           title: Items
         count:
           type: integer
@@ -1664,8 +1748,8 @@ components:
         - items
         - count
         - next
-      title: NetworkGroupAssignmentsResponse
-    Parent:
+      title: NetworkGroupAssignmentsGetResponse
+    SensorGroupAssignmentPostGroup:
       type: object
       properties:
         id:
@@ -1673,66 +1757,8 @@ components:
           title: Id
       required:
         - id
-      title: Parent
-    PcapMode:
-      type: string
-      enum:
-        - light
-        - full
-        - 'off'
-      title: PcapMode
-    Sensor:
-      type: object
-      properties:
-        id:
-          type: string
-          title: Id
-      required:
-        - id
-      title: Sensor
-    SensorGroupAssignmentResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          title: Id
-        group:
-          $ref: '#/components/schemas/Group'
-        sensor:
-          $ref: '#/components/schemas/Sensor'
-        type:
-          type: string
-          enum:
-            - networking-uxi/sensor-group-assignment
-          title: Type
-      required:
-        - id
-        - group
-        - sensor
-        - type
-      title: SensorGroupAssignmentResponse
-    SensorGroupAssignmentsItem:
-      type: object
-      properties:
-        id:
-          type: string
-          title: Id
-        group:
-          $ref: '#/components/schemas/Group'
-        sensor:
-          $ref: '#/components/schemas/Sensor'
-        type:
-          type: string
-          enum:
-            - networking-uxi/sensor-group-assignment
-          title: Type
-      required:
-        - id
-        - group
-        - sensor
-        - type
-      title: SensorGroupAssignmentsItem
-    SensorGroupAssignmentsPostRequest:
+      title: SensorGroupAssignmentPostGroup
+    SensorGroupAssignmentPostRequest:
       type: object
       properties:
         groupId:
@@ -1744,14 +1770,74 @@ components:
       required:
         - groupId
         - sensorId
-      title: SensorGroupAssignmentsPostRequest
-    SensorGroupAssignmentsResponse:
+      title: SensorGroupAssignmentPostRequest
+    SensorGroupAssignmentPostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        group:
+          $ref: '#/components/schemas/SensorGroupAssignmentPostGroup'
+        sensor:
+          $ref: '#/components/schemas/SensorGroupAssignmentPostSensor'
+        type:
+          type: string
+          enum:
+            - networking-uxi/sensor-group-assignment
+          title: Type
+      required:
+        - id
+        - group
+        - sensor
+        - type
+      title: SensorGroupAssignmentPostResponse
+    SensorGroupAssignmentPostSensor:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: SensorGroupAssignmentPostSensor
+    SensorGroupAssignmentsGetGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: SensorGroupAssignmentsGetGroup
+    SensorGroupAssignmentsGetItem:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        group:
+          $ref: '#/components/schemas/SensorGroupAssignmentsGetGroup'
+        sensor:
+          $ref: '#/components/schemas/SensorGroupAssignmentsGetSensor'
+        type:
+          type: string
+          enum:
+            - networking-uxi/sensor-group-assignment
+          title: Type
+      required:
+        - id
+        - group
+        - sensor
+        - type
+      title: SensorGroupAssignmentsGetItem
+    SensorGroupAssignmentsGetResponse:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/SensorGroupAssignmentsItem'
+            $ref: '#/components/schemas/SensorGroupAssignmentsGetItem'
           title: Items
         count:
           type: integer
@@ -1765,77 +1851,17 @@ components:
         - items
         - count
         - next
-      title: SensorGroupAssignmentsResponse
-    SensorItem:
+      title: SensorGroupAssignmentsGetResponse
+    SensorGroupAssignmentsGetSensor:
       type: object
       properties:
         id:
           type: string
           title: Id
-        serial:
-          type: string
-          title: Serial
-        name:
-          type: string
-          title: Name
-        modelNumber:
-          type: string
-          title: Modelnumber
-        wifiMacAddress:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Wifimacaddress
-        ethernetMacAddress:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Ethernetmacaddress
-        addressNote:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Addressnote
-        longitude:
-          anyOf:
-            - type: number
-          nullable: true
-          title: Longitude
-        latitude:
-          anyOf:
-            - type: number
-          nullable: true
-          title: Latitude
-        notes:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Notes
-        pcapMode:
-          anyOf:
-            - type: string
-          nullable: true
-          title: Pcapmode
-        type:
-          type: string
-          enum:
-            - networking-uxi/sensor
-          title: Type
       required:
         - id
-        - serial
-        - name
-        - modelNumber
-        - wifiMacAddress
-        - ethernetMacAddress
-        - addressNote
-        - longitude
-        - latitude
-        - notes
-        - pcapMode
-        - type
-      title: SensorItem
-    SensorsPatchRequest:
+      title: SensorGroupAssignmentsGetSensor
+    SensorPatchRequest:
       description: Request body for patching a sensor.
       type: object
       properties:
@@ -1851,9 +1877,9 @@ components:
           type: string
           title: Notes
         pcapMode:
-          $ref: '#/components/schemas/PcapMode'
-      title: SensorsPatchRequest
-    SensorsPatchResponse:
+          $ref: '#/components/schemas/SensorPcapMode'
+      title: SensorPatchRequest
+    SensorPatchResponse:
       type: object
       properties:
         id:
@@ -1900,7 +1926,7 @@ components:
           title: Notes
         pcapMode:
           anyOf:
-            - $ref: '#/components/schemas/PcapMode'
+            - $ref: '#/components/schemas/SensorPcapMode'
           nullable: true
         type:
           type: string
@@ -1920,14 +1946,89 @@ components:
         - notes
         - pcapMode
         - type
-      title: SensorsPatchResponse
-    SensorsResponse:
+      title: SensorPatchResponse
+    SensorPcapMode:
+      type: string
+      enum:
+        - light
+        - full
+        - 'off'
+      title: SensorPcapMode
+    SensorsGetItem:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        serial:
+          type: string
+          title: Serial
+        name:
+          type: string
+          title: Name
+        modelNumber:
+          type: string
+          title: Modelnumber
+        wifiMacAddress:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Wifimacaddress
+        ethernetMacAddress:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Ethernetmacaddress
+        addressNote:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Addressnote
+        longitude:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Longitude
+        latitude:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Latitude
+        notes:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Notes
+        pcapMode:
+          anyOf:
+            - $ref: '#/components/schemas/SensorPcapMode'
+          nullable: true
+        type:
+          type: string
+          enum:
+            - networking-uxi/sensor
+          title: Type
+      required:
+        - id
+        - serial
+        - name
+        - modelNumber
+        - wifiMacAddress
+        - ethernetMacAddress
+        - addressNote
+        - longitude
+        - latitude
+        - notes
+        - pcapMode
+        - type
+      title: SensorsGetItem
+    SensorsGetResponse:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/SensorItem'
+            $ref: '#/components/schemas/SensorsGetItem'
           title: Items
         count:
           type: integer
@@ -1941,8 +2042,8 @@ components:
         - items
         - count
         - next
-      title: SensorsResponse
-    ServiceTest:
+      title: SensorsGetResponse
+    ServiceTestGroupAssignmentPostGroup:
       type: object
       properties:
         id:
@@ -1950,29 +2051,8 @@ components:
           title: Id
       required:
         - id
-      title: ServiceTest
-    ServiceTestGroupAssignmentsItem:
-      type: object
-      properties:
-        id:
-          type: string
-          title: Id
-        group:
-          $ref: '#/components/schemas/Group'
-        serviceTest:
-          $ref: '#/components/schemas/ServiceTest'
-        type:
-          type: string
-          enum:
-            - networking-uxi/service-test-group-assignment
-          title: Type
-      required:
-        - id
-        - group
-        - serviceTest
-        - type
-      title: ServiceTestGroupAssignmentsItem
-    ServiceTestGroupAssignmentsPostRequest:
+      title: ServiceTestGroupAssignmentPostGroup
+    ServiceTestGroupAssignmentPostRequest:
       type: object
       properties:
         groupId:
@@ -1984,8 +2064,8 @@ components:
       required:
         - groupId
         - serviceTestId
-      title: ServiceTestGroupAssignmentsPostRequest
-    ServiceTestGroupAssignmentsPostResponse:
+      title: ServiceTestGroupAssignmentPostRequest
+    ServiceTestGroupAssignmentPostResponse:
       type: object
       properties:
         id:
@@ -1993,9 +2073,9 @@ components:
           format: uuid
           title: Id
         group:
-          $ref: '#/components/schemas/Group'
+          $ref: '#/components/schemas/ServiceTestGroupAssignmentPostGroup'
         serviceTest:
-          $ref: '#/components/schemas/ServiceTest'
+          $ref: '#/components/schemas/ServiceTestGroupAssignmentPostServiceTest'
         type:
           type: string
           enum:
@@ -2006,14 +2086,53 @@ components:
         - group
         - serviceTest
         - type
-      title: ServiceTestGroupAssignmentsPostResponse
-    ServiceTestGroupAssignmentsResponse:
+      title: ServiceTestGroupAssignmentPostResponse
+    ServiceTestGroupAssignmentPostServiceTest:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: ServiceTestGroupAssignmentPostServiceTest
+    ServiceTestGroupAssignmentsGetGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: ServiceTestGroupAssignmentsGetGroup
+    ServiceTestGroupAssignmentsGetItem:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+        group:
+          $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetGroup'
+        serviceTest:
+          $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetServiceTest'
+        type:
+          type: string
+          enum:
+            - networking-uxi/service-test-group-assignment
+          title: Type
+      required:
+        - id
+        - group
+        - serviceTest
+        - type
+      title: ServiceTestGroupAssignmentsGetItem
+    ServiceTestGroupAssignmentsGetResponse:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/ServiceTestGroupAssignmentsItem'
+            $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetItem'
           title: Items
         count:
           type: integer
@@ -2027,8 +2146,17 @@ components:
         - items
         - count
         - next
-      title: ServiceTestGroupAssignmentsResponse
-    ServiceTestsListItem:
+      title: ServiceTestGroupAssignmentsGetResponse
+    ServiceTestGroupAssignmentsGetServiceTest:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Id
+      required:
+        - id
+      title: ServiceTestGroupAssignmentsGetServiceTest
+    ServiceTestsGetItem:
       type: object
       properties:
         id:
@@ -2064,14 +2192,14 @@ components:
         - template
         - isEnabled
         - type
-      title: ServiceTestsListItem
-    ServiceTestsListResponse:
+      title: ServiceTestsGetItem
+    ServiceTestsGetResponse:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/ServiceTestsListItem'
+            $ref: '#/components/schemas/ServiceTestsGetItem'
           title: Items
         count:
           type: integer
@@ -2085,8 +2213,8 @@ components:
         - items
         - count
         - next
-      title: ServiceTestsListResponse
-    WiredNetworksItem:
+      title: ServiceTestsGetResponse
+    WiredNetworksGetItem:
       type: object
       properties:
         id:
@@ -2096,8 +2224,7 @@ components:
           type: string
           title: Name
         ipVersion:
-          type: string
-          title: Ipversion
+          $ref: '#/components/schemas/IpVersion'
         createdAt:
           type: string
           format: date-time
@@ -2148,14 +2275,14 @@ components:
         - externalConnectivity
         - vLanId
         - type
-      title: WiredNetworksItem
-    WiredNetworksResponse:
+      title: WiredNetworksGetItem
+    WiredNetworksGetResponse:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/WiredNetworksItem'
+            $ref: '#/components/schemas/WiredNetworksGetItem'
           title: Items
         count:
           type: integer
@@ -2169,8 +2296,8 @@ components:
         - items
         - count
         - next
-      title: WiredNetworksResponse
-    WirelessNetworksItem:
+      title: WiredNetworksGetResponse
+    WirelessNetworksGetItem:
       type: object
       properties:
         id:
@@ -2188,8 +2315,7 @@ components:
           nullable: true
           title: Security
         ipVersion:
-          type: string
-          title: Ipversion
+          $ref: '#/components/schemas/IpVersion'
         createdAt:
           type: string
           format: date-time
@@ -2238,14 +2364,14 @@ components:
         - useDns64
         - externalConnectivity
         - type
-      title: WirelessNetworksItem
-    WirelessNetworksResponse:
+      title: WirelessNetworksGetItem
+    WirelessNetworksGetResponse:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/WirelessNetworksItem'
+            $ref: '#/components/schemas/WirelessNetworksGetItem'
           title: Items
         count:
           type: integer
@@ -2259,7 +2385,7 @@ components:
         - items
         - count
         - next
-      title: WirelessNetworksResponse
+      title: WirelessNetworksGetResponse
   securitySchemes:
     HTTPBearer:
       type: http

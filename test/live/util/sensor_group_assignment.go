@@ -13,7 +13,7 @@ import (
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
-func GetSensorGroupAssignment(id string) config_api_client.SensorGroupAssignmentsItem {
+func GetSensorGroupAssignment(id string) config_api_client.SensorGroupAssignmentsGetItem {
 	result, response, err := Client.ConfigurationAPI.
 		SensorGroupAssignmentsGet(context.Background()).
 		Id(id).
@@ -32,7 +32,7 @@ func GetSensorGroupAssignment(id string) config_api_client.SensorGroupAssignment
 func CheckStateAgainstSensorGroupAssignment(
 	t *testing.T,
 	entity string,
-	sensorGroupAssignment config_api_client.SensorGroupAssignmentsItem,
+	sensorGroupAssignment config_api_client.SensorGroupAssignmentsGetItem,
 ) resource.TestCheckFunc {
 	t.Helper()
 

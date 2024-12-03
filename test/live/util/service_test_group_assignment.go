@@ -13,7 +13,7 @@ import (
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
-func GetServiceTestGroupAssignment(id string) config_api_client.ServiceTestGroupAssignmentsItem {
+func GetServiceTestGroupAssignment(id string) config_api_client.ServiceTestGroupAssignmentsGetItem {
 	result, response, err := Client.ConfigurationAPI.
 		ServiceTestGroupAssignmentsGet(context.Background()).
 		Id(id).
@@ -32,7 +32,7 @@ func GetServiceTestGroupAssignment(id string) config_api_client.ServiceTestGroup
 func CheckStateAgainstServiceTestGroupAssignment(
 	t *testing.T,
 	entity string,
-	serviceTestGroupAssignment config_api_client.ServiceTestGroupAssignmentsItem,
+	serviceTestGroupAssignment config_api_client.ServiceTestGroupAssignmentsGetItem,
 ) resource.TestCheckFunc {
 	t.Helper()
 

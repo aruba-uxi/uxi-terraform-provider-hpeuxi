@@ -31,7 +31,7 @@ func TestNetworkGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetNetworkGroupAssignment(
 						"id",
-						util.GenerateNetworkGroupAssignmentResponse("id", ""),
+						util.GenerateNetworkGroupAssignmentsGetResponse("id", ""),
 						3,
 					)
 				},
@@ -83,7 +83,7 @@ func TestNetworkGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetNetworkGroupAssignment(
 						"id",
-						util.GenerateNetworkGroupAssignmentResponse("id", ""),
+						util.GenerateNetworkGroupAssignmentsGetResponse("id", ""),
 						3,
 					)
 				},

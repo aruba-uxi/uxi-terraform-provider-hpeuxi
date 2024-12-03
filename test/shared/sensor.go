@@ -16,7 +16,7 @@ import (
 func CheckStateAgainstSensor(
 	t *testing.T,
 	entity string,
-	sensor config_api_client.SensorItem,
+	sensor config_api_client.SensorsGetItem,
 ) resource.TestCheckFunc {
 	t.Helper()
 
@@ -44,6 +44,6 @@ func CheckStateAgainstSensor(
 		TestOptionalFloatValue(t, entity, "latitude", sensor.Latitude.Get()),
 		TestOptionalFloatValue(t, entity, "longitude", sensor.Longitude.Get()),
 		TestOptionalValue(t, entity, "notes", sensor.Notes.Get()),
-		TestOptionalValue(t, entity, "pcap_mode", sensor.PcapMode.Get()),
+		TestOptionalValue(t, entity, "pcap_mode", (*string)(sensor.GetPcapMode().Ptr())),
 	)
 }

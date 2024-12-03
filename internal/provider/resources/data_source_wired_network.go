@@ -147,7 +147,7 @@ func (d *wiredNetworkDataSource) Read(
 	network := networkResponse.Items[0]
 	state.ID = types.StringValue(network.Id)
 	state.Name = types.StringValue(network.Name)
-	state.IPVersion = types.StringValue(network.IpVersion)
+	state.IPVersion = types.StringValue(string(network.IpVersion))
 	state.Security = types.StringPointerValue(network.Security.Get())
 	state.DNSLookupDomain = types.StringPointerValue(network.DnsLookupDomain.Get())
 	state.DisableEDNS = types.BoolValue(network.DisableEdns)

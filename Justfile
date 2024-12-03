@@ -15,10 +15,10 @@ generate-config-api-client: _remove-client-files
   --input-spec /local/{{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }} \
   --generator-name go \
   --output /local/{{ CLIENT_DIR }} \
-  --package-name config_api_client \
   --git-user-id aruba-uxi \
   --git-repo-id terraform-provider-hpeuxi/{{ CLIENT_DIR }} \
-  --openapi-normalizer SET_TAGS_FOR_ALL_OPERATIONS=configuration
+  --openapi-normalizer SET_TAGS_FOR_ALL_OPERATIONS=configuration \
+  --additional-properties packageName=config_api_client,enumClassPrefix=true
   rm ./pkg/config-api-client/go.mod
   rm ./pkg/config-api-client/go.sum
   just tidy-client

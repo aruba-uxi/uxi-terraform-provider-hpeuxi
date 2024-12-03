@@ -149,7 +149,7 @@ func (d *agentDataSource) Read(
 	state.WifiMacAddress = types.StringPointerValue(agent.WifiMacAddress.Get())
 	state.EthernetMacAddress = types.StringPointerValue(agent.EthernetMacAddress.Get())
 	state.Notes = types.StringPointerValue(agent.Notes.Get())
-	state.PcapMode = types.StringPointerValue(agent.PcapMode.Get())
+	state.PcapMode = types.StringPointerValue((*string)(agent.GetPcapMode().Ptr()))
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
