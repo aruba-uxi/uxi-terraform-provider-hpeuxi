@@ -25,11 +25,11 @@ generate-config-api-client: _remove-client-files
   just fmt-client
 
 setup-run:
-  grep -q "registry.terraform.io/arubauxi/hpeuxi" ~/.terraformrc && echo "Dev override found - installing provider locally" || { echo "Dev override not found - please follow README setup guide"; exit 1; }
+  grep -q "registry.terraform.io/aruba-uxi/hpeuxi" ~/.terraformrc && echo "Dev override found - installing provider locally" || { echo "Dev override not found - please follow README setup guide"; exit 1; }
   go install .
 
 remove-setup-run-dev-override:
-  sed -i '' '/registry\.terraform\.io\/arubauxi\/hpeuxi/d' ~/.terraformrc
+  sed -i '' '/registry\.terraform\.io\/aruba-uxi\/hpeuxi/d' ~/.terraformrc
 
 build-local:
   go run github.com/goreleaser/goreleaser/v2@latest release --clean --skip=publish,validate
