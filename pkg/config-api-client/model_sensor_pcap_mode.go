@@ -25,9 +25,9 @@ type SensorPcapMode string
 
 // List of SensorPcapMode
 const (
-	LIGHT SensorPcapMode = "light"
-	FULL  SensorPcapMode = "full"
-	OFF   SensorPcapMode = "off"
+	SENSORPCAPMODE_LIGHT SensorPcapMode = "light"
+	SENSORPCAPMODE_FULL  SensorPcapMode = "full"
+	SENSORPCAPMODE_OFF   SensorPcapMode = "off"
 )
 
 // All allowed values of SensorPcapMode enum

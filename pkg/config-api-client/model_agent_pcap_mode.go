@@ -25,9 +25,9 @@ type AgentPcapMode string
 
 // List of AgentPcapMode
 const (
-	LIGHT AgentPcapMode = "light"
-	FULL  AgentPcapMode = "full"
-	OFF   AgentPcapMode = "off"
+	AGENTPCAPMODE_LIGHT AgentPcapMode = "light"
+	AGENTPCAPMODE_FULL  AgentPcapMode = "full"
+	AGENTPCAPMODE_OFF   AgentPcapMode = "off"
 )
 
 // All allowed values of AgentPcapMode enum
