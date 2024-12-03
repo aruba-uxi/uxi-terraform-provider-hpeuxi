@@ -37,7 +37,6 @@ linters:
     - gomnd # disabled in gl provider  todo: also see mnd
     - noctx # we want this
     - usestdlibvars # we want this
-    - whitespace # we want this
     - revive # we want this
     - dupl # we want this
     - contextcheck # we want this, but the "trivial" fix causes context cancelled errors in tests
