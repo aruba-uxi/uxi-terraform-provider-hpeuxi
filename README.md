@@ -182,12 +182,12 @@ HPEUXI_PROVISION_TOKEN=<hpeuxi_provision_token>
 |-----------------------------------|------------------------------------------------------------------------------------------------------------------------------|
 | ACCEPTANCE_AGENT_ID               | ID of an agent on customer.                                                                                                  |
 | ACCEPTANCE_AGENT_PROVISION_SERIAL | Serial number of an agent to be provisioned. Keep this constant between test runs to avoid excessive provisioning of agents. |
-| ACCEPTANCE_CUSTOMER_ID                       | ID of the customer against which the acceptance tests will be run.                                                           |
-| ACCEPTANCE_GROUP_ID_ROOT                     | ID of the root group.                                                                                                        |
-| ACCEPTANCE_SENSOR_ID                         | ID of a hardware sensor on the customer.                                                                                     |
-| ACCEPTANCE_SERVICE_TEST_ID                   | ID of a service test on the customer.                                                                                        |
-| ACCEPTANCE_WIRED_NETWORK_ID                  | ID of a wired network on the customer.                                                                                       |
-| ACCEPTANCE_WIRELESS_NETWORK_ID               | ID of a wireless network on the customer.|
+| ACCEPTANCE_CUSTOMER_ID            | ID of the customer against which the acceptance tests will be run.                                                           |
+| ACCEPTANCE_GROUP_ID_ROOT          | ID of the root group.                                                                                                        |
+| ACCEPTANCE_SENSOR_ID              | ID of a hardware sensor on the customer.                                                                                     |
+| ACCEPTANCE_SERVICE_TEST_ID        | ID of a service test on the customer.                                                                                        |
+| ACCEPTANCE_WIRED_NETWORK_ID       | ID of a wired network on the customer.                                                                                       |
+| ACCEPTANCE_WIRELESS_NETWORK_ID    | ID of a wireless network on the customer.                                                                                    |
 | DEVICE_GATEWAY_HOST               | Host address of the device gateway (against which the agent provisioning will be run)                                        |
 | HPEUXI_CLIENT_ID                  | CLIENT_ID component of the UXI API credentials as obtained from Greenlake.                                                   |
 | HPEUXI_CLIENT_SECRET              | CLIENT_SECRET component of the UXI API credentials as obtained from Greenlake.                                               |
