@@ -4,14 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**NetworkGroupAssignments** | [**[]NetworkGroupAssignmentsItem**](NetworkGroupAssignmentsItem.md) |  | 
-**Pagination** | [**PaginationDetails**](PaginationDetails.md) |  | 
+**Items** | [**[]NetworkGroupAssignmentsGetItem**](NetworkGroupAssignmentsGetItem.md) |  | 
+**Count** | **int32** |  | 
+**Next** | **NullableString** |  | 
 
 ## Methods
 
 ### NewNetworkGroupAssignmentsGetResponse
 
-`func NewNetworkGroupAssignmentsGetResponse(networkGroupAssignments []NetworkGroupAssignmentsItem, pagination PaginationDetails, ) *NetworkGroupAssignmentsGetResponse`
+`func NewNetworkGroupAssignmentsGetResponse(items []NetworkGroupAssignmentsGetItem, count int32, next NullableString, ) *NetworkGroupAssignmentsGetResponse`
 
 NewNetworkGroupAssignmentsGetResponse instantiates a new NetworkGroupAssignmentsGetResponse object
 This constructor will assign default values to properties that have it defined,
@@ -26,46 +27,76 @@ NewNetworkGroupAssignmentsGetResponseWithDefaults instantiates a new NetworkGrou
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetNetworkGroupAssignments
+### GetItems
 
-`func (o *NetworkGroupAssignmentsGetResponse) GetNetworkGroupAssignments() []NetworkGroupAssignmentsItem`
+`func (o *NetworkGroupAssignmentsGetResponse) GetItems() []NetworkGroupAssignmentsGetItem`
 
-GetNetworkGroupAssignments returns the NetworkGroupAssignments field if non-nil, zero value otherwise.
+GetItems returns the Items field if non-nil, zero value otherwise.
 
-### GetNetworkGroupAssignmentsOk
+### GetItemsOk
 
-`func (o *NetworkGroupAssignmentsGetResponse) GetNetworkGroupAssignmentsOk() (*[]NetworkGroupAssignmentsItem, bool)`
+`func (o *NetworkGroupAssignmentsGetResponse) GetItemsOk() (*[]NetworkGroupAssignmentsGetItem, bool)`
 
-GetNetworkGroupAssignmentsOk returns a tuple with the NetworkGroupAssignments field if it's non-nil, zero value otherwise
+GetItemsOk returns a tuple with the Items field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetNetworkGroupAssignments
+### SetItems
 
-`func (o *NetworkGroupAssignmentsGetResponse) SetNetworkGroupAssignments(v []NetworkGroupAssignmentsItem)`
+`func (o *NetworkGroupAssignmentsGetResponse) SetItems(v []NetworkGroupAssignmentsGetItem)`
 
-SetNetworkGroupAssignments sets NetworkGroupAssignments field to given value.
+SetItems sets Items field to given value.
 
 
-### GetPagination
+### GetCount
 
-`func (o *NetworkGroupAssignmentsGetResponse) GetPagination() PaginationDetails`
+`func (o *NetworkGroupAssignmentsGetResponse) GetCount() int32`
 
-GetPagination returns the Pagination field if non-nil, zero value otherwise.
+GetCount returns the Count field if non-nil, zero value otherwise.
 
-### GetPaginationOk
+### GetCountOk
 
-`func (o *NetworkGroupAssignmentsGetResponse) GetPaginationOk() (*PaginationDetails, bool)`
+`func (o *NetworkGroupAssignmentsGetResponse) GetCountOk() (*int32, bool)`
 
-GetPaginationOk returns a tuple with the Pagination field if it's non-nil, zero value otherwise
+GetCountOk returns a tuple with the Count field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetPagination
+### SetCount
 
-`func (o *NetworkGroupAssignmentsGetResponse) SetPagination(v PaginationDetails)`
+`func (o *NetworkGroupAssignmentsGetResponse) SetCount(v int32)`
 
-SetPagination sets Pagination field to given value.
+SetCount sets Count field to given value.
 
 
+### GetNext
+
+`func (o *NetworkGroupAssignmentsGetResponse) GetNext() string`
+
+GetNext returns the Next field if non-nil, zero value otherwise.
+
+### GetNextOk
+
+`func (o *NetworkGroupAssignmentsGetResponse) GetNextOk() (*string, bool)`
+
+GetNextOk returns a tuple with the Next field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNext
+
+`func (o *NetworkGroupAssignmentsGetResponse) SetNext(v string)`
+
+SetNext sets Next field to given value.
+
+
+### SetNextNil
+
+`func (o *NetworkGroupAssignmentsGetResponse) SetNextNil(b bool)`
+
+ SetNextNil sets the value for Next to be an explicit nil
+
+### UnsetNext
+`func (o *NetworkGroupAssignmentsGetResponse) UnsetNext()`
+
+UnsetNext ensures that no value is present for Next, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

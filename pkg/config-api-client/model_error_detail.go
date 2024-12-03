@@ -7,7 +7,7 @@ Configuration Api
 
 Nice description goes here
 
-API version: 5.17.0
+API version: 5.18.0
 Contact: support@capenetworks.com
 */
 
