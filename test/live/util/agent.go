@@ -68,7 +68,7 @@ func (p ProvisionAgent) Provision() (string, error) {
 		return id, fmt.Errorf("ProvisionAgent.Provision marshal json failled: %w", err)
 	}
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return id, fmt.Errorf("ProvisionAgent.Provision build request failled: %w", err)
 	}
