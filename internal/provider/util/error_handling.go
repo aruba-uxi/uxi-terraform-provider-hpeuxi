@@ -41,7 +41,10 @@ func RaiseForStatus(response *http.Response, err error) (bool, string) {
 	return false, ""
 }
 
-func handleJSONError(response *http.Response, apiErr *config_api_client.GenericOpenAPIError) string {
+func handleJSONError(
+	response *http.Response,
+	apiErr *config_api_client.GenericOpenAPIError,
+) string {
 	data, err := parseJSONResponse(response)
 	if err != nil {
 		return err.Error()
