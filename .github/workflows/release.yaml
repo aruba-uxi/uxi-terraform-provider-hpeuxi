@@ -32,7 +32,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Inject Env File
-        run: echo "${{ secrets.ACCEPTANCE_ENV }}" > acceptance.env
+        run: echo "${{ secrets.ACCEPTANCE_ENV_FILE }}" > acceptance.env
 
       - name: Run Acceptance Tests
         run: just acceptance-tests acceptance.env
