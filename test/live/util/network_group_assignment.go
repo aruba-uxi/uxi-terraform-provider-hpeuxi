@@ -34,6 +34,8 @@ func CheckStateAgainstNetworkGroupAssignment(
 	entity string,
 	networkGroupAssignment config_api_client.NetworkGroupAssignmentsItem,
 ) resource.TestCheckFunc {
+	t.Helper()
+
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", networkGroupAssignment.Id),
 		resource.TestCheckResourceAttr(entity, "group_id", networkGroupAssignment.Group.Id),
