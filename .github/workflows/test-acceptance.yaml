@@ -1,5 +1,5 @@
 # Terraform Provider release workflow.
-name: Release
+name: TestAcceptance
 
 # This GitHub action creates a release when manually run with signer details
 on:
