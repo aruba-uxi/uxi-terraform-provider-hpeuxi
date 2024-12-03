@@ -13,26 +13,26 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 )
 
-func GenerateAgentPatchRequest(postfix string) config_api_client.AgentsPatchRequest {
+func GenerateAgentPatchRequest(postfix string) config_api_client.AgentPatchRequest {
 	name := "name" + postfix
 	notes := "notes" + postfix
-	pcapMode, _ := config_api_client.NewPcapModeFromValue("light")
+	pcapMode := config_api_client.AGENTPCAPMODE_LIGHT
 
-	return config_api_client.AgentsPatchRequest{
+	return config_api_client.AgentPatchRequest{
 		Name:     &name,
 		Notes:    &notes,
-		PcapMode: pcapMode,
+		PcapMode: &pcapMode,
 	}
 }
 
-func GenerateAgentPatchResponse(id string, postfix string) config_api_client.AgentsPatchResponse {
+func GenerateAgentPatchResponse(id string, postfix string) config_api_client.AgentPatchResponse {
 	modelNumber := "model_number" + postfix
 	wifiMacAddress := "wifi_mac_address" + postfix
 	ethernetMacAddress := "ethernet_mac_address" + postfix
 	notes := "notes" + postfix
-	pcapMode, _ := config_api_client.NewPcapModeFromValue("light")
+	pcapMode := config_api_client.AGENTPCAPMODE_LIGHT
 
-	return config_api_client.AgentsPatchResponse{
+	return config_api_client.AgentPatchResponse{
 		Id:                 "id",
 		Serial:             "serial" + postfix,
 		Name:               "name" + postfix,
@@ -40,20 +40,20 @@ func GenerateAgentPatchResponse(id string, postfix string) config_api_client.Age
 		WifiMacAddress:     *config_api_client.NewNullableString(&wifiMacAddress),
 		EthernetMacAddress: *config_api_client.NewNullableString(&ethernetMacAddress),
 		Notes:              *config_api_client.NewNullableString(&notes),
-		PcapMode:           *config_api_client.NewNullablePcapMode(pcapMode),
+		PcapMode:           *config_api_client.NewNullableAgentPcapMode(&pcapMode),
 		Type:               shared.AgentType,
 	}
 }
 
-func GenerateAgentResponse(id string, postfix string) config_api_client.AgentsResponse {
+func GenerateAgentsGetResponse(id string, postfix string) config_api_client.AgentsGetResponse {
 	modelNumber := "model_number" + postfix
 	wifiMacAddress := "wifi_mac_address" + postfix
 	ethernetMacAddress := "ethernet_mac_address" + postfix
 	notes := "notes" + postfix
-	pcapMode := "light"
+	pcapMode := config_api_client.AGENTPCAPMODE_LIGHT
 
-	return config_api_client.AgentsResponse{
-		Items: []config_api_client.AgentItem{
+	return config_api_client.AgentsGetResponse{
+		Items: []config_api_client.AgentsGetItem{
 			{
 				Id:                 id,
 				Serial:             "serial" + postfix,
@@ -62,7 +62,7 @@ func GenerateAgentResponse(id string, postfix string) config_api_client.AgentsRe
 				WifiMacAddress:     *config_api_client.NewNullableString(&wifiMacAddress),
 				EthernetMacAddress: *config_api_client.NewNullableString(&ethernetMacAddress),
 				Notes:              *config_api_client.NewNullableString(&notes),
-				PcapMode:           *config_api_client.NewNullableString(&pcapMode),
+				PcapMode:           *config_api_client.NewNullableAgentPcapMode(&pcapMode),
 				Type:               shared.AgentType,
 			},
 		},
@@ -91,8 +91,8 @@ func MockDeleteAgent(id string, times int) {
 
 func MockUpdateAgent(
 	id string,
-	request config_api_client.AgentsPatchRequest,
-	response config_api_client.AgentsPatchResponse,
+	request config_api_client.AgentPatchRequest,
+	response config_api_client.AgentPatchResponse,
 	times int,
 ) {
 	gock.New(MockUXIURL).

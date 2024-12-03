@@ -16,7 +16,7 @@ import (
 func CheckStateAgainstServiceTest(
 	t *testing.T,
 	entity string,
-	serviceTest config_api_client.ServiceTestsListItem,
+	serviceTest config_api_client.ServiceTestsGetItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", serviceTest.Id),

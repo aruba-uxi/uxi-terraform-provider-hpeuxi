@@ -22,7 +22,7 @@ import (
 func TestSensorDataSource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	sensor := util.GenerateSensorResponse("id", "").Items[0]
+	sensor := util.GenerateSensorsGetResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -30,7 +30,7 @@ func TestSensorDataSource(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 3)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "hpeuxi_sensor" "my_sensor" {
@@ -51,7 +51,7 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
-	sensor := util.GenerateSensorResponse("id", "").Items[0]
+	sensor := util.GenerateSensorsGetResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -63,7 +63,7 @@ func TestSensorDataSourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.SensorPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 3)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "hpeuxi_sensor" "my_sensor" {

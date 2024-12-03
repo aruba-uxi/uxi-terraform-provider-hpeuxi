@@ -158,7 +158,7 @@ func (d *wirelessNetworkDataSource) Read(
 	state.ID = types.StringValue(network.Id)
 	state.SSID = types.StringValue(network.Ssid)
 	state.Name = types.StringValue(network.Name)
-	state.IPVersion = types.StringValue(network.IpVersion)
+	state.IPVersion = types.StringValue(string(network.IpVersion))
 	state.Security = types.StringPointerValue(network.Security.Get())
 	state.Hidden = types.BoolValue(network.Hidden)
 	state.BandLocking = types.StringValue(network.BandLocking)

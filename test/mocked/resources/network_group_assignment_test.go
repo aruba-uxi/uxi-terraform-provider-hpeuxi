@@ -62,7 +62,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -112,7 +112,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -169,7 +169,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id_2",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id_2",
 							"_2",
 						),
@@ -177,7 +177,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -263,7 +263,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id_2",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id_2",
 							"_2",
 						),
@@ -271,7 +271,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -320,7 +320,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					// required for network import
 					util.MockGetWirelessNetwork(
 						"network_id",
-						util.GenerateWirelessNetworkResponse("network_id", ""),
+						util.GenerateWirelessNetworksGetResponse("network_id", ""),
 						2,
 					)
 					// required for group create
@@ -349,7 +349,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -399,7 +399,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -415,12 +415,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"network_id_2",
-						util.GenerateWirelessNetworkResponse("network_id_2", "_2"),
+						util.GenerateWirelessNetworksGetResponse("network_id_2", "_2"),
 						2,
 					)
 					util.MockGetWirelessNetwork(
 						"network_id",
-						util.GenerateWirelessNetworkResponse("network_id", ""),
+						util.GenerateWirelessNetworksGetResponse("network_id", ""),
 						2,
 					)
 
@@ -445,7 +445,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					// required for network group assignment create
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id_2",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id_2",
 							"_2",
 						),
@@ -453,7 +453,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -530,12 +530,12 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetWirelessNetwork(
 						"network_id_2",
-						util.GenerateWirelessNetworkResponse("network_id_2", "_2"),
+						util.GenerateWirelessNetworksGetResponse("network_id_2", "_2"),
 						1,
 					)
 					util.MockGetWirelessNetwork(
 						"network_id",
-						util.GenerateWirelessNetworkResponse("network_id", ""),
+						util.GenerateWirelessNetworksGetResponse("network_id", ""),
 						1,
 					)
 					util.MockGetGroup(
@@ -550,7 +550,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id_2",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id_2",
 							"_2",
 						),
@@ -558,7 +558,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -640,7 +640,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -689,7 +689,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -722,7 +722,7 @@ func TestNetworkGroupAssignmentResourceTooManyRequestsHandling(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -973,7 +973,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -1023,7 +1023,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),
@@ -1068,7 +1068,7 @@ func TestNetworkGroupAssignmentResourceHttpErrorHandling(t *testing.T) {
 					)
 					util.MockGetNetworkGroupAssignment(
 						"network_group_assignment_id",
-						util.GenerateNetworkGroupAssignmentResponse(
+						util.GenerateNetworkGroupAssignmentsGetResponse(
 							"network_group_assignment_id",
 							"",
 						),

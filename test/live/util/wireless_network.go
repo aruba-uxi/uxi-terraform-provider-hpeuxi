@@ -10,7 +10,7 @@ import (
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
-func GetWirelessNetwork(id string) config_api_client.WirelessNetworksItem {
+func GetWirelessNetwork(id string) config_api_client.WirelessNetworksGetItem {
 	result, response, err := Client.ConfigurationAPI.
 		WirelessNetworksGet(context.Background()).
 		Id(id).

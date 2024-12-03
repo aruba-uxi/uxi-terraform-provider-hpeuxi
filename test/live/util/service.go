@@ -10,7 +10,7 @@ import (
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
-func GetServiceTest(id string) config_api_client.ServiceTestsListItem {
+func GetServiceTest(id string) config_api_client.ServiceTestsGetItem {
 	result, response, err := Client.ConfigurationAPI.
 		ServiceTestsGet(context.Background()).
 		Id(id).

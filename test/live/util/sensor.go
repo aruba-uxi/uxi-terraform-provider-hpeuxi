@@ -10,7 +10,7 @@ import (
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
-func GetSensor(id string) config_api_client.SensorItem {
+func GetSensor(id string) config_api_client.SensorsGetItem {
 	result, response, err := Client.ConfigurationAPI.
 		SensorsGet(context.Background()).
 		Id(id).

@@ -120,13 +120,13 @@ func (r *sensorGroupAssignmentResource) Create(
 		return
 	}
 
-	postRequest := config_api_client.NewSensorGroupAssignmentsPostRequest(
+	postRequest := config_api_client.NewSensorGroupAssignmentPostRequest(
 		plan.GroupID.ValueString(),
 		plan.SensorID.ValueString(),
 	)
 	request := r.client.ConfigurationAPI.
-		SensorGroupAssignmentsPost(ctx).
-		SensorGroupAssignmentsPostRequest(*postRequest)
+		SensorGroupAssignmentPost(ctx).
+		SensorGroupAssignmentPostRequest(*postRequest)
 	sensorGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
@@ -224,7 +224,7 @@ func (r *sensorGroupAssignmentResource) Delete(
 	}
 
 	request := r.client.ConfigurationAPI.
-		SensorGroupAssignmentsDelete(ctx, state.ID.ValueString())
+		SensorGroupAssignmentDelete(ctx, state.ID.ValueString())
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {

@@ -19,13 +19,13 @@ func GenerateGroupPostResponse(
 	id string,
 	nameSuffix string,
 	parentIDSuffix string,
-) config_api_client.GroupsPostResponse {
+) config_api_client.GroupPostResponse {
 	parentID := "parent_id" + parentIDSuffix
 
-	return config_api_client.GroupsPostResponse{
+	return config_api_client.GroupPostResponse{
 		Id:     id,
 		Name:   "name" + nameSuffix,
-		Parent: *config_api_client.NewParent(parentID),
+		Parent: *config_api_client.NewGroupPostParent(parentID),
 		Path:   parentID + "." + id,
 		Type:   shared.GroupType,
 	}
@@ -34,11 +34,11 @@ func GenerateGroupPostResponse(
 func GenerateGroupAttachedToRootGroupPostResponse(
 	id string,
 	nameSuffix string,
-) config_api_client.GroupsPostResponse {
-	return config_api_client.GroupsPostResponse{
+) config_api_client.GroupPostResponse {
+	return config_api_client.GroupPostResponse{
 		Id:     id,
 		Name:   "name" + nameSuffix,
-		Parent: *config_api_client.NewParent(MockRootGroupID),
+		Parent: *config_api_client.NewGroupPostParent(MockRootGroupID),
 		Path:   "root_group_id." + id,
 		Type:   shared.GroupType,
 	}
@@ -48,13 +48,13 @@ func GenerateGroupPatchResponse(
 	id string,
 	nameSuffix string,
 	parentIDSuffix string,
-) config_api_client.GroupsPatchResponse {
+) config_api_client.GroupPatchResponse {
 	parentID := "parent_id" + parentIDSuffix
 
-	return config_api_client.GroupsPatchResponse{
+	return config_api_client.GroupPatchResponse{
 		Id:     id,
 		Name:   "name" + nameSuffix,
-		Parent: *config_api_client.NewParent(parentID),
+		Parent: *config_api_client.NewGroupPatchParent(parentID),
 		Path:   parentID + "." + id,
 		Type:   shared.GroupType,
 	}
@@ -72,7 +72,7 @@ func GenerateGroupGetResponse(
 			{
 				Id:     id,
 				Name:   "name" + nameSuffix,
-				Parent: *config_api_client.NewNullableParent(config_api_client.NewParent(parentID)),
+				Parent: *config_api_client.NewNullableGroupsGetParent(config_api_client.NewGroupsGetParent(parentID)),
 				Path:   parentID + "." + id,
 				Type:   shared.GroupType,
 			},
@@ -91,7 +91,7 @@ func GenerateGroupAttachedToRootGroupGetResponse(
 			{
 				Id:     id,
 				Name:   "name" + nameSuffix,
-				Parent: *config_api_client.NewNullableParent(config_api_client.NewParent(MockRootGroupID)),
+				Parent: *config_api_client.NewNullableGroupsGetParent(config_api_client.NewGroupsGetParent(MockRootGroupID)),
 				Path:   "root_group_id." + id,
 				Type:   shared.GroupType,
 			},
@@ -107,7 +107,7 @@ func GenerateRootGroupGetResponse() config_api_client.GroupsGetResponse {
 			{
 				Id:     MockRootGroupID,
 				Name:   "root",
-				Parent: *config_api_client.NewNullableParent(nil),
+				Parent: *config_api_client.NewNullableGroupsGetParent(nil),
 				Path:   MockRootGroupID,
 				Type:   shared.GroupType,
 			},
@@ -121,10 +121,10 @@ func GenerateNonRootGroupPostRequest(
 	id string,
 	namePostfix string,
 	parentIDPostfix string,
-) config_api_client.GroupsPostRequest {
+) config_api_client.GroupPostRequest {
 	parentID := "parent_id" + parentIDPostfix
 
-	return config_api_client.GroupsPostRequest{
+	return config_api_client.GroupPostRequest{
 		Name:     "name" + namePostfix,
 		ParentId: *config_api_client.NewNullableString(&parentID),
 	}
@@ -133,23 +133,23 @@ func GenerateNonRootGroupPostRequest(
 func GenerateGroupAttachedToRootGroupPostRequest(
 	id string,
 	namePostfix string,
-) config_api_client.GroupsPostRequest {
-	return config_api_client.GroupsPostRequest{
+) config_api_client.GroupPostRequest {
+	return config_api_client.GroupPostRequest{
 		Name: "name" + namePostfix,
 	}
 }
 
-func GenerateGroupPatchRequest(postfix string) config_api_client.GroupsPatchRequest {
+func GenerateGroupPatchRequest(postfix string) config_api_client.GroupPatchRequest {
 	name := "name" + postfix
 
-	return config_api_client.GroupsPatchRequest{
+	return config_api_client.GroupPatchRequest{
 		Name: &name,
 	}
 }
 
 func MockPostGroup(
-	request config_api_client.GroupsPostRequest,
-	response config_api_client.GroupsPostResponse,
+	request config_api_client.GroupPostRequest,
+	response config_api_client.GroupPostResponse,
 	times int,
 ) {
 	gock.New(MockUXIURL).
@@ -174,8 +174,8 @@ func MockGetGroup(id string, response interface{}, times int) {
 
 func MockPatchGroup(
 	id string,
-	request config_api_client.GroupsPatchRequest,
-	response config_api_client.GroupsPatchResponse,
+	request config_api_client.GroupPatchRequest,
+	response config_api_client.GroupPatchResponse,
 	times int,
 ) {
 	gock.New(MockUXIURL).

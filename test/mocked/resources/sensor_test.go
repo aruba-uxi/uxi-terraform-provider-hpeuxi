@@ -23,8 +23,8 @@ import (
 func TestSensorResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	sensor := util.GenerateSensorResponse("id", "").Items[0]
-	updatedSensor := util.GenerateSensorResponse("id", "_2").Items[0]
+	sensor := util.GenerateSensorsGetResponse("id", "").Items[0]
+	updatedSensor := util.GenerateSensorsGetResponse("id", "_2").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -50,7 +50,7 @@ func TestSensorResource(t *testing.T) {
 			// Importing a sensor
 			{
 				PreConfig: func() {
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 2)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_sensor" "my_sensor" {
@@ -70,7 +70,7 @@ func TestSensorResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 1)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", ""), 1)
 				},
 				ResourceName:      "hpeuxi_sensor.my_sensor",
 				ImportState:       true,
@@ -80,7 +80,7 @@ func TestSensorResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing sensor
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 1)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", ""), 1)
 					util.MockUpdateSensor(
 						"id",
 						util.GenerateSensorPatchRequest("_2"),
@@ -88,7 +88,7 @@ func TestSensorResource(t *testing.T) {
 						1,
 					)
 					// updated sensor
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", "_2"), 1)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_sensor" "my_sensor" {
@@ -102,7 +102,7 @@ func TestSensorResource(t *testing.T) {
 			// Deleting a sensor is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", "_2"), 1)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(
@@ -129,8 +129,8 @@ func TestSensorResource(t *testing.T) {
 func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	sensor := util.GenerateSensorResponse("id", "").Items[0]
-	updatedSensor := util.GenerateSensorResponse("id", "_2").Items[0]
+	sensor := util.GenerateSensorsGetResponse("id", "").Items[0]
+	updatedSensor := util.GenerateSensorsGetResponse("id", "_2").Items[0]
 	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
@@ -147,7 +147,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.SensorPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 2)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_sensor" "my_sensor" {
@@ -175,7 +175,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing sensor
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 1)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", ""), 1)
 					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Patch("/networking-uxi/v1alpha1/sensors/id").
 						Reply(http.StatusTooManyRequests).
@@ -187,7 +187,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 						1,
 					)
 					// updated sensor
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", "_2"), 1)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_sensor" "my_sensor" {
@@ -225,7 +225,7 @@ func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 func TestSensorResourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	sensor := util.GenerateSensorResponse("id", "").Items[0]
+	sensor := util.GenerateSensorsGetResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -287,7 +287,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			// Actually import a sensor for subsequent testing
 			{
 				PreConfig: func() {
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 2)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_sensor" "my_sensor" {
@@ -308,7 +308,7 @@ func TestSensorResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing sensor
-					util.MockGetSensor("id", util.GenerateSensorResponse("id", ""), 1)
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", ""), 1)
 					// patch sensor - with error
 					gock.New(util.MockUXIURL).
 						Patch("/networking-uxi/v1alpha1/sensors/id").

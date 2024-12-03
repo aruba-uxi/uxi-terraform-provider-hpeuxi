@@ -22,7 +22,7 @@ import (
 func TestAgentDataSource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	agent := util.GenerateAgentResponse("id", "").Items[0]
+	agent := util.GenerateAgentsGetResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -30,7 +30,7 @@ func TestAgentDataSource(t *testing.T) {
 			// Test Read
 			{
 				PreConfig: func() {
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 3)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "hpeuxi_agent" "my_agent" {
@@ -51,7 +51,7 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
-	agent := util.GenerateAgentResponse("id", "").Items[0]
+	agent := util.GenerateAgentsGetResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -63,7 +63,7 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 3)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 3)
 				},
 				Config: provider.ProviderConfig + `
 					data "hpeuxi_agent" "my_agent" {

@@ -120,13 +120,13 @@ func (r *serviceTestGroupAssignmentResource) Create(
 		return
 	}
 
-	postRequest := config_api_client.NewServiceTestGroupAssignmentsPostRequest(
+	postRequest := config_api_client.NewServiceTestGroupAssignmentPostRequest(
 		plan.GroupID.ValueString(),
 		plan.ServiceTestID.ValueString(),
 	)
 	request := r.client.ConfigurationAPI.
-		ServiceTestGroupAssignmentsPost(ctx).
-		ServiceTestGroupAssignmentsPostRequest(*postRequest)
+		ServiceTestGroupAssignmentPost(ctx).
+		ServiceTestGroupAssignmentPostRequest(*postRequest)
 	serviceTestGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
@@ -228,7 +228,7 @@ func (r *serviceTestGroupAssignmentResource) Delete(
 	}
 
 	request := r.client.ConfigurationAPI.
-		ServiceTestGroupAssignmentsDelete(ctx, state.ID.ValueString())
+		ServiceTestGroupAssignmentDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

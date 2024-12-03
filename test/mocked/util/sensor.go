@@ -13,9 +13,9 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 )
 
-func GenerateSensorResponse(id string, postfix string) config_api_client.SensorsResponse {
-	return config_api_client.SensorsResponse{
-		Items: []config_api_client.SensorItem{
+func GenerateSensorsGetResponse(id string, postfix string) config_api_client.SensorsGetResponse {
+	return config_api_client.SensorsGetResponse{
+		Items: []config_api_client.SensorsGetItem{
 			{
 				Id:                 id,
 				Serial:             "serial" + postfix,
@@ -27,7 +27,7 @@ func GenerateSensorResponse(id string, postfix string) config_api_client.Sensors
 				Longitude:          *config_api_client.NewNullableFloat32(config_api_client.PtrFloat32(0.0)),
 				Latitude:           *config_api_client.NewNullableFloat32(config_api_client.PtrFloat32(0.0)),
 				Notes:              *config_api_client.NewNullableString(config_api_client.PtrString("notes" + postfix)),
-				PcapMode:           *config_api_client.NewNullableString(config_api_client.PtrString("light")),
+				PcapMode:           *config_api_client.NewNullableSensorPcapMode(config_api_client.SENSORPCAPMODE_LIGHT.Ptr()),
 				Type:               shared.SensorType,
 			},
 		},
@@ -36,21 +36,17 @@ func GenerateSensorResponse(id string, postfix string) config_api_client.Sensors
 	}
 }
 
-func GenerateSensorPatchRequest(postfix string) config_api_client.SensorsPatchRequest {
-	pcapMode, _ := config_api_client.NewPcapModeFromValue("light")
-
-	return config_api_client.SensorsPatchRequest{
+func GenerateSensorPatchRequest(postfix string) config_api_client.SensorPatchRequest {
+	return config_api_client.SensorPatchRequest{
 		Name:        config_api_client.PtrString("name" + postfix),
 		AddressNote: config_api_client.PtrString("address_note" + postfix),
 		Notes:       config_api_client.PtrString("notes" + postfix),
-		PcapMode:    pcapMode,
+		PcapMode:    config_api_client.SENSORPCAPMODE_LIGHT.Ptr(),
 	}
 }
 
-func GenerateSensorPatchResponse(id string, postfix string) config_api_client.SensorsPatchResponse {
-	pcapMode, _ := config_api_client.NewPcapModeFromValue("light")
-
-	return config_api_client.SensorsPatchResponse{
+func GenerateSensorPatchResponse(id string, postfix string) config_api_client.SensorPatchResponse {
+	return config_api_client.SensorPatchResponse{
 		Id:                 id,
 		Serial:             "serial" + postfix,
 		Name:               "name" + postfix,
@@ -61,7 +57,7 @@ func GenerateSensorPatchResponse(id string, postfix string) config_api_client.Se
 		Longitude:          *config_api_client.NewNullableFloat32(config_api_client.PtrFloat32(0.0)),
 		Latitude:           *config_api_client.NewNullableFloat32(config_api_client.PtrFloat32(0.0)),
 		Notes:              *config_api_client.NewNullableString(config_api_client.PtrString("notes" + postfix)),
-		PcapMode:           *config_api_client.NewNullablePcapMode(pcapMode),
+		PcapMode:           *config_api_client.NewNullableSensorPcapMode(config_api_client.SENSORPCAPMODE_LIGHT.Ptr()),
 		Type:               shared.SensorType,
 	}
 }
@@ -78,8 +74,8 @@ func MockGetSensor(id string, response interface{}, times int) {
 
 func MockUpdateSensor(
 	id string,
-	request config_api_client.SensorsPatchRequest,
-	response config_api_client.SensorsPatchResponse,
+	request config_api_client.SensorPatchRequest,
+	response config_api_client.SensorPatchResponse,
 	times int,
 ) {
 	gock.New(MockUXIURL).

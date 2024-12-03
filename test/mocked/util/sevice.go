@@ -13,12 +13,12 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 )
 
-func GenerateServiceTestResponse(
+func GenerateServiceTestsGetResponse(
 	id string,
 	postfix string,
-) config_api_client.ServiceTestsListResponse {
-	return config_api_client.ServiceTestsListResponse{
-		Items: []config_api_client.ServiceTestsListItem{
+) config_api_client.ServiceTestsGetResponse {
+	return config_api_client.ServiceTestsGetResponse{
+		Items: []config_api_client.ServiceTestsGetItem{
 			{
 				Id:        id,
 				Category:  "external" + postfix,

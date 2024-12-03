@@ -16,7 +16,7 @@ import (
 func CheckStateAgainstAgent(
 	t *testing.T,
 	stateEntity string,
-	agent config_api_client.AgentItem,
+	agent config_api_client.AgentsGetItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(stateEntity, "id", agent.Id),
@@ -34,6 +34,6 @@ func CheckStateAgainstAgent(
 		TestOptionalValue(t, stateEntity, "wifi_mac_address", agent.WifiMacAddress.Get()),
 		TestOptionalValue(t, stateEntity, "ethernet_mac_address", agent.EthernetMacAddress.Get()),
 		TestOptionalValue(t, stateEntity, "notes", agent.Notes.Get()),
-		TestOptionalValue(t, stateEntity, "pcap_mode", agent.PcapMode.Get()),
+		TestOptionalValue(t, stateEntity, "pcap_mode", (*string)(agent.GetPcapMode().Ptr())),
 	)
 }

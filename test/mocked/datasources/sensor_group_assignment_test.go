@@ -31,7 +31,7 @@ func TestSensorGroupAssignmentDataSource(t *testing.T) {
 				PreConfig: func() {
 					util.MockGetSensorGroupAssignment(
 						"id",
-						util.GenerateSensorGroupAssignmentResponse("id", ""),
+						util.GenerateSensorGroupAssignmentsGetResponse("id", ""),
 						3,
 					)
 				},
@@ -83,7 +83,7 @@ func TestSensorGroupAssignmentDataSourceTooManyRequestsHandling(t *testing.T) {
 						SetHeaders(util.RateLimitingHeaders)
 					util.MockGetSensorGroupAssignment(
 						"id",
-						util.GenerateSensorGroupAssignmentResponse("id", ""),
+						util.GenerateSensorGroupAssignmentsGetResponse("id", ""),
 						3,
 					)
 				},

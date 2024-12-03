@@ -17,7 +17,7 @@ import (
 func CheckStateAgainstWiredNetwork(
 	t *testing.T,
 	entity string,
-	wiredNetwork config_api_client.WiredNetworksItem,
+	wiredNetwork config_api_client.WiredNetworksGetItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", wiredNetwork.Id),
@@ -30,7 +30,7 @@ func CheckStateAgainstWiredNetwork(
 				return nil
 			},
 		),
-		resource.TestCheckResourceAttr(entity, "ip_version", wiredNetwork.IpVersion),
+		resource.TestCheckResourceAttr(entity, "ip_version", string(wiredNetwork.IpVersion)),
 		TestOptionalValue(t, entity, "security", wiredNetwork.Security.Get()),
 		TestOptionalValue(t, entity, "dns_lookup_domain", wiredNetwork.DnsLookupDomain.Get()),
 		resource.TestCheckResourceAttr(

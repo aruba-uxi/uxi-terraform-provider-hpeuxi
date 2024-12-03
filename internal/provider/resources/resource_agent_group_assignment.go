@@ -120,13 +120,13 @@ func (r *agentGroupAssignmentResource) Create(
 		return
 	}
 
-	postRequest := config_api_client.NewAgentGroupAssignmentsPostRequest(
+	postRequest := config_api_client.NewAgentGroupAssignmentPostRequest(
 		plan.GroupID.ValueString(),
 		plan.AgentID.ValueString(),
 	)
 	request := r.client.ConfigurationAPI.
-		AgentGroupAssignmentsPost(ctx).
-		AgentGroupAssignmentsPostRequest(*postRequest)
+		AgentGroupAssignmentPost(ctx).
+		AgentGroupAssignmentPostRequest(*postRequest)
 	agentGroupAssignment, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {

@@ -17,7 +17,7 @@ import (
 func CheckStateAgainstWirelessNetwork(
 	t *testing.T,
 	entity string,
-	wirelessNetwork config_api_client.WirelessNetworksItem,
+	wirelessNetwork config_api_client.WirelessNetworksGetItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", wirelessNetwork.Id),
@@ -31,7 +31,7 @@ func CheckStateAgainstWirelessNetwork(
 				return nil
 			},
 		),
-		resource.TestCheckResourceAttr(entity, "ip_version", wirelessNetwork.IpVersion),
+		resource.TestCheckResourceAttr(entity, "ip_version", string(wirelessNetwork.IpVersion)),
 		TestOptionalValue(
 			t,
 			entity,

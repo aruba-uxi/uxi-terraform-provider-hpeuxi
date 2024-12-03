@@ -18,7 +18,7 @@ import (
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
-func GetAgent(id string) config_api_client.AgentItem {
+func GetAgent(id string) config_api_client.AgentsGetItem {
 	result, response, err := Client.ConfigurationAPI.
 		AgentsGet(context.Background()).
 		Id(id).

@@ -23,7 +23,7 @@ import (
 func TestServiceTestResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	serviceTest := util.GenerateServiceTestResponse("id", "").Items[0]
+	serviceTest := util.GenerateServiceTestsGetResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -46,7 +46,7 @@ func TestServiceTestResource(t *testing.T) {
 			// Importing a service_test
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 2)
+					util.MockGetServiceTest("id", util.GenerateServiceTestsGetResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_service_test" "my_service_test" {
@@ -67,7 +67,7 @@ func TestServiceTestResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 1)
+					util.MockGetServiceTest("id", util.GenerateServiceTestsGetResponse("id", ""), 1)
 				},
 				ResourceName:      "hpeuxi_service_test.my_service_test",
 				ImportState:       true,
@@ -76,7 +76,7 @@ func TestServiceTestResource(t *testing.T) {
 			// Updating a service_test is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 1)
+					util.MockGetServiceTest("id", util.GenerateServiceTestsGetResponse("id", ""), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_service_test" "my_service_test" {
@@ -89,7 +89,7 @@ func TestServiceTestResource(t *testing.T) {
 			// Deleting a service_test is not allowed
 			{
 				PreConfig: func() {
-					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 1)
+					util.MockGetServiceTest("id", util.GenerateServiceTestsGetResponse("id", ""), 1)
 				},
 				Config: provider.ProviderConfig + ``,
 				ExpectError: regexp.MustCompile(
@@ -116,7 +116,7 @@ func TestServiceTestResource(t *testing.T) {
 func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	serviceTest := util.GenerateServiceTestResponse("id", "").Items[0]
+	serviceTest := util.GenerateServiceTestsGetResponse("id", "").Items[0]
 	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
@@ -133,7 +133,7 @@ func TestServiceTestResourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.ServiceTestPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetServiceTest("id", util.GenerateServiceTestResponse("id", ""), 2)
+					util.MockGetServiceTest("id", util.GenerateServiceTestsGetResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_service_test" "my_service_test" {

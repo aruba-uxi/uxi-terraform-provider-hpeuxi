@@ -178,7 +178,7 @@ func (r *agentResource) Read(
 	state.WifiMacAddress = types.StringPointerValue(agent.WifiMacAddress.Get())
 	state.EthernetMacAddress = types.StringPointerValue(agent.EthernetMacAddress.Get())
 	state.Notes = types.StringPointerValue(agent.Notes.Get())
-	state.PcapMode = types.StringPointerValue(agent.PcapMode.Get())
+	state.PcapMode = types.StringPointerValue((*string)(agent.GetPcapMode().Ptr()))
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -200,14 +200,14 @@ func (r *agentResource) Update(
 	}
 
 	errorSummary := util.GenerateErrorSummary("update", "hpeuxi_agent")
-	patchRequest := config_api_client.NewAgentsPatchRequest()
+	patchRequest := config_api_client.NewAgentPatchRequest()
 	patchRequest.Name = plan.Name.ValueStringPointer()
 	if !plan.Notes.IsUnknown() {
 		patchRequest.Notes = plan.Notes.ValueStringPointer()
 	}
 	plannedPcapMode := plan.PcapMode.ValueStringPointer()
 	if !plan.PcapMode.IsUnknown() && plannedPcapMode != nil {
-		pcapMode, err := config_api_client.NewPcapModeFromValue(*plannedPcapMode)
+		pcapMode, err := config_api_client.NewAgentPcapModeFromValue(*plannedPcapMode)
 		if err != nil {
 			resp.Diagnostics.AddError(errorSummary, err.Error())
 
@@ -216,8 +216,8 @@ func (r *agentResource) Update(
 		patchRequest.PcapMode = pcapMode
 	}
 	request := r.client.ConfigurationAPI.
-		AgentsPatch(ctx, plan.ID.ValueString()).
-		AgentsPatchRequest(*patchRequest)
+		AgentPatch(ctx, plan.ID.ValueString()).
+		AgentPatchRequest(*patchRequest)
 	agent, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 
@@ -259,7 +259,7 @@ func (r *agentResource) Delete(
 		return
 	}
 
-	request := r.client.ConfigurationAPI.AgentsDelete(ctx, state.ID.ValueString())
+	request := r.client.ConfigurationAPI.AgentDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)

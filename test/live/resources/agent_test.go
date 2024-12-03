@@ -35,10 +35,10 @@ func TestAgentResource(t *testing.T) {
 	agent := util.GetAgent(agentID)
 	updatedAgent := agent
 	updatedNotes := "notes"
-	updatedPcapMode := "off"
+	updatedPcapMode := config_api_client.AGENTPCAPMODE_OFF
 	updatedAgent.Name = "tf_provider_acceptance_test_agent_resource_updated_name"
 	updatedAgent.Notes = *config_api_client.NewNullableString(&updatedNotes)
-	updatedAgent.PcapMode = *config_api_client.NewNullableString(&updatedPcapMode)
+	updatedAgent.PcapMode = *config_api_client.NewNullableAgentPcapMode(&updatedPcapMode)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,

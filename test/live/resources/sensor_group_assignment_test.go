@@ -42,7 +42,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						name 			= "` + existingSensorProperties.Name + `"
 						` + util.ConditionalProperty("address_note", existingSensorProperties.AddressNote.Get()) + `
 						` + util.ConditionalProperty("notes", existingSensorProperties.Notes.Get()) + `
-						` + util.ConditionalProperty("pcap_mode", existingSensorProperties.PcapMode.Get()) + `
+						` + util.ConditionalProperty("pcap_mode", (*string)(existingSensorProperties.GetPcapMode().Ptr())) + `
 					}
 
 					import {
@@ -102,7 +102,7 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 						name 			= "` + existingSensorProperties.Name + `"
 						` + util.ConditionalProperty("address_note", existingSensorProperties.AddressNote.Get()) + `
 						` + util.ConditionalProperty("notes", existingSensorProperties.Notes.Get()) + `
-						` + util.ConditionalProperty("pcap_mode", existingSensorProperties.PcapMode.Get()) + `
+						` + util.ConditionalProperty("pcap_mode", (*string)(existingSensorProperties.PcapMode.Get().Ptr())) + `
 					}
 
 					// the new resources we wanna update the assignment to

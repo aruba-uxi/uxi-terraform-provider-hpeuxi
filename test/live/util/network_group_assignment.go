@@ -13,7 +13,7 @@ import (
 	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 )
 
-func GetNetworkGroupAssignment(id string) config_api_client.NetworkGroupAssignmentsItem {
+func GetNetworkGroupAssignment(id string) config_api_client.NetworkGroupAssignmentsGetItem {
 	result, response, err := Client.ConfigurationAPI.
 		NetworkGroupAssignmentsGet(context.Background()).
 		Id(id).
@@ -32,7 +32,7 @@ func GetNetworkGroupAssignment(id string) config_api_client.NetworkGroupAssignme
 func CheckStateAgainstNetworkGroupAssignment(
 	t *testing.T,
 	entity string,
-	networkGroupAssignment config_api_client.NetworkGroupAssignmentsItem,
+	networkGroupAssignment config_api_client.NetworkGroupAssignmentsGetItem,
 ) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", networkGroupAssignment.Id),

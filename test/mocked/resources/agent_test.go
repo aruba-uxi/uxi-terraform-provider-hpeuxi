@@ -23,8 +23,8 @@ import (
 func TestAgentResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	agent := util.GenerateAgentResponse("id", "").Items[0]
-	updatedAgent := util.GenerateAgentResponse("id", "_2").Items[0]
+	agent := util.GenerateAgentsGetResponse("id", "").Items[0]
+	updatedAgent := util.GenerateAgentsGetResponse("id", "_2").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -45,7 +45,7 @@ func TestAgentResource(t *testing.T) {
 			// Importing an agent
 			{
 				PreConfig: func() {
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 2)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_agent" "my_agent" {
@@ -64,7 +64,7 @@ func TestAgentResource(t *testing.T) {
 			// ImportState testing
 			{
 				PreConfig: func() {
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 1)
 				},
 				ResourceName:      "hpeuxi_agent.my_agent",
 				ImportState:       true,
@@ -74,7 +74,7 @@ func TestAgentResource(t *testing.T) {
 			{
 				PreConfig: func() {
 					// original
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 1)
 					util.MockUpdateAgent(
 						"id",
 						util.GenerateAgentPatchRequest("_2"),
@@ -82,7 +82,7 @@ func TestAgentResource(t *testing.T) {
 						1,
 					)
 					// updated
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", "_2"), 1)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_agent" "my_agent" {
@@ -95,7 +95,7 @@ func TestAgentResource(t *testing.T) {
 			// Delete testing
 			{
 				PreConfig: func() {
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 1)
 					util.MockDeleteAgent("id", 1)
 				},
 				Config: provider.ProviderConfig,
@@ -109,8 +109,8 @@ func TestAgentResource(t *testing.T) {
 func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	agent := util.GenerateAgentResponse("id", "").Items[0]
-	updatedAgent := util.GenerateAgentResponse("id", "_2").Items[0]
+	agent := util.GenerateAgentsGetResponse("id", "").Items[0]
+	updatedAgent := util.GenerateAgentsGetResponse("id", "_2").Items[0]
 	var mockTooManyRequests *gock.Response
 
 	resource.Test(t, resource.TestCase{
@@ -127,7 +127,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 						Get(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
 						SetHeaders(util.RateLimitingHeaders)
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 2)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_agent" "my_agent" {
@@ -154,7 +154,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// original
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 1)
 					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Patch(shared.AgentPath).
 						Reply(http.StatusTooManyRequests).
@@ -166,7 +166,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 						1,
 					)
 					// updated
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", "_2"), 1)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", "_2"), 1)
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_agent" "my_agent" {
@@ -186,7 +186,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 			// Delete testing
 			{
 				PreConfig: func() {
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 1)
 					mockTooManyRequests = gock.New(util.MockUXIURL).
 						Delete("/networking-uxi/v1alpha1/agents/id").
 						Reply(http.StatusTooManyRequests).
@@ -211,7 +211,7 @@ func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 func TestAgentResourceHttpErrorHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
-	agent := util.GenerateAgentResponse("id", "").Items[0]
+	agent := util.GenerateAgentsGetResponse("id", "").Items[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -271,7 +271,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			// Actually importing an agent for testing purposes
 			{
 				PreConfig: func() {
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 2)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 2)
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_agent" "my_agent" {
@@ -291,7 +291,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// original
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 1)
 					// patch agent - with error
 					gock.New(util.MockUXIURL).
 						Patch("/networking-uxi/v1alpha1/agents/id").
@@ -318,7 +318,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing agent
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 1)
 					// delete agent - with error
 					gock.New(util.MockUXIURL).
 						Delete("/networking-uxi/v1alpha1/agents/id").
@@ -339,7 +339,7 @@ func TestAgentResourceHttpErrorHandling(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetAgent("id", util.GenerateAgentResponse("id", ""), 1)
+					util.MockGetAgent("id", util.GenerateAgentsGetResponse("id", ""), 1)
 					// delete group
 					util.MockDeleteAgent("id", 1)
 				},

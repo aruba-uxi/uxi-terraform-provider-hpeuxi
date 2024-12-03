@@ -117,13 +117,13 @@ func (r *groupResource) Create(
 		return
 	}
 
-	groupsPostRequest := config_api_client.NewGroupsPostRequest(plan.Name.ValueString())
+	groupsPostRequest := config_api_client.NewGroupPostRequest(plan.Name.ValueString())
 	if !plan.ParentGroupID.IsUnknown() && !plan.ParentGroupID.IsNull() {
 		groupsPostRequest.SetParentId(plan.ParentGroupID.ValueString())
 	}
 	request := r.client.ConfigurationAPI.
-		GroupsPost(ctx).
-		GroupsPostRequest(*groupsPostRequest)
+		GroupPost(ctx).
+		GroupPostRequest(*groupsPostRequest)
 	group, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
@@ -210,11 +210,11 @@ func (r *groupResource) Update(
 		return
 	}
 
-	patchRequest := config_api_client.NewGroupsPatchRequest()
+	patchRequest := config_api_client.NewGroupPatchRequest()
 	patchRequest.Name = plan.Name.ValueStringPointer()
 	request := r.client.ConfigurationAPI.
-		GroupsPatch(ctx, plan.ID.ValueString()).
-		GroupsPatchRequest(*patchRequest)
+		GroupPatch(ctx, plan.ID.ValueString()).
+		GroupPatchRequest(*patchRequest)
 	group, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
@@ -252,7 +252,7 @@ func (r *groupResource) Delete(
 		return
 	}
 
-	request := r.client.ConfigurationAPI.GroupsDelete(ctx, state.ID.ValueString())
+	request := r.client.ConfigurationAPI.GroupDelete(ctx, state.ID.ValueString())
 
 	_, response, err := util.RetryForTooManyRequests(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
