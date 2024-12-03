@@ -26,6 +26,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 	var (
 		resourceIDBeforeRecreate string
 		resourceIDAfterRecreate  string
+		wiredNetwork             = util.GetWiredNetwork(config.WiredNetworkID)
 	)
 
 	// Test Wired Network Group Assignment
@@ -40,7 +41,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					}
 
 					resource "hpeuxi_wired_network" "my_network" {
-						name = "` + config.WiredNetworkName + `"
+						name = "` + wiredNetwork.Name + `"
 					}
 
 					import {
@@ -96,7 +97,7 @@ func TestNetworkGroupAssignmentResourceForWiredNetwork(t *testing.T) {
 					}
 
 					resource "hpeuxi_wired_network" "my_network" {
-						name = "` + config.WiredNetworkName + `"
+						name = "` + wiredNetwork.Name + `"
 					}
 
 					import {
@@ -186,6 +187,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 	var (
 		resourceIDBeforeRecreate string
 		resourceIDAfterRecreate  string
+		wirelessNetwork          = util.GetWirelessNetwork(config.WirelessNetworkID)
 	)
 
 	// Test Wired Network Group Assignment
@@ -200,7 +202,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					}
 
 					resource "hpeuxi_wireless_network" "my_network" {
-						name = "` + config.WirelessNetworkName + `"
+						name = "` + wirelessNetwork.Name + `"
 					}
 
 					import {
@@ -256,7 +258,7 @@ func TestNetworkGroupAssignmentResourceForWirelessNetwork(t *testing.T) {
 					}
 
 					resource "hpeuxi_wireless_network" "my_network" {
-						name = "` + config.WirelessNetworkName + `"
+						name = "` + wirelessNetwork.Name + `"
 					}
 
 					import {

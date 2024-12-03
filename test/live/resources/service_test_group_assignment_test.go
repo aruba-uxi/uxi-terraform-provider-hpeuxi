@@ -25,6 +25,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 	var (
 		resourceIDBeforeRecreate string
 		resourceIDAfterRecreate  string
+		serviceTest              = util.GetServiceTest(config.ServiceTestID)
 	)
 
 	resource.Test(t, resource.TestCase{
@@ -38,7 +39,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					}
 
 					resource "hpeuxi_service_test" "my_service_test" {
-						name = "` + config.ServiceTestName + `"
+						name = "` + serviceTest.Name + `"
 					}
 
 					import {
@@ -95,7 +96,7 @@ func TestServiceTestGroupAssignmentResource(t *testing.T) {
 					}
 
 					resource "hpeuxi_service_test" "my_service_test" {
-						name = "` + config.ServiceTestName + `"
+						name = "` + serviceTest.Name + `"
 					}
 
 					// the new resources we wanna update the assignment to

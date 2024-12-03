@@ -38,7 +38,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					data "hpeuxi_agent" "my_agent" {
 						filter = {
-							id = "` + config.AgentPermanentID + `"
+							id = "` + config.AgentID + `"
 						}
 					}
 
@@ -51,7 +51,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
-						config.AgentPermanentID,
+						config.AgentID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
@@ -92,7 +92,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 
 					data "hpeuxi_agent" "my_agent" {
 						filter = {
-							id = "` + config.AgentPermanentID + `"
+							id = "` + config.AgentID + `"
 						}
 					}
 
@@ -111,7 +111,7 @@ func TestAgentGroupAssignmentResource(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"hpeuxi_agent_group_assignment.my_agent_group_assignment",
 						"agent_id",
-						config.AgentPermanentID,
+						config.AgentID,
 					),
 					resource.TestCheckResourceAttrWith(
 						"hpeuxi_agent_group_assignment.my_agent_group_assignment",

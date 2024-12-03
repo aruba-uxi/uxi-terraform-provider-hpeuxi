@@ -34,3 +34,5 @@ terraform.tfstate*
 # python
 **/*.pyc
 .DS_Store
+
+*.env
