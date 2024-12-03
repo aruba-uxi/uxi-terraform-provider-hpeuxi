@@ -34,6 +34,8 @@ func CheckStateAgainstServiceTestGroupAssignment(
 	entity string,
 	serviceTestGroupAssignment config_api_client.ServiceTestGroupAssignmentsGetItem,
 ) resource.TestCheckFunc {
+	t.Helper()
+
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", serviceTestGroupAssignment.Id),
 		resource.TestCheckResourceAttr(entity, "group_id", serviceTestGroupAssignment.Group.Id),

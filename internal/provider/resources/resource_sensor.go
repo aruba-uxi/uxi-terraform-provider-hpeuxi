@@ -105,13 +105,13 @@ func (r *sensorResource) Schema(
 			"notes": schema.StringAttribute{
 				Description: "The address notes of the sensor.",
 				Optional:    true,
-				// computed because goes from from nil -> "" when sensor becomes configured
+				// computed because goes from nil -> "" when sensor becomes configured
 				Computed: true,
 			},
 			"pcap_mode": schema.StringAttribute{
 				Description: "The packet capture mode of the agent.",
 				Optional:    true,
-				// computed because goes from from nil -> "light" when sensor becomes configured
+				// computed because goes from nil -> "light" when sensor becomes configured
 				Computed: true,
 			},
 		},

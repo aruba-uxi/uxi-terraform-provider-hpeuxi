@@ -21,9 +21,15 @@ import (
 func TestSensorResource(t *testing.T) {
 	originalSensor := util.GetSensor(config.SensorID)
 	updatedSensor := originalSensor
-	updatedSensor.Notes = *config_api_client.NewNullableString(config_api_client.PtrString("tf_provider_acceptance_test_update_notes"))
-	updatedSensor.AddressNote = *config_api_client.NewNullableString(config_api_client.PtrString("tf_provider_acceptance_test_update_address_note"))
-	updatedSensor.PcapMode = *config_api_client.NewNullableSensorPcapMode(config_api_client.SENSORPCAPMODE_OFF.Ptr())
+	updatedSensor.Notes = *config_api_client.NewNullableString(
+		config_api_client.PtrString("tf_provider_acceptance_test_update_notes"),
+	)
+	updatedSensor.AddressNote = *config_api_client.NewNullableString(
+		config_api_client.PtrString("tf_provider_acceptance_test_update_address_note"),
+	)
+	updatedSensor.PcapMode = *config_api_client.NewNullableSensorPcapMode(
+		config_api_client.SENSORPCAPMODE_OFF.Ptr(),
+	)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,

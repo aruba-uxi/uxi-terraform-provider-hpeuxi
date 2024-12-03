@@ -152,7 +152,7 @@ func TestWiredNetworkResourceTooManyRequestsHandling(t *testing.T) {
 						wiredNetwork,
 					),
 					func(s *terraform.State) error {
-						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 						return nil
 					},

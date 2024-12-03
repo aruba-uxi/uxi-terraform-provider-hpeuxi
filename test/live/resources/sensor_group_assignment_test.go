@@ -158,10 +158,10 @@ func TestSensorGroupAssignmentResource(t *testing.T) {
 			},
 		},
 		CheckDestroy: func(s *terraform.State) error {
-			assert.Equal(t, util.GetGroupByName(groupName), nil)
-			assert.Equal(t, util.GetGroupByName(group2Name), nil)
-			assert.Equal(t, util.GetAgentGroupAssignment(resourceIDBeforeRecreate), nil)
-			assert.Equal(t, util.GetAgentGroupAssignment(resourceIDAfterRecreate), nil)
+			assert.Nil(t, util.GetGroupByName(groupName))
+			assert.Nil(t, util.GetGroupByName(group2Name))
+			assert.Nil(t, util.GetAgentGroupAssignment(resourceIDBeforeRecreate))
+			assert.Nil(t, util.GetAgentGroupAssignment(resourceIDAfterRecreate))
 
 			return nil
 		},

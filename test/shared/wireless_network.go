@@ -19,6 +19,8 @@ func CheckStateAgainstWirelessNetwork(
 	entity string,
 	wirelessNetwork config_api_client.WirelessNetworksGetItem,
 ) resource.TestCheckFunc {
+	t.Helper()
+
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", wirelessNetwork.Id),
 		resource.TestCheckResourceAttr(entity, "ssid", wirelessNetwork.Ssid),

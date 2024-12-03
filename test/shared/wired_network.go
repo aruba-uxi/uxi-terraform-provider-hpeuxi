@@ -19,6 +19,8 @@ func CheckStateAgainstWiredNetwork(
 	entity string,
 	wiredNetwork config_api_client.WiredNetworksGetItem,
 ) resource.TestCheckFunc {
+	t.Helper()
+
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", wiredNetwork.Id),
 		resource.TestCheckResourceAttrWith(

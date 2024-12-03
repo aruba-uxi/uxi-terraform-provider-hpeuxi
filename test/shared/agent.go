@@ -18,6 +18,8 @@ func CheckStateAgainstAgent(
 	stateEntity string,
 	agent config_api_client.AgentsGetItem,
 ) resource.TestCheckFunc {
+	t.Helper()
+
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(stateEntity, "id", agent.Id),
 		resource.TestCheckResourceAttr(stateEntity, "serial", agent.Serial),

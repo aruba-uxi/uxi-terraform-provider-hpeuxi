@@ -359,7 +359,7 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 						"service_test_group_assignment_id",
 					),
 					func(s *terraform.State) error {
-						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 						return nil
 					},
@@ -385,7 +385,7 @@ func TestServiceTestGroupAssignmentResourceTooManyRequestsHandling(t *testing.T)
 				ImportStateVerify: true,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					func(s *terraform.State) error {
-						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 						return nil
 					},

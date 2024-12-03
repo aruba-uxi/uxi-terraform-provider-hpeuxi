@@ -18,6 +18,8 @@ func CheckStateAgainstSensor(
 	entity string,
 	sensor config_api_client.SensorsGetItem,
 ) resource.TestCheckFunc {
+	t.Helper()
+
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", sensor.Id),
 		resource.TestCheckResourceAttr(entity, "serial", sensor.Serial),

@@ -18,6 +18,8 @@ func CheckStateAgainstServiceTest(
 	entity string,
 	serviceTest config_api_client.ServiceTestsGetItem,
 ) resource.TestCheckFunc {
+	t.Helper()
+
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", serviceTest.Id),
 		resource.TestCheckResourceAttr(entity, "category", serviceTest.Category),

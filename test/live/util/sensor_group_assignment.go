@@ -34,6 +34,8 @@ func CheckStateAgainstSensorGroupAssignment(
 	entity string,
 	sensorGroupAssignment config_api_client.SensorGroupAssignmentsGetItem,
 ) resource.TestCheckFunc {
+	t.Helper()
+
 	return resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr(entity, "id", sensorGroupAssignment.Id),
 		resource.TestCheckResourceAttr(entity, "group_id", sensorGroupAssignment.Group.Id),

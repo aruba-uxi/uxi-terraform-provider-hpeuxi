@@ -246,12 +246,12 @@ func TestGroupResource(t *testing.T) {
 			},
 		},
 		CheckDestroy: func(s *terraform.State) error {
-			assert.Equal(t, util.GetGroupByName(groupNameParent), nil)
-			assert.Equal(t, util.GetGroupByName(groupNameParentUpdated), nil)
-			assert.Equal(t, util.GetGroupByName(groupNameChild), nil)
-			assert.Equal(t, util.GetGroupByName(groupNameGrandChild), nil)
-			assert.Equal(t, util.GetGroupByName(groupNameGrandChildMovedToParent), nil)
-			assert.Equal(t, util.GetGroupByName(groupNameGrandChildMovedToRoot), nil)
+			assert.Nil(t, util.GetGroupByName(groupNameParent))
+			assert.Nil(t, util.GetGroupByName(groupNameParentUpdated))
+			assert.Nil(t, util.GetGroupByName(groupNameChild))
+			assert.Nil(t, util.GetGroupByName(groupNameGrandChild))
+			assert.Nil(t, util.GetGroupByName(groupNameGrandChildMovedToParent))
+			assert.Nil(t, util.GetGroupByName(groupNameGrandChildMovedToRoot))
 
 			return nil
 		},

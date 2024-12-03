@@ -75,7 +75,7 @@ func TestAgentDataSourceTooManyRequestsHandling(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					shared.CheckStateAgainstAgent(t, "data.hpeuxi_agent.my_agent", agent),
 					func(s *terraform.State) error {
-						assert.Equal(t, mockTooManyRequests.Mock.Request().Counter, 0)
+						assert.Equal(t, 0, mockTooManyRequests.Mock.Request().Counter)
 
 						return nil
 					},
