@@ -23,5 +23,5 @@ provider "hpeuxi" {
 
 ### Optional
 
-- `client_id` (String) The Client ID as obtained from HPE GreenLake API client credentials. It is recommended that this configuration is left blank and the Client ID is exported as the `GREENLAKE_UXI_CLIENT_ID` environment variable instead.
-- `client_secret` (String, Sensitive) The Client Secret as obtained from HPE GreenLake API client credentials. It is recommended that this configuration is left blank and the Client Secret is exported as the `GREENLAKE_UXI_CLIENT_SECRET` environment variable instead.
+- `client_id` (String) The Client ID as obtained from HPE GreenLake API client credentials. It is recommended that this configuration is left blank and the Client ID is exported as the `HPEUXI_CLIENT_ID` environment variable instead.
+- `client_secret` (String, Sensitive) The Client Secret as obtained from HPE GreenLake API client credentials. It is recommended that this configuration is left blank and the Client Secret is exported as the `HPEUXI_CLIENT_SECRET` environment variable instead.

@@ -24,7 +24,7 @@ func TestAgentResource(t *testing.T) {
 	// we provision an agent here so that we have something to delete later on
 	agentID, err := util.ProvisionAgent{
 		CustomerID:        config.CustomerID,
-		ProvisionToken:    os.Getenv("hpeuxi_PROVISION_TOKEN"),
+		ProvisionToken:    os.Getenv("HPEUXI_PROVISION_TOKEN"),
 		DeviceSerial:      config.AgentCreateSerial,
 		DeviceGatewayHost: config.DeviceGatewayHost,
 	}.Provision()

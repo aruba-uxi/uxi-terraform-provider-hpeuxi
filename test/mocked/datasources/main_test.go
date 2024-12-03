@@ -12,11 +12,11 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	os.Setenv("UXI_HOST", util.MockDomain)
+	os.Setenv("HPEUXI_HOST_OVERRIDE", util.MockDomain)
 
 	exitCode := m.Run()
 
-	os.Unsetenv("UXI_HOST")
+	os.Unsetenv("HPEUXI_HOST_OVERRIDE")
 
 	os.Exit(exitCode)
 }
