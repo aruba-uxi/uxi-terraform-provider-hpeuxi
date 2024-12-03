@@ -101,7 +101,6 @@ tidy-tools:
 
 acceptance-tests ENV_PATH='' +ARGS='':
   #!/usr/bin/env bash
-  set -e
 
   if [ -z "{{ ENV_PATH }}" ]; then
     echo "Error: ENV_PATH argument is required" >&2
