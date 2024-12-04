@@ -1,5 +1,5 @@
 resource "hpeuxi_wired_network" "my_wired_network" {
-  name         = "name"
+  name = "name"
 
   # Deleting of wired networks is not supported yet
   lifecycle {
