@@ -1,18 +1,14 @@
 openapi: 3.0.3
 info:
-  title: Configuration Api
-  description: Nice description goes here
-  termsOfService: http://we.dont.care.yet.com/term-of-service
+  title: HPE Aruba Networking UXI Configuration
+  description: This document outlines the API contracts for HPE Aruba Networking UXI.
   contact:
-    name: We need a person
-    url: http://we.dont.care.yet.com/contact
+    name: HPE Aruba Networking UXI Support
+    url: https://help.capenetworks.com/en/
     email: support@capenetworks.com
-  license:
-    name: No idea, but we need something
-  version: 5.18.0
+  version: 5.19.0
 servers:
   - url: https://api.capenetworks.com
-  - url: https://api.staging.capedev.io
 paths:
   /networking-uxi/v1alpha1/agents/{agent_uid}:
     delete:
