@@ -2,17 +2,13 @@ openapi: 3.0.3
 info:
   contact:
     email: support@capenetworks.com
-    name: We need a person
-    url: http://we.dont.care.yet.com/contact
-  description: Nice description goes here
-  license:
-    name: "No idea, but we need something"
-  termsOfService: http://we.dont.care.yet.com/term-of-service
-  title: Configuration Api
-  version: 5.18.0
+    name: HPE Aruba Networking UXI Support
+    url: https://help.capenetworks.com/en/
+  description: This document outlines the API contracts for HPE Aruba Networking UXI.
+  title: HPE Aruba Networking UXI Configuration
+  version: 5.19.0
 servers:
 - url: https://api.capenetworks.com
-- url: https://api.staging.capedev.io
 tags:
 - name: api
 - name: v1

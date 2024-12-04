@@ -3,11 +3,11 @@ Copyright 2024 Hewlett Packard Enterprise Development LP.
 */
 
 /*
-Configuration Api
+HPE Aruba Networking UXI Configuration
 
-Nice description goes here
+This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.18.0
+API version: 5.19.0
 Contact: support@capenetworks.com
 */
 
@@ -99,10 +99,6 @@ func NewConfiguration() *Configuration {
 		Servers: ServerConfigurations{
 			{
 				URL:         "https://api.capenetworks.com",
-				Description: "No description provided",
-			},
-			{
-				URL:         "https://api.staging.capedev.io",
 				Description: "No description provided",
 			},
 		},
