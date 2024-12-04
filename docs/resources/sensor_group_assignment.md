@@ -4,11 +4,14 @@ page_title: "hpeuxi_sensor_group_assignment Resource - hpeuxi"
 subcategory: ""
 description: |-
   Manages a sensor group assignment.
+  Note: it is recommended to use a hpeuxi_group resource id as the group_id. This will help maintain dependencies between resources. This is useful when a destructive action is performed on an ancestor of the assigned group.
 ---
 
 # hpeuxi_sensor_group_assignment (Resource)
 
 Manages a sensor group assignment.
+
+Note: it is recommended to use a `hpeuxi_group` **resource** `id` as the `group_id`. This will help maintain dependencies between resources. This is useful when a destructive action is performed on an ancestor of the assigned group.
 
 ## Example Usage
 
@@ -24,8 +27,8 @@ resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
 
 ### Required
 
-- `group_id` (String) The identifier of the group to be assigned to. Use group id; `uxi_group` resource id field or `uxi_group` datasource id field here.
-- `sensor_id` (String) The identifier of the sensor to be assigned. Use sensor id; `uxi_sensor` resource id field or `uxi_sensor` datasource id field here.
+- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `hpeuxi_group` datasource id field or group id here.
+- `sensor_id` (String) The identifier of the sensor to be assigned. Use `hpeuxi_sensor` resource id field; `hpeuxi_sensor` datasource id field or sensor id here.
 
 ### Read-Only
 

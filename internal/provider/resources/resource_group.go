@@ -56,7 +56,7 @@ func (r *groupResource) Schema(
 ) {
 	resp.Schema = schema.Schema{
 		Description: "Manages a group. " +
-			"Note: building a group hierarchy by using an `hpeuxi_group` **resource** `id` as " +
+			"\n\nNote: building a group hierarchy by using an `hpeuxi_group` **resource** `id` as " +
 			"a child group's `parent_group_id` is recommended to maintain dependencies between " +
 			"linked groups. This will help maintain accurate state if the user attempts to " +
 			"change the parent of a non leaf group.",

@@ -52,7 +52,10 @@ func (r *networkGroupAssignmentResource) Schema(
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a network group assignment.",
+		Description: "Manages a network group assignment." +
+			"\n\nNote: it is recommended to use a `hpeuxi_group` **resource** `id` as the `group_id`. " +
+			"This will help maintain dependencies between resources. This is useful when a " +
+			"destructive action is performed on an ancestor of the assigned group.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The identifier of the network group assignment",
@@ -63,12 +66,12 @@ func (r *networkGroupAssignmentResource) Schema(
 			},
 			"network_id": schema.StringAttribute{
 				Description: "The identifier of the network to be assigned. " +
-					"Use wired network id; " +
-					"`uxi_wired_network` resource id field; " +
-					"`uxi_wired_network` datasource id field; " +
-					"wireless network id; " +
-					"`uxi_wireless_network` resource id field or " +
-					"`uxi_wireless_network` datasource id field here.",
+					"Use `hpeuxi_wired_network` resource id field; " +
+					"`hpeuxi_wired_network` datasource id field; " +
+					"`hpeuxi_wireless_network` resource id field;" +
+					"`hpeuxi_wireless_network` datasource id field " +
+					"wired network id; " +
+					"or wireless network id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -76,9 +79,9 @@ func (r *networkGroupAssignmentResource) Schema(
 			},
 			"group_id": schema.StringAttribute{
 				Description: "The identifier of the group to be assigned to. " +
-					"Use group id; " +
-					"`uxi_group` resource id field or " +
-					"`uxi_group` datasource id field here.",
+					"Use `hpeuxi_group` resource id field (recommended); " +
+					"`hpeuxi_group` datasource id field or " +
+					"group id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),

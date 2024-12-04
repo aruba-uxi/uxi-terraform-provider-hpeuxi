@@ -52,7 +52,10 @@ func (r *sensorGroupAssignmentResource) Schema(
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a sensor group assignment.",
+		Description: "Manages a sensor group assignment." +
+			"\n\nNote: it is recommended to use a `hpeuxi_group` **resource** `id` as the `group_id`. " +
+			"This will help maintain dependencies between resources. This is useful when a " +
+			"destructive action is performed on an ancestor of the assigned group.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The identifier of the sensor group assignment",
@@ -63,9 +66,9 @@ func (r *sensorGroupAssignmentResource) Schema(
 			},
 			"sensor_id": schema.StringAttribute{
 				Description: "The identifier of the sensor to be assigned. " +
-					"Use sensor id; " +
-					"`uxi_sensor` resource id field or " +
-					"`uxi_sensor` datasource id field here.",
+					"Use `hpeuxi_sensor` resource id field; " +
+					"`hpeuxi_sensor` datasource id field or " +
+					"sensor id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -73,9 +76,9 @@ func (r *sensorGroupAssignmentResource) Schema(
 			},
 			"group_id": schema.StringAttribute{
 				Description: "The identifier of the group to be assigned to. " +
-					"Use group id; " +
-					"`uxi_group` resource id field or " +
-					"`uxi_group` datasource id field here.",
+					"Use `hpeuxi_group` resource id field (recommended); " +
+					"`hpeuxi_group` datasource id field or " +
+					"group id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),

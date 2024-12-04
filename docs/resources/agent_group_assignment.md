@@ -4,11 +4,14 @@ page_title: "hpeuxi_agent_group_assignment Resource - hpeuxi"
 subcategory: ""
 description: |-
   Manages an agent group assignment.
+  Note: it is recommended to use a hpeuxi_group resource id as the group_id. This will help maintain dependencies between resources. This is useful when a destructive action is performed on an ancestor of the assigned group.
 ---
 
 # hpeuxi_agent_group_assignment (Resource)
 
-Manages an agent group assignment.
+Manages an agent group assignment. 
+
+Note: it is recommended to use a `hpeuxi_group` **resource** `id` as the `group_id`. This will help maintain dependencies between resources. This is useful when a destructive action is performed on an ancestor of the assigned group.
 
 ## Example Usage
 
@@ -24,8 +27,8 @@ resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
 
 ### Required
 
-- `agent_id` (String) The identifier of the agent to be assigned. Use agent id; `uxi_agent` resource id field or `uxi_agent` datasource id field here.
-- `group_id` (String) The identifier of the group to be assigned to. Use group id; `uxi_group` resource id field or `uxi_group` datasource id field here.
+- `agent_id` (String) The identifier of the agent to be assigned. Use `hpeuxi_agent` resource id field; `hpeuxi_agent` datasource id field or agent id here.
+- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `hpeuxi_group` datasource id field or group id here.
 
 ### Read-Only
 

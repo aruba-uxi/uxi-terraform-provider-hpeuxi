@@ -4,11 +4,14 @@ page_title: "hpeuxi_network_group_assignment Resource - hpeuxi"
 subcategory: ""
 description: |-
   Manages a network group assignment.
+  Note: it is recommended to use a hpeuxi_group resource id as the group_id. This will help maintain dependencies between resources. This is useful when a destructive action is performed on an ancestor of the assigned group.
 ---
 
 # hpeuxi_network_group_assignment (Resource)
 
 Manages a network group assignment.
+
+Note: it is recommended to use a `hpeuxi_group` **resource** `id` as the `group_id`. This will help maintain dependencies between resources. This is useful when a destructive action is performed on an ancestor of the assigned group.
 
 ## Example Usage
 
@@ -24,8 +27,8 @@ resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
 
 ### Required
 
-- `group_id` (String) The identifier of the group to be assigned to. Use group id; `uxi_group` resource id field or `uxi_group` datasource id field here.
-- `network_id` (String) The identifier of the network to be assigned. Use wired network id; `uxi_wired_network` resource id field; `uxi_wired_network` datasource id field; wireless network id; `uxi_wireless_network` resource id field or `uxi_wireless_network` datasource id field here.
+- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `hpeuxi_group` datasource id field or group id here.
+- `network_id` (String) The identifier of the network to be assigned. Use `hpeuxi_wired_network` resource id field; `hpeuxi_wired_network` datasource id field; `hpeuxi_wireless_network` resource id field;`hpeuxi_wireless_network` datasource id field wired network id; or wireless network id here.
 
 ### Read-Only
 
