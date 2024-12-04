@@ -13,8 +13,8 @@ Interact with HPE Aruba Network UXI Configuration.
 
 ```terraform
 provider "hpeuxi" {
-  client_id     = "your_greenlake_uxi_client_id"
-  client_secret = "your_greenlake_uxi_client_secret"
+    client_id     = "your_greenlake_uxi_client_id"
+    client_secret = "your_greenlake_uxi_client_secret"
 }
 ```
 
