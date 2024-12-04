@@ -1,5 +1,5 @@
 resource "hpeuxi_service_test" "my_service_test" {
-  name         = "name"
+  name = "name"
 
   # Deleting of service tests is not supported yet
   lifecycle {
