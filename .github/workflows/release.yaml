@@ -20,8 +20,26 @@ permissions:
   contents: write
 
 jobs:
+  acceptance-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Just
+        uses: extractions/setup-just@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Inject Env File
+        run: echo "${{ secrets.ACCEPTANCE_ENV_FILE }}" > acceptance.env
+
+      - name: Run Acceptance Tests
+        run: just acceptance-tests acceptance.env
+
   goreleaser:
     runs-on: Signer
+    needs: acceptance-tests
     steps:
       - uses: actions/checkout@v4.2.2
         with:
@@ -37,6 +55,7 @@ jobs:
         with:
           go-version-file: 'go.mod'
           cache: true
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6.0.0
         with:

@@ -99,22 +99,26 @@ coverage-provider:
 tidy-tools:
   cd {{ TOOLS_PROVIDER_DIR }} && go mod tidy
 
-acceptance-tests +ARGS='':
+acceptance-tests ENV_PATH='' +ARGS='':
   #!/usr/bin/env bash
 
-  read -p "This is going to run requests against UXI backend. Continue (y/Y)? " -n 1 -r
-  echo
-  if [[ $REPLY =~ ^[Yy]$ ]]
-  then
-    # we run these seperately so that they do not interfere with each other since GoLang executes
-    # tests in different directories at the same time
-    for dir in "datasources" "resources"
-    do
-        echo "Running tests in $dir..."
-        TF_ACC=1 go test -v ./test/live/$dir/... -race {{ ARGS }}
-    done
+  if [ -z "{{ ENV_PATH }}" ]; then
+    echo "Error: ENV_PATH argument is required" >&2
+    exit 1
   fi
 
+  if [ ! -f "{{ ENV_PATH }}" ]; then
+    echo "Error: File specified ("{{ ENV_PATH }}") does not exist" >&2
+    exit 1
+  fi
+
+  # we run these separately so that they do not interfere with each other since GoLang executes
+  # tests in different directories at the same time
+  for dir in "datasources" "resources"
+  do
+      echo "Running tests in $dir..."
+      env $(cat {{ ENV_PATH }} | xargs) TF_ACC=1 go test -v ./test/live/$dir/... -race {{ ARGS }}
+  done
 
 test +ARGS='':
   just test-client {{ ARGS }}

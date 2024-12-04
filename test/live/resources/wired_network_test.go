@@ -42,7 +42,7 @@ func TestWiredNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_wired_network" "wired_network_0" {
-						name = "` + config.WiredNetworkName + `"
+						name = "` + wiredNetwork.Name + `"
 					}
 
 					import {

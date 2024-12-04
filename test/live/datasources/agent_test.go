@@ -16,16 +16,16 @@ import (
 )
 
 func TestAgentDataSource(t *testing.T) {
-	agent := util.GetAgent(config.AgentPermanentID)
+	agent := util.GetAgent(config.AgentID)
+
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() {},
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: provider.ProviderConfig + `
 					data "hpeuxi_agent" "my_agent" {
 						filter = {
-							id = "` + config.AgentPermanentID + `"
+							id = "` + config.AgentID + `"
 						}
 					}
 				`,
