@@ -71,3 +71,11 @@ jobs:
           files: ./pkg/config-api-client/.coverage,.coverage
           flage: client,provider
           fail_ci_if_error: true
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.13.7
+
+      - name: Terraform Formatting Check
+        run: terraform fmt -recursive -check
