@@ -51,6 +51,10 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectResourceAction(
+							"hpeuxi_group.my_group",
+							plancheck.ResourceActionCreate,
+						),
 						plancheck.ExpectUnknownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("id"),
