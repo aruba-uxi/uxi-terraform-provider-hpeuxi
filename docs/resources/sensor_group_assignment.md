@@ -17,8 +17,8 @@ Note: it is recommended to use a `hpeuxi_group` **resource** `id` as the `group_
 
 ```terraform
 resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
-    sensor_id = hpeuxi_sensor.my_sensor.id
-    group_id = hpeuxi_group.my_group.id
+  sensor_id = hpeuxi_sensor.my_sensor.id
+  group_id  = hpeuxi_group.my_group.id
 }
 ```
 
