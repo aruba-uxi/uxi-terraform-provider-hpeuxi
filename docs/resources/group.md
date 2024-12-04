@@ -3,12 +3,12 @@
 page_title: "hpeuxi_group Resource - hpeuxi"
 subcategory: ""
 description: |-
-  Manages a group.
+  Manages a group. Note: building a group hierarchy by using an hpeuxi_group resource id as a child group's parent_group_id is recommended to maintain dependencies between linked groups. This will help maintain accurate state if the user attempts to change the parent of a non leaf group.
 ---
 
 # hpeuxi_group (Resource)
 
-Manages a group.
+Manages a group. Note: building a group hierarchy by using an `hpeuxi_group` **resource** `id` as a child group's `parent_group_id` is recommended to maintain dependencies between linked groups. This will help maintain accurate state if the user attempts to change the parent of a non leaf group.
 
 ## Example Usage
 
@@ -34,7 +34,7 @@ resource "hpeuxi_group" "level_2" {
 
 ### Optional
 
-- `parent_group_id` (String) The identifier of the parent of this group. Use hpeuxi_group resource or datasource id for this attribute. Alternatively leave blank to set group to highest level configurable node.
+- `parent_group_id` (String) The identifier of the parent of this group. Use `hpeuxi_group` resource (recommended) or datasource id for this attribute. Alternatively leave blank to set group to highest level configurable node.
 
 ### Read-Only
 
