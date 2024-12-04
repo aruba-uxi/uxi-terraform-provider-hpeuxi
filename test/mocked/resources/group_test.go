@@ -317,6 +317,19 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 						name            = "name_2"
 						parent_group_id = "parent_id"
 					}`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectResourceAction(
+							"hpeuxi_group.my_group",
+							plancheck.ResourceActionUpdate,
+						),
+						plancheck.ExpectKnownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("name"),
+							knownvalue.StringExact("name_2"),
+						),
+					},
+				},
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name_2"),
 					resource.TestCheckResourceAttr(
@@ -398,6 +411,28 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 						name            = "name"
 						parent_group_id = "parent_id_2"
 					}`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectResourceAction(
+							"hpeuxi_group.my_group",
+							plancheck.ResourceActionDestroyBeforeCreate,
+						),
+						plancheck.ExpectUnknownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("id"),
+						),
+						plancheck.ExpectKnownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("name"),
+							knownvalue.StringExact("name"),
+						),
+						plancheck.ExpectKnownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("parent_group_id"),
+							knownvalue.StringExact("parent_id_2"),
+						),
+					},
+				},
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
 					resource.TestCheckResourceAttr(
