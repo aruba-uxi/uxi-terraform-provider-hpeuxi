@@ -39,7 +39,7 @@ sign:
   signhpe --logdir ./logs --in dist/$(ls dist | grep SHA256SUMS) --env --project "HPE Aruba Networking UXI Terraform Provider" --out ./dist
 
 test-client +ARGS='':
-  cd {{ CLIENT_DIR }} && go test -v ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
+  cd {{ CLIENT_DIR }} && go test ./... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 coverage-client:
   cd {{ CLIENT_DIR }} && go tool cover -html=.coverage -o=.coverage.html
