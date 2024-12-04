@@ -188,6 +188,28 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 				resource "hpeuxi_group" "my_group" {
 					name = "name"
 				}`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectResourceAction(
+							"hpeuxi_group.my_group",
+							plancheck.ResourceActionCreate,
+						),
+						plancheck.ExpectUnknownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("id"),
+						),
+						plancheck.ExpectKnownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("parent_group_id"),
+							knownvalue.Null(),
+						),
+						plancheck.ExpectKnownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("name"),
+							knownvalue.StringExact("name"),
+						),
+					},
+				},
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
 					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
