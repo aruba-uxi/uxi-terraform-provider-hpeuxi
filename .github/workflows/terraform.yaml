@@ -1,0 +1,23 @@
+name: Terraform
+
+on: [push]
+
+jobs:
+  terraform-fmt:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    env:
+      TF_IN_AUTOMATION: "true"
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 0.13.7
+
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -recursive -check
