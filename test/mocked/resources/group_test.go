@@ -11,7 +11,10 @@ import (
 
 	"github.com/h2non/gock"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
@@ -46,6 +49,24 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 					name            = "name"
 					parent_group_id = "parent_id"
 				}`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectUnknownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("id"),
+						),
+						plancheck.ExpectKnownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("parent_group_id"),
+							knownvalue.StringExact("parent_id"),
+						),
+						plancheck.ExpectKnownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("name"),
+							knownvalue.StringExact("name"),
+						),
+					},
+				},
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
 					resource.TestCheckResourceAttr(
