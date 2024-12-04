@@ -84,7 +84,7 @@ tidy-provider:
   go mod tidy
 
 test-provider +ARGS='':
-  TF_ACC=1 go test -v ./test/mocked/... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
+  TF_ACC=1 go test ./test/mocked/... -race -covermode=atomic -coverprofile=.coverage {{ ARGS }}
 
 generate-provider-docs:
   cd {{ TOOLS_PROVIDER_DIR }} && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir ../. --provider-name hpeuxi
