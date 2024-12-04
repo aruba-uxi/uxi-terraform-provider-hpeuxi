@@ -18,7 +18,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 )
 
-func Test_CreateGroupResource(t *testing.T) {
+func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
