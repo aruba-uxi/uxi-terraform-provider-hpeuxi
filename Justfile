@@ -74,6 +74,8 @@ lint:
 
   python -m tools.lint-attribution lint
 
+  terraform fmt -recursive -check
+
 fmt:
   python -m tools.lint-attribution format
   go run github.com/segmentio/golines@v0.12.2 -w .
