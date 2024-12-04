@@ -79,6 +79,7 @@ fmt:
   go run github.com/segmentio/golines@v0.12.2 -w .
   go run golang.org/x/tools/cmd/goimports@latest -local github.com/aruba-uxi -w .
   go run mvdan.cc/gofumpt@latest -w .
+  terraform fmt --recursive .
 
 tidy-provider:
   go mod tidy
