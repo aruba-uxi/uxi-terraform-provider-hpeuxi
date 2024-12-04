@@ -67,7 +67,7 @@ func (r *sensorGroupAssignmentResource) Schema(
 			"sensor_id": schema.StringAttribute{
 				Description: "The identifier of the sensor to be assigned. " +
 					"Use `hpeuxi_sensor` resource id field; " +
-					"`hpeuxi_sensor` datasource id field or " +
+					"`data.hpeuxi_sensor` id field or " +
 					"sensor id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
@@ -77,7 +77,7 @@ func (r *sensorGroupAssignmentResource) Schema(
 			"group_id": schema.StringAttribute{
 				Description: "The identifier of the group to be assigned to. " +
 					"Use `hpeuxi_group` resource id field (recommended); " +
-					"`hpeuxi_group` datasource id field or " +
+					"`data.hpeuxi_group` id field or " +
 					"group id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{

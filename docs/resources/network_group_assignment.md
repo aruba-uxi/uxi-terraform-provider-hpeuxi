@@ -27,8 +27,8 @@ resource "hpeuxi_network_group_assignment" "my_network_group_assignment" {
 
 ### Required
 
-- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `hpeuxi_group` datasource id field or group id here.
-- `network_id` (String) The identifier of the network to be assigned. Use `hpeuxi_wired_network` resource id field; `hpeuxi_wired_network` datasource id field; `hpeuxi_wireless_network` resource id field;`hpeuxi_wireless_network` datasource id field wired network id; or wireless network id here.
+- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `data.hpeuxi_group` id field or group id here.
+- `network_id` (String) The identifier of the network to be assigned. Use `hpeuxi_wired_network` resource id field; `data.hpeuxi_wired_network` id field; `hpeuxi_wireless_network` resource id field; `data.hpeuxi_wireless_network` id field wired network id; or wireless network id here.
 
 ### Read-Only
 

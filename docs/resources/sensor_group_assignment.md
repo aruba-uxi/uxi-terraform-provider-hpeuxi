@@ -27,8 +27,8 @@ resource "hpeuxi_sensor_group_assignment" "my_sensor_group_assignment" {
 
 ### Required
 
-- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `hpeuxi_group` datasource id field or group id here.
-- `sensor_id` (String) The identifier of the sensor to be assigned. Use `hpeuxi_sensor` resource id field; `hpeuxi_sensor` datasource id field or sensor id here.
+- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `data.hpeuxi_group` id field or group id here.
+- `sensor_id` (String) The identifier of the sensor to be assigned. Use `hpeuxi_sensor` resource id field; `data.hpeuxi_sensor` id field or sensor id here.
 
 ### Read-Only
 

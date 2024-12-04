@@ -37,7 +37,7 @@ resource "hpeuxi_group" "level_2" {
 
 ### Optional
 
-- `parent_group_id` (String) The identifier of the parent of this group. Use `hpeuxi_group` resource (recommended) or datasource id for this attribute. Alternatively leave blank to set group to highest level configurable node.
+- `parent_group_id` (String) The identifier of the parent of this group. Use `hpeuxi_group` resource (recommended) or `data.hpeuxi_group` id for this attribute. Alternatively leave blank to set group to highest level configurable node.
 
 ### Read-Only
 

@@ -67,7 +67,7 @@ func (r *serviceTestGroupAssignmentResource) Schema(
 			"service_test_id": schema.StringAttribute{
 				Description: "The identifier of the service test to be assigned. " +
 					"Use `hpeuxi_service_test` resource id field; " +
-					"`hpeuxi_service_test` datasource id field or " +
+					"`data.hpeuxi_service_test` id field or " +
 					"service test id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
@@ -77,7 +77,7 @@ func (r *serviceTestGroupAssignmentResource) Schema(
 			"group_id": schema.StringAttribute{
 				Description: "The identifier of the group to be assigned to. " +
 					"Use `hpeuxi_group` resource id field (recommended); " +
-					"`hpeuxi_group` datasource id field or " +
+					"`data.hpeuxi_group` id field or " +
 					"group id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{

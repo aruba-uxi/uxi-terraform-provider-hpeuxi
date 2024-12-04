@@ -67,9 +67,9 @@ func (r *networkGroupAssignmentResource) Schema(
 			"network_id": schema.StringAttribute{
 				Description: "The identifier of the network to be assigned. " +
 					"Use `hpeuxi_wired_network` resource id field; " +
-					"`hpeuxi_wired_network` datasource id field; " +
-					"`hpeuxi_wireless_network` resource id field;" +
-					"`hpeuxi_wireless_network` datasource id field " +
+					"`data.hpeuxi_wired_network` id field; " +
+					"`hpeuxi_wireless_network` resource id field; " +
+					"`data.hpeuxi_wireless_network` id field " +
 					"wired network id; " +
 					"or wireless network id here.",
 				Required: true,
@@ -80,7 +80,7 @@ func (r *networkGroupAssignmentResource) Schema(
 			"group_id": schema.StringAttribute{
 				Description: "The identifier of the group to be assigned to. " +
 					"Use `hpeuxi_group` resource id field (recommended); " +
-					"`hpeuxi_group` datasource id field or " +
+					"`data.hpeuxi_group` id field or " +
 					"group id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{

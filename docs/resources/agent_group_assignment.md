@@ -27,8 +27,8 @@ resource "hpeuxi_agent_group_assignment" "my_agent_group_assignment" {
 
 ### Required
 
-- `agent_id` (String) The identifier of the agent to be assigned. Use `hpeuxi_agent` resource id field; `hpeuxi_agent` datasource id field or agent id here.
-- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `hpeuxi_group` datasource id field or group id here.
+- `agent_id` (String) The identifier of the agent to be assigned. Use `hpeuxi_agent` resource id field; `data.hpeuxi_agent` id field or agent id here.
+- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `data.hpeuxi_group` id field or group id here.
 
 ### Read-Only
 

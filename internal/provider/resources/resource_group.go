@@ -74,7 +74,7 @@ func (r *groupResource) Schema(
 			},
 			"parent_group_id": schema.StringAttribute{
 				Description: "The identifier of the parent of this group. " +
-					"Use `hpeuxi_group` resource (recommended) or datasource id for this attribute. " +
+					"Use `hpeuxi_group` resource (recommended) or `data.hpeuxi_group` id for this attribute. " +
 					"Alternatively leave blank to set group to highest level configurable node.",
 				Optional: true,
 				PlanModifiers: []planmodifier.String{

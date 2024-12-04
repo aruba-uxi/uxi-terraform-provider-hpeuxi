@@ -27,8 +27,8 @@ resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignmen
 
 ### Required
 
-- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `hpeuxi_group` datasource id field or group id here.
-- `service_test_id` (String) The identifier of the service test to be assigned. Use `hpeuxi_service_test` resource id field; `hpeuxi_service_test` datasource id field or service test id here.
+- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `data.hpeuxi_group` id field or group id here.
+- `service_test_id` (String) The identifier of the service test to be assigned. Use `hpeuxi_service_test` resource id field; `data.hpeuxi_service_test` id field or service test id here.
 
 ### Read-Only
 
