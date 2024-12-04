@@ -18,10 +18,6 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 )
 
-type Fetcher interface {
-	FetchData() ([]byte, error)
-}
-
 func TestGroupResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
