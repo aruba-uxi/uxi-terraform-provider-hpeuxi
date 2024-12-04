@@ -18,7 +18,7 @@ import (
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
 )
 
-func TestGroupResource(t *testing.T) {
+func Test_CreateGroupResource(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
@@ -55,21 +55,6 @@ func TestGroupResource(t *testing.T) {
 					),
 					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
 				),
-			},
-			// ImportState
-			{
-				PreConfig: func() {
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
-					// to indicate the group has a parent
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
-				},
-				ResourceName:      "hpeuxi_group.my_group",
-				ImportState:       true,
-				ImportStateVerify: true,
 			},
 			// Update that does not trigger a recreate
 			{
@@ -157,29 +142,75 @@ func TestGroupResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func TestRootGroupResource(t *testing.T) {
+func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Importing the root group does not work
+			// Create
 			{
 				PreConfig: func() {
-					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
+					util.MockPostGroup(
+						util.GenerateNonRootGroupPostRequest("id", "", ""),
+						util.GenerateGroupPostResponse("id", "", ""),
+						1,
+					)
+					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 2)
+					// to indicate the group has a parent
+					util.MockGetGroup(
+						"parent_id",
+						util.GenerateGroupGetResponse("parent_id", "", ""),
+						1,
+					)
 				},
 				Config: provider.ProviderConfig + `
-				resource "hpeuxi_group" "my_root_group" {
+				resource "hpeuxi_group" "my_group" {
 					name            = "name"
-				}
-
-				import {
-					to = hpeuxi_group.my_root_group
-					id = "` + util.MockRootGroupID + `"
+					parent_group_id = "parent_id"
 				}`,
-				ExpectError: regexp.MustCompile(`The root group cannot be used as a resource`),
 			},
+			// ImportState
+			{
+				PreConfig: func() {
+					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
+					// to indicate the group has a parent
+					util.MockGetGroup(
+						"parent_id",
+						util.GenerateGroupGetResponse("parent_id", "", ""),
+						1,
+					)
+				},
+				ResourceName:      "hpeuxi_group.my_group",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			// Delete
+			{
+				PreConfig: func() {
+					util.MockGetGroup(
+						"id",
+						util.GenerateGroupGetResponse("id", "", ""),
+						1,
+					)
+					util.MockDeleteGroup("id", 1)
+				},
+				Config: provider.ProviderConfig,
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+
+func Test_CreateGroupResource_WithRootParent(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
 			// Creating a group attached to the root
 			{
 				PreConfig: func() {
@@ -218,6 +249,35 @@ func TestRootGroupResource(t *testing.T) {
 					util.MockDeleteGroup("id", 1)
 				},
 				Config: provider.ProviderConfig,
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+
+func Test_ImportGroupResource_WithRootParent_ShouldFail(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Importing the root group does not work
+			{
+				PreConfig: func() {
+					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
+				},
+				Config: provider.ProviderConfig + `
+				resource "hpeuxi_group" "my_root_group" {
+					name            = "name"
+				}
+
+				import {
+					to = hpeuxi_group.my_root_group
+					id = "` + util.MockRootGroupID + `"
+				}`,
+				ExpectError: regexp.MustCompile(`The root group cannot be used as a resource`),
 			},
 		},
 	})
