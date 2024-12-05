@@ -52,7 +52,10 @@ func (r *serviceTestGroupAssignmentResource) Schema(
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a service test group assignment.",
+		Description: "Manages a service test group assignment." +
+			"\n\nNote: it is recommended to use a `hpeuxi_group` **resource** `id` as the `group_id`. " +
+			"This will help maintain dependencies between resources. This is useful when a " +
+			"destructive action is performed on an ancestor of the assigned group.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The identifier of the service test group assignment",
@@ -63,9 +66,9 @@ func (r *serviceTestGroupAssignmentResource) Schema(
 			},
 			"service_test_id": schema.StringAttribute{
 				Description: "The identifier of the service test to be assigned. " +
-					"Use service test id; " +
-					"`uxi_service_test` resource id field or " +
-					"`uxi_service_test` datasource id field here.",
+					"Use `hpeuxi_service_test` resource id field; " +
+					"`data.hpeuxi_service_test` id field or " +
+					"service test id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -73,9 +76,9 @@ func (r *serviceTestGroupAssignmentResource) Schema(
 			},
 			"group_id": schema.StringAttribute{
 				Description: "The identifier of the group to be assigned to. " +
-					"Use group id; " +
-					"`uxi_group` resource id field or " +
-					"`uxi_group` datasource id field here.",
+					"Use `hpeuxi_group` resource id field (recommended); " +
+					"`data.hpeuxi_group` id field or " +
+					"group id here.",
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
