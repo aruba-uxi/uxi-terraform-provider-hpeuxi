@@ -358,6 +358,97 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
+func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create
+			{
+				PreConfig: func() {
+					util.MockPostGroup(
+						util.GenerateGroupAttachedToRootGroupPostRequest("id", ""),
+						util.GenerateGroupAttachedToRootGroupPostResponse("id", ""),
+						1,
+					)
+					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
+					util.MockGetGroup(
+						"id",
+						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
+						1,
+					)
+				},
+				Config: provider.ProviderConfig + `
+				resource "hpeuxi_group" "my_group" {
+					name            = "name"
+				}`,
+			},
+			// Update that does not trigger a recreate
+			{
+				PreConfig: func() {
+					// existing group
+					util.MockGetGroup(
+						"id",
+						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
+						1,
+					)
+					// updated group
+					util.MockPatchGroup(
+						"id",
+						util.GenerateGroupPatchRequest("_2"),
+						util.GenerateGroupPatchResponse("id", "_2", ""),
+						1,
+					)
+					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 2)
+					util.MockGetGroup(
+						"id",
+						util.GenerateGroupAttachedToRootGroupGetResponse("id", "_2"),
+						2,
+					)
+				},
+				Config: provider.ProviderConfig + `
+					resource "hpeuxi_group" "my_group" {
+						name            = "name_2"
+					}`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectResourceAction(
+							"hpeuxi_group.my_group",
+							plancheck.ResourceActionUpdate,
+						),
+						plancheck.ExpectKnownValue(
+							"hpeuxi_group.my_group",
+							tfjsonpath.New("name"),
+							knownvalue.StringExact("name_2"),
+						),
+					},
+				},
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name_2"),
+					resource.TestCheckNoResourceAttr("hpeuxi_group.my_group", "parent_group_id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
+				),
+			},
+			// Delete
+			{
+				PreConfig: func() {
+					util.MockGetGroup(
+						"id",
+						util.GenerateGroupAttachedToRootGroupGetResponse("id", "_2"),
+						1,
+					)
+					util.MockDeleteGroup("id", 1)
+				},
+				Config: provider.ProviderConfig,
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+
 func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
