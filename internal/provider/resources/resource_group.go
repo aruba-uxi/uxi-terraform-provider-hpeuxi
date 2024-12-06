@@ -136,11 +136,6 @@ func (r *groupResource) Create(
 
 	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
-	// only update parent if not attached to root node (else leave it as null)
-	parentGroup, _ := r.getGroup(ctx, group.Parent.Id)
-	if parentGroup != nil && !util.IsRoot(*parentGroup) {
-		plan.ParentGroupID = types.StringValue(group.Parent.Id)
-	}
 
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
@@ -201,10 +196,8 @@ func (r *groupResource) Update(
 	req resource.UpdateRequest,
 	resp *resource.UpdateResponse,
 ) {
-	var plan, state groupResourceModel
+	var plan groupResourceModel
 	diags := req.Plan.Get(ctx, &plan)
-	resp.Diagnostics.Append(diags...)
-	diags = req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -227,11 +220,6 @@ func (r *groupResource) Update(
 
 	plan.ID = types.StringValue(group.Id)
 	plan.Name = types.StringValue(group.Name)
-	// only update parent if not attached to root node (else leave it as null)
-	parentGroup, _ := r.getGroup(ctx, group.Parent.Id)
-	if parentGroup != nil && !util.IsRoot(*parentGroup) {
-		state.ParentGroupID = types.StringValue(group.Parent.Id)
-	}
 
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
