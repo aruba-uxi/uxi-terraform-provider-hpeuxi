@@ -72,7 +72,7 @@ The following example uses Zsh (default) on macOS (Apple Silicon).
 
    ```console
    RELEASE=x.y.z
-   wget -q https://github.com/aruba-uxi/terraform-provider-hpeuxi/releases/download/v${RELEASE}/terraform-provider-hpeuxi_${RELEASE}_darwin_arm64.zip
+   wget https://github.com/aruba-uxi/terraform-provider-hpeuxi/releases/download/v${RELEASE}/terraform-provider-hpeuxi_${RELEASE}_darwin_arm64.zip
    ```
 
 3. Extract the plugin.

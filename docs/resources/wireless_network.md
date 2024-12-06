@@ -14,7 +14,7 @@ Manages a wireless network.
 
 ```terraform
 resource "hpeuxi_wireless_network" "my_wireless_network" {
-  name         = "name"
+  name = "name"
 
   # Deleting of wireless networks is not supported yet
   lifecycle {

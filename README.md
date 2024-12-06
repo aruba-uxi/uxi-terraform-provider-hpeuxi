@@ -160,21 +160,45 @@ just generate-config-api-client
 
 ## Running Acceptance Tests
 
-Set the `GREENLAKE_UXI_CLIENT_ID` and `GREENLAKE_UXI_CLIENT_SECRET` environment variables for the acceptance test customer. The client credentials must have sufficient permissions execute create, read, update and destroy operations for the UXI customer. Also set the `UXI_HOST` environment variable to target the staging
-environment.
+Create a file called `acceptance.env` containing the following environment variables. See the table below for a description of the fields.
 
-```bash
-export HPEUXI_CLIENT_ID=<client_id>
-export HPEUXI_CLIENT_SECRET=<client_secret>
-export HPEUXI_HOST_OVERRIDE=api.staging.capedev.io
 ```
+ACCEPTANCE_AGENT_ID=<acceptance_agent_id>
+ACCEPTANCE_AGENT_PROVISION_HOST=<acceptance_agent_provision_host>
+ACCEPTANCE_AGENT_PROVISION_SERIAL=<acceptance_agent_provision_serial>
+ACCEPTANCE_CUSTOMER_ID=<acceptance_customer_id>
+ACCEPTANCE_GROUP_ID_ROOT=<acceptance_group_id_root>
+ACCEPTANCE_SENSOR_ID=<acceptance_sensor_id>
+ACCEPTANCE_SERVICE_TEST_ID=<acceptance_service_test_id>
+ACCEPTANCE_WIRED_NETWORK_ID=<acceptance_wired_network_id>
+ACCEPTANCE_WIRELESS_NETWORK_ID=<acceptance_wireless_network_id>
+HPEUXI_CLIENT_ID=<hpeuxi_client_id>
+HPEUXI_CLIENT_SECRET=<hpeuxi_client_secret>
+HPEUXI_HOST_OVERRIDE=<hpeuxi_host_override>
+HPEUXI_PROVISION_TOKEN=<hpeuxi_provision_token>
+```
+
+| Environment Variable              | Description                                                                                                                  |
+|-----------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| ACCEPTANCE_AGENT_ID               | ID of an agent on customer.                                                                                                  |
+| ACCEPTANCE_AGENT_PROVISION_SERIAL | Serial number of an agent to be provisioned. Keep this constant between test runs to avoid excessive provisioning of agents. |
+| ACCEPTANCE_CUSTOMER_ID            | ID of the customer against which the acceptance tests will be run.                                                           |
+| ACCEPTANCE_GROUP_ID_ROOT          | ID of the root group.                                                                                                        |
+| ACCEPTANCE_SENSOR_ID              | ID of a hardware sensor on the customer.                                                                                     |
+| ACCEPTANCE_SERVICE_TEST_ID        | ID of a service test on the customer.                                                                                        |
+| ACCEPTANCE_WIRED_NETWORK_ID       | ID of a wired network on the customer.                                                                                       |
+| ACCEPTANCE_WIRELESS_NETWORK_ID    | ID of a wireless network on the customer.                                                                                    |
+| DEVICE_GATEWAY_HOST               | Host address of the device gateway (against which the agent provisioning will be run)                                        |
+| HPEUXI_CLIENT_ID                  | CLIENT_ID component of the UXI API credentials as obtained from Greenlake.                                                   |
+| HPEUXI_CLIENT_SECRET              | CLIENT_SECRET component of the UXI API credentials as obtained from Greenlake.                                               |
+| HPEUXI_HOST_OVERRIDE              | Host address of the configuration API (against which the configuration API requests will be run).                            |
+| HPEUXI_PROVISION_TOKEN            | Token used to provision agents for the given customer.                                                                       |
+
+Then run the following command to execute the acceptance tests against the given customer.
 
 ```shell
-just acceptance-tests
+just acceptance-tests acceptance.env
 ```
-
-Note: it is possible to run acceptance tests against any UXI customer, if the configurations in
-`test/live/config/config.go` are updated to values for the given customer.
 
 ## Building and Distribution
 

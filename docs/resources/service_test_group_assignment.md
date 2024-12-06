@@ -4,18 +4,21 @@ page_title: "hpeuxi_service_test_group_assignment Resource - hpeuxi"
 subcategory: ""
 description: |-
   Manages a service test group assignment.
+  Note: it is recommended to use a hpeuxi_group resource id as the group_id. This will help maintain dependencies between resources. This is useful when a destructive action is performed on an ancestor of the assigned group.
 ---
 
 # hpeuxi_service_test_group_assignment (Resource)
 
 Manages a service test group assignment.
 
+Note: it is recommended to use a `hpeuxi_group` **resource** `id` as the `group_id`. This will help maintain dependencies between resources. This is useful when a destructive action is performed on an ancestor of the assigned group.
+
 ## Example Usage
 
 ```terraform
 resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignment" {
-    service_test_id = hpeuxi_service_test.my_service_test.id
-    group_id = hpeuxi_group.my_group.id
+  service_test_id = hpeuxi_service_test.my_service_test.id
+  group_id        = hpeuxi_group.my_group.id
 }
 ```
 
@@ -24,8 +27,8 @@ resource "hpeuxi_service_test_group_assignment" "my_service_test_group_assignmen
 
 ### Required
 
-- `group_id` (String) The identifier of the group to be assigned to. Use group id; `uxi_group` resource id field or `uxi_group` datasource id field here.
-- `service_test_id` (String) The identifier of the service test to be assigned. Use service test id; `uxi_service_test` resource id field or `uxi_service_test` datasource id field here.
+- `group_id` (String) The identifier of the group to be assigned to. Use `hpeuxi_group` resource id field (recommended); `data.hpeuxi_group` id field or group id here.
+- `service_test_id` (String) The identifier of the service test to be assigned. Use `hpeuxi_service_test` resource id field; `data.hpeuxi_service_test` id field or service test id here.
 
 ### Read-Only
 

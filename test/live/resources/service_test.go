@@ -31,7 +31,7 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_service_test" "my_service_test" {
-						name = "` + config.ServiceTestName + `"
+						name = "` + serviceTest.Name + `"
 					}`,
 
 				ExpectError: regexp.MustCompile(
@@ -42,7 +42,7 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_service_test" "my_service_test" {
-						name = "` + config.ServiceTestName + `"
+						name = "` + serviceTest.Name + `"
 					}
 
 					import {
@@ -66,7 +66,7 @@ func TestServiceTestResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_service_test" "my_service_test" {
-					name = "` + config.ServiceTestName + `-updated-name"
+					name = "` + serviceTest.Name + `-updated-name"
 				}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)updating a service_test is not supported; service_tests can only be updated\s*through the dashboard`,

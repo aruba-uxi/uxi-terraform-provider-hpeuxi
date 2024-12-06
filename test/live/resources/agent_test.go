@@ -25,7 +25,7 @@ func TestAgentResource(t *testing.T) {
 	agentID, err := util.ProvisionAgent{
 		CustomerID:        config.CustomerID,
 		ProvisionToken:    os.Getenv("HPEUXI_PROVISION_TOKEN"),
-		DeviceSerial:      config.AgentCreateSerial,
+		DeviceSerial:      config.AgentProvisionSerial,
 		DeviceGatewayHost: config.DeviceGatewayHost,
 	}.Provision()
 	if err != nil {

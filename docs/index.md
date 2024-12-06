@@ -3,18 +3,21 @@
 page_title: "hpeuxi Provider"
 description: |-
   Interact with HPE Aruba Network UXI Configuration.
+  See https://developer.greenlake.hpe.com/docs/greenlake/guides/public/authentication/authentication/#configuring-api-client-credentials for more information on generating client credentials.
 ---
 
 # hpeuxi Provider
 
 Interact with HPE Aruba Network UXI Configuration.
 
+See https://developer.greenlake.hpe.com/docs/greenlake/guides/public/authentication/authentication/#configuring-api-client-credentials for more information on generating client credentials.
+
 ## Example Usage
 
 ```terraform
 provider "hpeuxi" {
-    client_id     = "your_greenlake_uxi_client_id"
-    client_secret = "your_greenlake_uxi_client_secret"
+  client_id     = "your_greenlake_uxi_client_id"
+  client_secret = "your_greenlake_uxi_client_secret"
 }
 ```
 

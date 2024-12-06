@@ -42,7 +42,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_wireless_network" "wireless_network_0" {
-						name = "` + config.WirelessNetworkName + `"
+						name = "` + wirelessNetwork.Name + `"
 					}
 
 					import {
@@ -66,7 +66,7 @@ func TestWirelessNetworkResource(t *testing.T) {
 			{
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_wireless_network" "wireless_network_0" {
-					name = "` + config.WirelessNetworkName + `-updated-name"
+					name = "` + wirelessNetwork.Name + `-updated-name"
 				}`,
 				ExpectError: regexp.MustCompile(
 					`(?s)updating a wireless_network is not supported; wireless_networks can only be\s*updated through the dashboard`,

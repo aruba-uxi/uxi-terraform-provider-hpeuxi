@@ -55,7 +55,11 @@ func (r *groupResource) Schema(
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a group.",
+		Description: "Manages a group. " +
+			"\n\nNote: building a group hierarchy by using an `hpeuxi_group` **resource** `id` as " +
+			"a child group's `parent_group_id` is recommended to maintain dependencies between " +
+			"linked groups. This will help maintain accurate state if the user attempts to " +
+			"change the parent of a non leaf group.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The identifier of the group.",
@@ -70,7 +74,7 @@ func (r *groupResource) Schema(
 			},
 			"parent_group_id": schema.StringAttribute{
 				Description: "The identifier of the parent of this group. " +
-					"Use hpeuxi_group resource or datasource id for this attribute. " +
+					"Use `hpeuxi_group` resource (recommended) or `data.hpeuxi_group` id for this attribute. " +
 					"Alternatively leave blank to set group to highest level configurable node.",
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
@@ -273,8 +277,6 @@ func (r *groupResource) getGroup(
 	request := r.client.ConfigurationAPI.GroupsGet(ctx).Id(id)
 
 	groupResponse, response, err := util.RetryForTooManyRequests(request.Execute)
-	// groupResponse, response, err := request.Execute()
-	// this causes a segfault
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
 		return nil, errors.New(errorDetail)
