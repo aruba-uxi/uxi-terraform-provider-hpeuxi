@@ -43,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Code Linting Test
-        run: just lint || exit 1
+        run: just lint
 
       - name: Check package files up to date
         run: |
