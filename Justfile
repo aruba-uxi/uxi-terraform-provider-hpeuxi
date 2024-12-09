@@ -10,7 +10,11 @@ help:
 _remove-client-files:
     cd {{ CLIENT_DIR }} && cat .openapi-generator/FILES | xargs -n 1 rm -f
 
-generate-config-api-client: _remove-client-files
+_retrieve-api-spec:
+    curl -o pkg/config-api-client/api/.openapi.source.yaml https://api.capenetworks.com/docs/openapi.yaml
+
+generate-config-api-client: _retrieve-api-spec
+    just _remove-client-files
     docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
     --input-spec /local/{{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }} \
     --generator-name go \
