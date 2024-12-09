@@ -61,7 +61,8 @@ func (p *hpeuxiConfigurationProvider) Schema(
 ) {
 	resp.Schema = schema.Schema{
 		Description: "Interact with HPE Aruba Network UXI Configuration." +
-			"\n\nSee https://developer.greenlake.hpe.com/docs/greenlake/guides/public/authentication/authentication/#configuring-api-client-credentials " +
+			"\n\nSee https://developer.greenlake.hpe.com/docs/greenlake" +
+			"/guides/public/authentication/authentication/#configuring-api-client-credentials " +
 			"for more information on generating client credentials.",
 		Attributes: map[string]schema.Attribute{
 			"client_id": schema.StringAttribute{
