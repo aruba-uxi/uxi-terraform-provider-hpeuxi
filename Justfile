@@ -58,6 +58,7 @@ lint:
     set -e
     set -o pipefail
 
+    echo "gofmt"
     output=$(gofmt -d .)
     if [ -n "$output" ]; then
       echo "$output"
@@ -65,6 +66,7 @@ lint:
       exit 1
     fi
 
+    echo "golines"
     output=$(go run github.com/segmentio/golines@v0.12.2 . --dry-run)
     if [ -n "$output" ]; then
       echo "$output"
@@ -72,10 +74,13 @@ lint:
       exit 1
     fi
 
+    echo "golangci-lint"
     go run github.com/golangci/golangci-lint/cmd/golangci-lint@v1.60.1 run
 
+    echo "file attribution"
     python -m tools.lint-attribution lint
 
+    echo "tf fmt"
     terraform fmt -recursive -check
 
 fmt:
