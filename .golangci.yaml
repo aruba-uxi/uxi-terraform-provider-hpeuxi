@@ -1,6 +1,6 @@
 ---
 run:
-  deadline: 240s
+  deadline: 600s
   tests: true
 
 linters-settings:
