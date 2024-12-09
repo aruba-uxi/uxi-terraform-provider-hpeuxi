@@ -7,11 +7,13 @@ package resources
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
@@ -80,6 +82,11 @@ func (r *wirelessNetworkResource) Schema(
 			"ip_version": schema.StringAttribute{
 				Description: "The IP version of the wireless network.",
 				Computed:    true,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						util.ConvertToStrings(config_api_client.AllowedIpVersionEnumValues)...,
+					),
+				},
 			},
 			"security": schema.StringAttribute{
 				Description: "The security protocol of the wireless network.",
