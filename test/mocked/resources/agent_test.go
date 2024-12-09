@@ -133,12 +133,11 @@ func Test_AgentResource_WithInvalidPcapMode_ShouldFail(t *testing.T) {
 
 				Check: shared.CheckStateAgainstAgent(t, "hpeuxi_agent.my_agent", agent),
 			},
-			// Updating sensor with invalid pcap_mode
+			// agent with invalid pcap_mode
 			{
 				Config: provider.ProviderConfig + `
-					resource "hpeuxi_sensor" "my_sensor" {
+					resource "hpeuxi_agent" "my_agent" {
 						name 		 = "name"
-						address_note = "address_note"
 						notes 		 = "notes"
 						pcap_mode 	 = "invalid_pcap_mode"
 					}`,
