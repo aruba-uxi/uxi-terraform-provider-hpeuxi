@@ -56,6 +56,7 @@ tidy-client:
 lint:
   #!/usr/bin/env bash
 
+  echo "gofmt -d ."
   output=$(gofmt -d .)
   if [ -n "$output" ]; then
     echo "$output"
@@ -63,6 +64,7 @@ lint:
     exit 1
   fi
 
+  echo "golines . --dry-run"
   output=$(go run github.com/segmentio/golines@v0.12.2 . --dry-run)
   if [ -n "$output" ]; then
     echo "$output"
@@ -70,10 +72,13 @@ lint:
     exit 1
   fi
 
+  echo "golangci-lint run"
   go run github.com/golangci/golangci-lint/cmd/golangci-lint@v1.60.1 run
 
+  echo "python -m tools.lint-attribution lint"
   python -m tools.lint-attribution lint
 
+  echo "terraform fmt -recursive -check"
   terraform fmt -recursive -check
 
 fmt:
