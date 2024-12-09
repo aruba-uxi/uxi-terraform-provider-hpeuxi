@@ -1,7 +1,6 @@
 CLIENT_DIR := "pkg/config-api-client"
 TOOLS_PROVIDER_DIR := "tools"
-OPENAPI_SPEC := "pkg/config-api-client/api"
-SOURCE_OPEN_API_SPEC_FILE := ".openapi.source.yaml"
+SOURCE_OPEN_API_SPEC_FILE := "pkg/config-api-client/api/.openapi.source.yaml"
 
 # Show this message and exit.
 help:
@@ -10,9 +9,13 @@ help:
 _remove-client-files:
     cd {{ CLIENT_DIR }} && cat .openapi-generator/FILES | xargs -n 1 rm -f
 
-generate-config-api-client: _remove-client-files
+_retrieve-api-spec:
+    curl -o {{ SOURCE_OPEN_API_SPEC_FILE }} https://api.capenetworks.com/docs/openapi.yaml
+
+generate-config-api-client: _retrieve-api-spec
+    just _remove-client-files
     docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
-    --input-spec /local/{{ OPENAPI_SPEC }}/{{ SOURCE_OPEN_API_SPEC_FILE }} \
+    --input-spec /local/{{ SOURCE_OPEN_API_SPEC_FILE }} \
     --generator-name go \
     --output /local/{{ CLIENT_DIR }} \
     --git-user-id aruba-uxi \
