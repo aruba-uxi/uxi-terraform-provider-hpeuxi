@@ -42,13 +42,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run Code Linting Test
-        run: just lint
-
       - name: Check package files up to date
         run: |
           just tidy
-          git diff --exit-code -- go.* pkg/config-api-client/go.*
+          git diff --exit-code -- go.* pkg/config-api-client/go.* || exit 1
+
+      - name: Run Code Linting Test
+        run: just lint
 
       - name: Run Tests
         run: |

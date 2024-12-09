@@ -106,6 +106,31 @@ func TestAgentResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
+func Test_AgentResource_WithInvalidPcapMode_ShouldFail(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// agent with invalid pcap_mode
+			{
+				Config: provider.ProviderConfig + `
+					resource "hpeuxi_agent" "my_agent" {
+						name 		 = "name"
+						notes 		 = "notes"
+						pcap_mode 	 = "invalid_pcap_mode"
+					}`,
+				ExpectError: regexp.MustCompile(
+					`(?s)Attribute pcap_mode value must be one of: \["light" "full" "off"\], got:\s*"invalid_pcap_mode"`,
+				),
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+
 func TestAgentResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()

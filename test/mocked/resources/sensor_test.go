@@ -126,6 +126,32 @@ func TestSensorResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
+func Test_SensorResource_WithInvalidPcapMode_ShouldFail(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// sensor with invalid pcap_mode
+			{
+				Config: provider.ProviderConfig + `
+					resource "hpeuxi_sensor" "my_sensor" {
+						name 		 = "name"
+						address_note = "address_note"
+						notes 		 = "notes"
+						pcap_mode 	 = "invalid_pcap_mode"
+					}`,
+				ExpectError: regexp.MustCompile(
+					`(?s)Attribute pcap_mode value must be one of: \["light" "full" "off"\], got:\s*"invalid_pcap_mode"`,
+				),
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+
 func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()

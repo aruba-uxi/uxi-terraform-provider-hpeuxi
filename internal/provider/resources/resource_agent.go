@@ -8,11 +8,13 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/internal/provider/util"
@@ -95,6 +97,11 @@ func (r *agentResource) Schema(
 				Description: "The packet capture mode of the agent.",
 				Optional:    true,
 				Computed:    true,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						util.ConvertToStrings(config_api_client.AllowedAgentPcapModeEnumValues)...,
+					),
+				},
 			},
 		},
 	}
