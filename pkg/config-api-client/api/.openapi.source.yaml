@@ -6,7 +6,7 @@ info:
     name: HPE Aruba Networking UXI Support
     url: https://help.capenetworks.com/en/
     email: support@capenetworks.com
-  version: 5.19.0
+  version: 5.21.0
 servers:
   - url: https://api.capenetworks.com
 paths:
@@ -1465,6 +1465,7 @@ components:
       properties:
         name:
           type: string
+          maxLength: 250
           minLength: 1
           title: Name
       title: GroupPatchRequest
@@ -1509,12 +1510,12 @@ components:
         parentId:
           anyOf:
             - type: string
-              maxLength: 12
-              minLength: 12
           nullable: true
           title: Parentid
         name:
           type: string
+          maxLength: 250
+          minLength: 1
           title: Name
       required:
         - name
