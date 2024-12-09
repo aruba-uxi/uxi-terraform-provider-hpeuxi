@@ -55,6 +55,8 @@ tidy-client:
 
 lint:
   #!/usr/bin/env bash
+  set -o pipefail
+  set -e
 
   echo "gofmt -d ."
   output=$(gofmt -d .)
