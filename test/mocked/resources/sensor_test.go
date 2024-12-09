@@ -126,6 +126,65 @@ func TestSensorResource(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
+func Test_SensorResource_WithInvalidPcapMode_ShouldFail(t *testing.T) {
+	defer gock.Off()
+	mockOAuth := util.MockOAuth()
+	sensor := util.GenerateSensorsGetResponse("id", "").Items[0]
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Importing a sensor
+			{
+				PreConfig: func() {
+					util.MockGetSensor("id", util.GenerateSensorsGetResponse("id", ""), 2)
+				},
+				Config: provider.ProviderConfig + `
+					resource "hpeuxi_sensor" "my_sensor" {
+						name 		 = "name"
+						address_note = "address_note"
+						notes 		 = "notes"
+						pcap_mode 	 = "light"
+					}
+
+					import {
+						to = hpeuxi_sensor.my_sensor
+						id = "id"
+					}`,
+
+				Check: shared.CheckStateAgainstSensor(t, "hpeuxi_sensor.my_sensor", sensor),
+			},
+			// Updating sensor with invalid pcap_mode
+			{
+				Config: provider.ProviderConfig + `
+					resource "hpeuxi_sensor" "my_sensor" {
+						name 		 = "name"
+						address_note = "address_note"
+						notes 		 = "notes"
+						pcap_mode 	 = "invalid_pcap_mode"
+					}`,
+				// ExpectError: regexp.MustCompile(`(?s)Attribute pcap_mode value must be one of: ["light" "full" "off"]`),
+				ExpectError: regexp.MustCompile(
+					`(?s)Attribute pcap_mode value must be one of: \["light" "full" "off"\], got:\s*"invalid_pcap_mode"`,
+				),
+			},
+			// Remove sensor from state
+			{
+				Config: provider.ProviderConfig + `
+					removed {
+						from = hpeuxi_sensor.my_sensor
+
+						lifecycle {
+							destroy = false
+						}
+					}`,
+			},
+		},
+	})
+
+	mockOAuth.Mock.Disable()
+}
+
 func TestSensorResourceTooManyRequestsHandling(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
