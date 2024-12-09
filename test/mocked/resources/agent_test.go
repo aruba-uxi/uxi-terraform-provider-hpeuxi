@@ -142,7 +142,6 @@ func Test_AgentResource_WithInvalidPcapMode_ShouldFail(t *testing.T) {
 						notes 		 = "notes"
 						pcap_mode 	 = "invalid_pcap_mode"
 					}`,
-				// ExpectError: regexp.MustCompile(`(?s)Attribute pcap_mode value must be one of: ["light" "full" "off"]`),
 				ExpectError: regexp.MustCompile(
 					`(?s)Attribute pcap_mode value must be one of: \["light" "full" "off"\], got:\s*"invalid_pcap_mode"`,
 				),
