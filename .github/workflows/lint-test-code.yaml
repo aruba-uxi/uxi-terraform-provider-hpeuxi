@@ -37,6 +37,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-golang-
 
+      - name: Install Dependencies
+        run: go mod download
+
       - name: Setup Just
         uses: extractions/setup-just@v2
         env:
