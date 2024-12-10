@@ -17,8 +17,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/stretchr/testify/assert"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 )
 
 func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
@@ -31,7 +33,7 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks("id")
+					setupGroupCreateMocks("id", "parent_id", "name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -83,13 +85,47 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func setupGroupCreateMocks(groupID string) {
+func setupGroupCreateMocks(groupID string, parentID string, name string) {
+	groupPath := parentID + "." + groupID
+
+	setupCreateGroupPostMock(groupID, parentID, groupPath, name)
+	setupCreateGroupGetMock(groupID, parentID, groupPath, name)
+}
+
+func setupCreateGroupGetMock(groupID string, parentID string, groupPath string, name string) {
+	getResponseItems := []config_api_client.GroupsGetItem{*config_api_client.NewGroupsGetItem(
+		groupID,
+		name,
+		*config_api_client.NewNullableGroupsGetParent(config_api_client.NewGroupsGetParent(parentID)),
+		groupPath,
+		shared.GroupType,
+	)}
+	getResponse := config_api_client.NewGroupsGetResponse(
+		getResponseItems,
+		1,
+		*config_api_client.NewNullableString(nil),
+	)
+
+	util.MockGetGroup(groupID, getResponse, 1)
+}
+
+func setupCreateGroupPostMock(groupID string, parentID string, groupPath string, name string) {
+	postRequest := config_api_client.NewGroupPostRequest(name)
+	postRequest.SetParentId(parentID)
+
+	postResponse := config_api_client.NewGroupPostResponse(
+		groupID,
+		name,
+		groupPath,
+		*config_api_client.NewGroupPostParent(parentID),
+		shared.GroupType,
+	)
+
 	util.MockPostGroup(
-		util.GenerateNonRootGroupPostRequest(groupID, "", ""),
-		util.GenerateGroupPostResponse(groupID, "", ""),
+		*postRequest,
+		*postResponse,
 		1,
 	)
-	util.MockGetGroup(groupID, util.GenerateGroupGetResponse(groupID, "", ""), 2)
 }
 
 func setupGroupDeleteMocks(groupID string) {
