@@ -31,18 +31,7 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateNonRootGroupPostRequest("id", "", ""),
-						util.GenerateGroupPostResponse("id", "", ""),
-						1,
-					)
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 2)
-					// to indicate the group has a parent
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					setupGroupCreateMocks("id", "parent_id")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -84,12 +73,7 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupGetResponse("id", "", ""),
-						1,
-					)
-					util.MockDeleteGroup("id", 1)
+					setupGroupDeleteMocks("id")
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -97,6 +81,30 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 	})
 
 	mockOAuth.Mock.Disable()
+}
+
+func setupGroupDeleteMocks(groupID string) {
+	util.MockGetGroup(
+		groupID,
+		util.GenerateGroupGetResponse(groupID, "", ""),
+		1,
+	)
+	util.MockDeleteGroup(groupID, 1)
+}
+
+func setupGroupCreateMocks(groupID string, parentID string) {
+	util.MockPostGroup(
+		util.GenerateNonRootGroupPostRequest(groupID, "", ""),
+		util.GenerateGroupPostResponse(groupID, "", ""),
+		1,
+	)
+	util.MockGetGroup(groupID, util.GenerateGroupGetResponse(groupID, "", ""), 2)
+
+	util.MockGetGroup(
+		parentID,
+		util.GenerateGroupGetResponse(parentID, "", ""),
+		1,
+	)
 }
 
 func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
