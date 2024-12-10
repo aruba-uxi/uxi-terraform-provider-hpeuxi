@@ -88,11 +88,42 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 func setupGroupCreateMocks(groupID string, parentID string, name string) {
 	groupPath := parentID + "." + groupID
 
-	setupCreateGroupPostMock(groupID, parentID, groupPath, name)
-	setupCreateGroupGetMock(groupID, parentID, groupPath, name)
+	postRequest := createGroupPostRequest(name, parentID)
+	postResponse := createGroupPostResponse(groupID, groupPath, name, parentID)
+	util.MockPostGroup(postRequest, postResponse, 1)
+
+	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
+	util.MockGetGroup(groupID, getResponse, 1)
 }
 
-func setupCreateGroupGetMock(groupID string, parentID string, groupPath string, name string) {
+func createGroupPostRequest(name string, parentID string) config_api_client.GroupPostRequest {
+	postRequest := config_api_client.NewGroupPostRequest(name)
+	postRequest.SetParentId(parentID)
+
+	return *postRequest
+}
+
+func createGroupPostResponse(
+	groupID string,
+	groupPath string,
+	name string,
+	parentID string,
+) config_api_client.GroupPostResponse {
+	return *config_api_client.NewGroupPostResponse(
+		groupID,
+		name,
+		groupPath,
+		*config_api_client.NewGroupPostParent(parentID),
+		shared.GroupType,
+	)
+}
+
+func createGroupGetResponse(
+	groupID string,
+	parentID string,
+	groupPath string,
+	name string,
+) config_api_client.GroupsGetResponse {
 	getResponseItems := []config_api_client.GroupsGetItem{*config_api_client.NewGroupsGetItem(
 		groupID,
 		name,
@@ -106,26 +137,7 @@ func setupCreateGroupGetMock(groupID string, parentID string, groupPath string, 
 		*config_api_client.NewNullableString(nil),
 	)
 
-	util.MockGetGroup(groupID, getResponse, 1)
-}
-
-func setupCreateGroupPostMock(groupID string, parentID string, groupPath string, name string) {
-	postRequest := config_api_client.NewGroupPostRequest(name)
-	postRequest.SetParentId(parentID)
-
-	postResponse := config_api_client.NewGroupPostResponse(
-		groupID,
-		name,
-		groupPath,
-		*config_api_client.NewGroupPostParent(parentID),
-		shared.GroupType,
-	)
-
-	util.MockPostGroup(
-		*postRequest,
-		*postResponse,
-		1,
-	)
+	return *getResponse
 }
 
 func setupGroupDeleteMocks(groupID string) {
