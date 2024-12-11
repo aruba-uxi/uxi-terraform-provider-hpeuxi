@@ -33,7 +33,7 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					var parentID = new(string)
+					parentID := new(string)
 					*parentID = "parent_id"
 					setupGroupCreateMocks("id", parentID, "name")
 				},
@@ -77,7 +77,9 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks("id", "parent_id", "name")
+					parentID := new(string)
+					*parentID = "parent_id"
+					setupGroupDeleteMocks("id", parentID, "name")
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -150,9 +152,14 @@ func createGroupGetResponse(
 	return *getResponse
 }
 
-func setupGroupDeleteMocks(groupID string, parentID string, name string) {
-	groupPath := parentID + "." + groupID
-	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
+func setupGroupDeleteMocks(groupID string, parentID *string, name string) {
+	groupPath := util.MockRootGroupID + "." + groupID
+	realParent := util.MockRootGroupID
+	if parentID != nil {
+		realParent := *parentID
+		groupPath = realParent + "." + groupID
+	}
+	getResponse := createGroupGetResponse(groupID, realParent, groupPath, name)
 	util.MockGetGroup(
 		groupID,
 		getResponse,
@@ -165,7 +172,12 @@ func setupGroupImportMocks(groupID string, parentID string, name string) {
 	groupPath := parentID + "." + groupID
 	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
 	util.MockGetGroup(groupID, getResponse, 1)
-	getParentResponse := createGroupGetResponse(parentID, "fake_parent_id", "fake_parent_id."+parentID, "fake parent")
+	getParentResponse := createGroupGetResponse(
+		parentID,
+		"fake_parent_id",
+		"fake_parent_id."+parentID,
+		"fake parent",
+	)
 	util.MockGetGroup(parentID, getParentResponse, 1)
 }
 
@@ -179,7 +191,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					var parentID = new(string)
+					parentID := new(string)
 					*parentID = "parent_id"
 					setupGroupCreateMocks("id", parentID, "name")
 				},
@@ -201,7 +213,9 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks("id", "parent_id", "name")
+					parentID := new(string)
+					*parentID = "parent_id"
+					setupGroupDeleteMocks("id", parentID, "name")
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -221,18 +235,6 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 			// Creating a group attached to the root
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateGroupAttachedToRootGroupPostRequest("id", ""),
-						util.GenerateGroupAttachedToRootGroupPostResponse("id", ""),
-						1,
-					)
-					// to indicate the group has the root group as a parent
-					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
-						1,
-					)
 					setupGroupCreateMocks("id", nil, "name")
 				},
 				Config: provider.ProviderConfig + `
@@ -271,12 +273,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
-						1,
-					)
-					util.MockDeleteGroup("id", 1)
+					setupGroupDeleteMocks("id", nil, "name")
 				},
 				Config: provider.ProviderConfig,
 			},
