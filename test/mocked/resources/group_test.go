@@ -151,6 +151,14 @@ func setupGroupDeleteMocks(groupID string, parentID string, name string) {
 	util.MockDeleteGroup(groupID, 1)
 }
 
+func setupGroupImportMocks(groupID string, parentID string, name string) {
+	groupPath := parentID + "." + groupID
+	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
+	util.MockGetGroup(groupID, getResponse, 1)
+	getParentResponse := createGroupGetResponse(parentID, "fake_parent_id", "fake_parent_id."+parentID, "fake parent")
+	util.MockGetGroup(parentID, getParentResponse, 1)
+}
+
 func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 	defer gock.Off()
 	mockOAuth := util.MockOAuth()
@@ -161,18 +169,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateNonRootGroupPostRequest("id", "", ""),
-						util.GenerateGroupPostResponse("id", "", ""),
-						1,
-					)
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 2)
-					// to indicate the group has a parent
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					setupGroupCreateMocks("id", "parent_id", "name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -183,13 +180,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// ImportState
 			{
 				PreConfig: func() {
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
-					// to indicate the group has a parent
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					setupGroupImportMocks("id", "parent_id", "name")
 				},
 				ResourceName:      "hpeuxi_group.my_group",
 				ImportState:       true,
@@ -198,12 +189,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupGetResponse("id", "", ""),
-						1,
-					)
-					util.MockDeleteGroup("id", 1)
+					setupGroupDeleteMocks("id", "parent_id", "name")
 				},
 				Config: provider.ProviderConfig,
 			},
