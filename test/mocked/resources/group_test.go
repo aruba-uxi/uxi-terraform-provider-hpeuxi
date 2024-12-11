@@ -33,7 +33,9 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks("id", "parent_id", "name")
+					var parentID = new(string)
+					*parentID = "parent_id"
+					setupGroupCreateMocks("id", parentID, "name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -85,20 +87,28 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func setupGroupCreateMocks(groupID string, parentID string, name string) {
-	groupPath := parentID + "." + groupID
+func setupGroupCreateMocks(groupID string, parentID *string, name string) {
+	groupPath := util.MockRootGroupID + "." + groupID
+	realParent := util.MockRootGroupID
+	if parentID != nil {
+		realParent := *parentID
+		groupPath = realParent + "." + groupID
+	}
 
 	postRequest := createGroupPostRequest(name, parentID)
-	postResponse := createGroupPostResponse(groupID, groupPath, name, parentID)
+	postResponse := createGroupPostResponse(groupID, groupPath, name, realParent)
 	util.MockPostGroup(postRequest, postResponse, 1)
 
-	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
+	getResponse := createGroupGetResponse(groupID, realParent, groupPath, name)
 	util.MockGetGroup(groupID, getResponse, 1)
 }
 
-func createGroupPostRequest(name string, parentID string) config_api_client.GroupPostRequest {
+func createGroupPostRequest(name string, parentID *string) config_api_client.GroupPostRequest {
 	postRequest := config_api_client.NewGroupPostRequest(name)
-	postRequest.SetParentId(parentID)
+	if parentID != nil {
+		realParent := *parentID
+		postRequest.SetParentId(realParent)
+	}
 
 	return *postRequest
 }
@@ -169,7 +179,9 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks("id", "parent_id", "name")
+					var parentID = new(string)
+					*parentID = "parent_id"
+					setupGroupCreateMocks("id", parentID, "name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -221,6 +233,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
 						1,
 					)
+					setupGroupCreateMocks("id", nil, "name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
