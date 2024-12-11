@@ -75,7 +75,7 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks("id")
+					setupGroupDeleteMocks("id", "parent_id", "name")
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -140,10 +140,12 @@ func createGroupGetResponse(
 	return *getResponse
 }
 
-func setupGroupDeleteMocks(groupID string) {
+func setupGroupDeleteMocks(groupID string, parentID string, name string) {
+	groupPath := parentID + "." + groupID
+	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
 	util.MockGetGroup(
 		groupID,
-		util.GenerateGroupGetResponse(groupID, "", ""),
+		getResponse,
 		1,
 	)
 	util.MockDeleteGroup(groupID, 1)
