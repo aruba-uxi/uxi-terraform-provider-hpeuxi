@@ -404,17 +404,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateGroupAttachedToRootGroupPostRequest("id", ""),
-						util.GenerateGroupAttachedToRootGroupPostResponse("id", ""),
-						1,
-					)
-					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
-						1,
-					)
+					setupGroupCreateMocks("id", nil, "name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -470,12 +460,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", "_2"),
-						1,
-					)
-					util.MockDeleteGroup("id", 1)
+					setupGroupDeleteMocks("id", nil, "name_2")
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -495,18 +480,9 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateNonRootGroupPostRequest("id", "", ""),
-						util.GenerateGroupPostResponse("id", "", ""),
-						1,
-					)
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 2)
-					// to indicate the group has a parent
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					parentID := new(string)
+					*parentID = "parent_id"
+					setupGroupCreateMocks("id", parentID, "name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -573,12 +549,9 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"new_id",
-						util.GenerateGroupGetResponse("new_id", "", "_2"),
-						1,
-					)
-					util.MockDeleteGroup("new_id", 1)
+					parentID := new(string)
+					*parentID = "parent_id_2"
+					setupGroupDeleteMocks("new_id", parentID, "name_2")
 				},
 				Config: provider.ProviderConfig,
 			},
