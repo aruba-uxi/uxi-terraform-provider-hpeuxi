@@ -353,6 +353,7 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 				PreConfig: func() {
 					// existing group
 					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
+
 					// updated group
 					util.MockPatchGroup(
 						"id",
@@ -436,6 +437,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
 						1,
 					)
+
 					// updated group
 					util.MockPatchGroup(
 						"id",
@@ -509,21 +511,14 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 			// Update that does trigger a recreate
 			{
 				PreConfig: func() {
-					// existing group
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
-					// new group (replacement)
-					util.MockPostGroup(
-						util.GenerateNonRootGroupPostRequest("new_id", "", "_2"),
-						util.GenerateGroupPostResponse("new_id", "", "_2"),
-						1,
-					)
-					util.MockGetGroup(
-						"new_id",
-						util.GenerateGroupGetResponse("new_id", "", "_2"),
-						1,
-					)
-					// delete old group (being replaced)
-					util.MockDeleteGroup("id", 1)
+					oldParentID := new(string)
+					*oldParentID = "parent_id"
+					setupGroupImportMocks("id", oldParentID, "name")
+					setupGroupDeleteMocks("id", oldParentID, "name")
+
+					newParentID := new(string)
+					*newParentID = "parent_id_2"
+					setupGroupCreateMocks("new_id", newParentID, "name")
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_group" "my_group" {
@@ -567,7 +562,7 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 				PreConfig: func() {
 					parentID := new(string)
 					*parentID = "parent_id_2"
-					setupGroupDeleteMocks("new_id", parentID, "name_2")
+					setupGroupDeleteMocks("new_id", parentID, "name")
 				},
 				Config: provider.ProviderConfig,
 			},
