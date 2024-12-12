@@ -152,6 +152,58 @@ func createGroupGetResponse(
 	return *getResponse
 }
 
+func createGroupPatchRequest(name string) config_api_client.GroupPatchRequest {
+	request := config_api_client.NewGroupPatchRequest()
+	request.SetName(name)
+
+	return *request
+}
+
+func createGroupPatchResponse(
+	groupID string,
+	name string,
+	parentID string,
+	path string,
+) config_api_client.GroupPatchResponse {
+	response := config_api_client.NewGroupPatchResponse(
+		groupID,
+		name,
+		path,
+		*config_api_client.NewGroupPatchParent(parentID),
+		shared.GroupType,
+	)
+
+	return *response
+}
+
+func setupGroupUpdateMocks(groupID string, parentID string, name string) {
+	path := parentID + "." + groupID
+
+	util.MockPatchGroup(
+		"id",
+		createGroupPatchRequest(name),
+		createGroupPatchResponse(groupID, name, path, parentID),
+		1,
+	)
+
+	util.MockGetGroup(
+		"id",
+		createGroupGetResponse(groupID, parentID, path, name),
+		1,
+	)
+
+	util.MockGetGroup(
+		parentID,
+		createGroupGetResponse(
+			parentID,
+			"fake_parent_id",
+			"fake_parent_id."+parentID,
+			"fake_parent",
+		),
+		1,
+	)
+}
+
 func setupGroupDeleteMocks(groupID string, parentID *string, name string) {
 	groupPath := util.MockRootGroupID + "." + groupID
 	realParent := util.MockRootGroupID
@@ -351,22 +403,12 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					// existing group
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
+					parentID := new(string)
+					*parentID = "parent_id"
+					setupGroupImportMocks("id", parentID, "name")
 
 					// updated group
-					util.MockPatchGroup(
-						"id",
-						util.GenerateGroupPatchRequest("_2"),
-						util.GenerateGroupPatchResponse("id", "_2", ""),
-						1,
-					)
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "_2", ""), 3)
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					setupGroupUpdateMocks("id", *parentID, "name_2")
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_group" "my_group" {
