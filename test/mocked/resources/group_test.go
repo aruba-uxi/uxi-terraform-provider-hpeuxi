@@ -168,17 +168,31 @@ func setupGroupDeleteMocks(groupID string, parentID *string, name string) {
 	util.MockDeleteGroup(groupID, 1)
 }
 
-func setupGroupImportMocks(groupID string, parentID string, name string) {
-	groupPath := parentID + "." + groupID
-	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
-	util.MockGetGroup(groupID, getResponse, 1)
-	getParentResponse := createGroupGetResponse(
-		parentID,
-		"fake_parent_id",
-		"fake_parent_id."+parentID,
-		"fake parent",
-	)
-	util.MockGetGroup(parentID, getParentResponse, 1)
+func setupGroupImportMocks(groupID string, parentID *string, name string) {
+	if parentID != nil {
+		realParent := *parentID
+		groupPath := realParent + "." + groupID
+
+		getParentResponse := createGroupGetResponse(
+			realParent,
+			"fake_parent_id",
+			"fake_parent_id."+realParent,
+			"fake parent",
+		)
+
+		util.MockGetGroup(realParent, getParentResponse, 1)
+
+		getResponse := createGroupGetResponse(groupID, realParent, groupPath, name)
+		util.MockGetGroup(groupID, getResponse, 1)
+	} else {
+		groupPath := util.MockRootGroupID + "." + groupID
+
+		rootResponse := util.GenerateRootGroupGetResponse()
+		util.MockGetGroup(util.MockRootGroupID, rootResponse, 1)
+
+		getResponse := createGroupGetResponse(groupID, util.MockRootGroupID, groupPath, name)
+		util.MockGetGroup(groupID, getResponse, 1)
+	}
 }
 
 func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
@@ -204,7 +218,9 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// ImportState
 			{
 				PreConfig: func() {
-					setupGroupImportMocks("id", "parent_id", "name")
+					parentID := new(string)
+					*parentID = "parent_id"
+					setupGroupImportMocks("id", parentID, "name")
 				},
 				ResourceName:      "hpeuxi_group.my_group",
 				ImportState:       true,
@@ -293,7 +309,7 @@ func Test_ImportGroupResource_WithRoot_ShouldFail(t *testing.T) {
 			// Importing the root group does not work
 			{
 				PreConfig: func() {
-					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
+					setupGroupImportMocks(util.MockRootGroupID, nil, "name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_root_group" {
