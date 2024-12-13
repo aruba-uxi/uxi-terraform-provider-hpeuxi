@@ -34,13 +34,13 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			{
 				PreConfig: func() {
 					parentID := new(string)
-					*parentID = "parent_id"
-					setupGroupCreateMocks("id", parentID, "name")
+					*parentID = "create_parent"
+					setupGroupCreateMocks("create_id", parentID, "test_name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
-					name            = "name"
-					parent_group_id = "parent_id"
+					name            = "test_name"
+					parent_group_id = "create_parent"
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
@@ -55,31 +55,31 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("parent_group_id"),
-							knownvalue.StringExact("parent_id"),
+							knownvalue.StringExact("create_parent"),
 						),
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("name"),
+							knownvalue.StringExact("test_name"),
 						),
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "test_name"),
 					resource.TestCheckResourceAttr(
 						"hpeuxi_group.my_group",
 						"parent_group_id",
-						"parent_id",
+						"create_parent",
 					),
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "create_id"),
 				),
 			},
 			// Delete
 			{
 				PreConfig: func() {
 					parentID := new(string)
-					*parentID = "parent_id"
-					setupGroupDeleteMocks("id", parentID, "name")
+					*parentID = "create_parent"
+					setupGroupDeleteMocks("create_id", parentID, "test_name")
 				},
 				Config: provider.ProviderConfig,
 			},
