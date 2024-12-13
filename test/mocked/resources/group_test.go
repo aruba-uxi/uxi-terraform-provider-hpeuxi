@@ -362,11 +362,11 @@ func Test_ImportGroupResource_WithRoot_ShouldFail(t *testing.T) {
 			// Importing the root group does not work
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(util.MockRootGroupID, nil, "name")
+					setupGroupImportMocks(util.MockRootGroupID, nil, "root")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_root_group" {
-					name            = "name"
+					name = "root"
 				}
 
 				import {
