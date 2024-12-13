@@ -24,7 +24,7 @@ import (
 )
 
 func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
@@ -178,6 +178,20 @@ func createGroupPatchResponse(
 
 func setupGroupUpdateMocks(groupID string, parentID string, name string) {
 	path := parentID + "." + groupID
+	if parentID == util.MockRootGroupID {
+		util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
+	} else {
+		util.MockGetGroup(
+			parentID,
+			createGroupGetResponse(
+				parentID,
+				"fake_parent_id",
+				"fake_parent_id."+parentID,
+				"fake_parent",
+			),
+			1,
+		)
+	}
 
 	util.MockPatchGroup(
 		"id",
@@ -189,17 +203,6 @@ func setupGroupUpdateMocks(groupID string, parentID string, name string) {
 	util.MockGetGroup(
 		"id",
 		createGroupGetResponse(groupID, parentID, path, name),
-		1,
-	)
-
-	util.MockGetGroup(
-		parentID,
-		createGroupGetResponse(
-			parentID,
-			"fake_parent_id",
-			"fake_parent_id."+parentID,
-			"fake_parent",
-		),
 		1,
 	)
 }
@@ -248,7 +251,7 @@ func setupGroupImportMocks(groupID string, parentID *string, name string) {
 }
 
 func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
@@ -294,7 +297,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 }
 
 func Test_CreateGroupResource_WithRootParent(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
@@ -352,7 +355,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 }
 
 func Test_ImportGroupResource_WithRoot_ShouldFail(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
@@ -381,7 +384,7 @@ func Test_ImportGroupResource_WithRoot_ShouldFail(t *testing.T) {
 }
 
 func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
@@ -454,7 +457,7 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 }
 
 func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
@@ -476,23 +479,16 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 					// existing group
 					util.MockGetGroup(
 						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
+						createGroupGetResponse(
+							"id",
+							util.MockRootGroupID,
+							"id."+util.MockRootGroupID,
+							"name",
+						),
 						1,
 					)
 
-					// updated group
-					util.MockPatchGroup(
-						"id",
-						util.GenerateGroupPatchRequest("_2"),
-						util.GenerateGroupPatchResponse("id", "_2", ""),
-						1,
-					)
-					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 2)
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", "_2"),
-						2,
-					)
+					setupGroupUpdateMocks("id", util.MockRootGroupID, "name_2")
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_group" "my_group" {
@@ -531,7 +527,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 }
 
 func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
@@ -615,7 +611,7 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 }
 
 func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
 
@@ -736,7 +732,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 }
 
 func TestGroupResourceHttpErrorHandling(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
