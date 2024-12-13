@@ -37,6 +37,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-golang-
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3.1.2
+        with:
+          terraform_version: 1.9.6
+
       - name: Setup Just
         uses: extractions/setup-just@v2
         env:
