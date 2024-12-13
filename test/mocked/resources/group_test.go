@@ -261,21 +261,21 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			{
 				PreConfig: func() {
 					parentID := new(string)
-					*parentID = "parent_id"
-					setupGroupCreateMocks("id", parentID, "name")
+					*parentID = "import_parent"
+					setupGroupCreateMocks("import_id", parentID, "import_name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
-					name            = "name"
-					parent_group_id = "parent_id"
+					name            = "import_name"
+					parent_group_id = "import_parent"
 				}`,
 			},
 			// ImportState
 			{
 				PreConfig: func() {
 					parentID := new(string)
-					*parentID = "parent_id"
-					setupGroupImportMocks("id", parentID, "name")
+					*parentID = "import_parent"
+					setupGroupImportMocks("import_id", parentID, "import_name")
 				},
 				ResourceName:      "hpeuxi_group.my_group",
 				ImportState:       true,
@@ -285,8 +285,8 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			{
 				PreConfig: func() {
 					parentID := new(string)
-					*parentID = "parent_id"
-					setupGroupDeleteMocks("id", parentID, "name")
+					*parentID = "import_parent"
+					setupGroupDeleteMocks("import_id", parentID, "import_name")
 				},
 				Config: provider.ProviderConfig,
 			},
