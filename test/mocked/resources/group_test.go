@@ -476,18 +476,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					// existing group
-					util.MockGetGroup(
-						"id",
-						createGroupGetResponse(
-							"id",
-							util.MockRootGroupID,
-							"id."+util.MockRootGroupID,
-							"name",
-						),
-						1,
-					)
-
+					setupGroupImportMocks("id", nil, "name")
 					setupGroupUpdateMocks("id", util.MockRootGroupID, "name_2")
 				},
 				Config: provider.ProviderConfig + `
