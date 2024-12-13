@@ -187,8 +187,8 @@ func createGroupPatchResponse(
 func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
-	parentID := new(string)
-	*parentID = "create_parent"
+	testParentID := new(string)
+	*testParentID = "create_parent"
 	testGroupID := "create_id"
 	testName := "test_name"
 
@@ -198,7 +198,7 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks(testGroupID, parentID, testName)
+					setupGroupCreateMocks(testGroupID, testParentID, testName)
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -240,7 +240,7 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(testGroupID, parentID, testName)
+					setupGroupDeleteMocks(testGroupID, testParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -253,8 +253,8 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
-	parentID := new(string)
-	*parentID = "import_parent"
+	testParentID := new(string)
+	*testParentID = "import_parent"
 	testName := "import_name"
 	testID := "import_id"
 
@@ -264,7 +264,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks(testID, parentID, testName)
+					setupGroupCreateMocks(testID, testParentID, testName)
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -275,7 +275,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// ImportState
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(testID, parentID, testName)
+					setupGroupImportMocks(testID, testParentID, testName)
 				},
 				ResourceName:      "hpeuxi_group.my_group",
 				ImportState:       true,
@@ -284,7 +284,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(testID, parentID, testName)
+					setupGroupDeleteMocks(testID, testParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -297,6 +297,8 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
+	testGroupID := "root_child"
+	testName := "child of root"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -304,7 +306,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 			// Creating a group attached to the root
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks("id", nil, "name")
+					setupGroupCreateMocks(testGroupID, nil, testName)
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -318,7 +320,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 						),
 						plancheck.ExpectUnknownValue(
 							"hpeuxi_group.my_group",
-							tfjsonpath.New("id"),
+							tfjsonpath.New(testGroupID),
 						),
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
@@ -328,13 +330,13 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("name"),
+							knownvalue.StringExact(testName),
 						),
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", testGroupID),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", testName),
 					resource.TestCheckNoResourceAttr("hpeuxi_group.my_group", "parent_group_id"),
 				),
 			},
@@ -342,7 +344,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					setupGroupDeleteMocks("id", nil, "name")
+					setupGroupDeleteMocks(testGroupID, nil, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
