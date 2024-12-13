@@ -190,6 +190,7 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 	parentID := new(string)
 	*parentID = "create_parent"
 	testGroupID := "create_id"
+	testName := "test_name"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -197,9 +198,7 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					parentID := new(string)
-					*parentID = "create_parent"
-					setupGroupCreateMocks("create_id", parentID, "test_name")
+					setupGroupCreateMocks(testGroupID, parentID, testName)
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -224,26 +223,24 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("test_name"),
+							knownvalue.StringExact(testName),
 						),
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "test_name"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", testName),
 					resource.TestCheckResourceAttr(
 						"hpeuxi_group.my_group",
 						"parent_group_id",
 						"create_parent",
 					),
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "create_id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", testGroupID),
 				),
 			},
 			// Delete
 			{
 				PreConfig: func() {
-					parentID := new(string)
-					*parentID = "create_parent"
-					setupGroupDeleteMocks("create_id", parentID, "test_name")
+					setupGroupDeleteMocks(testGroupID, parentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
