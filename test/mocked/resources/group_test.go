@@ -541,11 +541,11 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 				PreConfig: func() {
 					setupGroupCreateMocks(oldGroupID, oldParentID, testName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name            = "name"
-					parent_group_id = "parent_id"
-				}`,
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, testName, *oldParentID),
 			},
 			// Update that does trigger a recreate
 			{
@@ -555,11 +555,11 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 
 					setupGroupCreateMocks(newGroupID, newParentID, testName)
 				},
-				Config: provider.ProviderConfig + `
-					resource "hpeuxi_group" "my_group" {
-						name            = "name"
-						parent_group_id = "parent_id_2"
-					}`,
+				Config: fmt.Sprintf(`%s
+				resource "hpeuxi_group" "my_group" {
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, testName, *newParentID),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectResourceAction(
