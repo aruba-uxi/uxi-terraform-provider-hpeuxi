@@ -57,14 +57,14 @@ func setupGroupUpdateMocks(groupID string, parentID string, name string) {
 	}
 
 	util.MockPatchGroup(
-		"id",
+		groupID,
 		createGroupPatchRequest(name),
 		createGroupPatchResponse(groupID, name, path, parentID),
 		1,
 	)
 
 	util.MockGetGroup(
-		"id",
+		groupID,
 		createGroupGetResponse(groupID, parentID, path, name),
 		1,
 	)
@@ -456,6 +456,7 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
+	testGroupID := "id"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -463,7 +464,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks("id", nil, "name")
+					setupGroupCreateMocks(testGroupID, nil, "name")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -473,8 +474,8 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					setupGroupImportMocks("id", nil, "name")
-					setupGroupUpdateMocks("id", util.MockRootGroupID, "name_2")
+					setupGroupImportMocks(testGroupID, nil, "name")
+					setupGroupUpdateMocks(testGroupID, util.MockRootGroupID, "name_2")
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_group" "my_group" {
@@ -496,13 +497,13 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name_2"),
 					resource.TestCheckNoResourceAttr("hpeuxi_group.my_group", "parent_group_id"),
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", testGroupID),
 				),
 			},
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks("id", nil, "name_2")
+					setupGroupDeleteMocks(testGroupID, nil, "name_2")
 				},
 				Config: provider.ProviderConfig,
 			},
