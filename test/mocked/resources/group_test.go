@@ -83,30 +83,22 @@ func setupGroupDeleteMocks(groupID string, parentID string, name string) {
 }
 
 func setupGroupImportMocks(groupID string, parentID string, name string) {
+	var getParentResponse config_api_client.GroupsGetResponse
 	if parentID != util.MockRootGroupID {
-		realParent := parentID
-		groupPath := realParent + "." + groupID
-
-		getParentResponse := createGroupGetResponse(
-			realParent,
+		getParentResponse = createGroupGetResponse(
+			parentID,
 			"fake_parent_id",
-			"fake_parent_id."+realParent,
+			"fake_parent_id."+parentID,
 			"fake parent",
 		)
-
-		util.MockGetGroup(realParent, getParentResponse, 1)
-
-		getResponse := createGroupGetResponse(groupID, realParent, groupPath, name)
-		util.MockGetGroup(groupID, getResponse, 1)
 	} else {
-		groupPath := util.MockRootGroupID + "." + groupID
-
-		rootResponse := util.GenerateRootGroupGetResponse()
-		util.MockGetGroup(util.MockRootGroupID, rootResponse, 1)
-
-		getResponse := createGroupGetResponse(groupID, util.MockRootGroupID, groupPath, name)
-		util.MockGetGroup(groupID, getResponse, 1)
+		getParentResponse = util.GenerateRootGroupGetResponse()
 	}
+
+	util.MockGetGroup(parentID, getParentResponse, 1)
+	groupPath := parentID + "." + groupID
+	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
+	util.MockGetGroup(groupID, getResponse, 1)
 }
 
 func createGroupPostRequest(name string, parentID *string) config_api_client.GroupPostRequest {
@@ -456,7 +448,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 	testGroupID := "id"
 	oldTestName := "create_name"
 	newTestName := "update_name"
-	testParentID := util.MockRootGroupID
+	rootParentID := util.MockRootGroupID
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -464,7 +456,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks(testGroupID, testParentID, oldTestName)
+					setupGroupCreateMocks(testGroupID, rootParentID, oldTestName)
 				},
 				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
@@ -474,7 +466,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(testGroupID, testParentID, oldTestName)
+					setupGroupImportMocks(testGroupID, rootParentID, oldTestName)
 					setupGroupUpdateMocks(testGroupID, util.MockRootGroupID, newTestName)
 				},
 				Config: fmt.Sprintf(`%s
@@ -503,7 +495,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(testGroupID, testParentID, newTestName)
+					setupGroupDeleteMocks(testGroupID, rootParentID, newTestName)
 				},
 				Config: provider.ProviderConfig,
 			},
