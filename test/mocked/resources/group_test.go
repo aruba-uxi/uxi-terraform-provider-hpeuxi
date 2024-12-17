@@ -309,10 +309,10 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 				PreConfig: func() {
 					setupGroupCreateMocks(testGroupID, nil, testName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name = "child of root"
-				}`,
+					name            = "%s"
+				}`, provider.ProviderConfig, testName),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectResourceAction(
