@@ -267,11 +267,11 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 				PreConfig: func() {
 					setupGroupCreateMocks(testID, testParentID, testName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name            = "import_name"
-					parent_group_id = "import_parent"
-				}`,
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, testName, *testParentID),
 			},
 			// ImportState
 			{
