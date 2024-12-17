@@ -525,13 +525,15 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 	*newParentID = "parent_id_2"
 	newGroupID := "new_id"
 
+	testName := "name"
+
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks(oldGroupID, oldParentID, "name")
+					setupGroupCreateMocks(oldGroupID, oldParentID, testName)
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_group" {
@@ -542,10 +544,10 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 			// Update that does trigger a recreate
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(oldGroupID, oldParentID, "name")
-					setupGroupDeleteMocks(oldGroupID, oldParentID, "name")
+					setupGroupImportMocks(oldGroupID, oldParentID, testName)
+					setupGroupDeleteMocks(oldGroupID, oldParentID, testName)
 
-					setupGroupCreateMocks(newGroupID, newParentID, "name")
+					setupGroupCreateMocks(newGroupID, newParentID, testName)
 				},
 				Config: provider.ProviderConfig + `
 					resource "hpeuxi_group" "my_group" {
@@ -565,7 +567,7 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("name"),
+							knownvalue.StringExact(testName),
 						),
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
@@ -575,7 +577,7 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", testName),
 					resource.TestCheckResourceAttr(
 						"hpeuxi_group.my_group",
 						"parent_group_id",
@@ -587,7 +589,7 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(newGroupID, newParentID, "name")
+					setupGroupDeleteMocks(newGroupID, newParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
