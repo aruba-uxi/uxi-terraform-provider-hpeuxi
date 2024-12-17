@@ -293,7 +293,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 	mockOAuth := util.MockOAuth()
 	testGroupID := "root_child"
 	testName := "child of root"
-	testParentID := util.MockRootGroupID
+	rootParentID := util.MockRootGroupID
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -301,7 +301,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 			// Creating a group attached to the root
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks(testGroupID, testParentID, testName)
+					setupGroupCreateMocks(testGroupID, rootParentID, testName)
 				},
 				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
@@ -339,7 +339,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					setupGroupDeleteMocks(testGroupID, testParentID, testName)
+					setupGroupDeleteMocks(testGroupID, rootParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -352,7 +352,6 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 func Test_ImportGroupResource_WithRoot_ShouldFail(t *testing.T) {
 	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
-	testParentID := util.MockRootGroupID
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -360,7 +359,7 @@ func Test_ImportGroupResource_WithRoot_ShouldFail(t *testing.T) {
 			// Importing the root group does not work
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(util.MockRootGroupID, testParentID, "root")
+					setupGroupImportMocks(util.MockRootGroupID, util.MockRootGroupID, "root")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_root_group" {
@@ -385,8 +384,8 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 	testParentID := "parent_id"
 	testGroupID := "no_recreate"
 
-	oldTestName := "name"
-	newTestName := "name_2"
+	oldTestName := "create_name"
+	newTestName := "update_name"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -455,8 +454,8 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 	testGroupID := "id"
-	oldTestName := "name"
-	newTestName := "name_2"
+	oldTestName := "create_name"
+	newTestName := "update_name"
 	testParentID := util.MockRootGroupID
 
 	resource.Test(t, resource.TestCase{
@@ -524,7 +523,7 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 	newParentID := "parent_id_2"
 	newGroupID := "new_id"
 
-	testName := "name"
+	testName := "constant_name"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
