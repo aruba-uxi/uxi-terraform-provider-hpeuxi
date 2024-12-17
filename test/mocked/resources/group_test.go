@@ -5,6 +5,7 @@ Copyright 2024 Hewlett Packard Enterprise Development LP.
 package resource_test
 
 import (
+	"fmt"
 	"net/http"
 	"regexp"
 	"testing"
@@ -200,11 +201,11 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 				PreConfig: func() {
 					setupGroupCreateMocks(testGroupID, testParentID, testName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name            = "test_name"
-					parent_group_id = "create_parent"
-				}`,
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, testName, *testParentID),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectResourceAction(
