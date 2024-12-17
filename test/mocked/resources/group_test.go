@@ -461,6 +461,8 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 	testGroupID := "id"
+	oldTestName := "name"
+	newTestName := "name_2"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -468,23 +470,23 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks(testGroupID, nil, "name")
+					setupGroupCreateMocks(testGroupID, nil, oldTestName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name            = "name"
-				}`,
+					name            = "%s"
+				}`, provider.ProviderConfig, oldTestName),
 			},
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(testGroupID, nil, "name")
-					setupGroupUpdateMocks(testGroupID, util.MockRootGroupID, "name_2")
+					setupGroupImportMocks(testGroupID, nil, oldTestName)
+					setupGroupUpdateMocks(testGroupID, util.MockRootGroupID, newTestName)
 				},
-				Config: provider.ProviderConfig + `
-					resource "hpeuxi_group" "my_group" {
-						name            = "name_2"
-					}`,
+				Config: fmt.Sprintf(`%s
+				resource "hpeuxi_group" "my_group" {
+					name            = "%s"
+				}`, provider.ProviderConfig, newTestName),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectResourceAction(
@@ -494,12 +496,12 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("name_2"),
+							knownvalue.StringExact(newTestName),
 						),
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name_2"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", newTestName),
 					resource.TestCheckNoResourceAttr("hpeuxi_group.my_group", "parent_group_id"),
 					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", testGroupID),
 				),
@@ -507,7 +509,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(testGroupID, nil, "name_2")
+					setupGroupDeleteMocks(testGroupID, nil, newTestName)
 				},
 				Config: provider.ProviderConfig,
 			},
