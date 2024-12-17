@@ -82,9 +82,9 @@ func setupGroupDeleteMocks(groupID string, parentID string, name string) {
 	util.MockDeleteGroup(groupID, 1)
 }
 
-func setupGroupImportMocks(groupID string, parentID *string, name string) {
-	if parentID != nil {
-		realParent := *parentID
+func setupGroupImportMocks(groupID string, parentID string, name string) {
+	if parentID != util.MockRootGroupID {
+		realParent := parentID
 		groupPath := realParent + "." + groupID
 
 		getParentResponse := createGroupGetResponse(
@@ -269,7 +269,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// ImportState
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(testID, &testParentID, testName)
+					setupGroupImportMocks(testID, testParentID, testName)
 				},
 				ResourceName:      "hpeuxi_group.my_group",
 				ImportState:       true,
@@ -352,6 +352,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 func Test_ImportGroupResource_WithRoot_ShouldFail(t *testing.T) {
 	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
+	testParentID := util.MockRootGroupID
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -359,7 +360,7 @@ func Test_ImportGroupResource_WithRoot_ShouldFail(t *testing.T) {
 			// Importing the root group does not work
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(util.MockRootGroupID, nil, "root")
+					setupGroupImportMocks(util.MockRootGroupID, testParentID, "root")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_root_group" {
@@ -404,7 +405,7 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(testGroupID, &testParentID, oldTestName)
+					setupGroupImportMocks(testGroupID, testParentID, oldTestName)
 
 					// updated group
 					setupGroupUpdateMocks(testGroupID, testParentID, newTestName)
@@ -474,7 +475,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(testGroupID, nil, oldTestName)
+					setupGroupImportMocks(testGroupID, testParentID, oldTestName)
 					setupGroupUpdateMocks(testGroupID, util.MockRootGroupID, newTestName)
 				},
 				Config: fmt.Sprintf(`%s
@@ -542,7 +543,7 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 			// Update that does trigger a recreate
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(oldGroupID, &oldParentID, testName)
+					setupGroupImportMocks(oldGroupID, oldParentID, testName)
 					setupGroupDeleteMocks(oldGroupID, oldParentID, testName)
 
 					setupGroupCreateMocks(newGroupID, newParentID, testName)
