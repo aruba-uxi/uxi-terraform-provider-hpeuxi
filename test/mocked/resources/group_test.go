@@ -71,14 +71,9 @@ func setupGroupUpdateMocks(groupID string, parentID string, name string) {
 	)
 }
 
-func setupGroupDeleteMocks(groupID string, parentID *string, name string) {
-	groupPath := util.MockRootGroupID + "." + groupID
-	realParent := util.MockRootGroupID
-	if parentID != nil {
-		realParent := *parentID
-		groupPath = realParent + "." + groupID
-	}
-	getResponse := createGroupGetResponse(groupID, realParent, groupPath, name)
+func setupGroupDeleteMocks(groupID string, parentID string, name string) {
+	groupPath := parentID + "." + groupID
+	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
 	util.MockGetGroup(
 		groupID,
 		getResponse,
@@ -240,7 +235,7 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(testGroupID, &testParentID, testName)
+					setupGroupDeleteMocks(testGroupID, testParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -283,7 +278,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(testID, &testParentID, testName)
+					setupGroupDeleteMocks(testID, testParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -344,7 +339,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					setupGroupDeleteMocks(testGroupID, nil, testName)
+					setupGroupDeleteMocks(testGroupID, testParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -445,7 +440,7 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(testGroupID, &testParentID, newTestName)
+					setupGroupDeleteMocks(testGroupID, testParentID, newTestName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -508,7 +503,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(testGroupID, nil, newTestName)
+					setupGroupDeleteMocks(testGroupID, testParentID, newTestName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -548,7 +543,7 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 			{
 				PreConfig: func() {
 					setupGroupImportMocks(oldGroupID, &oldParentID, testName)
-					setupGroupDeleteMocks(oldGroupID, &oldParentID, testName)
+					setupGroupDeleteMocks(oldGroupID, oldParentID, testName)
 
 					setupGroupCreateMocks(newGroupID, newParentID, testName)
 				},
@@ -592,7 +587,7 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(newGroupID, &newParentID, testName)
+					setupGroupDeleteMocks(newGroupID, newParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
