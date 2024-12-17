@@ -28,13 +28,19 @@ func setupGroupCreateMocks(groupID string, parentID *string, name string) {
 	groupPath := util.MockRootGroupID + "." + groupID
 	realParent := util.MockRootGroupID
 	if parentID != nil {
-		realParent := *parentID
+		realParent = *parentID
 		groupPath = realParent + "." + groupID
 	}
 
-	postRequest := createGroupPostRequest(name, parentID)
-	postResponse := createGroupPostResponse(groupID, groupPath, name, realParent)
-	util.MockPostGroup(postRequest, postResponse, 1)
+	if realParent == util.MockRootGroupID {
+		postRequest := createGroupPostRequest(name, nil)
+		postResponse := createGroupPostResponse(groupID, groupPath, name, realParent)
+		util.MockPostGroup(postRequest, postResponse, 1)
+	} else {
+		postRequest := createGroupPostRequest(name, parentID)
+		postResponse := createGroupPostResponse(groupID, groupPath, name, realParent)
+		util.MockPostGroup(postRequest, postResponse, 1)
+	}
 
 	getResponse := createGroupGetResponse(groupID, realParent, groupPath, name)
 	util.MockGetGroup(groupID, getResponse, 1)
@@ -300,6 +306,8 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 	mockOAuth := util.MockOAuth()
 	testGroupID := "root_child"
 	testName := "child of root"
+	testParentID := new(string)
+	*testParentID = util.MockRootGroupID
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -307,7 +315,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 			// Creating a group attached to the root
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks(testGroupID, nil, testName)
+					setupGroupCreateMocks(testGroupID, testParentID, testName)
 				},
 				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
@@ -463,6 +471,8 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 	testGroupID := "id"
 	oldTestName := "name"
 	newTestName := "name_2"
+	testParentID := new(string)
+	*testParentID = util.MockRootGroupID
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -470,7 +480,7 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks(testGroupID, nil, oldTestName)
+					setupGroupCreateMocks(testGroupID, testParentID, oldTestName)
 				},
 				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
