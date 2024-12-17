@@ -32,15 +32,14 @@ func setupGroupCreateMocks(groupID string, parentID *string, name string) {
 		groupPath = realParent + "." + groupID
 	}
 
+	var postRequest config_api_client.GroupPostRequest
 	if realParent == util.MockRootGroupID {
-		postRequest := createGroupPostRequest(name, nil)
-		postResponse := createGroupPostResponse(groupID, groupPath, name, realParent)
-		util.MockPostGroup(postRequest, postResponse, 1)
+		postRequest = createGroupPostRequest(name, nil)
 	} else {
-		postRequest := createGroupPostRequest(name, parentID)
-		postResponse := createGroupPostResponse(groupID, groupPath, name, realParent)
-		util.MockPostGroup(postRequest, postResponse, 1)
+		postRequest = createGroupPostRequest(name, parentID)
 	}
+	postResponse := createGroupPostResponse(groupID, groupPath, name, realParent)
+	util.MockPostGroup(postRequest, postResponse, 1)
 
 	getResponse := createGroupGetResponse(groupID, realParent, groupPath, name)
 	util.MockGetGroup(groupID, getResponse, 1)
