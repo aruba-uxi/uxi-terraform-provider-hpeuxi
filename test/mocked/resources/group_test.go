@@ -387,9 +387,12 @@ func Test_ImportGroupResource_WithRoot_ShouldFail(t *testing.T) {
 func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
-	parentID := new(string)
-	*parentID = "parent_id"
+	testParentID := new(string)
+	*testParentID = "parent_id"
 	testGroupID := "no_recreate"
+
+	oldTestName := "name"
+	newTestName := "name_2"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -397,27 +400,27 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					setupGroupCreateMocks(testGroupID, parentID, "name")
+					setupGroupCreateMocks(testGroupID, testParentID, oldTestName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name            = "name"
-					parent_group_id = "parent_id"
-				}`,
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, oldTestName, *testParentID),
 			},
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					setupGroupImportMocks(testGroupID, parentID, "name")
+					setupGroupImportMocks(testGroupID, testParentID, oldTestName)
 
 					// updated group
-					setupGroupUpdateMocks(testGroupID, *parentID, "name_2")
+					setupGroupUpdateMocks(testGroupID, *testParentID, newTestName)
 				},
-				Config: provider.ProviderConfig + `
-					resource "hpeuxi_group" "my_group" {
-						name            = "name_2"
-						parent_group_id = "parent_id"
-					}`,
+				Config: fmt.Sprintf(`%s
+				resource "hpeuxi_group" "my_group" {
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, newTestName, *testParentID),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectResourceAction(
@@ -427,16 +430,16 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("name_2"),
+							knownvalue.StringExact(newTestName),
 						),
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name_2"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", newTestName),
 					resource.TestCheckResourceAttr(
 						"hpeuxi_group.my_group",
 						"parent_group_id",
-						*parentID,
+						*testParentID,
 					),
 					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", testGroupID),
 				),
@@ -444,7 +447,7 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					setupGroupDeleteMocks(testGroupID, parentID, "name_2")
+					setupGroupDeleteMocks(testGroupID, testParentID, newTestName)
 				},
 				Config: provider.ProviderConfig,
 			},
