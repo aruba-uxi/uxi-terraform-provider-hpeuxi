@@ -84,15 +84,15 @@ func setupGroupDeleteMocks(groupID string, parentID string, name string) {
 
 func setupGroupImportMocks(groupID string, parentID string, name string) {
 	var getParentResponse config_api_client.GroupsGetResponse
-	if parentID != util.MockRootGroupID {
+	if parentID == util.MockRootGroupID {
+		getParentResponse = util.GenerateRootGroupGetResponse()
+	} else {
 		getParentResponse = createGroupGetResponse(
 			parentID,
 			"fake_parent_id",
 			"fake_parent_id."+parentID,
 			"fake parent",
 		)
-	} else {
-		getParentResponse = util.GenerateRootGroupGetResponse()
 	}
 
 	util.MockGetGroup(parentID, getParentResponse, 1)
