@@ -4,10 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
+**Id** | **string** | The unique identifier of the sensor group assignment | 
 **Group** | [**SensorGroupAssignmentsGetGroup**](SensorGroupAssignmentsGetGroup.md) |  | 
 **Sensor** | [**SensorGroupAssignmentsGetSensor**](SensorGroupAssignmentsGetSensor.md) |  | 
-**Type** | **string** |  | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

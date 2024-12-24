@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**GroupId** | **string** |  | 
-**SensorId** | **string** |  | 
+**GroupId** | **string** | The unique identifier of the group | 
+**SensorId** | **string** | The unique identifier of the sensor | 
 
 ## Methods
 

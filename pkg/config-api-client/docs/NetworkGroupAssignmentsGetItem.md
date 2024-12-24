@@ -4,10 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
+**Id** | **string** | The unique identifier of the network group assignment | 
 **Group** | [**NetworkGroupAssignmentsGetGroup**](NetworkGroupAssignmentsGetGroup.md) |  | 
 **Network** | [**NetworkGroupAssignmentsGetNetwork**](NetworkGroupAssignmentsGetNetwork.md) |  | 
-**Type** | **string** |  | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

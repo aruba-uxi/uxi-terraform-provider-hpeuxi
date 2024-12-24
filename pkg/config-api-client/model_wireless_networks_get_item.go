@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 5.22.0
 Contact: support@capenetworks.com
 */
 
@@ -27,20 +27,33 @@ var _ MappedNullable = &WirelessNetworksGetItem{}
 
 // WirelessNetworksGetItem struct for WirelessNetworksGetItem
 type WirelessNetworksGetItem struct {
-	Id                   string         `json:"id"`
-	Name                 string         `json:"name"`
-	Ssid                 string         `json:"ssid"`
-	Security             NullableString `json:"security"`
-	IpVersion            IpVersion      `json:"ipVersion"`
-	CreatedAt            time.Time      `json:"createdAt"`
-	UpdatedAt            time.Time      `json:"updatedAt"`
-	Hidden               bool           `json:"hidden"`
-	BandLocking          string         `json:"bandLocking"`
-	DnsLookupDomain      NullableString `json:"dnsLookupDomain"`
-	DisableEdns          bool           `json:"disableEdns"`
-	UseDns64             bool           `json:"useDns64"`
-	ExternalConnectivity bool           `json:"externalConnectivity"`
-	Type                 string         `json:"type"`
+	// The unique identifier of the wireless network
+	Id string `json:"id"`
+	// The name of the wireless network
+	Name string `json:"name"`
+	// The SSID of the wireless network
+	Ssid string `json:"ssid"`
+	// The security type of the wireless network
+	Security  NullableString `json:"security"`
+	IpVersion IpVersion      `json:"ipVersion"`
+	// The creation timestamp of the wireless network
+	CreatedAt time.Time `json:"createdAt"`
+	// The last update timestamp of the wireless network
+	UpdatedAt time.Time `json:"updatedAt"`
+	// Whether the wireless network is hidden
+	Hidden bool `json:"hidden"`
+	// The band locking setting of the wireless network
+	BandLocking string `json:"bandLocking"`
+	// The DNS lookup domain of the wireless network
+	DnsLookupDomain NullableString `json:"dnsLookupDomain"`
+	// Whether EDNS is disabled for the wireless network
+	DisableEdns bool `json:"disableEdns"`
+	// Whether DNS64 is used for the wireless network
+	UseDns64 bool `json:"useDns64"`
+	// Whether the wireless network has external connectivity
+	ExternalConnectivity bool `json:"externalConnectivity"`
+	// The type of the resource.
+	Type string `json:"type"`
 }
 
 type _WirelessNetworksGetItem WirelessNetworksGetItem

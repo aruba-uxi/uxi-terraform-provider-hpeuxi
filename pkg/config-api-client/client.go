@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 5.22.0
 Contact: support@capenetworks.com
 */
 
@@ -45,7 +45,7 @@ var (
 	queryDescape    = strings.NewReplacer("%5B", "[", "%5D", "]")
 )
 
-// APIClient manages communication with the HPE Aruba Networking UXI Configuration API v5.21.0
+// APIClient manages communication with the HPE Aruba Networking UXI Configuration API v5.22.0
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration

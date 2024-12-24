@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
-**Serial** | **string** |  | 
-**Name** | **string** |  | 
-**ModelNumber** | **NullableString** |  | 
-**WifiMacAddress** | **NullableString** |  | 
-**EthernetMacAddress** | **NullableString** |  | 
-**Notes** | **NullableString** |  | 
+**Id** | **string** | The unique identifier of the agent | 
+**Serial** | **string** | The serial number of the agent | 
+**Name** | **string** | The name of the agent | 
+**ModelNumber** | **NullableString** | The model number of the agent | 
+**WifiMacAddress** | **NullableString** | The WiFi MAC address of the agent | 
+**EthernetMacAddress** | **NullableString** | The Ethernet MAC address of the agent | 
+**Notes** | **NullableString** | The notes of the agent | 
 **PcapMode** | [**NullableAgentPcapMode**](AgentPcapMode.md) |  | 
-**Type** | **string** |  | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

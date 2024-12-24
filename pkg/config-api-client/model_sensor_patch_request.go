@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 5.22.0
 Contact: support@capenetworks.com
 */
 
@@ -24,10 +24,13 @@ var _ MappedNullable = &SensorPatchRequest{}
 
 // SensorPatchRequest Request body for patching a sensor.
 type SensorPatchRequest struct {
-	Name        *string         `json:"name,omitempty"`
-	AddressNote *string         `json:"addressNote,omitempty"`
-	Notes       *string         `json:"notes,omitempty"`
-	PcapMode    *SensorPcapMode `json:"pcapMode,omitempty"`
+	// The updated sensor name
+	Name *string `json:"name,omitempty"`
+	// The updated address note for the sensor
+	AddressNote *string `json:"addressNote,omitempty"`
+	// Additional notes for the sensor
+	Notes    *string         `json:"notes,omitempty"`
+	PcapMode *SensorPcapMode `json:"pcapMode,omitempty"`
 }
 
 // NewSensorPatchRequest instantiates a new SensorPatchRequest object

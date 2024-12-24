@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**GroupId** | **string** |  | 
-**NetworkId** | **string** |  | 
+**GroupId** | **string** | The unique identifier of the group | 
+**NetworkId** | **string** | The unique identifier of the network | 
 
 ## Methods
 

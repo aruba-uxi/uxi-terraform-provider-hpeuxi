@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 5.22.0
 Contact: support@capenetworks.com
 */
 
@@ -26,9 +26,12 @@ var _ MappedNullable = &ServiceTestsGetResponse{}
 
 // ServiceTestsGetResponse struct for ServiceTestsGetResponse
 type ServiceTestsGetResponse struct {
+	// The list of resources.
 	Items []ServiceTestsGetItem `json:"items"`
-	Count int32                 `json:"count"`
-	Next  NullableString        `json:"next"`
+	// The number of resources returned in the response.
+	Count int32 `json:"count"`
+	// The next cursor for pagination.
+	Next NullableString `json:"next"`
 }
 
 type _ServiceTestsGetResponse ServiceTestsGetResponse

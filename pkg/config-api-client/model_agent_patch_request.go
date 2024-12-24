@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 5.22.0
 Contact: support@capenetworks.com
 */
 
@@ -24,7 +24,9 @@ var _ MappedNullable = &AgentPatchRequest{}
 
 // AgentPatchRequest Request body for patching an agent.
 type AgentPatchRequest struct {
-	Name     *string        `json:"name,omitempty"`
+	// The name of the agent
+	Name *string `json:"name,omitempty"`
+	// The notes of the agent
 	Notes    *string        `json:"notes,omitempty"`
 	PcapMode *AgentPcapMode `json:"pcapMode,omitempty"`
 }

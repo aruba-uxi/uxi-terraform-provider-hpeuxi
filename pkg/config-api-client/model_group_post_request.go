@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 5.22.0
 Contact: support@capenetworks.com
 */
 
@@ -26,8 +26,10 @@ var _ MappedNullable = &GroupPostRequest{}
 
 // GroupPostRequest struct for GroupPostRequest
 type GroupPostRequest struct {
+	// The unique identifier of the parent group
 	ParentId NullableString `json:"parentId,omitempty"`
-	Name     string         `json:"name"`
+	// The name of the group
+	Name string `json:"name"`
 }
 
 type _GroupPostRequest GroupPostRequest

@@ -6,7 +6,7 @@ info:
     url: https://help.capenetworks.com/en/
   description: This document outlines the API contracts for HPE Aruba Networking UXI.
   title: HPE Aruba Networking UXI Configuration
-  version: 5.21.0
+  version: 5.22.0
 servers:
 - url: https://api.capenetworks.com
 tags:
@@ -17,7 +17,6 @@ tags:
 - name: agents
 - name: agent-group-assignments
 - name: groups
-- name: health
 - name: network-group-assignments
 - name: sensors
 - name: sensor-group-assignments
@@ -26,59 +25,190 @@ tags:
 - name: wired-networks
 - name: wireless-networks
 paths:
-  /networking-uxi/v1alpha1/agents/{agent_uid}:
+  /networking-uxi/v1alpha1/agents/{id}:
     delete:
-      description: Delete an existing agent.
+      description: Delete the specified agent
       operationId: agent_delete
       parameters:
-      - explode: false
+      - description: The unique identifier of the agent
+        explode: false
         in: path
-        name: agent_uid
+        name: id
         required: true
         schema:
-          title: Agent Uid
+          description: The unique identifier of the agent
+          title: Agent ID
           type: string
         style: simple
       responses:
-        "200":
-          content:
-            application/json:
-              schema: {}
-          description: Successful Response
         "204":
-          description: No Content
-        "4XX":
+          description: Successful Response
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  description: Resource not found.
+                  summary: Not Found
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_NOT_FOUND
+                    httpStatusCode: 404
+                    message: Resource not found.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              examples:
+                Hardware sensor deletion forbidden:
+                  description: Cant delete sensor - hardware sensor deletion is forbidden.
+                  summary: Hardware sensor deletion forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_HARDWARE_SENSOR_DELETION_FORBIDDEN
+                    httpStatusCode: 422
+                    message: Cant delete sensor - hardware sensor deletion is forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Agent Delete
       tags:
       - configuration
     patch:
-      description: Update an existing agent.
+      description: Patch the specified agent
       operationId: agent_patch
       parameters:
-      - explode: false
+      - description: The unique identifier of the agent
+        explode: false
         in: path
-        name: agent_uid
+        name: id
         required: true
         schema:
-          title: Agent Uid
+          description: The unique identifier of the agent
+          title: Agent ID
           type: string
         style: simple
       requestBody:
         content:
           application/merge-patch+json:
+            examples:
+              Update agent details:
+                description: Update the details of the specified agent
+                summary: Update agent details
+                value:
+                  name: Updated Agent Name
+                  notes: Updated notes
+                  pcapMode: "off"
+              Update agent name:
+                description: Update the name of the specified agent
+                summary: Update agent name
+                value:
+                  name: Updated Agent Name
             schema:
               $ref: '#/components/schemas/AgentPatchRequest'
         required: true
@@ -86,60 +216,279 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                Updated agent:
+                  description: Agent successfully updated.
+                  summary: Updated agent
+                  value:
+                    id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
+                    serial: "1234567890"
+                    name: Agent Name
+                    modelNumber: UX-F5C
+                    wifiMacAddress: 00:11:22:33:44:55
+                    ethernetMacAddress: 00:11:22:33:44:56
+                    notes: Notes
+                    pcapMode: "off"
+                    type: networking-uxi/agent
               schema:
                 $ref: '#/components/schemas/AgentPatchResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  description: Resource not found.
+                  summary: Not Found
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_NOT_FOUND
+                    httpStatusCode: 404
+                    message: Resource not found.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Agent Patch
       tags:
       - configuration
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/agent-group-assignments/{uid}:
+  /networking-uxi/v1alpha1/agent-group-assignments/{id}:
     delete:
-      description: Delete an agent group assignment.
+      description: Delete the specified agent group assignment
       operationId: agent_group_assignment_delete
       parameters:
-      - explode: false
+      - description: The unique identifier of the assignment
+        explode: false
         in: path
-        name: uid
+        name: id
         required: true
         schema:
-          title: Uid
+          description: The unique identifier of the assignment
+          title: Assignment ID
           type: string
         style: simple
       responses:
-        "200":
-          content:
-            application/json:
-              schema: {}
-          description: Successful Response
         "204":
-          description: No Content
-        "4XX":
+          description: Successful Response
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  description: Resource not found.
+                  summary: Not Found
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_NOT_FOUND
+                    httpStatusCode: 404
+                    message: Resource not found.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Agent Group Assignment Delete
@@ -151,28 +500,36 @@ paths:
       description: Get a list of agent group assignments
       operationId: agent_group_assignments_get
       parameters:
-      - explode: true
+      - description: The ID of the resource.
+        explode: true
         in: query
         name: id
         required: false
         schema:
+          description: The ID of the resource.
           nullable: true
+          title: ID
           type: string
         style: form
-      - explode: true
+      - description: The next cursor for pagination.
+        explode: true
         in: query
         name: next
         required: false
         schema:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
         style: form
-      - explode: true
+      - description: The maximum number of items returned in the response.
+        explode: true
         in: query
         name: limit
         required: false
         schema:
           default: 50
+          description: The maximum number of items returned in the response.
           maximum: 100
           minimum: 0
           title: Limit
@@ -182,21 +539,115 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                List of agent group assignments:
+                  description: List of agent group assignment retrieval.
+                  summary: List of agent group assignments
+                  value:
+                    items:
+                    - id: 8419059c-1f4d-4cea-adf1-bd09654edba1
+                      group:
+                        id: 4gergsdgdf4tr
+                      agent:
+                        id: bff985d7-ef1d-4d49-84d6-5e3ed345dda1
+                      type: networking-uxi/agent-group-assignment
+                    count: 1
+                    next: aGVsbG8gZnJvbSBhbGlzdGFpcg==
               schema:
                 $ref: '#/components/schemas/AgentGroupAssignmentsGetResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Malformed cursor:
+                  description: The provided cursor could not be decoded.
+                  summary: Malformed cursor
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MALFORMED_CURSOR
+                    httpStatusCode: 400
+                    message: The provided cursor could not be decoded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Agent Group Assignments Get
@@ -204,11 +655,18 @@ paths:
       - configuration
       x-stability-level: alpha
     post:
-      description: Create agent group assignment
+      description: Create an agent group assignment
       operationId: agent_group_assignment_post
       requestBody:
         content:
           application/json:
+            examples:
+              Create an agent group assignment:
+                description: Create an agent group assignment
+                summary: Create an agent group assignment
+                value:
+                  groupId: e0f97a387c31
+                  agentId: 0f4c2917-9886-41bf-8ea6-faaea9fddbf0
             schema:
               $ref: '#/components/schemas/AgentGroupAssignmentPostRequest'
         required: true
@@ -216,21 +674,173 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                Agent group assignment created:
+                  description: Agent group assignment successfully created.
+                  summary: Agent group assignment created
+                  value:
+                    id: 8419059c-1f4d-4cea-adf1-bd09654edba1
+                    group:
+                      id: 4gergsdgdf4tr
+                    agent:
+                      id: bff985d7-ef1d-4d49-84d6-5e3ed345dda1
+                    type: networking-uxi/agent-group-assignment
               schema:
                 $ref: '#/components/schemas/AgentGroupAssignmentPostResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "409":
+          content:
+            application/json:
+              examples:
+                Assignment already exists:
+                  description: Resource already exists.
+                  summary: Assignment already exists
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_CONFLICT
+                    httpStatusCode: 409
+                    message: Resource already exists.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              examples:
+                Agent does not exist:
+                  description: Unable to assign agent to group - the specified agent
+                    does not exist.
+                  summary: Agent does not exist
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_AGENT_DOES_NOT_EXIST
+                    httpStatusCode: 422
+                    message: Unable to assign agent to group - the specified agent
+                      does not exist.
+                Assignment to root group error:
+                  description: Unable to assign agent to group - the specified group
+                    is a root group.
+                  summary: Assignment to root group error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_AGENT_TO_ROOT_GROUP
+                    httpStatusCode: 422
+                    message: Unable to assign agent to group - the specified group
+                      is a root group.
+                Group does not exist:
+                  description: Unable to assign agent to group - the specified group
+                    does not exist.
+                  summary: Group does not exist
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
+                    httpStatusCode: 422
+                    message: Unable to assign agent to group - the specified group
+                      does not exist.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Agent Group Assignment Post
@@ -242,28 +852,36 @@ paths:
       description: Get a list of agents
       operationId: agents_get
       parameters:
-      - explode: true
+      - description: The ID of the resource.
+        explode: true
         in: query
         name: id
         required: false
         schema:
+          description: The ID of the resource.
           nullable: true
+          title: ID
           type: string
         style: form
-      - explode: true
+      - description: The next cursor for pagination.
+        explode: true
         in: query
         name: next
         required: false
         schema:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
         style: form
-      - explode: true
+      - description: The maximum number of items returned in the response.
+        explode: true
         in: query
         name: limit
         required: false
         schema:
           default: 50
+          description: The maximum number of items returned in the response.
           maximum: 100
           minimum: 0
           title: Limit
@@ -273,60 +891,274 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                List of agents:
+                  description: List of agents retrieval.
+                  summary: List of agents
+                  value:
+                    items:
+                    - id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
+                      serial: "1234567890"
+                      name: Agent Name
+                      modelNumber: UX-F5C
+                      wifiMacAddress: 00:11:22:33:44:55
+                      ethernetMacAddress: 00:11:22:33:44:56
+                      notes: Notes
+                      pcapMode: "off"
+                      type: networking-uxi/agent
+                    count: 1
+                    next: aGVsbG8gZnJvbSBhbGlzdGFpcg==
               schema:
                 $ref: '#/components/schemas/AgentsGetResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Malformed cursor:
+                  description: The provided cursor could not be decoded.
+                  summary: Malformed cursor
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MALFORMED_CURSOR
+                    httpStatusCode: 400
+                    message: The provided cursor could not be decoded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Agents Get
       tags:
       - configuration
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/groups/{group_uid}:
+  /networking-uxi/v1alpha1/groups/{id}:
     delete:
-      description: Delete an existing group.
+      description: Delete an existing group. Deleting a group will also delete all
+        child groups and resource assignments to any deleted group.
       operationId: group_delete
       parameters:
-      - explode: false
+      - description: The unique identifier of the group.
+        explode: false
         in: path
-        name: group_uid
+        name: id
         required: true
         schema:
-          title: Group Uid
+          description: The unique identifier of the group.
+          title: Group ID
           type: string
         style: simple
       responses:
-        "200":
-          content:
-            application/json:
-              schema: {}
-          description: Successful Response
         "204":
-          description: No Content
-        "4XX":
+          description: Successful Response
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  description: Resource not found.
+                  summary: Not Found
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_NOT_FOUND
+                    httpStatusCode: 404
+                    message: Resource not found.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              examples:
+                Cannot delete root group:
+                  description: Cannot delete group - the root group cannot be deleted.
+                  summary: Cannot delete root group
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_CANNOT_DELETE_ROOT_GROUP
+                    httpStatusCode: 422
+                    message: Cannot delete group - the root group cannot be deleted.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Group Delete
@@ -334,20 +1166,28 @@ paths:
       - configuration
       x-stability-level: alpha
     patch:
-      description: Update an existing group.
+      description: Update the properties of a group.
       operationId: group_patch
       parameters:
-      - explode: false
+      - description: The unique identifier of the group
+        explode: false
         in: path
-        name: group_uid
+        name: id
         required: true
         schema:
-          title: Group Uid
+          description: The unique identifier of the group
+          title: Group ID
           type: string
         style: simple
       requestBody:
         content:
           application/merge-patch+json:
+            examples:
+              Update group name:
+                description: Update the name of the specified group
+                summary: Update group name
+                value:
+                  name: Updated Group Name
             schema:
               $ref: '#/components/schemas/GroupPatchRequest'
         required: true
@@ -355,21 +1195,161 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                Updated group:
+                  description: Group successfully updated.
+                  summary: Updated group
+                  value:
+                    id: dsfldjsah389
+                    name: Group Name
+                    path: 4gergsdgdf4tr.dsfldjsah389
+                    parent:
+                      id: 4gergsdgdf4tr
+                    type: networking-uxi/group
               schema:
                 $ref: '#/components/schemas/GroupPatchResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  description: Resource not found.
+                  summary: Not Found
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_NOT_FOUND
+                    httpStatusCode: 404
+                    message: Resource not found.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              examples:
+                Duplicate sibling group name:
+                  description: Unable to update group - a sibling group already has
+                    the specified name.
+                  summary: Duplicate sibling group name
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_DUPLICATE_SIBLING_GROUP_NAME
+                    httpStatusCode: 422
+                    message: Unable to update group - a sibling group already has
+                      the specified name.
+                Cannot update the root group:
+                  description: Unable to update group - the root group cannot be updated.
+                  summary: Cannot update the root group
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_CANNOT_UPDATE_ROOT_GROUP
+                    httpStatusCode: 422
+                    message: Unable to update group - the root group cannot be updated.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Group Patch
@@ -378,31 +1358,39 @@ paths:
       x-stability-level: alpha
   /networking-uxi/v1alpha1/groups:
     get:
-      description: Lists groups matching provided criteria
+      description: Get a list of groups
       operationId: groups_get
       parameters:
-      - explode: true
+      - description: The ID of the resource.
+        explode: true
         in: query
         name: id
         required: false
         schema:
+          description: The ID of the resource.
           nullable: true
+          title: ID
           type: string
         style: form
-      - explode: true
+      - description: The next cursor for pagination.
+        explode: true
         in: query
         name: next
         required: false
         schema:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
         style: form
-      - explode: true
+      - description: The maximum number of items returned in the response.
+        explode: true
         in: query
         name: limit
         required: false
         schema:
           default: 50
+          description: The maximum number of items returned in the response.
           maximum: 100
           minimum: 0
           title: Limit
@@ -412,21 +1400,115 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                List of groups:
+                  description: List of groups successfully retrieval.
+                  summary: List of groups
+                  value:
+                    items:
+                    - id: dsfldjsah389
+                      name: Group Name
+                      parent:
+                        id: 4gergsdgdf4tr
+                      path: 4gergsdgdf4tr.dsfldjsah389
+                      type: networking-uxi/group
+                    count: 1
+                    next: aGVsbG8gZnJvbSBhbGlzdGFpcg==
               schema:
                 $ref: '#/components/schemas/GroupsGetResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Malformed cursor:
+                  description: The provided cursor could not be decoded.
+                  summary: Malformed cursor
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MALFORMED_CURSOR
+                    httpStatusCode: 400
+                    message: The provided cursor could not be decoded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Groups Get
@@ -434,12 +1516,26 @@ paths:
       - configuration
       x-stability-level: alpha
     post:
-      description: Create a new group with the group identified in `parentId` as its
-        parent
+      description: "Create a new group with the specified name as a child group of\
+        \ the specified parent group. When `parentId` is omitted, the new group is\
+        \ created as a child of the root group."
       operationId: group_post
       requestBody:
         content:
           application/json:
+            examples:
+              Create a new group (specify parent ID):
+                description: Create a new group as a child of the specified parent
+                  group
+                summary: Create a new group (specify parent ID)
+                value:
+                  parentId: e0f97a387c31
+                  name: Example Group
+              Create a new group (parent ID not specified):
+                description: Create a new group as a top level configurable group
+                summary: Create a new group (parent ID not specified)
+                value:
+                  name: Example Group
             schema:
               $ref: '#/components/schemas/GroupPostRequest'
         required: true
@@ -447,21 +1543,178 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                Group created:
+                  description: Group successfully created.
+                  summary: Group created
+                  value:
+                    id: dsfldjsah389
+                    name: Group Name
+                    path: 4gergsdgdf4tr.dsfldjsah389
+                    parent:
+                      id: 4gergsdgdf4tr
+                    type: networking-uxi/group
               schema:
                 $ref: '#/components/schemas/GroupPostResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              examples:
+                Parent group does not exist:
+                  description: Unable to create group - the specified parent group
+                    does not exist.
+                  summary: Parent group does not exist
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_PARENT_GROUP_DOES_NOT_EXIST
+                    httpStatusCode: 422
+                    message: Unable to create group - the specified parent group does
+                      not exist.
+                Duplicate sibling group name:
+                  description: Unable to create group - a sibling group already has
+                    the specified name.
+                  summary: Duplicate sibling group name
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_DUPLICATE_SIBLING_GROUP_NAME
+                    httpStatusCode: 422
+                    message: Unable to create group - a sibling group already has
+                      the specified name.
+                Maximum group depth exceeded:
+                  description: Unable to create group - the maximum group depth has
+                    been exceeded.
+                  summary: Maximum group depth exceeded
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MAXIMUM_GROUP_DEPTH_EXCEEDED
+                    httpStatusCode: 422
+                    message: Unable to create group - the maximum group depth has
+                      been exceeded.
+                Parent has too many children:
+                  description: Unable to create group - the maximum number of children
+                    for the specified parent has been exceeded.
+                  summary: Parent has too many children
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_PARENT_HAS_TOO_MANY_CHILDREN
+                    httpStatusCode: 422
+                    message: Unable to create group - the maximum number of children
+                      for the specified parent has been exceeded.
+                Maximum group count exceeded:
+                  description: Unable to create group - the maximum group count has
+                    been exceeded.
+                  summary: Maximum group count exceeded
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MAXIMUM_GROUP_COUNT_EXCEEDED
+                    httpStatusCode: 422
+                    message: Unable to create group - the maximum group count has
+                      been exceeded.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Group Post
@@ -470,37 +1723,165 @@ paths:
       x-stability-level: alpha
   /networking-uxi/v1alpha1/network-group-assignments/{id}:
     delete:
-      description: Delete a network group assignment
+      description: Delete the specified network group assignment
       operationId: network_group_assignment_delete
       parameters:
-      - explode: false
+      - description: The unique identifier of the network group assignment
+        explode: false
         in: path
         name: id
         required: true
         schema:
-          title: Id
+          description: The unique identifier of the network group assignment
+          title: Assignment ID
           type: string
         style: simple
       responses:
-        "200":
-          content:
-            application/json:
-              schema: {}
-          description: Successful Response
         "204":
-          description: No Content
-        "4XX":
+          description: Successful Response
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  description: Resource not found.
+                  summary: Not Found
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_NOT_FOUND
+                    httpStatusCode: 404
+                    message: Resource not found.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              examples:
+                Unassign orphans sensor error:
+                  description: Unable to delete assignment - the assignment will leave
+                    a sensor unconfigured.
+                  summary: Unassign orphans sensor error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_DELETE_ORPHANS_SENSOR
+                    httpStatusCode: 422
+                    message: Unable to delete assignment - the assignment will leave
+                      a sensor unconfigured.
+                Inherited assignment deletion error:
+                  description: Unable to delete assignment - an inherited assignment
+                    cannot be deleted.
+                  summary: Inherited assignment deletion error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_CANNOT_DELETE_INHERITED_ASSIGNMENT
+                    httpStatusCode: 422
+                    message: Unable to delete assignment - an inherited assignment
+                      cannot be deleted.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Network Group Assignment Delete
@@ -509,31 +1890,39 @@ paths:
       x-stability-level: alpha
   /networking-uxi/v1alpha1/network-group-assignments:
     get:
-      description: Get a list of network group assignments
+      description: Get a list of network group assignments.
       operationId: network_group_assignments_get
       parameters:
-      - explode: true
+      - description: The ID of the resource.
+        explode: true
         in: query
         name: id
         required: false
         schema:
+          description: The ID of the resource.
           nullable: true
+          title: ID
           type: string
         style: form
-      - explode: true
+      - description: The next cursor for pagination.
+        explode: true
         in: query
         name: next
         required: false
         schema:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
         style: form
-      - explode: true
+      - description: The maximum number of items returned in the response.
+        explode: true
         in: query
         name: limit
         required: false
         schema:
           default: 50
+          description: The maximum number of items returned in the response.
           maximum: 100
           minimum: 0
           title: Limit
@@ -543,21 +1932,115 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                List of network group assignments:
+                  description: Network group assignment list retrieval.
+                  summary: List of network group assignments
+                  value:
+                    items:
+                    - id: 8419059c-1f4d-4cea-adf1-bd09654edba1
+                      group:
+                        id: 4gergsdgdf4tr
+                      network:
+                        id: bff985d7-ef1d-4d49-84d6-5e3ed345dda1
+                      type: networking-uxi/network-group-assignment
+                    count: 1
+                    next: aGVsbG8gZnJvbSBhbGlzdGFpcg==
               schema:
                 $ref: '#/components/schemas/NetworkGroupAssignmentsGetResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Malformed cursor:
+                  description: The provided cursor could not be decoded.
+                  summary: Malformed cursor
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MALFORMED_CURSOR
+                    httpStatusCode: 400
+                    message: The provided cursor could not be decoded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Network Group Assignments Get
@@ -565,11 +2048,18 @@ paths:
       - configuration
       x-stability-level: alpha
     post:
-      description: Create a network group assignment
+      description: Create a network group assignment.
       operationId: network_group_assignment_post
       requestBody:
         content:
           application/json:
+            examples:
+              Create a network group assignment:
+                description: Create a network group assignment.
+                summary: Create a network group assignment
+                value:
+                  groupId: dsfldjsah389
+                  networkId: ssid-4gergsdgdf4tr
             schema:
               $ref: '#/components/schemas/NetworkGroupAssignmentPostRequest'
         required: true
@@ -577,21 +2067,173 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                Create a network group assignment:
+                  description: Network group assignment successfully created.
+                  summary: Create a network group assignment
+                  value:
+                    id: 90e79136-8c10-4732-9e2a-c928f39c03b8
+                    group:
+                      id: dsfldjsah389
+                    network:
+                      id: ssid-4gergsdgdf4tr
+                    type: networking-uxi/network-group-assignment
               schema:
                 $ref: '#/components/schemas/NetworkGroupAssignmentPostResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "409":
+          content:
+            application/json:
+              examples:
+                Assignment already exists:
+                  description: Resource already exists.
+                  summary: Assignment already exists
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_CONFLICT
+                    httpStatusCode: 409
+                    message: Resource already exists.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              examples:
+                Network does not exist:
+                  description: Unable to assign network to group - the specified network
+                    does not exist.
+                  summary: Network does not exist
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_NETWORK_DOES_NOT_EXIST
+                    httpStatusCode: 422
+                    message: Unable to assign network to group - the specified network
+                      does not exist.
+                Group does not exist:
+                  description: Unable to assign network to group - the specified group
+                    does not exist.
+                  summary: Group does not exist
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
+                    httpStatusCode: 422
+                    message: Unable to assign network to group - the specified group
+                      does not exist.
+                Assignment to root group error:
+                  description: Unable to assign network to group - the specified group
+                    is a root group.
+                  summary: Assignment to root group error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_NETWORK_TO_ROOT_GROUP
+                    httpStatusCode: 422
+                    message: Unable to assign network to group - the specified group
+                      is a root group.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Network Group Assignment Post
@@ -600,37 +2242,138 @@ paths:
       x-stability-level: alpha
   /networking-uxi/v1alpha1/sensor-group-assignments/{id}:
     delete:
-      description: Delete a sensor group assignment
+      description: Delete the specified sensor group assignment
       operationId: sensor_group_assignment_delete
       parameters:
-      - explode: false
+      - description: The unique identifier of the sensor group assignment
+        explode: false
         in: path
         name: id
         required: true
         schema:
-          title: Id
+          description: The unique identifier of the sensor group assignment
+          title: Assignment ID
           type: string
         style: simple
       responses:
-        "200":
-          content:
-            application/json:
-              schema: {}
-          description: Successful Response
         "204":
-          description: No Content
-        "4XX":
+          description: Successful Response
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  description: Resource not found.
+                  summary: Not Found
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_NOT_FOUND
+                    httpStatusCode: 404
+                    message: Resource not found.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Sensor Group Assignment Delete
@@ -639,31 +2382,39 @@ paths:
       x-stability-level: alpha
   /networking-uxi/v1alpha1/sensor-group-assignments:
     get:
-      description: Get a list of sensor group assignments
+      description: Get a list of sensor group assignments.
       operationId: sensor_group_assignments_get
       parameters:
-      - explode: true
+      - description: The ID of the resource.
+        explode: true
         in: query
         name: id
         required: false
         schema:
+          description: The ID of the resource.
           nullable: true
+          title: ID
           type: string
         style: form
-      - explode: true
+      - description: The next cursor for pagination.
+        explode: true
         in: query
         name: next
         required: false
         schema:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
         style: form
-      - explode: true
+      - description: The maximum number of items returned in the response.
+        explode: true
         in: query
         name: limit
         required: false
         schema:
           default: 50
+          description: The maximum number of items returned in the response.
           maximum: 100
           minimum: 0
           title: Limit
@@ -673,21 +2424,115 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                List of sensor group assignments:
+                  description: Sensor group assignment list retrieval.
+                  summary: List of sensor group assignments
+                  value:
+                    items:
+                    - id: 8419059c-1f4d-4cea-adf1-bd09654edba1
+                      group:
+                        id: 4gergsdgdf4tr
+                      sensor:
+                        id: bff985d7-ef1d-4d49-84d6-5e3ed345dda1
+                      type: networking-uxi/sensor-group-assignment
+                    count: 1
+                    next: aGVsbG8gZnJvbSBhbGlzdGFpcg==
               schema:
                 $ref: '#/components/schemas/SensorGroupAssignmentsGetResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Malformed cursor:
+                  description: The provided cursor could not be decoded.
+                  summary: Malformed cursor
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MALFORMED_CURSOR
+                    httpStatusCode: 400
+                    message: The provided cursor could not be decoded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Sensor Group Assignments Get
@@ -695,11 +2540,18 @@ paths:
       - configuration
       x-stability-level: alpha
     post:
-      description: Create sensor group assignment
+      description: Create a sensor group assignment.
       operationId: sensor_group_assignment_post
       requestBody:
         content:
           application/json:
+            examples:
+              Create a sensor group assignment:
+                description: Create a sensor group assignment.
+                summary: Create a sensor group assignment
+                value:
+                  groupId: dsfldjsah389
+                  sensorId: sensor-4gergsdgdf4tr
             schema:
               $ref: '#/components/schemas/SensorGroupAssignmentPostRequest'
         required: true
@@ -707,43 +2559,211 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                Sensor group assignment created:
+                  description: Sensor group assignment successfully created.
+                  summary: Sensor group assignment created
+                  value:
+                    id: 90e79136-8c10-4732-9e2a-c928f39c03b8
+                    group:
+                      id: dsfldjsah389
+                    sensor:
+                      id: sensor-4gergsdgdf4tr
+                    type: networking-uxi/sensor-group-assignment
               schema:
                 $ref: '#/components/schemas/SensorGroupAssignmentPostResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "409":
+          content:
+            application/json:
+              examples:
+                Assignment already exists:
+                  description: Resource already exists.
+                  summary: Assignment already exists
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_CONFLICT
+                    httpStatusCode: 409
+                    message: Resource already exists.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              examples:
+                Sensor does not exist:
+                  description: Unable to assign sensor to group - the specified sensor
+                    does not exist.
+                  summary: Sensor does not exist
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_SENSOR_DOES_NOT_EXIST
+                    httpStatusCode: 422
+                    message: Unable to assign sensor to group - the specified sensor
+                      does not exist.
+                Group does not exist:
+                  description: Unable to assign sensor to group - the specified group
+                    does not exist.
+                  summary: Group does not exist
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
+                    httpStatusCode: 422
+                    message: Unable to assign sensor to group - the specified group
+                      does not exist.
+                Assignment to root group error:
+                  description: Unable to assign sensor to group - the specified group
+                    is a root group.
+                  summary: Assignment to root group error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_SENSOR_TO_ROOT_GROUP
+                    httpStatusCode: 422
+                    message: Unable to assign sensor to group - the specified group
+                      is a root group.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Sensor Group Assignment Post
       tags:
       - configuration
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/sensors/{sensor_uid}:
+  /networking-uxi/v1alpha1/sensors/{id}:
     patch:
-      description: Update an existing sensor.
+      description: Update the properties of a sensor.
       operationId: sensor_patch
       parameters:
-      - explode: false
+      - description: The unique identifier of the sensor
+        explode: false
         in: path
-        name: sensor_uid
+        name: id
         required: true
         schema:
-          title: Sensor Uid
+          description: The unique identifier of the sensor
+          title: Sensor ID
           type: string
         style: simple
       requestBody:
         content:
           application/merge-patch+json:
+            examples:
+              Update sensor details:
+                description: Update the details of the specified sensor
+                summary: Update sensor details
+                value:
+                  name: Updated Agent Name
+                  pcapMode: "off"
+                  notes: Updated notes
+                  addressNote: Updated address note
+              Update sensor name:
+                description: Update the name of the specified sensor
+                summary: Update sensor name
+                value:
+                  name: Updated Sensor Name
             schema:
               $ref: '#/components/schemas/SensorPatchRequest'
         required: true
@@ -751,21 +2771,142 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                Updated sensor:
+                  description: Sensor successfully updated.
+                  summary: Updated sensor
+                  value:
+                    id: dsfldjsah389
+                    serial: "123456789"
+                    name: Sensor Name
+                    modelNumber: UX-F5C
+                    wifiMacAddress: 00:11:22:33:44:55
+                    ethernetMacAddress: 66:77:88:99:AA:BB
+                    addressNote: Office
+                    longitude: 12.345678
+                    latitude: 98.765432
+                    notes: Some notes
+                    pcapMode: "off"
+                    type: networking-uxi/sensor
               schema:
                 $ref: '#/components/schemas/SensorPatchResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  description: Resource not found.
+                  summary: Not Found
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_NOT_FOUND
+                    httpStatusCode: 404
+                    message: Resource not found.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Sensor Patch
@@ -774,31 +2915,39 @@ paths:
       x-stability-level: alpha
   /networking-uxi/v1alpha1/sensors:
     get:
-      description: Get a list of sensors
+      description: List of sensors
       operationId: sensors_get
       parameters:
-      - explode: true
+      - description: The ID of the resource.
+        explode: true
         in: query
         name: id
         required: false
         schema:
+          description: The ID of the resource.
           nullable: true
+          title: ID
           type: string
         style: form
-      - explode: true
+      - description: The next cursor for pagination.
+        explode: true
         in: query
         name: next
         required: false
         schema:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
         style: form
-      - explode: true
+      - description: The maximum number of items returned in the response.
+        explode: true
         in: query
         name: limit
         required: false
         schema:
           default: 50
+          description: The maximum number of items returned in the response.
           maximum: 100
           minimum: 0
           title: Limit
@@ -808,21 +2957,121 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                List of sensors:
+                  description: List of sensors retrieval.
+                  summary: List of sensors
+                  value:
+                    items:
+                    - id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
+                      serial: "1234567890"
+                      name: Sensor Name
+                      modelNumber: UX-F5C
+                      wifiMacAddress: 00:11:22:33:44:55
+                      ethernetMacAddress: 00:11:22:33:44:56
+                      addressNote: Address Note
+                      longitude: 12.345678
+                      latitude: 98.765432
+                      notes: Notes
+                      pcapMode: "off"
+                      type: networking-uxi/sensor
+                    count: 1
+                    next: aGVsbG8gZnJvbSBhbGlzdGFpcg==
               schema:
                 $ref: '#/components/schemas/SensorsGetResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Malformed cursor:
+                  description: The provided cursor could not be decoded.
+                  summary: Malformed cursor
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MALFORMED_CURSOR
+                    httpStatusCode: 400
+                    message: The provided cursor could not be decoded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Sensors Get
@@ -831,37 +3080,155 @@ paths:
       x-stability-level: alpha
   /networking-uxi/v1alpha1/service-test-group-assignments/{id}:
     delete:
-      description: Delete a service test group assignment
+      description: Delete the specified service test group assignment
       operationId: service_test_group_assignment_delete
       parameters:
-      - explode: false
+      - description: The unique identifier of the service test group assignment
+        explode: false
         in: path
         name: id
         required: true
         schema:
-          title: Id
+          description: The unique identifier of the service test group assignment
+          title: Assignment ID
           type: string
         style: simple
       responses:
-        "200":
-          content:
-            application/json:
-              schema: {}
-          description: Successful Response
         "204":
-          description: No Content
-        "4XX":
+          description: Successful Response
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  description: Resource not found.
+                  summary: Not Found
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_NOT_FOUND
+                    httpStatusCode: 404
+                    message: Resource not found.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              examples:
+                Inherited assignment deletion error:
+                  description: Unable to delete assignment - an inherited assignment
+                    cannot be deleted.
+                  summary: Inherited assignment deletion error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_CANNOT_DELETE_INHERITED_ASSIGNMENT
+                    httpStatusCode: 422
+                    message: Unable to delete assignment - an inherited assignment
+                      cannot be deleted.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Service Test Group Assignment Delete
@@ -870,31 +3237,39 @@ paths:
       x-stability-level: alpha
   /networking-uxi/v1alpha1/service-test-group-assignments:
     get:
-      description: Get a list of service test group assignments
+      description: Get a list of service test group assignments.
       operationId: service_test_group_assignments_get
       parameters:
-      - explode: true
+      - description: The ID of the resource.
+        explode: true
         in: query
         name: id
         required: false
         schema:
+          description: The ID of the resource.
           nullable: true
+          title: ID
           type: string
         style: form
-      - explode: true
+      - description: The next cursor for pagination.
+        explode: true
         in: query
         name: next
         required: false
         schema:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
         style: form
-      - explode: true
+      - description: The maximum number of items returned in the response.
+        explode: true
         in: query
         name: limit
         required: false
         schema:
           default: 50
+          description: The maximum number of items returned in the response.
           maximum: 100
           minimum: 0
           title: Limit
@@ -904,21 +3279,115 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                List of service test group assignments:
+                  description: Service test group assignment list retrieval.
+                  summary: List of service test group assignments
+                  value:
+                    items:
+                    - id: 8419059c-1f4d-4cea-adf1-bd09654edba1
+                      group:
+                        id: 4gergsdgdf4tr
+                      serviceTest:
+                        id: bff985d7-ef1d-4d49-84d6-5e3ed345dda1
+                      type: networking-uxi/service-test-group-assignment
+                    count: 1
+                    next: aGVsbG8gZnJvbSBhbGlzdGFpcg==
               schema:
                 $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Malformed cursor:
+                  description: The provided cursor could not be decoded.
+                  summary: Malformed cursor
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MALFORMED_CURSOR
+                    httpStatusCode: 400
+                    message: The provided cursor could not be decoded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Service Test Group Assignments Get
@@ -926,11 +3395,18 @@ paths:
       - configuration
       x-stability-level: alpha
     post:
-      description: Create a service-test group assignment
+      description: Create a service-test group assignment.
       operationId: service_test_group_assignment_post
       requestBody:
         content:
           application/json:
+            examples:
+              Create a service test group assignment:
+                description: Create a service test group assignment.
+                summary: Create a service test group assignment
+                value:
+                  groupId: dsfldjsah389
+                  serviceTestId: dcccdabe-434b-40af-aac1-cf4c205dd5cc
             schema:
               $ref: '#/components/schemas/ServiceTestGroupAssignmentPostRequest'
         required: true
@@ -938,21 +3414,193 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                Service test group assignment created:
+                  description: Service test group assignment successfully created.
+                  summary: Service test group assignment created
+                  value:
+                    id: 90e79136-8c10-4732-9e2a-c928f39c03b8
+                    group:
+                      id: dsfldjsah389
+                    serviceTest:
+                      id: dcccdabe-434b-40af-aac1-cf4c205dd5cc
+                    type: networking-uxi/service-test-group-assignment
               schema:
                 $ref: '#/components/schemas/ServiceTestGroupAssignmentPostResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Bad Request:
+                  description: The request could not be processed due to a validation
+                    error.
+                  summary: Bad Request
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_BAD_REQUEST
+                    httpStatusCode: 400
+                    message: The request could not be processed due to a validation
+                      error.
+                    errorDetails:
+                    - issues:
+                      - description: The request could not be processed due to a validation
+                          error.
+                        subject: header
+                        source: x-generic-header
+                      type: hpe.greenlake.bad_request
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "409":
+          content:
+            application/json:
+              examples:
+                Assignment already exists:
+                  description: Resource already exists.
+                  summary: Assignment already exists
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_CONFLICT
+                    httpStatusCode: 409
+                    message: Resource already exists.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              examples:
+                Assignment to root group error:
+                  description: Unable to assign service test to group - the specified
+                    group is a root group.
+                  summary: Assignment to root group error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_SERVICE_TEST_TO_ROOT_GROUP
+                    httpStatusCode: 422
+                    message: Unable to assign service test to group - the specified
+                      group is a root group.
+                Group does not exist:
+                  description: Unable to assign service test to group - the specified
+                    group does not exist.
+                  summary: Group does not exist
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
+                    httpStatusCode: 422
+                    message: Unable to assign service test to group - the specified
+                      group does not exist.
+                Service test does not exist:
+                  description: Unable to assign service test to group - the specified
+                    service test does not exist.
+                  summary: Service test does not exist
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_SERVICE_TEST_DOES_NOT_EXIST
+                    httpStatusCode: 422
+                    message: Unable to assign service test to group - the specified
+                      service test does not exist.
+                Service test group assignment already exists:
+                  description: Unable to assign service test to group - the service
+                    test group assignment already exists.
+                  summary: Service test group assignment already exists
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_SERVICE_TEST_GROUP_ASSIGNMENT_ALREADY_EXISTS
+                    httpStatusCode: 422
+                    message: Unable to assign service test to group - the service
+                      test group assignment already exists.
+                Service test has network exclusions:
+                  description: Unable to assign service test to group - the specified
+                    service test has network exclusions.
+                  summary: Service test has network exclusions
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_SERVICE_TEST_HAS_NETWORK_EXCLUSIONS
+                    httpStatusCode: 422
+                    message: Unable to assign service test to group - the specified
+                      service test has network exclusions.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Service Test Group Assignment Post
@@ -964,28 +3612,36 @@ paths:
       description: Lists service-tests matching provided criteria
       operationId: service_tests_get
       parameters:
-      - explode: true
+      - description: The ID of the resource.
+        explode: true
         in: query
         name: id
         required: false
         schema:
+          description: The ID of the resource.
           nullable: true
+          title: ID
           type: string
         style: form
-      - explode: true
+      - description: The next cursor for pagination.
+        explode: true
         in: query
         name: next
         required: false
         schema:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
         style: form
-      - explode: true
+      - description: The maximum number of items returned in the response.
+        explode: true
         in: query
         name: limit
         required: false
         schema:
           default: 50
+          description: The maximum number of items returned in the response.
           maximum: 100
           minimum: 0
           title: Limit
@@ -995,21 +3651,116 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                List of service tests:
+                  description: List of service tests retrieval.
+                  summary: List of service tests
+                  value:
+                    items:
+                    - id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
+                      category: Category
+                      name: Service Test Name
+                      target: Target
+                      template: Template
+                      isEnabled: true
+                      type: networking-uxi/service-test
+                    count: 1
+                    next: aGVsbG8gZnJvbSBhbGlzdGFpcg==
               schema:
                 $ref: '#/components/schemas/ServiceTestsGetResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Malformed cursor:
+                  description: The provided cursor could not be decoded.
+                  summary: Malformed cursor
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MALFORMED_CURSOR
+                    httpStatusCode: 400
+                    message: The provided cursor could not be decoded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Service Tests Get
@@ -1021,28 +3772,36 @@ paths:
       description: Get a list of wired networks
       operationId: wired_networks_get
       parameters:
-      - explode: true
+      - description: The ID of the resource.
+        explode: true
         in: query
         name: id
         required: false
         schema:
+          description: The ID of the resource.
           nullable: true
+          title: ID
           type: string
         style: form
-      - explode: true
+      - description: The next cursor for pagination.
+        explode: true
         in: query
         name: next
         required: false
         schema:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
         style: form
-      - explode: true
+      - description: The maximum number of items returned in the response.
+        explode: true
         in: query
         name: limit
         required: false
         schema:
           default: 50
+          description: The maximum number of items returned in the response.
           maximum: 100
           minimum: 0
           title: Limit
@@ -1052,21 +3811,121 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                List of wired networks:
+                  description: List of wired networks retrieval.
+                  summary: List of wired networks
+                  value:
+                    items:
+                    - id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
+                      name: Wired Network Name
+                      ipVersion: ipv4
+                      createdAt: 2023-10-01T12:34:56Z
+                      updatedAt: 2023-10-01T12:34:56Z
+                      security: WPA2
+                      dnsLookupDomain: example.com
+                      disableEdns: false
+                      useDns64: true
+                      externalConnectivity: true
+                      vLanId: 100
+                      type: networking-uxi/wired-network
+                    count: 1
+                    next: aGVsbG8gZnJvbSBhbGlzdGFpcg==
               schema:
                 $ref: '#/components/schemas/WiredNetworksGetResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Malformed cursor:
+                  description: The provided cursor could not be decoded.
+                  summary: Malformed cursor
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MALFORMED_CURSOR
+                    httpStatusCode: 400
+                    message: The provided cursor could not be decoded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Wired Networks Get
@@ -1078,28 +3937,36 @@ paths:
       description: Get a list of wireless networks
       operationId: wireless_networks_get
       parameters:
-      - explode: true
+      - description: The ID of the resource.
+        explode: true
         in: query
         name: id
         required: false
         schema:
+          description: The ID of the resource.
           nullable: true
+          title: ID
           type: string
         style: form
-      - explode: true
+      - description: The next cursor for pagination.
+        explode: true
         in: query
         name: next
         required: false
         schema:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
         style: form
-      - explode: true
+      - description: The maximum number of items returned in the response.
+        explode: true
         in: query
         name: limit
         required: false
         schema:
           default: 50
+          description: The maximum number of items returned in the response.
           maximum: 100
           minimum: 0
           title: Limit
@@ -1109,21 +3976,123 @@ paths:
         "200":
           content:
             application/json:
+              examples:
+                List of wireless networks:
+                  description: List of wireless networks retrieval.
+                  summary: List of wireless networks
+                  value:
+                    items:
+                    - id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
+                      name: Wireless Network Name
+                      ssid: SSID
+                      security: WPA2
+                      ipVersion: ipv4
+                      createdAt: 2023-01-01T00:00:00Z
+                      updatedAt: 2023-01-02T00:00:00Z
+                      hidden: false
+                      bandLocking: 2.4GHz
+                      dnsLookupDomain: example.com
+                      disableEdns: false
+                      useDns64: false
+                      externalConnectivity: true
+                      type: networking-uxi/wireless-network
+                    count: 1
+                    next: aGVsbG8gZnJvbSBhbGlzdGFpcg==
               schema:
                 $ref: '#/components/schemas/WirelessNetworksGetResponse'
           description: Successful Response
-        "4XX":
+        "400":
           content:
             application/json:
+              examples:
+                Malformed cursor:
+                  description: The provided cursor could not be decoded.
+                  summary: Malformed cursor
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_NETWORKING_UXI_MALFORMED_CURSOR
+                    httpStatusCode: 400
+                    message: The provided cursor could not be decoded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Client Error
-        "5XX":
+          description: Bad Request
+        "401":
           content:
             application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNAUTHORIZED
+                    message: "You are not authorized to perform this action - the\
+                      \ token is missing, expired, revoked, malformed, or invalid\
+                      \ for other reasons"
+                    httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Server Error
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The user has insufficient permissions to complete the
+                    request.
+                  summary: Forbidden
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_FORBIDDEN
+                    httpStatusCode: 403
+                    message: The user has insufficient permissions to complete the
+                      request.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "405":
+          content:
+            application/json:
+              examples:
+                Method Not Allowed:
+                  description: Method is not allowed.
+                  summary: Method Not Allowed
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_METHOD_NOT_ALLOWED
+                    httpStatusCode: 405
+                    message: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Method Not Allowed
+        "415":
+          content:
+            application/json:
+              examples:
+                Unsupported Media Type:
+                  description: Media type is unsupported.
+                  summary: Unsupported Media Type
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_UNSUPPORTED_MEDIA_TYPE
+                    httpStatusCode: 415
+                    message: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unsupported Media Type
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Server Error:
+                  description: The request cannot be processed due to an unknown issue.
+                  summary: Internal Server Error
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_INTERNAL_SERVER_ERROR
+                    httpStatusCode: 500
+                    message: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
       security:
       - HTTPBearer: []
       summary: Wireless Networks Get
@@ -1137,7 +4106,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the agent
+          title: Agent ID
           type: string
       required:
       - id
@@ -1148,7 +4118,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: Group ID
           type: string
       required:
       - id
@@ -1160,10 +4131,12 @@ components:
         groupId: groupId
       properties:
         groupId:
-          title: Groupid
+          description: The unique identifier of the group
+          title: Group ID
           type: string
         agentId:
-          title: Agentid
+          description: The unique identifier of the agent
+          title: Agent ID
           type: string
       required:
       - agentId
@@ -1180,13 +4153,15 @@ components:
           id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the agent group assignment
+          title: ID
           type: string
         group:
           $ref: '#/components/schemas/AgentGroupAssignmentPostGroup'
         agent:
           $ref: '#/components/schemas/AgentGroupAssignmentPostAgent'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/agent-group-assignment
           title: Type
@@ -1203,7 +4178,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the agent
+          title: Agent ID
           type: string
       required:
       - id
@@ -1214,7 +4190,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: Group ID
           type: string
       required:
       - id
@@ -1230,13 +4207,15 @@ components:
           id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the agent group assignment
+          title: ID
           type: string
         group:
           $ref: '#/components/schemas/AgentGroupAssignmentsGetGroup'
         agent:
           $ref: '#/components/schemas/AgentGroupAssignmentsGetAgent'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/agent-group-assignment
           title: Type
@@ -1267,15 +4246,19 @@ components:
             id: id
       properties:
         items:
+          description: The list of resources.
           items:
             $ref: '#/components/schemas/AgentGroupAssignmentsGetItem'
           title: Items
           type: array
         count:
+          description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
       required:
       - count
@@ -1287,11 +4270,13 @@ components:
       description: Request body for patching an agent.
       properties:
         name:
+          description: The name of the agent
           maxLength: 100
           minLength: 1
           title: Name
           type: string
         notes:
+          description: The notes of the agent
           title: Notes
           type: string
         pcapMode:
@@ -1311,29 +4296,41 @@ components:
         wifiMacAddress: wifiMacAddress
       properties:
         id:
-          title: Id
+          description: The unique identifier of the agent
+          title: ID
           type: string
         serial:
+          description: The serial number of the agent
           title: Serial
           type: string
         name:
+          description: The name of the agent
           title: Name
           type: string
         modelNumber:
+          description: The model number of the agent
           nullable: true
+          title: Model Number
           type: string
         wifiMacAddress:
+          description: The WiFi MAC address of the agent
           nullable: true
+          title: WiFi MAC Address
           type: string
         ethernetMacAddress:
+          description: The Ethernet MAC address of the agent
           nullable: true
+          title: Ethernet MAC Address
           type: string
         notes:
+          description: The notes of the agent
           nullable: true
+          title: Notes
           type: string
         pcapMode:
           $ref: '#/components/schemas/AgentPcapMode'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/agent
           title: Type
@@ -1370,29 +4367,41 @@ components:
         wifiMacAddress: wifiMacAddress
       properties:
         id:
-          title: Id
+          description: The unique identifier of the agent
+          title: ID
           type: string
         serial:
+          description: The serial number of the agent
           title: Serial
           type: string
         name:
+          description: The name of the agent
           title: Name
           type: string
         modelNumber:
+          description: The model number of the agent
           nullable: true
+          title: Model Number
           type: string
         wifiMacAddress:
+          description: The WiFi MAC address of the agent
           nullable: true
+          title: WiFi MAC Address
           type: string
         ethernetMacAddress:
+          description: The Ethernet MAC address of the agent
           nullable: true
+          title: Ethernet MAC Address
           type: string
         notes:
+          description: The notes of the agent
           nullable: true
+          title: Notes
           type: string
         pcapMode:
           $ref: '#/components/schemas/AgentPcapMode'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/agent
           title: Type
@@ -1434,15 +4443,19 @@ components:
           wifiMacAddress: wifiMacAddress
       properties:
         items:
+          description: The list of resources.
           items:
             $ref: '#/components/schemas/AgentsGetItem'
           title: Items
           type: array
         count:
+          description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
       required:
       - count
@@ -1514,6 +4527,7 @@ components:
           items:
             $ref: '#/components/schemas/ErrorDetail'
           nullable: true
+          title: Errordetails
           type: array
       required:
       - debugId
@@ -1527,7 +4541,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the parent group
+          title: ID
           type: string
       required:
       - id
@@ -1536,6 +4551,7 @@ components:
     GroupPatchRequest:
       properties:
         name:
+          description: The updated group name
           maxLength: 250
           minLength: 1
           title: Name
@@ -1552,17 +4568,21 @@ components:
         type: networking-uxi/group
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: ID
           type: string
         name:
+          description: The name of the group
           title: Name
           type: string
         path:
+          description: The path of the group
           title: Path
           type: string
         parent:
           $ref: '#/components/schemas/GroupPatchParent'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/group
           title: Type
@@ -1580,7 +4600,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the parent group
+          title: ID
           type: string
       required:
       - id
@@ -1592,9 +4613,12 @@ components:
         parentId: parentId
       properties:
         parentId:
+          description: The unique identifier of the parent group
           nullable: true
+          title: Parent Group ID
           type: string
         name:
+          description: The name of the group
           maxLength: 250
           minLength: 1
           title: Name
@@ -1613,17 +4637,21 @@ components:
         type: networking-uxi/group
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: ID
           type: string
         name:
+          description: The name of the group
           title: Name
           type: string
         path:
+          description: The path of the group
           title: Path
           type: string
         parent:
           $ref: '#/components/schemas/GroupPostParent'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/group
           title: Type
@@ -1646,17 +4674,21 @@ components:
         type: networking-uxi/group
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: ID
           type: string
         name:
+          description: The name of the group
           title: Name
           type: string
         parent:
           $ref: '#/components/schemas/GroupsGetParent'
         path:
+          description: The path of the group
           title: Path
           type: string
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/group
           title: Type
@@ -1674,7 +4706,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the parent group
+          title: Parent ID
           type: string
       required:
       - id
@@ -1699,15 +4732,19 @@ components:
           type: networking-uxi/group
       properties:
         items:
+          description: The list of resources.
           items:
             $ref: '#/components/schemas/GroupsGetItem'
           title: Items
           type: array
         count:
+          description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
       required:
       - count
@@ -1753,7 +4790,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: Group ID
           type: string
       required:
       - id
@@ -1764,7 +4802,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the network
+          title: Network ID
           type: string
       required:
       - id
@@ -1776,10 +4815,12 @@ components:
         networkId: networkId
       properties:
         groupId:
-          title: Groupid
+          description: The unique identifier of the group
+          title: Group ID
           type: string
         networkId:
-          title: Networkid
+          description: The unique identifier of the network
+          title: Network ID
           type: string
       required:
       - groupId
@@ -1788,7 +4829,7 @@ components:
       type: object
     NetworkGroupAssignmentPostResponse:
       example:
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        id: id
         type: networking-uxi/network-group-assignment
         group:
           id: id
@@ -1796,14 +4837,15 @@ components:
           id: id
       properties:
         id:
-          format: uuid
-          title: Id
+          description: The unique identifier of the network group assignment
+          title: ID
           type: string
         group:
           $ref: '#/components/schemas/NetworkGroupAssignmentPostGroup'
         network:
           $ref: '#/components/schemas/NetworkGroupAssignmentPostNetwork'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/network-group-assignment
           title: Type
@@ -1820,7 +4862,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: Group ID
           type: string
       required:
       - id
@@ -1836,13 +4879,15 @@ components:
           id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the network group assignment
+          title: ID
           type: string
         group:
           $ref: '#/components/schemas/NetworkGroupAssignmentsGetGroup'
         network:
           $ref: '#/components/schemas/NetworkGroupAssignmentsGetNetwork'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/network-group-assignment
           title: Type
@@ -1859,7 +4904,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the network
+          title: Network ID
           type: string
       required:
       - id
@@ -1884,15 +4930,19 @@ components:
             id: id
       properties:
         items:
+          description: The list of resources.
           items:
             $ref: '#/components/schemas/NetworkGroupAssignmentsGetItem'
           title: Items
           type: array
         count:
+          description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
       required:
       - count
@@ -1905,7 +4955,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: Group ID
           type: string
       required:
       - id
@@ -1917,10 +4968,12 @@ components:
         sensorId: sensorId
       properties:
         groupId:
-          title: Groupid
+          description: The unique identifier of the group
+          title: Group ID
           type: string
         sensorId:
-          title: Sensorid
+          description: The unique identifier of the sensor
+          title: Sensor ID
           type: string
       required:
       - groupId
@@ -1937,13 +4990,15 @@ components:
           id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the sensor group assignment
+          title: ID
           type: string
         group:
           $ref: '#/components/schemas/SensorGroupAssignmentPostGroup'
         sensor:
           $ref: '#/components/schemas/SensorGroupAssignmentPostSensor'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/sensor-group-assignment
           title: Type
@@ -1960,7 +5015,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the sensor
+          title: Sensor ID
           type: string
       required:
       - id
@@ -1971,7 +5027,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: Group ID
           type: string
       required:
       - id
@@ -1987,13 +5044,15 @@ components:
           id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the sensor group assignment
+          title: ID
           type: string
         group:
           $ref: '#/components/schemas/SensorGroupAssignmentsGetGroup'
         sensor:
           $ref: '#/components/schemas/SensorGroupAssignmentsGetSensor'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/sensor-group-assignment
           title: Type
@@ -2024,15 +5083,19 @@ components:
             id: id
       properties:
         items:
+          description: The list of resources.
           items:
             $ref: '#/components/schemas/SensorGroupAssignmentsGetItem'
           title: Items
           type: array
         count:
+          description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
       required:
       - count
@@ -2045,7 +5108,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the sensor
+          title: Sensor ID
           type: string
       required:
       - id
@@ -2055,14 +5119,17 @@ components:
       description: Request body for patching a sensor.
       properties:
         name:
+          description: The updated sensor name
           maxLength: 100
           minLength: 1
           title: Name
           type: string
         addressNote:
-          title: Addressnote
+          description: The updated address note for the sensor
+          title: Address Note
           type: string
         notes:
+          description: Additional notes for the sensor
           title: Notes
           type: string
         pcapMode:
@@ -2085,38 +5152,55 @@ components:
         longitude: 0.8008281904610115
       properties:
         id:
-          title: Id
+          description: The unique identifier of the sensor
+          title: ID
           type: string
         serial:
+          description: The serial number of the sensor
           title: Serial
           type: string
         name:
+          description: The name of the sensor
           title: Name
           type: string
         modelNumber:
-          title: Modelnumber
+          description: The model number of the sensor
+          title: Model Number
           type: string
         wifiMacAddress:
+          description: The WiFi MAC address of the sensor
           nullable: true
+          title: WiFi MAC Address
           type: string
         ethernetMacAddress:
+          description: The Ethernet MAC address of the sensor
           nullable: true
+          title: Ethernet MAC Address
           type: string
         addressNote:
+          description: The address note of the sensor
           nullable: true
+          title: Address Note
           type: string
         longitude:
+          description: The longitude of the sensor
           nullable: true
+          title: Longitude
           type: number
         latitude:
+          description: The latitude of the sensor
           nullable: true
+          title: Latitude
           type: number
         notes:
+          description: Additional notes for the sensor
           nullable: true
+          title: Notes
           type: string
         pcapMode:
           $ref: '#/components/schemas/SensorPcapMode'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/sensor
           title: Type
@@ -2159,38 +5243,55 @@ components:
         longitude: 0.8008281904610115
       properties:
         id:
-          title: Id
+          description: The unique identifier of the sensor
+          title: ID
           type: string
         serial:
+          description: The serial number of the sensor
           title: Serial
           type: string
         name:
+          description: The name of the sensor
           title: Name
           type: string
         modelNumber:
-          title: Modelnumber
+          description: The model number of the sensor
+          title: Model Number
           type: string
         wifiMacAddress:
+          description: The WiFi MAC address of the sensor
           nullable: true
+          title: WiFi MAC Address
           type: string
         ethernetMacAddress:
+          description: The Ethernet MAC address of the sensor
           nullable: true
+          title: Ethernet MAC Address
           type: string
         addressNote:
+          description: The address note of the sensor
           nullable: true
+          title: Address Note
           type: string
         longitude:
+          description: The longitude of the sensor
           nullable: true
+          title: Longitude
           type: number
         latitude:
+          description: The latitude of the sensor
           nullable: true
+          title: Latitude
           type: number
         notes:
+          description: The notes of the sensor
           nullable: true
+          title: Notes
           type: string
         pcapMode:
           $ref: '#/components/schemas/SensorPcapMode'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/sensor
           title: Type
@@ -2241,15 +5342,19 @@ components:
           longitude: 0.8008281904610115
       properties:
         items:
+          description: The list of resources.
           items:
             $ref: '#/components/schemas/SensorsGetItem'
           title: Items
           type: array
         count:
+          description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
       required:
       - count
@@ -2262,7 +5367,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: Group ID
           type: string
       required:
       - id
@@ -2274,10 +5380,12 @@ components:
         serviceTestId: serviceTestId
       properties:
         groupId:
-          title: Groupid
+          description: The unique identifier of the group
+          title: Group ID
           type: string
         serviceTestId:
-          title: Servicetestid
+          description: The unique identifier of the service test
+          title: Service Test ID
           type: string
       required:
       - groupId
@@ -2294,14 +5402,16 @@ components:
           id: id
       properties:
         id:
+          description: The unique identifier of the service test group assignment
           format: uuid
-          title: Id
+          title: ID
           type: string
         group:
           $ref: '#/components/schemas/ServiceTestGroupAssignmentPostGroup'
         serviceTest:
           $ref: '#/components/schemas/ServiceTestGroupAssignmentPostServiceTest'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/service-test-group-assignment
           title: Type
@@ -2318,7 +5428,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the service test
+          title: Service Test ID
           type: string
       required:
       - id
@@ -2329,7 +5440,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the group
+          title: Group ID
           type: string
       required:
       - id
@@ -2345,13 +5457,15 @@ components:
           id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the service test group assignment
+          title: ID
           type: string
         group:
           $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetGroup'
         serviceTest:
           $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetServiceTest'
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/service-test-group-assignment
           title: Type
@@ -2382,15 +5496,19 @@ components:
             id: id
       properties:
         items:
+          description: The list of resources.
           items:
             $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetItem'
           title: Items
           type: array
         count:
+          description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
       required:
       - count
@@ -2403,7 +5521,8 @@ components:
         id: id
       properties:
         id:
-          title: Id
+          description: The unique identifier of the service test
+          title: Service Test ID
           type: string
       required:
       - id
@@ -2420,24 +5539,32 @@ components:
         target: target
       properties:
         id:
-          title: Id
+          description: The unique identifier of the service test
+          title: ID
           type: string
         category:
+          description: The category of the service test
           title: Category
           type: string
         name:
+          description: The name of the service test
           title: Name
           type: string
         target:
+          description: The target of the service test
           nullable: true
+          title: Target
           type: string
         template:
+          description: The template of the service test
           title: Template
           type: string
         isEnabled:
-          title: Isenabled
+          description: Indicates if the service test is enabled
+          title: Is Enabled
           type: boolean
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/service-test
           title: Type
@@ -2473,15 +5600,19 @@ components:
           target: target
       properties:
         items:
+          description: The list of resources.
           items:
             $ref: '#/components/schemas/ServiceTestsGetItem'
           title: Items
           type: array
         count:
+          description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
       required:
       - count
@@ -2505,40 +5636,54 @@ components:
         disableEdns: true
       properties:
         id:
-          title: Id
+          description: The unique identifier of the wired network
+          title: ID
           type: string
         name:
+          description: The name of the wired network
           title: Name
           type: string
         ipVersion:
           $ref: '#/components/schemas/IpVersion'
         createdAt:
+          description: The creation timestamp of the wired network
           format: date-time
-          title: Createdat
+          title: Created At
           type: string
         updatedAt:
+          description: The last update timestamp of the wired network
           format: date-time
-          title: Updatedat
+          title: Updated At
           type: string
         security:
+          description: The security settings of the wired network
           nullable: true
+          title: Security
           type: string
         dnsLookupDomain:
+          description: The DNS lookup domain of the wired network
           nullable: true
+          title: DNS Lookup Domain
           type: string
         disableEdns:
-          title: Disableedns
+          description: Whether EDNS is disabled for the wired network
+          title: Disable EDNS
           type: boolean
         useDns64:
-          title: Usedns64
+          description: Whether DNS64 is used for the wired network
+          title: Use DNS64
           type: boolean
         externalConnectivity:
-          title: Externalconnectivity
+          description: Whether the wired network has external connectivity
+          title: External Connectivity
           type: boolean
         vLanId:
+          description: The VLAN ID of the wired network
           nullable: true
+          title: VLAN ID
           type: integer
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/wired-network
           title: Type
@@ -2589,15 +5734,19 @@ components:
           disableEdns: true
       properties:
         items:
+          description: The list of resources.
           items:
             $ref: '#/components/schemas/WiredNetworksGetItem'
           title: Items
           type: array
         count:
+          description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
       required:
       - count
@@ -2623,46 +5772,61 @@ components:
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         id:
-          title: Id
+          description: The unique identifier of the wireless network
+          title: ID
           type: string
         name:
+          description: The name of the wireless network
           title: Name
           type: string
         ssid:
-          title: Ssid
+          description: The SSID of the wireless network
+          title: SSID
           type: string
         security:
+          description: The security type of the wireless network
           nullable: true
+          title: Security
           type: string
         ipVersion:
           $ref: '#/components/schemas/IpVersion'
         createdAt:
+          description: The creation timestamp of the wireless network
           format: date-time
-          title: Createdat
+          title: Created At
           type: string
         updatedAt:
+          description: The last update timestamp of the wireless network
           format: date-time
-          title: Updatedat
+          title: Updated At
           type: string
         hidden:
+          description: Whether the wireless network is hidden
           title: Hidden
           type: boolean
         bandLocking:
-          title: Bandlocking
+          description: The band locking setting of the wireless network
+          title: Band Locking
           type: string
         dnsLookupDomain:
+          description: The DNS lookup domain of the wireless network
           nullable: true
+          title: DNS Lookup Domain
           type: string
         disableEdns:
-          title: Disableedns
+          description: Whether EDNS is disabled for the wireless network
+          title: Disable EDNS
           type: boolean
         useDns64:
-          title: Usedns64
+          description: Whether DNS64 is used for the wireless network
+          title: Use DNS64
           type: boolean
         externalConnectivity:
-          title: Externalconnectivity
+          description: Whether the wireless network has external connectivity
+          title: External Connectivity
           type: boolean
         type:
+          description: The type of the resource.
           enum:
           - networking-uxi/wireless-network
           title: Type
@@ -2719,15 +5883,19 @@ components:
           updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         items:
+          description: The list of resources.
           items:
             $ref: '#/components/schemas/WirelessNetworksGetItem'
           title: Items
           type: array
         count:
+          description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
+          description: The next cursor for pagination.
           nullable: true
+          title: Next
           type: string
       required:
       - count
