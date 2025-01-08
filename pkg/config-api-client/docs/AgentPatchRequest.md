@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | Pointer to **string** |  | [optional] 
-**Notes** | Pointer to **string** |  | [optional] 
+**Name** | Pointer to **string** | The name of the agent | [optional] 
+**Notes** | Pointer to **string** | The notes of the agent | [optional] 
 **PcapMode** | Pointer to [**AgentPcapMode**](AgentPcapMode.md) |  | [optional] 
 
 ## Methods

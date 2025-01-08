@@ -268,7 +268,7 @@ func (r *agentResource) Delete(
 
 	request := r.client.ConfigurationAPI.AgentDelete(ctx, state.ID.ValueString())
 
-	_, response, err := util.RetryForTooManyRequests(request.Execute)
+	response, err := util.RetryForTooManyRequestsNoReturn(request.Execute)
 	errorPresent, errorDetail := util.RaiseForStatus(response, err)
 	if errorPresent {
 		if response != nil && response.StatusCode == http.StatusNotFound {

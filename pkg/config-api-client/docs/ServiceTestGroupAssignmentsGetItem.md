@@ -4,10 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
+**Id** | **string** | The unique identifier of the service test group assignment | 
 **Group** | [**ServiceTestGroupAssignmentsGetGroup**](ServiceTestGroupAssignmentsGetGroup.md) |  | 
 **ServiceTest** | [**ServiceTestGroupAssignmentsGetServiceTest**](ServiceTestGroupAssignmentsGetServiceTest.md) |  | 
-**Type** | **string** |  | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

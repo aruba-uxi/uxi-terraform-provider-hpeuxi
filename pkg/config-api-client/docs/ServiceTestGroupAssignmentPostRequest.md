@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**GroupId** | **string** |  | 
-**ServiceTestId** | **string** |  | 
+**GroupId** | **string** | The unique identifier of the group | 
+**ServiceTestId** | **string** | The unique identifier of the service test | 
 
 ## Methods
 

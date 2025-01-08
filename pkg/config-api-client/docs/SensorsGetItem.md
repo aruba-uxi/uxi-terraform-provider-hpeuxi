@@ -4,18 +4,18 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
-**Serial** | **string** |  | 
-**Name** | **string** |  | 
-**ModelNumber** | **string** |  | 
-**WifiMacAddress** | **NullableString** |  | 
-**EthernetMacAddress** | **NullableString** |  | 
-**AddressNote** | **NullableString** |  | 
-**Longitude** | **NullableFloat32** |  | 
-**Latitude** | **NullableFloat32** |  | 
-**Notes** | **NullableString** |  | 
+**Id** | **string** | The unique identifier of the sensor | 
+**Serial** | **string** | The serial number of the sensor | 
+**Name** | **string** | The name of the sensor | 
+**ModelNumber** | **string** | The model number of the sensor | 
+**WifiMacAddress** | **NullableString** | The WiFi MAC address of the sensor | 
+**EthernetMacAddress** | **NullableString** | The Ethernet MAC address of the sensor | 
+**AddressNote** | **NullableString** | The address note of the sensor | 
+**Longitude** | **NullableFloat32** | The longitude of the sensor | 
+**Latitude** | **NullableFloat32** | The latitude of the sensor | 
+**Notes** | **NullableString** | The notes of the sensor | 
 **PcapMode** | [**NullableSensorPcapMode**](SensorPcapMode.md) |  | 
-**Type** | **string** |  | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

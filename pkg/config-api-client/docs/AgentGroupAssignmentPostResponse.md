@@ -4,10 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
+**Id** | **string** | The unique identifier of the agent group assignment | 
 **Group** | [**AgentGroupAssignmentPostGroup**](AgentGroupAssignmentPostGroup.md) |  | 
 **Agent** | [**AgentGroupAssignmentPostAgent**](AgentGroupAssignmentPostAgent.md) |  | 
-**Type** | **string** |  | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

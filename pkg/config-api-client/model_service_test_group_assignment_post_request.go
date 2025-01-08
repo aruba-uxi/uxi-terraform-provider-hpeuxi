@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Hewlett Packard Enterprise Development LP.
+Copyright 2025 Hewlett Packard Enterprise Development LP.
 */
 
 /*
@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 6.3.0
 Contact: support@capenetworks.com
 */
 
@@ -26,7 +26,9 @@ var _ MappedNullable = &ServiceTestGroupAssignmentPostRequest{}
 
 // ServiceTestGroupAssignmentPostRequest struct for ServiceTestGroupAssignmentPostRequest
 type ServiceTestGroupAssignmentPostRequest struct {
-	GroupId       string `json:"groupId"`
+	// The unique identifier of the group
+	GroupId string `json:"groupId"`
+	// The unique identifier of the service test
 	ServiceTestId string `json:"serviceTestId"`
 }
 

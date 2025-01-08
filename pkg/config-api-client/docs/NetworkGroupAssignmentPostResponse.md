@@ -4,10 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
+**Id** | **string** | The unique identifier of the network group assignment | 
 **Group** | [**NetworkGroupAssignmentPostGroup**](NetworkGroupAssignmentPostGroup.md) |  | 
 **Network** | [**NetworkGroupAssignmentPostNetwork**](NetworkGroupAssignmentPostNetwork.md) |  | 
-**Type** | **string** |  | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

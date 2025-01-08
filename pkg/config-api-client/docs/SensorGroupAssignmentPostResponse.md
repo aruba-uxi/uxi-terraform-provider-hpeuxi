@@ -4,10 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
+**Id** | **string** | The unique identifier of the sensor group assignment | 
 **Group** | [**SensorGroupAssignmentPostGroup**](SensorGroupAssignmentPostGroup.md) |  | 
 **Sensor** | [**SensorGroupAssignmentPostSensor**](SensorGroupAssignmentPostSensor.md) |  | 
-**Type** | **string** |  | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

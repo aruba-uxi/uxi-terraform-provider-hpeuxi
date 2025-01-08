@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Hewlett Packard Enterprise Development LP.
+Copyright 2025 Hewlett Packard Enterprise Development LP.
 */
 
 /*
@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 6.3.0
 Contact: support@capenetworks.com
 */
 
@@ -27,18 +27,29 @@ var _ MappedNullable = &WiredNetworksGetItem{}
 
 // WiredNetworksGetItem struct for WiredNetworksGetItem
 type WiredNetworksGetItem struct {
-	Id                   string         `json:"id"`
-	Name                 string         `json:"name"`
-	IpVersion            IpVersion      `json:"ipVersion"`
-	CreatedAt            time.Time      `json:"createdAt"`
-	UpdatedAt            time.Time      `json:"updatedAt"`
-	Security             NullableString `json:"security"`
-	DnsLookupDomain      NullableString `json:"dnsLookupDomain"`
-	DisableEdns          bool           `json:"disableEdns"`
-	UseDns64             bool           `json:"useDns64"`
-	ExternalConnectivity bool           `json:"externalConnectivity"`
-	VLanId               NullableInt32  `json:"vLanId"`
-	Type                 string         `json:"type"`
+	// The unique identifier of the wired network
+	Id string `json:"id"`
+	// The name of the wired network
+	Name      string    `json:"name"`
+	IpVersion IpVersion `json:"ipVersion"`
+	// The creation timestamp of the wired network
+	CreatedAt time.Time `json:"createdAt"`
+	// The last update timestamp of the wired network
+	UpdatedAt time.Time `json:"updatedAt"`
+	// The security settings of the wired network
+	Security NullableString `json:"security"`
+	// The DNS lookup domain of the wired network
+	DnsLookupDomain NullableString `json:"dnsLookupDomain"`
+	// Whether EDNS is disabled for the wired network
+	DisableEdns bool `json:"disableEdns"`
+	// Whether DNS64 is used for the wired network
+	UseDns64 bool `json:"useDns64"`
+	// Whether the wired network has external connectivity
+	ExternalConnectivity bool `json:"externalConnectivity"`
+	// The VLAN ID of the wired network
+	VLanId NullableInt32 `json:"vLanId"`
+	// The type of the resource.
+	Type string `json:"type"`
 }
 
 type _WiredNetworksGetItem WiredNetworksGetItem

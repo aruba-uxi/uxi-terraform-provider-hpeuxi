@@ -138,7 +138,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Delete("/networking-uxi/v1alpha1/agents/id").
 			Reply(http.StatusNoContent)
 
-		_, httpRes, err := apiClient.ConfigurationAPI.
+		httpRes, err := apiClient.ConfigurationAPI.
 			AgentDelete(context.Background(), "id").
 			Execute()
 		require.Nil(t, err)
@@ -260,7 +260,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Delete("/networking-uxi/v1alpha1/groups/id").
 			Reply(http.StatusNoContent)
 
-		_, httpRes, err := apiClient.ConfigurationAPI.
+		httpRes, err := apiClient.ConfigurationAPI.
 			GroupDelete(context.Background(), "id").
 			Execute()
 		require.Nil(t, err)
@@ -474,7 +474,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Delete("/networking-uxi/v1alpha1/agent-group-assignments/id").
 			Reply(http.StatusNoContent)
 
-		_, httpRes, err := apiClient.ConfigurationAPI.
+		httpRes, err := apiClient.ConfigurationAPI.
 			AgentGroupAssignmentDelete(context.Background(), "id").
 			Execute()
 		require.Nil(t, err)
@@ -564,7 +564,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Delete("/networking-uxi/v1alpha1/sensor-group-assignments/id").
 			Reply(http.StatusNoContent)
 
-		_, httpRes, err := apiClient.ConfigurationAPI.
+		httpRes, err := apiClient.ConfigurationAPI.
 			SensorGroupAssignmentDelete(context.Background(), "id").
 			Execute()
 		require.Nil(t, err)
@@ -779,7 +779,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Delete("/networking-uxi/v1alpha1/network-group-assignments/id").
 			Reply(http.StatusNoContent)
 
-		_, httpRes, err := apiClient.ConfigurationAPI.
+		httpRes, err := apiClient.ConfigurationAPI.
 			NetworkGroupAssignmentDelete(context.Background(), "id").
 			Execute()
 		require.Nil(t, err)
@@ -869,7 +869,7 @@ func TestConfigurationAPI(t *testing.T) {
 			Delete("/networking-uxi/v1alpha1/service-test-group-assignments/id").
 			Reply(http.StatusNoContent)
 
-		_, httpRes, err := apiClient.ConfigurationAPI.
+		httpRes, err := apiClient.ConfigurationAPI.
 			ServiceTestGroupAssignmentDelete(context.Background(), "id").
 			Execute()
 		require.Nil(t, err)

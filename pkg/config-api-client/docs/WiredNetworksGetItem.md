@@ -4,18 +4,18 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
-**Name** | **string** |  | 
+**Id** | **string** | The unique identifier of the wired network | 
+**Name** | **string** | The name of the wired network | 
 **IpVersion** | [**IpVersion**](IpVersion.md) |  | 
-**CreatedAt** | **time.Time** |  | 
-**UpdatedAt** | **time.Time** |  | 
-**Security** | **NullableString** |  | 
-**DnsLookupDomain** | **NullableString** |  | 
-**DisableEdns** | **bool** |  | 
-**UseDns64** | **bool** |  | 
-**ExternalConnectivity** | **bool** |  | 
-**VLanId** | **NullableInt32** |  | 
-**Type** | **string** |  | 
+**CreatedAt** | **time.Time** | The creation timestamp of the wired network | 
+**UpdatedAt** | **time.Time** | The last update timestamp of the wired network | 
+**Security** | **NullableString** | The security settings of the wired network | 
+**DnsLookupDomain** | **NullableString** | The DNS lookup domain of the wired network | 
+**DisableEdns** | **bool** | Whether EDNS is disabled for the wired network | 
+**UseDns64** | **bool** | Whether DNS64 is used for the wired network | 
+**ExternalConnectivity** | **bool** | Whether the wired network has external connectivity | 
+**VLanId** | **NullableInt32** | The VLAN ID of the wired network | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 
