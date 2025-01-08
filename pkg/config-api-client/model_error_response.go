@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Hewlett Packard Enterprise Development LP.
+Copyright 2025 Hewlett Packard Enterprise Development LP.
 */
 
 /*
@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.22.0
+API version: 6.3.0
 Contact: support@capenetworks.com
 */
 
@@ -157,9 +157,9 @@ func (o *ErrorResponse) SetMessage(v string) {
 	o.Message = v
 }
 
-// GetErrorDetails returns the ErrorDetails field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetErrorDetails returns the ErrorDetails field value if set, zero value otherwise.
 func (o *ErrorResponse) GetErrorDetails() []ErrorDetail {
-	if o == nil {
+	if o == nil || IsNil(o.ErrorDetails) {
 		var ret []ErrorDetail
 		return ret
 	}
@@ -168,7 +168,6 @@ func (o *ErrorResponse) GetErrorDetails() []ErrorDetail {
 
 // GetErrorDetailsOk returns a tuple with the ErrorDetails field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ErrorResponse) GetErrorDetailsOk() ([]ErrorDetail, bool) {
 	if o == nil || IsNil(o.ErrorDetails) {
 		return nil, false
@@ -204,7 +203,7 @@ func (o ErrorResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["errorCode"] = o.ErrorCode
 	toSerialize["httpStatusCode"] = o.HttpStatusCode
 	toSerialize["message"] = o.Message
-	if o.ErrorDetails != nil {
+	if !IsNil(o.ErrorDetails) {
 		toSerialize["errorDetails"] = o.ErrorDetails
 	}
 	return toSerialize, nil

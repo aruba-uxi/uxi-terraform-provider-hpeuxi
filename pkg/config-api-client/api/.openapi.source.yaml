@@ -1,4 +1,3 @@
-
 openapi: 3.0.3
 info:
   title: HPE Aruba Networking UXI Configuration
@@ -7,7 +6,7 @@ info:
     name: HPE Aruba Networking UXI Support
     url: https://help.capenetworks.com/en/
     email: support@capenetworks.com
-  version: 5.22.0
+  version: 6.3.0
 servers:
   - url: https://api.capenetworks.com
 paths:
@@ -39,20 +38,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -65,9 +61,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -82,12 +76,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -146,8 +138,7 @@ paths:
                     errorCode: HPE_GL_NETWORKING_UXI_HARDWARE_SENSOR_DELETION_FORBIDDEN
                     httpStatusCode: 422
                     message: >-
-                      Cant delete sensor - hardware sensor deletion is
-                      forbidden.
+                      Cant delete sensor - hardware sensor deletion is forbidden.
                   summary: Hardware sensor deletion forbidden
                   description: Cant delete sensor - hardware sensor deletion is forbidden.
               schema:
@@ -165,6 +156,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -238,20 +235,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -264,9 +258,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -281,12 +273,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -347,6 +337,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -385,20 +381,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -411,9 +404,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -428,12 +419,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -494,6 +483,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -551,20 +546,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -577,9 +569,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -594,12 +584,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -658,36 +646,30 @@ paths:
                     errorCode: HPE_GL_NETWORKING_UXI_AGENT_DOES_NOT_EXIST
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign agent to group - the specified agent does
-                      not exist.
+                      Unable to assign agent to group - the specified agent does not exist.
                   summary: Agent does not exist
                   description: >-
-                    Unable to assign agent to group - the specified agent does
-                    not exist.
+                    Unable to assign agent to group - the specified agent does not exist.
                 Assignment to root group error:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_AGENT_TO_ROOT_GROUP
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign agent to group - the specified group is a
-                      root group.
+                      Unable to assign agent to group - the specified group is a root group.
                   summary: Assignment to root group error
                   description: >-
-                    Unable to assign agent to group - the specified group is a
-                    root group.
+                    Unable to assign agent to group - the specified group is a root group.
                 Group does not exist:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign agent to group - the specified group does
-                      not exist.
+                      Unable to assign agent to group - the specified group does not exist.
                   summary: Group does not exist
                   description: >-
-                    Unable to assign agent to group - the specified group does
-                    not exist.
+                    Unable to assign agent to group - the specified group does not exist.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -703,6 +685,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -793,9 +781,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -810,12 +796,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -861,6 +845,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -955,9 +945,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -972,12 +960,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -1025,6 +1011,12 @@ paths:
                   description: The request cannot be processed due to an unknown issue.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       security:
         - HTTPBearer: []
       tags:
@@ -1038,8 +1030,7 @@ paths:
       operationId: group_delete
       summary: Group Delete
       description: >-
-        Delete an existing group. Deleting a group will also delete all child
-        groups and resource assignments to any deleted group.
+        Delete an existing group. Deleting a group will also delete all child groups and resource assignments to any deleted group.
       parameters:
         - name: id
           in: path
@@ -1063,20 +1054,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -1089,9 +1077,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -1106,12 +1092,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -1189,6 +1173,12 @@ paths:
                   description: The request cannot be processed due to an unknown issue.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       security:
         - HTTPBearer: []
       tags:
@@ -1251,20 +1241,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -1277,9 +1264,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -1294,12 +1279,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -1358,12 +1341,10 @@ paths:
                     errorCode: HPE_GL_NETWORKING_UXI_DUPLICATE_SIBLING_GROUP_NAME
                     httpStatusCode: 422
                     message: >-
-                      Unable to update group - a sibling group already has the
-                      specified name.
+                      Unable to update group - a sibling group already has the specified name.
                   summary: Duplicate sibling group name
                   description: >-
-                    Unable to update group - a sibling group already has the
-                    specified name.
+                    Unable to update group - a sibling group already has the specified name.
                 Cannot update the root group:
                   value:
                     debugId: '1234567890'
@@ -1389,6 +1370,12 @@ paths:
                   description: The request cannot be processed due to an unknown issue.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       security:
         - HTTPBearer: []
       tags:
@@ -1402,9 +1389,7 @@ paths:
       operationId: group_post
       summary: Group Post
       description: >-
-        Create a new group with the specified name as a child group of the
-        specified parent group. When `parentId` is omitted, the new group is
-        created as a child of the root group.
+        Create a new group with the specified name as a child group of the specified parent group. When `parentId` is omitted, the new group is created as a child of the root group.
       requestBody:
         required: true
         content:
@@ -1452,20 +1437,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -1478,9 +1460,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -1495,12 +1475,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -1544,60 +1522,50 @@ paths:
                     errorCode: HPE_GL_NETWORKING_UXI_PARENT_GROUP_DOES_NOT_EXIST
                     httpStatusCode: 422
                     message: >-
-                      Unable to create group - the specified parent group does
-                      not exist.
+                      Unable to create group - the specified parent group does not exist.
                   summary: Parent group does not exist
                   description: >-
-                    Unable to create group - the specified parent group does not
-                    exist.
+                    Unable to create group - the specified parent group does not exist.
                 Duplicate sibling group name:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_DUPLICATE_SIBLING_GROUP_NAME
                     httpStatusCode: 422
                     message: >-
-                      Unable to create group - a sibling group already has the
-                      specified name.
+                      Unable to create group - a sibling group already has the specified name.
                   summary: Duplicate sibling group name
                   description: >-
-                    Unable to create group - a sibling group already has the
-                    specified name.
+                    Unable to create group - a sibling group already has the specified name.
                 Maximum group depth exceeded:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_MAXIMUM_GROUP_DEPTH_EXCEEDED
                     httpStatusCode: 422
                     message: >-
-                      Unable to create group - the maximum group depth has been
-                      exceeded.
+                      Unable to create group - the maximum group depth has been exceeded.
                   summary: Maximum group depth exceeded
                   description: >-
-                    Unable to create group - the maximum group depth has been
-                    exceeded.
+                    Unable to create group - the maximum group depth has been exceeded.
                 Parent has too many children:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_PARENT_HAS_TOO_MANY_CHILDREN
                     httpStatusCode: 422
                     message: >-
-                      Unable to create group - the maximum number of children
-                      for the specified parent has been exceeded.
+                      Unable to create group - the maximum number of children for the specified parent has been exceeded.
                   summary: Parent has too many children
                   description: >-
-                    Unable to create group - the maximum number of children for
-                    the specified parent has been exceeded.
+                    Unable to create group - the maximum number of children for the specified parent has been exceeded.
                 Maximum group count exceeded:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_MAXIMUM_GROUP_COUNT_EXCEEDED
                     httpStatusCode: 422
                     message: >-
-                      Unable to create group - the maximum group count has been
-                      exceeded.
+                      Unable to create group - the maximum group count has been exceeded.
                   summary: Maximum group count exceeded
                   description: >-
-                    Unable to create group - the maximum group count has been
-                    exceeded.
+                    Unable to create group - the maximum group count has been exceeded.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -1613,6 +1581,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -1703,9 +1677,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -1720,12 +1692,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -1773,6 +1743,12 @@ paths:
                   description: The request cannot be processed due to an unknown issue.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       security:
         - HTTPBearer: []
       tags:
@@ -1809,20 +1785,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -1835,9 +1808,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -1852,12 +1823,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -1916,24 +1885,20 @@ paths:
                     errorCode: HPE_GL_NETWORKING_UXI_DELETE_ORPHANS_SENSOR
                     httpStatusCode: 422
                     message: >-
-                      Unable to delete assignment - the assignment will leave a
-                      sensor unconfigured.
+                      Unable to delete assignment - the assignment will leave a sensor unconfigured.
                   summary: Unassign orphans sensor error
                   description: >-
-                    Unable to delete assignment - the assignment will leave a
-                    sensor unconfigured.
+                    Unable to delete assignment - the assignment will leave a sensor unconfigured.
                 Inherited assignment deletion error:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_CANNOT_DELETE_INHERITED_ASSIGNMENT
                     httpStatusCode: 422
                     message: >-
-                      Unable to delete assignment - an inherited assignment
-                      cannot be deleted.
+                      Unable to delete assignment - an inherited assignment cannot be deleted.
                   summary: Inherited assignment deletion error
                   description: >-
-                    Unable to delete assignment - an inherited assignment cannot
-                    be deleted.
+                    Unable to delete assignment - an inherited assignment cannot be deleted.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -1949,6 +1914,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -2006,20 +1977,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -2032,9 +2000,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2049,12 +2015,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -2113,36 +2077,30 @@ paths:
                     errorCode: HPE_GL_NETWORKING_UXI_NETWORK_DOES_NOT_EXIST
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign network to group - the specified network
-                      does not exist.
+                      Unable to assign network to group - the specified network does not exist.
                   summary: Network does not exist
                   description: >-
-                    Unable to assign network to group - the specified network
-                    does not exist.
+                    Unable to assign network to group - the specified network does not exist.
                 Group does not exist:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign network to group - the specified group
-                      does not exist.
+                      Unable to assign network to group - the specified group does not exist.
                   summary: Group does not exist
                   description: >-
-                    Unable to assign network to group - the specified group does
-                    not exist.
+                    Unable to assign network to group - the specified group does not exist.
                 Assignment to root group error:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_NETWORK_TO_ROOT_GROUP
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign network to group - the specified group is
-                      a root group.
+                      Unable to assign network to group - the specified group is a root group.
                   summary: Assignment to root group error
                   description: >-
-                    Unable to assign network to group - the specified group is a
-                    root group.
+                    Unable to assign network to group - the specified group is a root group.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -2158,6 +2116,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -2248,9 +2212,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2265,12 +2227,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -2318,6 +2278,12 @@ paths:
                   description: The request cannot be processed due to an unknown issue.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       security:
         - HTTPBearer: []
       tags:
@@ -2354,20 +2320,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -2380,9 +2343,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2397,12 +2358,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -2465,6 +2424,12 @@ paths:
                   description: The request cannot be processed due to an unknown issue.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       security:
         - HTTPBearer: []
       tags:
@@ -2520,20 +2485,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -2546,9 +2508,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2563,12 +2523,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -2627,36 +2585,30 @@ paths:
                     errorCode: HPE_GL_NETWORKING_UXI_SENSOR_DOES_NOT_EXIST
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign sensor to group - the specified sensor
-                      does not exist.
+                      Unable to assign sensor to group - the specified sensor does not exist.
                   summary: Sensor does not exist
                   description: >-
-                    Unable to assign sensor to group - the specified sensor does
-                    not exist.
+                    Unable to assign sensor to group - the specified sensor does not exist.
                 Group does not exist:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign sensor to group - the specified group
-                      does not exist.
+                      Unable to assign sensor to group - the specified group does not exist.
                   summary: Group does not exist
                   description: >-
-                    Unable to assign sensor to group - the specified group does
-                    not exist.
+                    Unable to assign sensor to group - the specified group does not exist.
                 Assignment to root group error:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_SENSOR_TO_ROOT_GROUP
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign sensor to group - the specified group is
-                      a root group.
+                      Unable to assign sensor to group - the specified group is a root group.
                   summary: Assignment to root group error
                   description: >-
-                    Unable to assign sensor to group - the specified group is a
-                    root group.
+                    Unable to assign sensor to group - the specified group is a root group.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -2672,6 +2624,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -2762,9 +2720,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2779,12 +2735,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -2830,6 +2784,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -2909,20 +2869,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -2935,9 +2892,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2952,12 +2907,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -3018,6 +2971,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -3115,9 +3074,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3132,12 +3089,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -3185,6 +3140,12 @@ paths:
                   description: The request cannot be processed due to an unknown issue.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       security:
         - HTTPBearer: []
       tags:
@@ -3221,20 +3182,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -3247,9 +3205,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3264,12 +3220,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -3328,12 +3282,10 @@ paths:
                     errorCode: HPE_GL_NETWORKING_UXI_CANNOT_DELETE_INHERITED_ASSIGNMENT
                     httpStatusCode: 422
                     message: >-
-                      Unable to delete assignment - an inherited assignment
-                      cannot be deleted.
+                      Unable to delete assignment - an inherited assignment cannot be deleted.
                   summary: Inherited assignment deletion error
                   description: >-
-                    Unable to delete assignment - an inherited assignment cannot
-                    be deleted.
+                    Unable to delete assignment - an inherited assignment cannot be deleted.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -3349,6 +3301,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -3406,20 +3364,17 @@ paths:
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
                     message: >-
-                      The request could not be processed due to a validation
-                      error.
+                      The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
                           - description: >-
-                              The request could not be processed due to a
-                              validation error.
+                              The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
                   description: >-
-                    The request could not be processed due to a validation
-                    error.
+                    The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -3432,9 +3387,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3449,12 +3402,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -3514,36 +3465,30 @@ paths:
                       HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_SERVICE_TEST_TO_ROOT_GROUP
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign service test to group - the specified
-                      group is a root group.
+                      Unable to assign service test to group - the specified group is a root group.
                   summary: Assignment to root group error
                   description: >-
-                    Unable to assign service test to group - the specified group
-                    is a root group.
+                    Unable to assign service test to group - the specified group is a root group.
                 Group does not exist:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign service test to group - the specified
-                      group does not exist.
+                      Unable to assign service test to group - the specified group does not exist.
                   summary: Group does not exist
                   description: >-
-                    Unable to assign service test to group - the specified group
-                    does not exist.
+                    Unable to assign service test to group - the specified group does not exist.
                 Service test does not exist:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_SERVICE_TEST_DOES_NOT_EXIST
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign service test to group - the specified
-                      service test does not exist.
+                      Unable to assign service test to group - the specified service test does not exist.
                   summary: Service test does not exist
                   description: >-
-                    Unable to assign service test to group - the specified
-                    service test does not exist.
+                    Unable to assign service test to group - the specified service test does not exist.
                 Service test group assignment already exists:
                   value:
                     debugId: '1234567890'
@@ -3551,24 +3496,20 @@ paths:
                       HPE_GL_NETWORKING_UXI_SERVICE_TEST_GROUP_ASSIGNMENT_ALREADY_EXISTS
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign service test to group - the service test
-                      group assignment already exists.
+                      Unable to assign service test to group - the service test group assignment already exists.
                   summary: Service test group assignment already exists
                   description: >-
-                    Unable to assign service test to group - the service test
-                    group assignment already exists.
+                    Unable to assign service test to group - the service test group assignment already exists.
                 Service test has network exclusions:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_SERVICE_TEST_HAS_NETWORK_EXCLUSIONS
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign service test to group - the specified
-                      service test has network exclusions.
+                      Unable to assign service test to group - the specified service test has network exclusions.
                   summary: Service test has network exclusions
                   description: >-
-                    Unable to assign service test to group - the specified
-                    service test has network exclusions.
+                    Unable to assign service test to group - the specified service test has network exclusions.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -3584,6 +3525,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -3674,9 +3621,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3691,12 +3636,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -3742,6 +3685,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -3834,9 +3783,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3851,12 +3798,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -3902,6 +3847,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -3999,9 +3950,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -4016,12 +3965,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -4067,6 +4014,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -4166,9 +4119,7 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token
-                      is missing, expired, revoked, malformed, or invalid for
-                      other reasons
+                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -4183,12 +4134,10 @@ paths:
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
                     message: >-
-                      The user has insufficient permissions to complete the
-                      request.
+                      The user has insufficient permissions to complete the request.
                   summary: Forbidden
                   description: >-
-                    The user has insufficient permissions to complete the
-                    request.
+                    The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -4234,6 +4183,12 @@ paths:
                     message: The request cannot be processed due to an unknown issue.
                   summary: Internal Server Error
                   description: The request cannot be processed due to an unknown issue.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
@@ -4569,7 +4524,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
-          nullable: true
           title: Errordetails
       required:
         - debugId
