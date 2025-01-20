@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Items** | [**[]AgentsGetItem**](AgentsGetItem.md) |  | 
-**Count** | **int32** |  | 
-**Next** | **NullableString** |  | 
+**Items** | [**[]AgentsGetItem**](AgentsGetItem.md) | The list of resources. | 
+**Count** | **int32** | The number of resources returned in the response. | 
+**Next** | **NullableString** | The next cursor for pagination. | 
 
 ## Methods
 

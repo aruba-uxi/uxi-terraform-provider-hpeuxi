@@ -4,20 +4,20 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
-**Name** | **string** |  | 
-**Ssid** | **string** |  | 
-**Security** | **NullableString** |  | 
+**Id** | **string** | The unique identifier of the wireless network | 
+**Name** | **string** | The name of the wireless network | 
+**Ssid** | **string** | The SSID of the wireless network | 
+**Security** | **NullableString** | The security type of the wireless network | 
 **IpVersion** | [**IpVersion**](IpVersion.md) |  | 
-**CreatedAt** | **time.Time** |  | 
-**UpdatedAt** | **time.Time** |  | 
-**Hidden** | **bool** |  | 
-**BandLocking** | **string** |  | 
-**DnsLookupDomain** | **NullableString** |  | 
-**DisableEdns** | **bool** |  | 
-**UseDns64** | **bool** |  | 
-**ExternalConnectivity** | **bool** |  | 
-**Type** | **string** |  | 
+**CreatedAt** | **time.Time** | The creation timestamp of the wireless network | 
+**UpdatedAt** | **time.Time** | The last update timestamp of the wireless network | 
+**Hidden** | **bool** | Whether the wireless network is hidden | 
+**BandLocking** | **string** | The band locking setting of the wireless network | 
+**DnsLookupDomain** | **NullableString** | The DNS lookup domain of the wireless network | 
+**DisableEdns** | **bool** | Whether EDNS is disabled for the wireless network | 
+**UseDns64** | **bool** | Whether DNS64 is used for the wireless network | 
+**ExternalConnectivity** | **bool** | Whether the wireless network has external connectivity | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

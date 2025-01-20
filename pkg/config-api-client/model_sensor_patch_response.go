@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Hewlett Packard Enterprise Development LP.
+Copyright 2025 Hewlett Packard Enterprise Development LP.
 */
 
 /*
@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 6.3.0
 Contact: support@capenetworks.com
 */
 
@@ -26,18 +26,29 @@ var _ MappedNullable = &SensorPatchResponse{}
 
 // SensorPatchResponse struct for SensorPatchResponse
 type SensorPatchResponse struct {
-	Id                 string                 `json:"id"`
-	Serial             string                 `json:"serial"`
-	Name               string                 `json:"name"`
-	ModelNumber        string                 `json:"modelNumber"`
-	WifiMacAddress     NullableString         `json:"wifiMacAddress"`
-	EthernetMacAddress NullableString         `json:"ethernetMacAddress"`
-	AddressNote        NullableString         `json:"addressNote"`
-	Longitude          NullableFloat32        `json:"longitude"`
-	Latitude           NullableFloat32        `json:"latitude"`
-	Notes              NullableString         `json:"notes"`
-	PcapMode           NullableSensorPcapMode `json:"pcapMode"`
-	Type               string                 `json:"type"`
+	// The unique identifier of the sensor
+	Id string `json:"id"`
+	// The serial number of the sensor
+	Serial string `json:"serial"`
+	// The name of the sensor
+	Name string `json:"name"`
+	// The model number of the sensor
+	ModelNumber string `json:"modelNumber"`
+	// The WiFi MAC address of the sensor
+	WifiMacAddress NullableString `json:"wifiMacAddress"`
+	// The Ethernet MAC address of the sensor
+	EthernetMacAddress NullableString `json:"ethernetMacAddress"`
+	// The address note of the sensor
+	AddressNote NullableString `json:"addressNote"`
+	// The longitude of the sensor
+	Longitude NullableFloat32 `json:"longitude"`
+	// The latitude of the sensor
+	Latitude NullableFloat32 `json:"latitude"`
+	// Additional notes for the sensor
+	Notes    NullableString         `json:"notes"`
+	PcapMode NullableSensorPcapMode `json:"pcapMode"`
+	// The type of the resource.
+	Type string `json:"type"`
 }
 
 type _SensorPatchResponse SensorPatchResponse

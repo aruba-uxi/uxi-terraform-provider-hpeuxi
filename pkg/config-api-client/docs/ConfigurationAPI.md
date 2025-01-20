@@ -4,14 +4,14 @@ All URIs are relative to *https://api.capenetworks.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AgentDelete**](ConfigurationAPI.md#AgentDelete) | **Delete** /networking-uxi/v1alpha1/agents/{agent_uid} | Agent Delete
-[**AgentGroupAssignmentDelete**](ConfigurationAPI.md#AgentGroupAssignmentDelete) | **Delete** /networking-uxi/v1alpha1/agent-group-assignments/{uid} | Agent Group Assignment Delete
+[**AgentDelete**](ConfigurationAPI.md#AgentDelete) | **Delete** /networking-uxi/v1alpha1/agents/{id} | Agent Delete
+[**AgentGroupAssignmentDelete**](ConfigurationAPI.md#AgentGroupAssignmentDelete) | **Delete** /networking-uxi/v1alpha1/agent-group-assignments/{id} | Agent Group Assignment Delete
 [**AgentGroupAssignmentPost**](ConfigurationAPI.md#AgentGroupAssignmentPost) | **Post** /networking-uxi/v1alpha1/agent-group-assignments | Agent Group Assignment Post
 [**AgentGroupAssignmentsGet**](ConfigurationAPI.md#AgentGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/agent-group-assignments | Agent Group Assignments Get
-[**AgentPatch**](ConfigurationAPI.md#AgentPatch) | **Patch** /networking-uxi/v1alpha1/agents/{agent_uid} | Agent Patch
+[**AgentPatch**](ConfigurationAPI.md#AgentPatch) | **Patch** /networking-uxi/v1alpha1/agents/{id} | Agent Patch
 [**AgentsGet**](ConfigurationAPI.md#AgentsGet) | **Get** /networking-uxi/v1alpha1/agents | Agents Get
-[**GroupDelete**](ConfigurationAPI.md#GroupDelete) | **Delete** /networking-uxi/v1alpha1/groups/{group_uid} | Group Delete
-[**GroupPatch**](ConfigurationAPI.md#GroupPatch) | **Patch** /networking-uxi/v1alpha1/groups/{group_uid} | Group Patch
+[**GroupDelete**](ConfigurationAPI.md#GroupDelete) | **Delete** /networking-uxi/v1alpha1/groups/{id} | Group Delete
+[**GroupPatch**](ConfigurationAPI.md#GroupPatch) | **Patch** /networking-uxi/v1alpha1/groups/{id} | Group Patch
 [**GroupPost**](ConfigurationAPI.md#GroupPost) | **Post** /networking-uxi/v1alpha1/groups | Group Post
 [**GroupsGet**](ConfigurationAPI.md#GroupsGet) | **Get** /networking-uxi/v1alpha1/groups | Groups Get
 [**NetworkGroupAssignmentDelete**](ConfigurationAPI.md#NetworkGroupAssignmentDelete) | **Delete** /networking-uxi/v1alpha1/network-group-assignments/{id} | Network Group Assignment Delete
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 [**SensorGroupAssignmentDelete**](ConfigurationAPI.md#SensorGroupAssignmentDelete) | **Delete** /networking-uxi/v1alpha1/sensor-group-assignments/{id} | Sensor Group Assignment Delete
 [**SensorGroupAssignmentPost**](ConfigurationAPI.md#SensorGroupAssignmentPost) | **Post** /networking-uxi/v1alpha1/sensor-group-assignments | Sensor Group Assignment Post
 [**SensorGroupAssignmentsGet**](ConfigurationAPI.md#SensorGroupAssignmentsGet) | **Get** /networking-uxi/v1alpha1/sensor-group-assignments | Sensor Group Assignments Get
-[**SensorPatch**](ConfigurationAPI.md#SensorPatch) | **Patch** /networking-uxi/v1alpha1/sensors/{sensor_uid} | Sensor Patch
+[**SensorPatch**](ConfigurationAPI.md#SensorPatch) | **Patch** /networking-uxi/v1alpha1/sensors/{id} | Sensor Patch
 [**SensorsGet**](ConfigurationAPI.md#SensorsGet) | **Get** /networking-uxi/v1alpha1/sensors | Sensors Get
 [**ServiceTestGroupAssignmentDelete**](ConfigurationAPI.md#ServiceTestGroupAssignmentDelete) | **Delete** /networking-uxi/v1alpha1/service-test-group-assignments/{id} | Service Test Group Assignment Delete
 [**ServiceTestGroupAssignmentPost**](ConfigurationAPI.md#ServiceTestGroupAssignmentPost) | **Post** /networking-uxi/v1alpha1/service-test-group-assignments | Service Test Group Assignment Post
@@ -33,7 +33,7 @@ Method | HTTP request | Description
 
 ## AgentDelete
 
-> interface{} AgentDelete(ctx, agentUid).Execute()
+> AgentDelete(ctx, id).Execute()
 
 Agent Delete
 
@@ -52,17 +52,15 @@ import (
 )
 
 func main() {
-	agentUid := "agentUid_example" // string | 
+	id := "id_example" // string | The unique identifier of the agent
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.AgentDelete(context.Background(), agentUid).Execute()
+	r, err := apiClient.ConfigurationAPI.AgentDelete(context.Background(), id).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.AgentDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `AgentDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.AgentDelete`: %v\n", resp)
 }
 ```
 
@@ -72,7 +70,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**agentUid** | **string** |  | 
+**id** | **string** | The unique identifier of the agent | 
 
 ### Other Parameters
 
@@ -85,7 +83,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**interface{}**
+ (empty response body)
 
 ### Authorization
 
@@ -103,7 +101,7 @@ Name | Type | Description  | Notes
 
 ## AgentGroupAssignmentDelete
 
-> interface{} AgentGroupAssignmentDelete(ctx, uid).Execute()
+> AgentGroupAssignmentDelete(ctx, id).Execute()
 
 Agent Group Assignment Delete
 
@@ -122,17 +120,15 @@ import (
 )
 
 func main() {
-	uid := "uid_example" // string | 
+	id := "id_example" // string | The unique identifier of the assignment
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.AgentGroupAssignmentDelete(context.Background(), uid).Execute()
+	r, err := apiClient.ConfigurationAPI.AgentGroupAssignmentDelete(context.Background(), id).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.AgentGroupAssignmentDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `AgentGroupAssignmentDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.AgentGroupAssignmentDelete`: %v\n", resp)
 }
 ```
 
@@ -142,7 +138,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uid** | **string** |  | 
+**id** | **string** | The unique identifier of the assignment | 
 
 ### Other Parameters
 
@@ -155,7 +151,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**interface{}**
+ (empty response body)
 
 ### Authorization
 
@@ -258,9 +254,9 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
+	id := "id_example" // string | The ID of the resource. (optional)
+	next := "next_example" // string | The next cursor for pagination. (optional)
+	limit := int32(56) // int32 | The maximum number of items returned in the response. (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -285,9 +281,9 @@ Other parameters are passed through a pointer to a apiAgentGroupAssignmentsGetRe
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
+ **id** | **string** | The ID of the resource. | 
+ **next** | **string** | The next cursor for pagination. | 
+ **limit** | **int32** | The maximum number of items returned in the response. | [default to 50]
 
 ### Return type
 
@@ -309,7 +305,7 @@ Name | Type | Description  | Notes
 
 ## AgentPatch
 
-> AgentPatchResponse AgentPatch(ctx, agentUid).AgentPatchRequest(agentPatchRequest).Execute()
+> AgentPatchResponse AgentPatch(ctx, id).AgentPatchRequest(agentPatchRequest).Execute()
 
 Agent Patch
 
@@ -328,12 +324,12 @@ import (
 )
 
 func main() {
-	agentUid := "agentUid_example" // string | 
+	id := "id_example" // string | The unique identifier of the agent
 	agentPatchRequest := *openapiclient.NewAgentPatchRequest() // AgentPatchRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.AgentPatch(context.Background(), agentUid).AgentPatchRequest(agentPatchRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.AgentPatch(context.Background(), id).AgentPatchRequest(agentPatchRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.AgentPatch``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -349,7 +345,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**agentUid** | **string** |  | 
+**id** | **string** | The unique identifier of the agent | 
 
 ### Other Parameters
 
@@ -400,9 +396,9 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
+	id := "id_example" // string | The ID of the resource. (optional)
+	next := "next_example" // string | The next cursor for pagination. (optional)
+	limit := int32(56) // int32 | The maximum number of items returned in the response. (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -427,9 +423,9 @@ Other parameters are passed through a pointer to a apiAgentsGetRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
+ **id** | **string** | The ID of the resource. | 
+ **next** | **string** | The next cursor for pagination. | 
+ **limit** | **int32** | The maximum number of items returned in the response. | [default to 50]
 
 ### Return type
 
@@ -451,7 +447,7 @@ Name | Type | Description  | Notes
 
 ## GroupDelete
 
-> interface{} GroupDelete(ctx, groupUid).Execute()
+> GroupDelete(ctx, id).Execute()
 
 Group Delete
 
@@ -470,17 +466,15 @@ import (
 )
 
 func main() {
-	groupUid := "groupUid_example" // string | 
+	id := "id_example" // string | The unique identifier of the group.
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupDelete(context.Background(), groupUid).Execute()
+	r, err := apiClient.ConfigurationAPI.GroupDelete(context.Background(), id).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GroupDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.GroupDelete`: %v\n", resp)
 }
 ```
 
@@ -490,7 +484,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**groupUid** | **string** |  | 
+**id** | **string** | The unique identifier of the group. | 
 
 ### Other Parameters
 
@@ -503,7 +497,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**interface{}**
+ (empty response body)
 
 ### Authorization
 
@@ -521,7 +515,7 @@ Name | Type | Description  | Notes
 
 ## GroupPatch
 
-> GroupPatchResponse GroupPatch(ctx, groupUid).GroupPatchRequest(groupPatchRequest).Execute()
+> GroupPatchResponse GroupPatch(ctx, id).GroupPatchRequest(groupPatchRequest).Execute()
 
 Group Patch
 
@@ -540,12 +534,12 @@ import (
 )
 
 func main() {
-	groupUid := "groupUid_example" // string | 
+	id := "id_example" // string | The unique identifier of the group
 	groupPatchRequest := *openapiclient.NewGroupPatchRequest() // GroupPatchRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.GroupPatch(context.Background(), groupUid).GroupPatchRequest(groupPatchRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.GroupPatch(context.Background(), id).GroupPatchRequest(groupPatchRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.GroupPatch``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -561,7 +555,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**groupUid** | **string** |  | 
+**id** | **string** | The unique identifier of the group | 
 
 ### Other Parameters
 
@@ -678,9 +672,9 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
+	id := "id_example" // string | The ID of the resource. (optional)
+	next := "next_example" // string | The next cursor for pagination. (optional)
+	limit := int32(56) // int32 | The maximum number of items returned in the response. (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -705,9 +699,9 @@ Other parameters are passed through a pointer to a apiGroupsGetRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
+ **id** | **string** | The ID of the resource. | 
+ **next** | **string** | The next cursor for pagination. | 
+ **limit** | **int32** | The maximum number of items returned in the response. | [default to 50]
 
 ### Return type
 
@@ -729,7 +723,7 @@ Name | Type | Description  | Notes
 
 ## NetworkGroupAssignmentDelete
 
-> interface{} NetworkGroupAssignmentDelete(ctx, id).Execute()
+> NetworkGroupAssignmentDelete(ctx, id).Execute()
 
 Network Group Assignment Delete
 
@@ -748,17 +742,15 @@ import (
 )
 
 func main() {
-	id := "id_example" // string | 
+	id := "id_example" // string | The unique identifier of the network group assignment
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.NetworkGroupAssignmentDelete(context.Background(), id).Execute()
+	r, err := apiClient.ConfigurationAPI.NetworkGroupAssignmentDelete(context.Background(), id).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.NetworkGroupAssignmentDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `NetworkGroupAssignmentDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.NetworkGroupAssignmentDelete`: %v\n", resp)
 }
 ```
 
@@ -768,7 +760,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  | 
+**id** | **string** | The unique identifier of the network group assignment | 
 
 ### Other Parameters
 
@@ -781,7 +773,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**interface{}**
+ (empty response body)
 
 ### Authorization
 
@@ -884,9 +876,9 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
+	id := "id_example" // string | The ID of the resource. (optional)
+	next := "next_example" // string | The next cursor for pagination. (optional)
+	limit := int32(56) // int32 | The maximum number of items returned in the response. (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -911,9 +903,9 @@ Other parameters are passed through a pointer to a apiNetworkGroupAssignmentsGet
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
+ **id** | **string** | The ID of the resource. | 
+ **next** | **string** | The next cursor for pagination. | 
+ **limit** | **int32** | The maximum number of items returned in the response. | [default to 50]
 
 ### Return type
 
@@ -935,7 +927,7 @@ Name | Type | Description  | Notes
 
 ## SensorGroupAssignmentDelete
 
-> interface{} SensorGroupAssignmentDelete(ctx, id).Execute()
+> SensorGroupAssignmentDelete(ctx, id).Execute()
 
 Sensor Group Assignment Delete
 
@@ -954,17 +946,15 @@ import (
 )
 
 func main() {
-	id := "id_example" // string | 
+	id := "id_example" // string | The unique identifier of the sensor group assignment
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.SensorGroupAssignmentDelete(context.Background(), id).Execute()
+	r, err := apiClient.ConfigurationAPI.SensorGroupAssignmentDelete(context.Background(), id).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.SensorGroupAssignmentDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `SensorGroupAssignmentDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.SensorGroupAssignmentDelete`: %v\n", resp)
 }
 ```
 
@@ -974,7 +964,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  | 
+**id** | **string** | The unique identifier of the sensor group assignment | 
 
 ### Other Parameters
 
@@ -987,7 +977,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**interface{}**
+ (empty response body)
 
 ### Authorization
 
@@ -1090,9 +1080,9 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
+	id := "id_example" // string | The ID of the resource. (optional)
+	next := "next_example" // string | The next cursor for pagination. (optional)
+	limit := int32(56) // int32 | The maximum number of items returned in the response. (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1117,9 +1107,9 @@ Other parameters are passed through a pointer to a apiSensorGroupAssignmentsGetR
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
+ **id** | **string** | The ID of the resource. | 
+ **next** | **string** | The next cursor for pagination. | 
+ **limit** | **int32** | The maximum number of items returned in the response. | [default to 50]
 
 ### Return type
 
@@ -1141,7 +1131,7 @@ Name | Type | Description  | Notes
 
 ## SensorPatch
 
-> SensorPatchResponse SensorPatch(ctx, sensorUid).SensorPatchRequest(sensorPatchRequest).Execute()
+> SensorPatchResponse SensorPatch(ctx, id).SensorPatchRequest(sensorPatchRequest).Execute()
 
 Sensor Patch
 
@@ -1160,12 +1150,12 @@ import (
 )
 
 func main() {
-	sensorUid := "sensorUid_example" // string | 
+	id := "id_example" // string | The unique identifier of the sensor
 	sensorPatchRequest := *openapiclient.NewSensorPatchRequest() // SensorPatchRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.SensorPatch(context.Background(), sensorUid).SensorPatchRequest(sensorPatchRequest).Execute()
+	resp, r, err := apiClient.ConfigurationAPI.SensorPatch(context.Background(), id).SensorPatchRequest(sensorPatchRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.SensorPatch``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -1181,7 +1171,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**sensorUid** | **string** |  | 
+**id** | **string** | The unique identifier of the sensor | 
 
 ### Other Parameters
 
@@ -1232,9 +1222,9 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
+	id := "id_example" // string | The ID of the resource. (optional)
+	next := "next_example" // string | The next cursor for pagination. (optional)
+	limit := int32(56) // int32 | The maximum number of items returned in the response. (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1259,9 +1249,9 @@ Other parameters are passed through a pointer to a apiSensorsGetRequest struct v
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
+ **id** | **string** | The ID of the resource. | 
+ **next** | **string** | The next cursor for pagination. | 
+ **limit** | **int32** | The maximum number of items returned in the response. | [default to 50]
 
 ### Return type
 
@@ -1283,7 +1273,7 @@ Name | Type | Description  | Notes
 
 ## ServiceTestGroupAssignmentDelete
 
-> interface{} ServiceTestGroupAssignmentDelete(ctx, id).Execute()
+> ServiceTestGroupAssignmentDelete(ctx, id).Execute()
 
 Service Test Group Assignment Delete
 
@@ -1302,17 +1292,15 @@ import (
 )
 
 func main() {
-	id := "id_example" // string | 
+	id := "id_example" // string | The unique identifier of the service test group assignment
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ConfigurationAPI.ServiceTestGroupAssignmentDelete(context.Background(), id).Execute()
+	r, err := apiClient.ConfigurationAPI.ServiceTestGroupAssignmentDelete(context.Background(), id).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationAPI.ServiceTestGroupAssignmentDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ServiceTestGroupAssignmentDelete`: interface{}
-	fmt.Fprintf(os.Stdout, "Response from `ConfigurationAPI.ServiceTestGroupAssignmentDelete`: %v\n", resp)
 }
 ```
 
@@ -1322,7 +1310,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string** |  | 
+**id** | **string** | The unique identifier of the service test group assignment | 
 
 ### Other Parameters
 
@@ -1335,7 +1323,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**interface{}**
+ (empty response body)
 
 ### Authorization
 
@@ -1438,9 +1426,9 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
+	id := "id_example" // string | The ID of the resource. (optional)
+	next := "next_example" // string | The next cursor for pagination. (optional)
+	limit := int32(56) // int32 | The maximum number of items returned in the response. (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1465,9 +1453,9 @@ Other parameters are passed through a pointer to a apiServiceTestGroupAssignment
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
+ **id** | **string** | The ID of the resource. | 
+ **next** | **string** | The next cursor for pagination. | 
+ **limit** | **int32** | The maximum number of items returned in the response. | [default to 50]
 
 ### Return type
 
@@ -1508,9 +1496,9 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
+	id := "id_example" // string | The ID of the resource. (optional)
+	next := "next_example" // string | The next cursor for pagination. (optional)
+	limit := int32(56) // int32 | The maximum number of items returned in the response. (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1535,9 +1523,9 @@ Other parameters are passed through a pointer to a apiServiceTestsGetRequest str
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
+ **id** | **string** | The ID of the resource. | 
+ **next** | **string** | The next cursor for pagination. | 
+ **limit** | **int32** | The maximum number of items returned in the response. | [default to 50]
 
 ### Return type
 
@@ -1578,9 +1566,9 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
+	id := "id_example" // string | The ID of the resource. (optional)
+	next := "next_example" // string | The next cursor for pagination. (optional)
+	limit := int32(56) // int32 | The maximum number of items returned in the response. (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1605,9 +1593,9 @@ Other parameters are passed through a pointer to a apiWiredNetworksGetRequest st
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
+ **id** | **string** | The ID of the resource. | 
+ **next** | **string** | The next cursor for pagination. | 
+ **limit** | **int32** | The maximum number of items returned in the response. | [default to 50]
 
 ### Return type
 
@@ -1648,9 +1636,9 @@ import (
 )
 
 func main() {
-	id := "id_example" // string |  (optional)
-	next := "next_example" // string |  (optional)
-	limit := int32(56) // int32 |  (optional) (default to 50)
+	id := "id_example" // string | The ID of the resource. (optional)
+	next := "next_example" // string | The next cursor for pagination. (optional)
+	limit := int32(56) // int32 | The maximum number of items returned in the response. (optional) (default to 50)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1675,9 +1663,9 @@ Other parameters are passed through a pointer to a apiWirelessNetworksGetRequest
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string** |  | 
- **next** | **string** |  | 
- **limit** | **int32** |  | [default to 50]
+ **id** | **string** | The ID of the resource. | 
+ **next** | **string** | The next cursor for pagination. | 
+ **limit** | **int32** | The maximum number of items returned in the response. | [default to 50]
 
 ### Return type
 

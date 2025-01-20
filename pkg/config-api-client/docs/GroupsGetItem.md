@@ -4,11 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
-**Name** | **string** |  | 
+**Id** | **string** | The unique identifier of the group | 
+**Name** | **string** | The name of the group | 
 **Parent** | [**NullableGroupsGetParent**](GroupsGetParent.md) |  | 
-**Path** | **string** |  | 
-**Type** | **string** |  | 
+**Path** | **string** | The path of the group | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

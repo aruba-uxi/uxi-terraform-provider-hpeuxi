@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Hewlett Packard Enterprise Development LP.
+Copyright 2025 Hewlett Packard Enterprise Development LP.
 */
 
 /*
@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 6.3.0
 Contact: support@capenetworks.com
 */
 
@@ -26,15 +26,23 @@ var _ MappedNullable = &AgentsGetItem{}
 
 // AgentsGetItem struct for AgentsGetItem
 type AgentsGetItem struct {
-	Id                 string                `json:"id"`
-	Serial             string                `json:"serial"`
-	Name               string                `json:"name"`
-	ModelNumber        NullableString        `json:"modelNumber"`
-	WifiMacAddress     NullableString        `json:"wifiMacAddress"`
-	EthernetMacAddress NullableString        `json:"ethernetMacAddress"`
-	Notes              NullableString        `json:"notes"`
-	PcapMode           NullableAgentPcapMode `json:"pcapMode"`
-	Type               string                `json:"type"`
+	// The unique identifier of the agent
+	Id string `json:"id"`
+	// The serial number of the agent
+	Serial string `json:"serial"`
+	// The name of the agent
+	Name string `json:"name"`
+	// The model number of the agent
+	ModelNumber NullableString `json:"modelNumber"`
+	// The WiFi MAC address of the agent
+	WifiMacAddress NullableString `json:"wifiMacAddress"`
+	// The Ethernet MAC address of the agent
+	EthernetMacAddress NullableString `json:"ethernetMacAddress"`
+	// The notes of the agent
+	Notes    NullableString        `json:"notes"`
+	PcapMode NullableAgentPcapMode `json:"pcapMode"`
+	// The type of the resource.
+	Type string `json:"type"`
 }
 
 type _AgentsGetItem AgentsGetItem

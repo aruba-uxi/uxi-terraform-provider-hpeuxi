@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Hewlett Packard Enterprise Development LP.
+Copyright 2025 Hewlett Packard Enterprise Development LP.
 */
 
 /*
@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 5.21.0
+API version: 6.3.0
 Contact: support@capenetworks.com
 */
 
@@ -26,11 +26,15 @@ var _ MappedNullable = &GroupPatchResponse{}
 
 // GroupPatchResponse struct for GroupPatchResponse
 type GroupPatchResponse struct {
-	Id     string           `json:"id"`
-	Name   string           `json:"name"`
+	// The unique identifier of the group
+	Id string `json:"id"`
+	// The name of the group
+	Name string `json:"name"`
+	// The path of the group
 	Path   string           `json:"path"`
 	Parent GroupPatchParent `json:"parent"`
-	Type   string           `json:"type"`
+	// The type of the resource.
+	Type string `json:"type"`
 }
 
 type _GroupPatchResponse GroupPatchResponse

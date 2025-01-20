@@ -4,11 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
-**Name** | **string** |  | 
-**Path** | **string** |  | 
+**Id** | **string** | The unique identifier of the group | 
+**Name** | **string** | The name of the group | 
+**Path** | **string** | The path of the group | 
 **Parent** | [**GroupPatchParent**](GroupPatchParent.md) |  | 
-**Type** | **string** |  | 
+**Type** | **string** | The type of the resource. | 
 
 ## Methods
 

@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**GroupId** | **string** |  | 
-**AgentId** | **string** |  | 
+**GroupId** | **string** | The unique identifier of the group | 
+**AgentId** | **string** | The unique identifier of the agent | 
 
 ## Methods
 

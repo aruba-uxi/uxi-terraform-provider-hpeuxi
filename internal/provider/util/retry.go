@@ -16,6 +16,24 @@ import (
 func RetryForTooManyRequests[T any](
 	f func() (T, *http.Response, error),
 ) (T, *http.Response, error) {
+	return retryForTooManyRequests(f)
+}
+
+func RetryForTooManyRequestsNoReturn(
+	f func() (*http.Response, error),
+) (*http.Response, error) {
+	_, httpResponse, err := retryForTooManyRequests(func() (struct{}, *http.Response, error) {
+		httpResponse, err := f()
+
+		return struct{}{}, httpResponse, err
+	})
+
+	return httpResponse, err
+}
+
+func retryForTooManyRequests[T any](
+	f func() (T, *http.Response, error),
+) (T, *http.Response, error) {
 	var result T
 	var err error
 	var httpResponse *http.Response

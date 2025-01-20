@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | Pointer to **string** |  | [optional] 
-**AddressNote** | Pointer to **string** |  | [optional] 
-**Notes** | Pointer to **string** |  | [optional] 
+**Name** | Pointer to **string** | The updated sensor name | [optional] 
+**AddressNote** | Pointer to **string** | The updated address note for the sensor | [optional] 
+**Notes** | Pointer to **string** | Additional notes for the sensor | [optional] 
 **PcapMode** | Pointer to [**SensorPcapMode**](SensorPcapMode.md) |  | [optional] 
 
 ## Methods
