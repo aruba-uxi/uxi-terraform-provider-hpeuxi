@@ -5,6 +5,7 @@ Copyright 2024 Hewlett Packard Enterprise Development LP.
 package resource_test
 
 import (
+	"fmt"
 	"net/http"
 	"regexp"
 	"testing"
@@ -17,13 +18,166 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/stretchr/testify/assert"
 
+	config_api_client "github.com/aruba-uxi/terraform-provider-hpeuxi/pkg/config-api-client"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/provider"
 	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/mocked/util"
+	"github.com/aruba-uxi/terraform-provider-hpeuxi/test/shared"
 )
 
+func setupGroupCreateMocks(groupID string, parentID string, name string) {
+	var postRequest config_api_client.GroupPostRequest
+	if parentID == util.MockRootGroupID {
+		postRequest = createGroupPostRequest(name, nil)
+	} else {
+		postRequest = createGroupPostRequest(name, &parentID)
+	}
+
+	groupPath := parentID + "." + groupID
+	postResponse := createGroupPostResponse(groupID, groupPath, name, parentID)
+	util.MockPostGroup(postRequest, postResponse, 1)
+
+	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
+	util.MockGetGroup(groupID, getResponse, 1)
+}
+
+func setupGroupUpdateMocks(groupID string, parentID string, name string) {
+	path := parentID + "." + groupID
+	if parentID == util.MockRootGroupID {
+		util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
+	} else {
+		util.MockGetGroup(
+			parentID,
+			createGroupGetResponse(
+				parentID,
+				"fake_parent_id",
+				"fake_parent_id."+parentID,
+				"fake_parent",
+			),
+			1,
+		)
+	}
+
+	util.MockPatchGroup(
+		groupID,
+		createGroupPatchRequest(name),
+		createGroupPatchResponse(groupID, name, path, parentID),
+		1,
+	)
+
+	util.MockGetGroup(
+		groupID,
+		createGroupGetResponse(groupID, parentID, path, name),
+		1,
+	)
+}
+
+func setupGroupDeleteMocks(groupID string, parentID string, name string) {
+	groupPath := parentID + "." + groupID
+	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
+	util.MockGetGroup(
+		groupID,
+		getResponse,
+		1,
+	)
+	util.MockDeleteGroup(groupID, 1)
+}
+
+func setupGroupImportMocks(groupID string, parentID string, name string) {
+	var getParentResponse config_api_client.GroupsGetResponse
+	if parentID == util.MockRootGroupID {
+		getParentResponse = util.GenerateRootGroupGetResponse()
+	} else {
+		getParentResponse = createGroupGetResponse(
+			parentID,
+			"fake_parent_id",
+			"fake_parent_id."+parentID,
+			"fake parent",
+		)
+	}
+
+	util.MockGetGroup(parentID, getParentResponse, 1)
+	groupPath := parentID + "." + groupID
+	getResponse := createGroupGetResponse(groupID, parentID, groupPath, name)
+	util.MockGetGroup(groupID, getResponse, 1)
+}
+
+func createGroupPostRequest(name string, parentID *string) config_api_client.GroupPostRequest {
+	postRequest := config_api_client.NewGroupPostRequest(name)
+	if parentID != nil {
+		realParent := *parentID
+		postRequest.SetParentId(realParent)
+	}
+
+	return *postRequest
+}
+
+func createGroupPostResponse(
+	groupID string,
+	groupPath string,
+	name string,
+	parentID string,
+) config_api_client.GroupPostResponse {
+	return *config_api_client.NewGroupPostResponse(
+		groupID,
+		name,
+		groupPath,
+		*config_api_client.NewGroupPostParent(parentID),
+		shared.GroupType,
+	)
+}
+
+func createGroupGetResponse(
+	groupID string,
+	parentID string,
+	groupPath string,
+	name string,
+) config_api_client.GroupsGetResponse {
+	getResponseItems := []config_api_client.GroupsGetItem{*config_api_client.NewGroupsGetItem(
+		groupID,
+		name,
+		*config_api_client.NewNullableGroupsGetParent(config_api_client.NewGroupsGetParent(parentID)),
+		groupPath,
+		shared.GroupType,
+	)}
+	getResponse := config_api_client.NewGroupsGetResponse(
+		getResponseItems,
+		1,
+		*config_api_client.NewNullableString(nil),
+	)
+
+	return *getResponse
+}
+
+func createGroupPatchRequest(name string) config_api_client.GroupPatchRequest {
+	request := config_api_client.NewGroupPatchRequest()
+	request.SetName(name)
+
+	return *request
+}
+
+func createGroupPatchResponse(
+	groupID string,
+	name string,
+	parentID string,
+	path string,
+) config_api_client.GroupPatchResponse {
+	response := config_api_client.NewGroupPatchResponse(
+		groupID,
+		name,
+		path,
+		*config_api_client.NewGroupPatchParent(parentID),
+		shared.GroupType,
+	)
+
+	return *response
+}
+
 func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
+	testParentID := "create_parent"
+	testGroupID := "create_id"
+	testName := "test_name"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -31,24 +185,13 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateNonRootGroupPostRequest("id", "", ""),
-						util.GenerateGroupPostResponse("id", "", ""),
-						1,
-					)
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 2)
-					// to indicate the group has a parent
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					setupGroupCreateMocks(testGroupID, testParentID, testName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name            = "name"
-					parent_group_id = "parent_id"
-				}`,
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, testName, testParentID),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectResourceAction(
@@ -62,34 +205,29 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("parent_group_id"),
-							knownvalue.StringExact("parent_id"),
+							knownvalue.StringExact("create_parent"),
 						),
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("name"),
+							knownvalue.StringExact(testName),
 						),
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", testName),
 					resource.TestCheckResourceAttr(
 						"hpeuxi_group.my_group",
 						"parent_group_id",
-						"parent_id",
+						"create_parent",
 					),
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", testGroupID),
 				),
 			},
 			// Delete
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupGetResponse("id", "", ""),
-						1,
-					)
-					util.MockDeleteGroup("id", 1)
+					setupGroupDeleteMocks(testGroupID, testParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -100,8 +238,11 @@ func Test_CreateGroupResource_ShouldSucceed(t *testing.T) {
 }
 
 func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
+	testParentID := "import_parent"
+	testName := "import_name"
+	testID := "import_id"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -109,35 +250,18 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateNonRootGroupPostRequest("id", "", ""),
-						util.GenerateGroupPostResponse("id", "", ""),
-						1,
-					)
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 2)
-					// to indicate the group has a parent
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					setupGroupCreateMocks(testID, testParentID, testName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name            = "name"
-					parent_group_id = "parent_id"
-				}`,
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, testName, testParentID),
 			},
 			// ImportState
 			{
 				PreConfig: func() {
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
-					// to indicate the group has a parent
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					setupGroupImportMocks(testID, testParentID, testName)
 				},
 				ResourceName:      "hpeuxi_group.my_group",
 				ImportState:       true,
@@ -146,12 +270,7 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 			// Delete
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupGetResponse("id", "", ""),
-						1,
-					)
-					util.MockDeleteGroup("id", 1)
+					setupGroupDeleteMocks(testID, testParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -162,8 +281,11 @@ func Test_ImportGroupResource_ShouldSucceed(t *testing.T) {
 }
 
 func Test_CreateGroupResource_WithRootParent(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
+	testGroupID := "root_child"
+	testName := "child of root"
+	rootParentID := util.MockRootGroupID
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -171,23 +293,12 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 			// Creating a group attached to the root
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateGroupAttachedToRootGroupPostRequest("id", ""),
-						util.GenerateGroupAttachedToRootGroupPostResponse("id", ""),
-						1,
-					)
-					// to indicate the group has the root group as a parent
-					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
-						1,
-					)
+					setupGroupCreateMocks(testGroupID, rootParentID, testName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name = "name"
-				}`,
+					name            = "%s"
+				}`, provider.ProviderConfig, testName),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectResourceAction(
@@ -206,13 +317,13 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("name"),
+							knownvalue.StringExact(testName),
 						),
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", testGroupID),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", testName),
 					resource.TestCheckNoResourceAttr("hpeuxi_group.my_group", "parent_group_id"),
 				),
 			},
@@ -220,12 +331,7 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 			{
 				PreConfig: func() {
 					// existing group
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
-						1,
-					)
-					util.MockDeleteGroup("id", 1)
+					setupGroupDeleteMocks(testGroupID, rootParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -235,8 +341,8 @@ func Test_CreateGroupResource_WithRootParent(t *testing.T) {
 	mockOAuth.Mock.Disable()
 }
 
-func Test_ImportGroupResource_WithRootParent_ShouldFail(t *testing.T) {
-	defer gock.Off()
+func Test_ImportGroupResource_WithRoot_ShouldFail(t *testing.T) {
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
@@ -245,11 +351,11 @@ func Test_ImportGroupResource_WithRootParent_ShouldFail(t *testing.T) {
 			// Importing the root group does not work
 			{
 				PreConfig: func() {
-					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
+					setupGroupImportMocks(util.MockRootGroupID, util.MockRootGroupID, "root")
 				},
 				Config: provider.ProviderConfig + `
 				resource "hpeuxi_group" "my_root_group" {
-					name            = "name"
+					name = "root"
 				}
 
 				import {
@@ -265,8 +371,13 @@ func Test_ImportGroupResource_WithRootParent_ShouldFail(t *testing.T) {
 }
 
 func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
+	testParentID := "parent_id"
+	testGroupID := "no_recreate"
+
+	oldTestName := "create_name"
+	newTestName := "update_name"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -274,49 +385,27 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateNonRootGroupPostRequest("id", "", ""),
-						util.GenerateGroupPostResponse("id", "", ""),
-						1,
-					)
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 2)
-					// to indicate the group has a parent
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					setupGroupCreateMocks(testGroupID, testParentID, oldTestName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name            = "name"
-					parent_group_id = "parent_id"
-				}`,
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, oldTestName, testParentID),
 			},
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					// existing group
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
+					setupGroupImportMocks(testGroupID, testParentID, oldTestName)
+
 					// updated group
-					util.MockPatchGroup(
-						"id",
-						util.GenerateGroupPatchRequest("_2"),
-						util.GenerateGroupPatchResponse("id", "_2", ""),
-						1,
-					)
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "_2", ""), 3)
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					setupGroupUpdateMocks(testGroupID, testParentID, newTestName)
 				},
-				Config: provider.ProviderConfig + `
-					resource "hpeuxi_group" "my_group" {
-						name            = "name_2"
-						parent_group_id = "parent_id"
-					}`,
+				Config: fmt.Sprintf(`%s
+				resource "hpeuxi_group" "my_group" {
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, newTestName, testParentID),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectResourceAction(
@@ -326,29 +415,24 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("name_2"),
+							knownvalue.StringExact(newTestName),
 						),
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name_2"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", newTestName),
 					resource.TestCheckResourceAttr(
 						"hpeuxi_group.my_group",
 						"parent_group_id",
-						"parent_id",
+						testParentID,
 					),
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", testGroupID),
 				),
 			},
 			// Delete
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupGetResponse("id", "", "_2"),
-						1,
-					)
-					util.MockDeleteGroup("id", 1)
+					setupGroupDeleteMocks(testGroupID, testParentID, newTestName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -359,8 +443,12 @@ func Test_UpdateGroupResource_WithoutRecreate_ShouldSucceed(t *testing.T) {
 }
 
 func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
+	testGroupID := "id"
+	oldTestName := "create_name"
+	newTestName := "update_name"
+	rootParentID := util.MockRootGroupID
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -368,50 +456,23 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateGroupAttachedToRootGroupPostRequest("id", ""),
-						util.GenerateGroupAttachedToRootGroupPostResponse("id", ""),
-						1,
-					)
-					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 1)
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
-						1,
-					)
+					setupGroupCreateMocks(testGroupID, rootParentID, oldTestName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name            = "name"
-				}`,
+					name            = "%s"
+				}`, provider.ProviderConfig, oldTestName),
 			},
 			// Update that does not trigger a recreate
 			{
 				PreConfig: func() {
-					// existing group
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", ""),
-						1,
-					)
-					// updated group
-					util.MockPatchGroup(
-						"id",
-						util.GenerateGroupPatchRequest("_2"),
-						util.GenerateGroupPatchResponse("id", "_2", ""),
-						1,
-					)
-					util.MockGetGroup(util.MockRootGroupID, util.GenerateRootGroupGetResponse(), 2)
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", "_2"),
-						2,
-					)
+					setupGroupImportMocks(testGroupID, rootParentID, oldTestName)
+					setupGroupUpdateMocks(testGroupID, util.MockRootGroupID, newTestName)
 				},
-				Config: provider.ProviderConfig + `
-					resource "hpeuxi_group" "my_group" {
-						name            = "name_2"
-					}`,
+				Config: fmt.Sprintf(`%s
+				resource "hpeuxi_group" "my_group" {
+					name            = "%s"
+				}`, provider.ProviderConfig, newTestName),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectResourceAction(
@@ -421,25 +482,20 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("name_2"),
+							knownvalue.StringExact(newTestName),
 						),
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name_2"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", newTestName),
 					resource.TestCheckNoResourceAttr("hpeuxi_group.my_group", "parent_group_id"),
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", testGroupID),
 				),
 			},
 			// Delete
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"id",
-						util.GenerateGroupAttachedToRootGroupGetResponse("id", "_2"),
-						1,
-					)
-					util.MockDeleteGroup("id", 1)
+					setupGroupDeleteMocks(testGroupID, rootParentID, newTestName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -450,8 +506,16 @@ func Test_UpdateGroupResource_WithoutParent_ShouldSucceed(t *testing.T) {
 }
 
 func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
+
+	oldParentID := "parent_id"
+	oldGroupID := "id"
+
+	newParentID := "parent_id_2"
+	newGroupID := "new_id"
+
+	testName := "constant_name"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: provider.TestAccProtoV6ProviderFactories,
@@ -459,49 +523,27 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 			// Create
 			{
 				PreConfig: func() {
-					util.MockPostGroup(
-						util.GenerateNonRootGroupPostRequest("id", "", ""),
-						util.GenerateGroupPostResponse("id", "", ""),
-						1,
-					)
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 2)
-					// to indicate the group has a parent
-					util.MockGetGroup(
-						"parent_id",
-						util.GenerateGroupGetResponse("parent_id", "", ""),
-						1,
-					)
+					setupGroupCreateMocks(oldGroupID, oldParentID, testName)
 				},
-				Config: provider.ProviderConfig + `
+				Config: fmt.Sprintf(`%s
 				resource "hpeuxi_group" "my_group" {
-					name            = "name"
-					parent_group_id = "parent_id"
-				}`,
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, testName, oldParentID),
 			},
 			// Update that does trigger a recreate
 			{
 				PreConfig: func() {
-					// existing group
-					util.MockGetGroup("id", util.GenerateGroupGetResponse("id", "", ""), 1)
-					// new group (replacement)
-					util.MockPostGroup(
-						util.GenerateNonRootGroupPostRequest("new_id", "", "_2"),
-						util.GenerateGroupPostResponse("new_id", "", "_2"),
-						1,
-					)
-					util.MockGetGroup(
-						"new_id",
-						util.GenerateGroupGetResponse("new_id", "", "_2"),
-						1,
-					)
-					// delete old group (being replaced)
-					util.MockDeleteGroup("id", 1)
+					setupGroupImportMocks(oldGroupID, oldParentID, testName)
+					setupGroupDeleteMocks(oldGroupID, oldParentID, testName)
+
+					setupGroupCreateMocks(newGroupID, newParentID, testName)
 				},
-				Config: provider.ProviderConfig + `
-					resource "hpeuxi_group" "my_group" {
-						name            = "name"
-						parent_group_id = "parent_id_2"
-					}`,
+				Config: fmt.Sprintf(`%s
+				resource "hpeuxi_group" "my_group" {
+					name            = "%s"
+					parent_group_id = "%s"
+				}`, provider.ProviderConfig, testName, newParentID),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectResourceAction(
@@ -515,34 +557,29 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("name"),
-							knownvalue.StringExact("name"),
+							knownvalue.StringExact(testName),
 						),
 						plancheck.ExpectKnownValue(
 							"hpeuxi_group.my_group",
 							tfjsonpath.New("parent_group_id"),
-							knownvalue.StringExact("parent_id_2"),
+							knownvalue.StringExact(newParentID),
 						),
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", "name"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "name", testName),
 					resource.TestCheckResourceAttr(
 						"hpeuxi_group.my_group",
 						"parent_group_id",
-						"parent_id_2",
+						newParentID,
 					),
-					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", "new_id"),
+					resource.TestCheckResourceAttr("hpeuxi_group.my_group", "id", newGroupID),
 				),
 			},
 			// Delete
 			{
 				PreConfig: func() {
-					util.MockGetGroup(
-						"new_id",
-						util.GenerateGroupGetResponse("new_id", "", "_2"),
-						1,
-					)
-					util.MockDeleteGroup("new_id", 1)
+					setupGroupDeleteMocks(newGroupID, newParentID, testName)
 				},
 				Config: provider.ProviderConfig,
 			},
@@ -553,7 +590,7 @@ func Test_UpdateGroupResource_WithRecreate_ShouldSucceed(t *testing.T) {
 }
 
 func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 	var mockTooManyRequests *gock.Response
 
@@ -674,7 +711,7 @@ func TestGroupResourceTooManyRequestsHandling(t *testing.T) {
 }
 
 func TestGroupResourceHttpErrorHandling(t *testing.T) {
-	defer gock.Off()
+	defer gock.OffAll()
 	mockOAuth := util.MockOAuth()
 
 	resource.Test(t, resource.TestCase{
