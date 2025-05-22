@@ -1,0 +1,23 @@
+name: Lint Workflows
+
+on:
+  push:
+    branches:
+      - "**"
+      - "!main"
+      - "!master"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  action-lint:
+    name: Lint & Github Workflows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check workflow files
+        uses: docker://rhysd/actionlint:latest
+        with:
+          args: -color

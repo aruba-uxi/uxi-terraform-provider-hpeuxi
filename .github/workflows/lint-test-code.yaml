@@ -8,7 +8,7 @@ on:
       - "!master"
 
 env:
-  go_version: 1.22
+  go_version: 1.23
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -28,7 +28,7 @@ jobs:
           go-version: "${{ env.go_version }}"
 
       - name: Setup Golang caches
-        uses: actions/cache@v4.1.2
+        uses: actions/cache@v4.2.3
         with:
           path: |
             ~/.cache/go-build
@@ -69,10 +69,11 @@ jobs:
       - name: Check Provider docs valid
         run: just validate-provider-docs
 
-      - name: Upload Code Coverage Report
-        uses: codecov/codecov-action@v4
+      - name: Coverage comment
+        uses: py-cov-action/python-coverage-comment-action@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./pkg/config-api-client/.coverage,.coverage
-          flage: client,provider
-          fail_ci_if_error: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANNOTATE_MISSING_LINES: true
+          ANNOTATION_TYPE: warning
+          MINIMUM_GREEN: 100
+          MINIMUM_ORANGE: 70
