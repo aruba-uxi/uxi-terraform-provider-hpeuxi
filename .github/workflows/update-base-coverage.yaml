@@ -1,0 +1,54 @@
+name: Update baseline Coverage
+
+on:
+  push:
+    branches:
+      - "main"
+      - "master"
+
+env:
+  python_version: 3.12
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update-baseline-coverage:
+    name: Update Baseline Coverage
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.python_version }}"
+
+      - name: Setup Just
+        uses: extractions/setup-just@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Fury Repository
+        uses: extractions/netrc@v2
+        with:
+          machine: pypi.fury.io
+          username: ${{ secrets.FURY_AUTH_PULL }}
+
+      - name: Install Dependencies
+        run: just setup-dev
+        env:
+          UV_SYSTEM_PYTHON: 1
+
+      - name: Run Tests
+        run: |
+          just test
+
+      - name: Coverage comment
+        uses: py-cov-action/python-coverage-comment-action@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

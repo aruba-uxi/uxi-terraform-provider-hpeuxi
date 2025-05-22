@@ -1,0 +1,6 @@
+[run]
+branch = true
+relative_files = true
+omit =
+    acceptance_tests/*
+    docs/*
