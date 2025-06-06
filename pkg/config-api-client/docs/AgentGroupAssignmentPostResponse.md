@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** | The unique identifier of the agent group assignment | 
-**Group** | [**AgentGroupAssignmentPostGroup**](AgentGroupAssignmentPostGroup.md) |  | 
-**Agent** | [**AgentGroupAssignmentPostAgent**](AgentGroupAssignmentPostAgent.md) |  | 
+**Group** | [**AgentGroupAssignmentPostGroup**](AgentGroupAssignmentPostGroup.md) | The group component of the agent group assignment | 
+**Agent** | [**AgentGroupAssignmentPostAgent**](AgentGroupAssignmentPostAgent.md) | The agent component of the agent group assignment | 
 **Type** | **string** | The type of the resource. | 
 
 ## Methods

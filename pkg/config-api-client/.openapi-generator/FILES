@@ -28,6 +28,7 @@ docs/GroupPostResponse.md
 docs/GroupsGetItem.md
 docs/GroupsGetParent.md
 docs/GroupsGetResponse.md
+docs/HTTPValidationError.md
 docs/IpVersion.md
 docs/Issue.md
 docs/IssueSubject.md
@@ -62,6 +63,8 @@ docs/ServiceTestGroupAssignmentsGetResponse.md
 docs/ServiceTestGroupAssignmentsGetServiceTest.md
 docs/ServiceTestsGetItem.md
 docs/ServiceTestsGetResponse.md
+docs/ValidationError.md
+docs/ValidationErrorLocInner.md
 docs/WiredNetworksGetItem.md
 docs/WiredNetworksGetResponse.md
 docs/WirelessNetworksGetItem.md
@@ -92,6 +95,7 @@ model_group_post_response.go
 model_groups_get_item.go
 model_groups_get_parent.go
 model_groups_get_response.go
+model_http_validation_error.go
 model_ip_version.go
 model_issue.go
 model_issue_subject.go
@@ -126,6 +130,8 @@ model_service_test_group_assignments_get_response.go
 model_service_test_group_assignments_get_service_test_.go
 model_service_tests_get_item.go
 model_service_tests_get_response.go
+model_validation_error.go
+model_validation_error_loc_inner.go
 model_wired_networks_get_item.go
 model_wired_networks_get_response.go
 model_wireless_networks_get_item.go

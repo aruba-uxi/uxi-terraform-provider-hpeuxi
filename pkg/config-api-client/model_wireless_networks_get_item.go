@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 6.3.0
+API version: 6.7.0
 Contact: support@capenetworks.com
 */
 
@@ -32,10 +32,10 @@ type WirelessNetworksGetItem struct {
 	// The name of the wireless network
 	Name string `json:"name"`
 	// The SSID of the wireless network
-	Ssid string `json:"ssid"`
-	// The security type of the wireless network
-	Security  NullableString `json:"security"`
-	IpVersion IpVersion      `json:"ipVersion"`
+	Ssid     string         `json:"ssid"`
+	Security NullableString `json:"security"`
+	// The IP version of the wireless network
+	IpVersion IpVersion `json:"ipVersion"`
 	// The creation timestamp of the wireless network
 	CreatedAt time.Time `json:"createdAt"`
 	// The last update timestamp of the wireless network
@@ -43,8 +43,7 @@ type WirelessNetworksGetItem struct {
 	// Whether the wireless network is hidden
 	Hidden bool `json:"hidden"`
 	// The band locking setting of the wireless network
-	BandLocking string `json:"bandLocking"`
-	// The DNS lookup domain of the wireless network
+	BandLocking     string         `json:"bandLocking"`
 	DnsLookupDomain NullableString `json:"dnsLookupDomain"`
 	// Whether EDNS is disabled for the wireless network
 	DisableEdns bool `json:"disableEdns"`

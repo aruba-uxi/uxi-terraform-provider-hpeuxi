@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** | The unique identifier of the service test group assignment | 
-**Group** | [**ServiceTestGroupAssignmentPostGroup**](ServiceTestGroupAssignmentPostGroup.md) |  | 
-**ServiceTest** | [**ServiceTestGroupAssignmentPostServiceTest**](ServiceTestGroupAssignmentPostServiceTest.md) |  | 
+**Group** | [**ServiceTestGroupAssignmentPostGroup**](ServiceTestGroupAssignmentPostGroup.md) | The group component of the service test group assignment | 
+**ServiceTest** | [**ServiceTestGroupAssignmentPostServiceTest**](ServiceTestGroupAssignmentPostServiceTest.md) | The service test component of the service test group assignment | 
 **Type** | **string** | The type of the resource. | 
 
 ## Methods

@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 6.3.0
+API version: 6.7.0
 Contact: support@capenetworks.com
 */
 
@@ -27,8 +27,10 @@ var _ MappedNullable = &SensorGroupAssignmentsGetItem{}
 // SensorGroupAssignmentsGetItem struct for SensorGroupAssignmentsGetItem
 type SensorGroupAssignmentsGetItem struct {
 	// The unique identifier of the sensor group assignment
-	Id     string                          `json:"id"`
-	Group  SensorGroupAssignmentsGetGroup  `json:"group"`
+	Id string `json:"id"`
+	// The group component of the sensor group assignment
+	Group SensorGroupAssignmentsGetGroup `json:"group"`
+	// The sensor component of the sensor group assignment
 	Sensor SensorGroupAssignmentsGetSensor `json:"sensor"`
 	// The type of the resource.
 	Type string `json:"type"`

@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   contact:
     email: support@capenetworks.com
@@ -6,7 +6,7 @@ info:
     url: https://help.capenetworks.com/en/
   description: This document outlines the API contracts for HPE Aruba Networking UXI.
   title: HPE Aruba Networking UXI Configuration
-  version: 6.3.0
+  version: 6.7.0
 servers:
 - url: https://api.capenetworks.com
 tags:
@@ -147,18 +147,22 @@ paths:
         "422":
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
               examples:
-                Hardware sensor deletion forbidden:
-                  description: Cant delete sensor - hardware sensor deletion is forbidden.
-                  summary: Hardware sensor deletion forbidden
+                Too Many Requests:
                   value:
                     debugId: "1234567890"
-                    errorCode: HPE_GL_NETWORKING_UXI_HARDWARE_SENSOR_DELETION_FORBIDDEN
-                    httpStatusCode: 422
-                    message: Cant delete sensor - hardware sensor deletion is forbidden.
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -230,6 +234,8 @@ paths:
                     id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
                     serial: "1234567890"
                     name: Agent Name
+                    groupName: Group Name
+                    groupPath: 4cca81b7c5d0.2a1cacab1e7c
                     modelNumber: UX-F5C
                     wifiMacAddress: 00:11:22:33:44:55
                     ethernetMacAddress: 00:11:22:33:44:56
@@ -340,6 +346,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -486,6 +511,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -524,9 +568,7 @@ paths:
         name: id
         required: false
         schema:
-          description: The ID of the resource.
           nullable: true
-          title: ID
           type: string
         style: form
       - description: The next cursor for pagination.
@@ -535,9 +577,7 @@ paths:
         name: next
         required: false
         schema:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
         style: form
       - description: The maximum number of items returned in the response.
@@ -651,6 +691,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -850,6 +909,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -888,9 +960,7 @@ paths:
         name: id
         required: false
         schema:
-          description: The ID of the resource.
           nullable: true
-          title: ID
           type: string
         style: form
       - description: The next cursor for pagination.
@@ -899,9 +969,7 @@ paths:
         name: next
         required: false
         schema:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
         style: form
       - description: The maximum number of items returned in the response.
@@ -930,6 +998,8 @@ paths:
                     - id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
                       serial: "1234567890"
                       name: Agent Name
+                      groupName: Group Name
+                      groupPath: 4cca81b7c5d0.2a1cacab1e7c
                       modelNumber: UX-F5C
                       wifiMacAddress: 00:11:22:33:44:55
                       ethernetMacAddress: 00:11:22:33:44:56
@@ -1018,6 +1088,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -1180,6 +1269,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -1377,6 +1479,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -1415,9 +1530,7 @@ paths:
         name: id
         required: false
         schema:
-          description: The ID of the resource.
           nullable: true
-          title: ID
           type: string
         style: form
       - description: The next cursor for pagination.
@@ -1426,9 +1539,7 @@ paths:
         name: next
         required: false
         schema:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
         style: form
       - description: The maximum number of items returned in the response.
@@ -1542,6 +1653,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -1682,6 +1812,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Method Not Allowed
+        "409":
+          content:
+            application/json:
+              examples:
+                A group with the same name and parent already exists:
+                  description: Resource already exists.
+                  summary: A group with the same name and parent already exists
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_CONFLICT
+                    httpStatusCode: 409
+                    message: Resource already exists.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
         "415":
           content:
             application/json:
@@ -1711,16 +1856,6 @@ paths:
                     httpStatusCode: 422
                     message: Unable to create group - the specified parent group does
                       not exist.
-                Duplicate sibling group name:
-                  description: Unable to create group - a sibling group already has
-                    the specified name.
-                  summary: Duplicate sibling group name
-                  value:
-                    debugId: "1234567890"
-                    errorCode: HPE_GL_NETWORKING_UXI_DUPLICATE_SIBLING_GROUP_NAME
-                    httpStatusCode: 422
-                    message: Unable to create group - a sibling group already has
-                      the specified name.
                 Maximum group depth exceeded:
                   description: Unable to create group - the maximum group depth has
                     been exceeded.
@@ -1731,16 +1866,6 @@ paths:
                     httpStatusCode: 422
                     message: Unable to create group - the maximum group depth has
                       been exceeded.
-                Parent has too many children:
-                  description: Unable to create group - the maximum number of children
-                    for the specified parent has been exceeded.
-                  summary: Parent has too many children
-                  value:
-                    debugId: "1234567890"
-                    errorCode: HPE_GL_NETWORKING_UXI_PARENT_HAS_TOO_MANY_CHILDREN
-                    httpStatusCode: 422
-                    message: Unable to create group - the maximum number of children
-                      for the specified parent has been exceeded.
                 Maximum group count exceeded:
                   description: Unable to create group - the maximum group count has
                     been exceeded.
@@ -1754,6 +1879,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -1927,6 +2065,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -1965,9 +2116,7 @@ paths:
         name: id
         required: false
         schema:
-          description: The ID of the resource.
           nullable: true
-          title: ID
           type: string
         style: form
       - description: The next cursor for pagination.
@@ -1976,9 +2125,7 @@ paths:
         name: next
         required: false
         schema:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
         style: form
       - description: The maximum number of items returned in the response.
@@ -2092,6 +2239,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -2291,6 +2457,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -2437,6 +2616,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -2475,9 +2673,7 @@ paths:
         name: id
         required: false
         schema:
-          description: The ID of the resource.
           nullable: true
-          title: ID
           type: string
         style: form
       - description: The next cursor for pagination.
@@ -2486,9 +2682,7 @@ paths:
         name: next
         required: false
         schema:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
         style: form
       - description: The maximum number of items returned in the response.
@@ -2602,6 +2796,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -2801,6 +3014,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -2875,6 +3101,8 @@ paths:
                     id: dsfldjsah389
                     serial: "123456789"
                     name: Sensor Name
+                    groupName: Group Name
+                    groupPath: 4cca81b7c5d0.2a1cacab1e7c
                     modelNumber: UX-F5C
                     wifiMacAddress: 00:11:22:33:44:55
                     ethernetMacAddress: 66:77:88:99:AA:BB
@@ -2988,6 +3216,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -3026,9 +3273,7 @@ paths:
         name: id
         required: false
         schema:
-          description: The ID of the resource.
           nullable: true
-          title: ID
           type: string
         style: form
       - description: The next cursor for pagination.
@@ -3037,9 +3282,7 @@ paths:
         name: next
         required: false
         schema:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
         style: form
       - description: The maximum number of items returned in the response.
@@ -3068,6 +3311,8 @@ paths:
                     - id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
                       serial: "1234567890"
                       name: Sensor Name
+                      groupName: Group Name
+                      groupPath: 4cca81b7c5d0.2a1cacab1e7c
                       modelNumber: UX-F5C
                       wifiMacAddress: 00:11:22:33:44:55
                       ethernetMacAddress: 00:11:22:33:44:56
@@ -3159,6 +3404,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -3322,6 +3586,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -3360,9 +3637,7 @@ paths:
         name: id
         required: false
         schema:
-          description: The ID of the resource.
           nullable: true
-          title: ID
           type: string
         style: form
       - description: The next cursor for pagination.
@@ -3371,9 +3646,7 @@ paths:
         name: next
         required: false
         schema:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
         style: form
       - description: The maximum number of items returned in the response.
@@ -3487,6 +3760,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -3683,29 +3975,22 @@ paths:
                     httpStatusCode: 422
                     message: Unable to assign service test to group - the specified
                       service test does not exist.
-                Service test group assignment already exists:
-                  description: Unable to assign service test to group - the service
-                    test group assignment already exists.
-                  summary: Service test group assignment already exists
-                  value:
-                    debugId: "1234567890"
-                    errorCode: HPE_GL_NETWORKING_UXI_SERVICE_TEST_GROUP_ASSIGNMENT_ALREADY_EXISTS
-                    httpStatusCode: 422
-                    message: Unable to assign service test to group - the service
-                      test group assignment already exists.
-                Service test has network exclusions:
-                  description: Unable to assign service test to group - the specified
-                    service test has network exclusions.
-                  summary: Service test has network exclusions
-                  value:
-                    debugId: "1234567890"
-                    errorCode: HPE_GL_NETWORKING_UXI_SERVICE_TEST_HAS_NETWORK_EXCLUSIONS
-                    httpStatusCode: 422
-                    message: Unable to assign service test to group - the specified
-                      service test has network exclusions.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -3744,9 +4029,7 @@ paths:
         name: id
         required: false
         schema:
-          description: The ID of the resource.
           nullable: true
-          title: ID
           type: string
         style: form
       - description: The next cursor for pagination.
@@ -3755,9 +4038,7 @@ paths:
         name: next
         required: false
         schema:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
         style: form
       - description: The maximum number of items returned in the response.
@@ -3872,6 +4153,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -3910,9 +4210,7 @@ paths:
         name: id
         required: false
         schema:
-          description: The ID of the resource.
           nullable: true
-          title: ID
           type: string
         style: form
       - description: The next cursor for pagination.
@@ -3921,9 +4219,7 @@ paths:
         name: next
         required: false
         schema:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
         style: form
       - description: The maximum number of items returned in the response.
@@ -4043,6 +4339,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -4081,9 +4396,7 @@ paths:
         name: id
         required: false
         schema:
-          description: The ID of the resource.
           nullable: true
-          title: ID
           type: string
         style: form
       - description: The next cursor for pagination.
@@ -4092,9 +4405,7 @@ paths:
         name: next
         required: false
         schema:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
         style: form
       - description: The maximum number of items returned in the response.
@@ -4216,6 +4527,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unsupported Media Type
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        "429":
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: "1234567890"
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
         "500":
           content:
             application/json:
@@ -4256,7 +4586,6 @@ components:
       required:
       - id
       title: AgentGroupAssignmentPostAgent
-      type: object
     AgentGroupAssignmentPostGroup:
       example:
         id: id
@@ -4268,7 +4597,6 @@ components:
       required:
       - id
       title: AgentGroupAssignmentPostGroup
-      type: object
     AgentGroupAssignmentPostRequest:
       example:
         agentId: agentId
@@ -4286,7 +4614,6 @@ components:
       - agentId
       - groupId
       title: AgentGroupAssignmentPostRequest
-      type: object
     AgentGroupAssignmentPostResponse:
       example:
         agent:
@@ -4316,7 +4643,6 @@ components:
       - id
       - type
       title: AgentGroupAssignmentPostResponse
-      type: object
     AgentGroupAssignmentsGetAgent:
       example:
         id: id
@@ -4328,7 +4654,6 @@ components:
       required:
       - id
       title: AgentGroupAssignmentsGetAgent
-      type: object
     AgentGroupAssignmentsGetGroup:
       example:
         id: id
@@ -4340,7 +4665,6 @@ components:
       required:
       - id
       title: AgentGroupAssignmentsGetGroup
-      type: object
     AgentGroupAssignmentsGetItem:
       example:
         agent:
@@ -4370,7 +4694,6 @@ components:
       - id
       - type
       title: AgentGroupAssignmentsGetItem
-      type: object
     AgentGroupAssignmentsGetResponse:
       example:
         next: next
@@ -4393,23 +4716,19 @@ components:
           description: The list of resources.
           items:
             $ref: '#/components/schemas/AgentGroupAssignmentsGetItem'
-          title: Items
           type: array
         count:
           description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
       required:
       - count
       - items
       - next
       title: AgentGroupAssignmentsGetResponse
-      type: object
     AgentPatchRequest:
       description: Request body for patching an agent.
       properties:
@@ -4426,9 +4745,9 @@ components:
         pcapMode:
           $ref: '#/components/schemas/AgentPcapMode'
       title: AgentPatchRequest
-      type: object
     AgentPatchResponse:
       example:
+        groupName: groupName
         notes: notes
         pcapMode: light
         serial: serial
@@ -4437,6 +4756,7 @@ components:
         modelNumber: modelNumber
         id: id
         type: networking-uxi/agent
+        groupPath: groupPath
         wifiMacAddress: wifiMacAddress
       properties:
         id:
@@ -4451,25 +4771,23 @@ components:
           description: The name of the agent
           title: Name
           type: string
-        modelNumber:
-          description: The model number of the agent
+        groupName:
           nullable: true
-          title: Model Number
+          type: string
+        groupPath:
+          nullable: true
+          type: string
+        modelNumber:
+          nullable: true
           type: string
         wifiMacAddress:
-          description: The WiFi MAC address of the agent
           nullable: true
-          title: WiFi MAC Address
           type: string
         ethernetMacAddress:
-          description: The Ethernet MAC address of the agent
           nullable: true
-          title: Ethernet MAC Address
           type: string
         notes:
-          description: The notes of the agent
           nullable: true
-          title: Notes
           type: string
         pcapMode:
           $ref: '#/components/schemas/AgentPcapMode'
@@ -4481,6 +4799,8 @@ components:
           type: string
       required:
       - ethernetMacAddress
+      - groupName
+      - groupPath
       - id
       - modelNumber
       - name
@@ -4490,7 +4810,6 @@ components:
       - type
       - wifiMacAddress
       title: AgentPatchResponse
-      type: object
     AgentPcapMode:
       enum:
       - light
@@ -4500,6 +4819,7 @@ components:
       type: string
     AgentsGetItem:
       example:
+        groupName: groupName
         notes: notes
         pcapMode: light
         serial: serial
@@ -4508,6 +4828,7 @@ components:
         modelNumber: modelNumber
         id: id
         type: networking-uxi/agent
+        groupPath: groupPath
         wifiMacAddress: wifiMacAddress
       properties:
         id:
@@ -4522,25 +4843,23 @@ components:
           description: The name of the agent
           title: Name
           type: string
-        modelNumber:
-          description: The model number of the agent
+        groupName:
           nullable: true
-          title: Model Number
+          type: string
+        groupPath:
+          nullable: true
+          type: string
+        modelNumber:
+          nullable: true
           type: string
         wifiMacAddress:
-          description: The WiFi MAC address of the agent
           nullable: true
-          title: WiFi MAC Address
           type: string
         ethernetMacAddress:
-          description: The Ethernet MAC address of the agent
           nullable: true
-          title: Ethernet MAC Address
           type: string
         notes:
-          description: The notes of the agent
           nullable: true
-          title: Notes
           type: string
         pcapMode:
           $ref: '#/components/schemas/AgentPcapMode'
@@ -4552,6 +4871,8 @@ components:
           type: string
       required:
       - ethernetMacAddress
+      - groupName
+      - groupPath
       - id
       - modelNumber
       - name
@@ -4561,13 +4882,13 @@ components:
       - type
       - wifiMacAddress
       title: AgentsGetItem
-      type: object
     AgentsGetResponse:
       example:
         next: next
         count: 0
         items:
-        - notes: notes
+        - groupName: groupName
+          notes: notes
           pcapMode: light
           serial: serial
           ethernetMacAddress: ethernetMacAddress
@@ -4575,8 +4896,10 @@ components:
           modelNumber: modelNumber
           id: id
           type: networking-uxi/agent
+          groupPath: groupPath
           wifiMacAddress: wifiMacAddress
-        - notes: notes
+        - groupName: groupName
+          notes: notes
           pcapMode: light
           serial: serial
           ethernetMacAddress: ethernetMacAddress
@@ -4584,29 +4907,26 @@ components:
           modelNumber: modelNumber
           id: id
           type: networking-uxi/agent
+          groupPath: groupPath
           wifiMacAddress: wifiMacAddress
       properties:
         items:
           description: The list of resources.
           items:
             $ref: '#/components/schemas/AgentsGetItem'
-          title: Items
           type: array
         count:
           description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
       required:
       - count
       - items
       - next
       title: AgentsGetResponse
-      type: object
     ErrorDetail:
       example:
         type: type
@@ -4621,7 +4941,6 @@ components:
         issues:
           items:
             $ref: '#/components/schemas/Issue'
-          title: Issues
           type: array
         type:
           title: Type
@@ -4630,7 +4949,6 @@ components:
       - issues
       - type
       title: ErrorDetail
-      type: object
     ErrorResponse:
       example:
         errorCode: errorCode
@@ -4656,13 +4974,13 @@ components:
             source: source
       properties:
         debugId:
-          title: Debugid
+          title: DebugID
           type: string
         errorCode:
-          title: Errorcode
+          title: ErrorCode
           type: string
         httpStatusCode:
-          title: Httpstatuscode
+          title: HttpStatusCode
           type: integer
         message:
           title: Message
@@ -4670,7 +4988,6 @@ components:
         errorDetails:
           items:
             $ref: '#/components/schemas/ErrorDetail'
-          title: Errordetails
           type: array
       required:
       - debugId
@@ -4678,7 +4995,6 @@ components:
       - httpStatusCode
       - message
       title: ErrorResponse
-      type: object
     GroupPatchParent:
       example:
         id: id
@@ -4690,7 +5006,6 @@ components:
       required:
       - id
       title: GroupPatchParent
-      type: object
     GroupPatchRequest:
       properties:
         name:
@@ -4700,7 +5015,6 @@ components:
           title: Name
           type: string
       title: GroupPatchRequest
-      type: object
     GroupPatchResponse:
       example:
         path: path
@@ -4737,7 +5051,6 @@ components:
       - path
       - type
       title: GroupPatchResponse
-      type: object
     GroupPostParent:
       example:
         id: id
@@ -4749,16 +5062,13 @@ components:
       required:
       - id
       title: GroupPostParent
-      type: object
     GroupPostRequest:
       example:
         name: name
         parentId: parentId
       properties:
         parentId:
-          description: The unique identifier of the parent group
           nullable: true
-          title: Parent Group ID
           type: string
         name:
           description: The name of the group
@@ -4769,7 +5079,6 @@ components:
       required:
       - name
       title: GroupPostRequest
-      type: object
     GroupPostResponse:
       example:
         path: path
@@ -4806,7 +5115,6 @@ components:
       - path
       - type
       title: GroupPostResponse
-      type: object
     GroupsGetItem:
       example:
         parent:
@@ -4843,7 +5151,6 @@ components:
       - path
       - type
       title: GroupsGetItem
-      type: object
     GroupsGetParent:
       example:
         id: id
@@ -4855,7 +5162,6 @@ components:
       required:
       - id
       title: GroupsGetParent
-      type: object
     GroupsGetResponse:
       example:
         next: next
@@ -4878,23 +5184,38 @@ components:
           description: The list of resources.
           items:
             $ref: '#/components/schemas/GroupsGetItem'
-          title: Items
           type: array
         count:
           description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
       required:
       - count
       - items
       - next
       title: GroupsGetResponse
-      type: object
+    HTTPValidationError:
+      example:
+        detail:
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+      title: HTTPValidationError
     IpVersion:
       enum:
       - ipv4
@@ -4920,7 +5241,6 @@ components:
       - source
       - subject
       title: Issue
-      type: object
     IssueSubject:
       enum:
       - field
@@ -4939,7 +5259,6 @@ components:
       required:
       - id
       title: NetworkGroupAssignmentPostGroup
-      type: object
     NetworkGroupAssignmentPostNetwork:
       example:
         id: id
@@ -4951,7 +5270,6 @@ components:
       required:
       - id
       title: NetworkGroupAssignmentPostNetwork
-      type: object
     NetworkGroupAssignmentPostRequest:
       example:
         groupId: groupId
@@ -4969,7 +5287,6 @@ components:
       - groupId
       - networkId
       title: NetworkGroupAssignmentPostRequest
-      type: object
     NetworkGroupAssignmentPostResponse:
       example:
         id: id
@@ -4999,7 +5316,6 @@ components:
       - network
       - type
       title: NetworkGroupAssignmentPostResponse
-      type: object
     NetworkGroupAssignmentsGetGroup:
       example:
         id: id
@@ -5011,7 +5327,6 @@ components:
       required:
       - id
       title: NetworkGroupAssignmentsGetGroup
-      type: object
     NetworkGroupAssignmentsGetItem:
       example:
         id: id
@@ -5041,7 +5356,6 @@ components:
       - network
       - type
       title: NetworkGroupAssignmentsGetItem
-      type: object
     NetworkGroupAssignmentsGetNetwork:
       example:
         id: id
@@ -5053,7 +5367,6 @@ components:
       required:
       - id
       title: NetworkGroupAssignmentsGetNetwork
-      type: object
     NetworkGroupAssignmentsGetResponse:
       example:
         next: next
@@ -5076,23 +5389,19 @@ components:
           description: The list of resources.
           items:
             $ref: '#/components/schemas/NetworkGroupAssignmentsGetItem'
-          title: Items
           type: array
         count:
           description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
       required:
       - count
       - items
       - next
       title: NetworkGroupAssignmentsGetResponse
-      type: object
     SensorGroupAssignmentPostGroup:
       example:
         id: id
@@ -5104,7 +5413,6 @@ components:
       required:
       - id
       title: SensorGroupAssignmentPostGroup
-      type: object
     SensorGroupAssignmentPostRequest:
       example:
         groupId: groupId
@@ -5122,7 +5430,6 @@ components:
       - groupId
       - sensorId
       title: SensorGroupAssignmentPostRequest
-      type: object
     SensorGroupAssignmentPostResponse:
       example:
         sensor:
@@ -5152,7 +5459,6 @@ components:
       - sensor
       - type
       title: SensorGroupAssignmentPostResponse
-      type: object
     SensorGroupAssignmentPostSensor:
       example:
         id: id
@@ -5164,7 +5470,6 @@ components:
       required:
       - id
       title: SensorGroupAssignmentPostSensor
-      type: object
     SensorGroupAssignmentsGetGroup:
       example:
         id: id
@@ -5176,7 +5481,6 @@ components:
       required:
       - id
       title: SensorGroupAssignmentsGetGroup
-      type: object
     SensorGroupAssignmentsGetItem:
       example:
         sensor:
@@ -5206,7 +5510,6 @@ components:
       - sensor
       - type
       title: SensorGroupAssignmentsGetItem
-      type: object
     SensorGroupAssignmentsGetResponse:
       example:
         next: next
@@ -5229,23 +5532,19 @@ components:
           description: The list of resources.
           items:
             $ref: '#/components/schemas/SensorGroupAssignmentsGetItem'
-          title: Items
           type: array
         count:
           description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
       required:
       - count
       - items
       - next
       title: SensorGroupAssignmentsGetResponse
-      type: object
     SensorGroupAssignmentsGetSensor:
       example:
         id: id
@@ -5257,7 +5556,6 @@ components:
       required:
       - id
       title: SensorGroupAssignmentsGetSensor
-      type: object
     SensorPatchRequest:
       description: Request body for patching a sensor.
       properties:
@@ -5278,20 +5576,21 @@ components:
         pcapMode:
           $ref: '#/components/schemas/SensorPcapMode'
       title: SensorPatchRequest
-      type: object
     SensorPatchResponse:
       example:
         addressNote: addressNote
         notes: notes
         pcapMode: light
+        latitude: 6.027456183070403
+        type: networking-uxi/sensor
+        wifiMacAddress: wifiMacAddress
+        groupName: groupName
         serial: serial
         ethernetMacAddress: ethernetMacAddress
-        latitude: 6.027456183070403
         name: name
         modelNumber: modelNumber
         id: id
-        type: networking-uxi/sensor
-        wifiMacAddress: wifiMacAddress
+        groupPath: groupPath
         longitude: 0.8008281904610115
       properties:
         id:
@@ -5306,39 +5605,33 @@ components:
           description: The name of the sensor
           title: Name
           type: string
+        groupName:
+          nullable: true
+          type: string
+        groupPath:
+          nullable: true
+          type: string
         modelNumber:
           description: The model number of the sensor
           title: Model Number
           type: string
         wifiMacAddress:
-          description: The WiFi MAC address of the sensor
           nullable: true
-          title: WiFi MAC Address
           type: string
         ethernetMacAddress:
-          description: The Ethernet MAC address of the sensor
           nullable: true
-          title: Ethernet MAC Address
           type: string
         addressNote:
-          description: The address note of the sensor
           nullable: true
-          title: Address Note
           type: string
         longitude:
-          description: The longitude of the sensor
           nullable: true
-          title: Longitude
           type: number
         latitude:
-          description: The latitude of the sensor
           nullable: true
-          title: Latitude
           type: number
         notes:
-          description: Additional notes for the sensor
           nullable: true
-          title: Notes
           type: string
         pcapMode:
           $ref: '#/components/schemas/SensorPcapMode'
@@ -5351,6 +5644,8 @@ components:
       required:
       - addressNote
       - ethernetMacAddress
+      - groupName
+      - groupPath
       - id
       - latitude
       - longitude
@@ -5362,7 +5657,6 @@ components:
       - type
       - wifiMacAddress
       title: SensorPatchResponse
-      type: object
     SensorPcapMode:
       enum:
       - light
@@ -5375,14 +5669,16 @@ components:
         addressNote: addressNote
         notes: notes
         pcapMode: light
+        latitude: 6.027456183070403
+        type: networking-uxi/sensor
+        wifiMacAddress: wifiMacAddress
+        groupName: groupName
         serial: serial
         ethernetMacAddress: ethernetMacAddress
-        latitude: 6.027456183070403
         name: name
         modelNumber: modelNumber
         id: id
-        type: networking-uxi/sensor
-        wifiMacAddress: wifiMacAddress
+        groupPath: groupPath
         longitude: 0.8008281904610115
       properties:
         id:
@@ -5397,39 +5693,33 @@ components:
           description: The name of the sensor
           title: Name
           type: string
+        groupName:
+          nullable: true
+          type: string
+        groupPath:
+          nullable: true
+          type: string
         modelNumber:
           description: The model number of the sensor
           title: Model Number
           type: string
         wifiMacAddress:
-          description: The WiFi MAC address of the sensor
           nullable: true
-          title: WiFi MAC Address
           type: string
         ethernetMacAddress:
-          description: The Ethernet MAC address of the sensor
           nullable: true
-          title: Ethernet MAC Address
           type: string
         addressNote:
-          description: The address note of the sensor
           nullable: true
-          title: Address Note
           type: string
         longitude:
-          description: The longitude of the sensor
           nullable: true
-          title: Longitude
           type: number
         latitude:
-          description: The latitude of the sensor
           nullable: true
-          title: Latitude
           type: number
         notes:
-          description: The notes of the sensor
           nullable: true
-          title: Notes
           type: string
         pcapMode:
           $ref: '#/components/schemas/SensorPcapMode'
@@ -5442,6 +5732,8 @@ components:
       required:
       - addressNote
       - ethernetMacAddress
+      - groupName
+      - groupPath
       - id
       - latitude
       - longitude
@@ -5453,7 +5745,6 @@ components:
       - type
       - wifiMacAddress
       title: SensorsGetItem
-      type: object
     SensorsGetResponse:
       example:
         next: next
@@ -5462,49 +5753,49 @@ components:
         - addressNote: addressNote
           notes: notes
           pcapMode: light
+          latitude: 6.027456183070403
+          type: networking-uxi/sensor
+          wifiMacAddress: wifiMacAddress
+          groupName: groupName
           serial: serial
           ethernetMacAddress: ethernetMacAddress
-          latitude: 6.027456183070403
           name: name
           modelNumber: modelNumber
           id: id
-          type: networking-uxi/sensor
-          wifiMacAddress: wifiMacAddress
+          groupPath: groupPath
           longitude: 0.8008281904610115
         - addressNote: addressNote
           notes: notes
           pcapMode: light
+          latitude: 6.027456183070403
+          type: networking-uxi/sensor
+          wifiMacAddress: wifiMacAddress
+          groupName: groupName
           serial: serial
           ethernetMacAddress: ethernetMacAddress
-          latitude: 6.027456183070403
           name: name
           modelNumber: modelNumber
           id: id
-          type: networking-uxi/sensor
-          wifiMacAddress: wifiMacAddress
+          groupPath: groupPath
           longitude: 0.8008281904610115
       properties:
         items:
           description: The list of resources.
           items:
             $ref: '#/components/schemas/SensorsGetItem'
-          title: Items
           type: array
         count:
           description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
       required:
       - count
       - items
       - next
       title: SensorsGetResponse
-      type: object
     ServiceTestGroupAssignmentPostGroup:
       example:
         id: id
@@ -5516,7 +5807,6 @@ components:
       required:
       - id
       title: ServiceTestGroupAssignmentPostGroup
-      type: object
     ServiceTestGroupAssignmentPostRequest:
       example:
         groupId: groupId
@@ -5534,7 +5824,6 @@ components:
       - groupId
       - serviceTestId
       title: ServiceTestGroupAssignmentPostRequest
-      type: object
     ServiceTestGroupAssignmentPostResponse:
       example:
         serviceTest:
@@ -5565,7 +5854,6 @@ components:
       - serviceTest
       - type
       title: ServiceTestGroupAssignmentPostResponse
-      type: object
     ServiceTestGroupAssignmentPostServiceTest:
       example:
         id: id
@@ -5577,7 +5865,6 @@ components:
       required:
       - id
       title: ServiceTestGroupAssignmentPostServiceTest
-      type: object
     ServiceTestGroupAssignmentsGetGroup:
       example:
         id: id
@@ -5589,7 +5876,6 @@ components:
       required:
       - id
       title: ServiceTestGroupAssignmentsGetGroup
-      type: object
     ServiceTestGroupAssignmentsGetItem:
       example:
         serviceTest:
@@ -5619,7 +5905,6 @@ components:
       - serviceTest
       - type
       title: ServiceTestGroupAssignmentsGetItem
-      type: object
     ServiceTestGroupAssignmentsGetResponse:
       example:
         next: next
@@ -5642,23 +5927,19 @@ components:
           description: The list of resources.
           items:
             $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetItem'
-          title: Items
           type: array
         count:
           description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
       required:
       - count
       - items
       - next
       title: ServiceTestGroupAssignmentsGetResponse
-      type: object
     ServiceTestGroupAssignmentsGetServiceTest:
       example:
         id: id
@@ -5670,7 +5951,6 @@ components:
       required:
       - id
       title: ServiceTestGroupAssignmentsGetServiceTest
-      type: object
     ServiceTestsGetItem:
       example:
         template: template
@@ -5694,9 +5974,7 @@ components:
           title: Name
           type: string
         target:
-          description: The target of the service test
           nullable: true
-          title: Target
           type: string
         template:
           description: The template of the service test
@@ -5721,7 +5999,6 @@ components:
       - template
       - type
       title: ServiceTestsGetItem
-      type: object
     ServiceTestsGetResponse:
       example:
         next: next
@@ -5746,23 +6023,42 @@ components:
           description: The list of resources.
           items:
             $ref: '#/components/schemas/ServiceTestsGetItem'
-          title: Items
           type: array
         count:
           description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
       required:
       - count
       - items
       - next
       title: ServiceTestsGetResponse
-      type: object
+    ValidationError:
+      example:
+        msg: msg
+        loc:
+        - ValidationError_loc_inner
+        - ValidationError_loc_inner
+        type: type
+      properties:
+        loc:
+          items:
+            $ref: '#/components/schemas/ValidationError_loc_inner'
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     WiredNetworksGetItem:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -5799,14 +6095,10 @@ components:
           title: Updated At
           type: string
         security:
-          description: The security settings of the wired network
           nullable: true
-          title: Security
           type: string
         dnsLookupDomain:
-          description: The DNS lookup domain of the wired network
           nullable: true
-          title: DNS Lookup Domain
           type: string
         disableEdns:
           description: Whether EDNS is disabled for the wired network
@@ -5821,9 +6113,7 @@ components:
           title: External Connectivity
           type: boolean
         vLanId:
-          description: The VLAN ID of the wired network
           nullable: true
-          title: VLAN ID
           type: integer
         type:
           description: The type of the resource.
@@ -5845,7 +6135,6 @@ components:
       - useDns64
       - vLanId
       title: WiredNetworksGetItem
-      type: object
     WiredNetworksGetResponse:
       example:
         next: next
@@ -5880,23 +6169,19 @@ components:
           description: The list of resources.
           items:
             $ref: '#/components/schemas/WiredNetworksGetItem'
-          title: Items
           type: array
         count:
           description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
       required:
       - count
       - items
       - next
       title: WiredNetworksGetResponse
-      type: object
     WirelessNetworksGetItem:
       example:
         useDns64: true
@@ -5927,9 +6212,7 @@ components:
           title: SSID
           type: string
         security:
-          description: The security type of the wireless network
           nullable: true
-          title: Security
           type: string
         ipVersion:
           $ref: '#/components/schemas/IpVersion'
@@ -5952,9 +6235,7 @@ components:
           title: Band Locking
           type: string
         dnsLookupDomain:
-          description: The DNS lookup domain of the wireless network
           nullable: true
-          title: DNS Lookup Domain
           type: string
         disableEdns:
           description: Whether EDNS is disabled for the wireless network
@@ -5990,7 +6271,6 @@ components:
       - updatedAt
       - useDns64
       title: WirelessNetworksGetItem
-      type: object
     WirelessNetworksGetResponse:
       example:
         next: next
@@ -6029,23 +6309,23 @@ components:
           description: The list of resources.
           items:
             $ref: '#/components/schemas/WirelessNetworksGetItem'
-          title: Items
           type: array
         count:
           description: The number of resources returned in the response.
           title: Count
           type: integer
         next:
-          description: The next cursor for pagination.
           nullable: true
-          title: Next
           type: string
       required:
       - count
       - items
       - next
       title: WirelessNetworksGetResponse
-      type: object
+    ValidationError_loc_inner:
+      anyOf:
+      - type: string
+      - type: integer
   securitySchemes:
     HTTPBearer:
       scheme: bearer

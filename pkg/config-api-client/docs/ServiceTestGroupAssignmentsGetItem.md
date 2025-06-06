@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** | The unique identifier of the service test group assignment | 
-**Group** | [**ServiceTestGroupAssignmentsGetGroup**](ServiceTestGroupAssignmentsGetGroup.md) |  | 
-**ServiceTest** | [**ServiceTestGroupAssignmentsGetServiceTest**](ServiceTestGroupAssignmentsGetServiceTest.md) |  | 
+**Group** | [**ServiceTestGroupAssignmentsGetGroup**](ServiceTestGroupAssignmentsGetGroup.md) | The group component of the service test group assignment | 
+**ServiceTest** | [**ServiceTestGroupAssignmentsGetServiceTest**](ServiceTestGroupAssignmentsGetServiceTest.md) | The service test component of the service test group assignment | 
 **Type** | **string** | The type of the resource. | 
 
 ## Methods

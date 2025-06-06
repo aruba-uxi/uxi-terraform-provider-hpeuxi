@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** | The unique identifier of the agent group assignment | 
-**Group** | [**AgentGroupAssignmentsGetGroup**](AgentGroupAssignmentsGetGroup.md) |  | 
-**Agent** | [**AgentGroupAssignmentsGetAgent**](AgentGroupAssignmentsGetAgent.md) |  | 
+**Group** | [**AgentGroupAssignmentsGetGroup**](AgentGroupAssignmentsGetGroup.md) | The group component of the agent group assignment | 
+**Agent** | [**AgentGroupAssignmentsGetAgent**](AgentGroupAssignmentsGetAgent.md) | The agent component of the agent group assignment | 
 **Type** | **string** | The type of the resource. | 
 
 ## Methods

@@ -1,16 +1,16 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: HPE Aruba Networking UXI Configuration
   description: This document outlines the API contracts for HPE Aruba Networking UXI.
   contact:
     name: HPE Aruba Networking UXI Support
-    url: https://help.capenetworks.com/en/
+    url: 'https://help.capenetworks.com/en/'
     email: support@capenetworks.com
-  version: 6.3.0
+  version: 6.7.0
 servers:
-  - url: https://api.capenetworks.com
+  - url: 'https://api.capenetworks.com'
 paths:
-  /networking-uxi/v1alpha1/agents/{id}:
+  '/networking-uxi/v1alpha1/agents/{id}':
     delete:
       operationId: agent_delete
       summary: Agent Delete
@@ -37,18 +37,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -61,7 +58,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -75,11 +73,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -128,19 +124,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '422':
-          description: Unprocessable Entity
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
           content:
             application/json:
               examples:
-                Hardware sensor deletion forbidden:
+                Too Many Requests:
                   value:
                     debugId: '1234567890'
-                    errorCode: HPE_GL_NETWORKING_UXI_HARDWARE_SENSOR_DELETION_FORBIDDEN
-                    httpStatusCode: 422
-                    message: >-
-                      Cant delete sensor - hardware sensor deletion is forbidden.
-                  summary: Hardware sensor deletion forbidden
-                  description: Cant delete sensor - hardware sensor deletion is forbidden.
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -216,6 +215,8 @@ paths:
                     id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
                     serial: '1234567890'
                     name: Agent Name
+                    groupName: Group Name
+                    groupPath: 4cca81b7c5d0.2a1cacab1e7c
                     modelNumber: UX-F5C
                     wifiMacAddress: '00:11:22:33:44:55'
                     ethernetMacAddress: '00:11:22:33:44:56'
@@ -234,18 +235,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -258,7 +256,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -272,11 +271,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -322,6 +319,25 @@ paths:
                     message: Media type is unsupported.
                   summary: Unsupported Media Type
                   description: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -353,7 +369,7 @@ paths:
         - v1alpha1
         - agents
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/agent-group-assignments/{id}:
+  '/networking-uxi/v1alpha1/agent-group-assignments/{id}':
     delete:
       operationId: agent_group_assignment_delete
       summary: Agent Group Assignment Delete
@@ -380,18 +396,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -404,7 +417,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -418,11 +432,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -468,6 +480,25 @@ paths:
                     message: Media type is unsupported.
                   summary: Unsupported Media Type
                   description: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -545,18 +576,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -569,7 +597,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -583,11 +612,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -645,31 +672,38 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_AGENT_DOES_NOT_EXIST
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign agent to group - the specified agent does not exist.
+                    message: Unable to assign agent to group - the specified agent does not exist.
                   summary: Agent does not exist
-                  description: >-
-                    Unable to assign agent to group - the specified agent does not exist.
+                  description: Unable to assign agent to group - the specified agent does not exist.
                 Assignment to root group error:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_AGENT_TO_ROOT_GROUP
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign agent to group - the specified group is a root group.
+                    message: Unable to assign agent to group - the specified group is a root group.
                   summary: Assignment to root group error
-                  description: >-
-                    Unable to assign agent to group - the specified group is a root group.
+                  description: Unable to assign agent to group - the specified group is a root group.
                 Group does not exist:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign agent to group - the specified group does not exist.
+                    message: Unable to assign agent to group - the specified group does not exist.
                   summary: Group does not exist
-                  description: >-
-                    Unable to assign agent to group - the specified group does not exist.
+                  description: Unable to assign agent to group - the specified group does not exist.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -712,8 +746,9 @@ paths:
           required: false
           schema:
             description: The ID of the resource.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: ID
         - name: next
           in: query
@@ -721,8 +756,9 @@ paths:
           required: false
           schema:
             description: The next cursor for pagination.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: Next
         - name: limit
           in: query
@@ -781,7 +817,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -795,11 +832,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -830,6 +865,25 @@ paths:
                     message: Media type is unsupported.
                   summary: Unsupported Media Type
                   description: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -873,8 +927,9 @@ paths:
           required: false
           schema:
             description: The ID of the resource.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: ID
         - name: next
           in: query
@@ -882,8 +937,9 @@ paths:
           required: false
           schema:
             description: The next cursor for pagination.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: Next
         - name: limit
           in: query
@@ -910,6 +966,8 @@ paths:
                       - id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
                         serial: '1234567890'
                         name: Agent Name
+                        groupName: Group Name
+                        groupPath: 4cca81b7c5d0.2a1cacab1e7c
                         modelNumber: UX-F5C
                         wifiMacAddress: '00:11:22:33:44:55'
                         ethernetMacAddress: '00:11:22:33:44:56'
@@ -945,7 +1003,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -959,11 +1018,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -996,6 +1053,25 @@ paths:
                   description: Media type is unsupported.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Internal Server Error
           content:
@@ -1025,12 +1101,13 @@ paths:
         - v1alpha1
         - agents
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/groups/{id}:
+  '/networking-uxi/v1alpha1/groups/{id}':
     delete:
       operationId: group_delete
       summary: Group Delete
       description: >-
-        Delete an existing group. Deleting a group will also delete all child groups and resource assignments to any deleted group.
+        Delete an existing group. Deleting a group will also delete all child groups and resource
+        assignments to any deleted group.
       parameters:
         - name: id
           in: path
@@ -1053,18 +1130,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -1077,7 +1151,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -1091,11 +1166,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -1156,6 +1229,19 @@ paths:
                     message: Cannot delete group - the root group cannot be deleted.
                   summary: Cannot delete root group
                   description: Cannot delete group - the root group cannot be deleted.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -1240,18 +1326,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -1264,7 +1347,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -1278,11 +1362,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -1340,11 +1422,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_DUPLICATE_SIBLING_GROUP_NAME
                     httpStatusCode: 422
-                    message: >-
-                      Unable to update group - a sibling group already has the specified name.
+                    message: Unable to update group - a sibling group already has the specified name.
                   summary: Duplicate sibling group name
-                  description: >-
-                    Unable to update group - a sibling group already has the specified name.
+                  description: Unable to update group - a sibling group already has the specified name.
                 Cannot update the root group:
                   value:
                     debugId: '1234567890'
@@ -1353,6 +1433,19 @@ paths:
                     message: Unable to update group - the root group cannot be updated.
                   summary: Cannot update the root group
                   description: Unable to update group - the root group cannot be updated.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -1389,7 +1482,8 @@ paths:
       operationId: group_post
       summary: Group Post
       description: >-
-        Create a new group with the specified name as a child group of the specified parent group. When `parentId` is omitted, the new group is created as a child of the root group.
+        Create a new group with the specified name as a child group of the specified parent group.
+        When `parentId` is omitted, the new group is created as a child of the root group.
       requestBody:
         required: true
         content:
@@ -1436,18 +1530,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -1460,7 +1551,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -1474,11 +1566,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -1494,6 +1584,21 @@ paths:
                     message: Method is not allowed.
                   summary: Method Not Allowed
                   description: Method is not allowed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              examples:
+                A group with the same name and parent already exists:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_CONFLICT
+                    httpStatusCode: 409
+                    message: Resource already exists.
+                  summary: A group with the same name and parent already exists
+                  description: Resource already exists.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '415':
@@ -1521,51 +1626,38 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_PARENT_GROUP_DOES_NOT_EXIST
                     httpStatusCode: 422
-                    message: >-
-                      Unable to create group - the specified parent group does not exist.
+                    message: Unable to create group - the specified parent group does not exist.
                   summary: Parent group does not exist
-                  description: >-
-                    Unable to create group - the specified parent group does not exist.
-                Duplicate sibling group name:
-                  value:
-                    debugId: '1234567890'
-                    errorCode: HPE_GL_NETWORKING_UXI_DUPLICATE_SIBLING_GROUP_NAME
-                    httpStatusCode: 422
-                    message: >-
-                      Unable to create group - a sibling group already has the specified name.
-                  summary: Duplicate sibling group name
-                  description: >-
-                    Unable to create group - a sibling group already has the specified name.
+                  description: Unable to create group - the specified parent group does not exist.
                 Maximum group depth exceeded:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_MAXIMUM_GROUP_DEPTH_EXCEEDED
                     httpStatusCode: 422
-                    message: >-
-                      Unable to create group - the maximum group depth has been exceeded.
+                    message: Unable to create group - the maximum group depth has been exceeded.
                   summary: Maximum group depth exceeded
-                  description: >-
-                    Unable to create group - the maximum group depth has been exceeded.
-                Parent has too many children:
-                  value:
-                    debugId: '1234567890'
-                    errorCode: HPE_GL_NETWORKING_UXI_PARENT_HAS_TOO_MANY_CHILDREN
-                    httpStatusCode: 422
-                    message: >-
-                      Unable to create group - the maximum number of children for the specified parent has been exceeded.
-                  summary: Parent has too many children
-                  description: >-
-                    Unable to create group - the maximum number of children for the specified parent has been exceeded.
+                  description: Unable to create group - the maximum group depth has been exceeded.
                 Maximum group count exceeded:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_MAXIMUM_GROUP_COUNT_EXCEEDED
                     httpStatusCode: 422
-                    message: >-
-                      Unable to create group - the maximum group count has been exceeded.
+                    message: Unable to create group - the maximum group count has been exceeded.
                   summary: Maximum group count exceeded
-                  description: >-
-                    Unable to create group - the maximum group count has been exceeded.
+                  description: Unable to create group - the maximum group count has been exceeded.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -1608,8 +1700,9 @@ paths:
           required: false
           schema:
             description: The ID of the resource.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: ID
         - name: next
           in: query
@@ -1617,8 +1710,9 @@ paths:
           required: false
           schema:
             description: The next cursor for pagination.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: Next
         - name: limit
           in: query
@@ -1677,7 +1771,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -1691,11 +1786,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -1728,6 +1821,25 @@ paths:
                   description: Media type is unsupported.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Internal Server Error
           content:
@@ -1757,7 +1869,7 @@ paths:
         - v1alpha1
         - groups
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/network-group-assignments/{id}:
+  '/networking-uxi/v1alpha1/network-group-assignments/{id}':
     delete:
       operationId: network_group_assignment_delete
       summary: Network Group Assignment Delete
@@ -1784,18 +1896,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -1808,7 +1917,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -1822,11 +1932,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -1884,21 +1992,30 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_DELETE_ORPHANS_SENSOR
                     httpStatusCode: 422
-                    message: >-
-                      Unable to delete assignment - the assignment will leave a sensor unconfigured.
+                    message: Unable to delete assignment - the assignment will leave a sensor unconfigured.
                   summary: Unassign orphans sensor error
-                  description: >-
-                    Unable to delete assignment - the assignment will leave a sensor unconfigured.
+                  description: Unable to delete assignment - the assignment will leave a sensor unconfigured.
                 Inherited assignment deletion error:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_CANNOT_DELETE_INHERITED_ASSIGNMENT
                     httpStatusCode: 422
-                    message: >-
-                      Unable to delete assignment - an inherited assignment cannot be deleted.
+                    message: Unable to delete assignment - an inherited assignment cannot be deleted.
                   summary: Inherited assignment deletion error
-                  description: >-
-                    Unable to delete assignment - an inherited assignment cannot be deleted.
+                  description: Unable to delete assignment - an inherited assignment cannot be deleted.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -1976,18 +2093,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -2000,7 +2114,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2014,11 +2129,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -2076,31 +2189,38 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_NETWORK_DOES_NOT_EXIST
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign network to group - the specified network does not exist.
+                    message: Unable to assign network to group - the specified network does not exist.
                   summary: Network does not exist
-                  description: >-
-                    Unable to assign network to group - the specified network does not exist.
+                  description: Unable to assign network to group - the specified network does not exist.
                 Group does not exist:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign network to group - the specified group does not exist.
+                    message: Unable to assign network to group - the specified group does not exist.
                   summary: Group does not exist
-                  description: >-
-                    Unable to assign network to group - the specified group does not exist.
+                  description: Unable to assign network to group - the specified group does not exist.
                 Assignment to root group error:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_NETWORK_TO_ROOT_GROUP
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign network to group - the specified group is a root group.
+                    message: Unable to assign network to group - the specified group is a root group.
                   summary: Assignment to root group error
-                  description: >-
-                    Unable to assign network to group - the specified group is a root group.
+                  description: Unable to assign network to group - the specified group is a root group.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -2143,8 +2263,9 @@ paths:
           required: false
           schema:
             description: The ID of the resource.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: ID
         - name: next
           in: query
@@ -2152,8 +2273,9 @@ paths:
           required: false
           schema:
             description: The next cursor for pagination.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: Next
         - name: limit
           in: query
@@ -2212,7 +2334,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2226,11 +2349,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -2263,6 +2384,25 @@ paths:
                   description: Media type is unsupported.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Internal Server Error
           content:
@@ -2292,7 +2432,7 @@ paths:
         - v1alpha1
         - network-group-assignments
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/sensor-group-assignments/{id}:
+  '/networking-uxi/v1alpha1/sensor-group-assignments/{id}':
     delete:
       operationId: sensor_group_assignment_delete
       summary: Sensor Group Assignment Delete
@@ -2319,18 +2459,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -2343,7 +2480,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2357,11 +2495,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -2407,6 +2543,25 @@ paths:
                     message: Media type is unsupported.
                   summary: Unsupported Media Type
                   description: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -2484,18 +2639,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -2508,7 +2660,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2522,11 +2675,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -2584,31 +2735,38 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_SENSOR_DOES_NOT_EXIST
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign sensor to group - the specified sensor does not exist.
+                    message: Unable to assign sensor to group - the specified sensor does not exist.
                   summary: Sensor does not exist
-                  description: >-
-                    Unable to assign sensor to group - the specified sensor does not exist.
+                  description: Unable to assign sensor to group - the specified sensor does not exist.
                 Group does not exist:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign sensor to group - the specified group does not exist.
+                    message: Unable to assign sensor to group - the specified group does not exist.
                   summary: Group does not exist
-                  description: >-
-                    Unable to assign sensor to group - the specified group does not exist.
+                  description: Unable to assign sensor to group - the specified group does not exist.
                 Assignment to root group error:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_SENSOR_TO_ROOT_GROUP
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign sensor to group - the specified group is a root group.
+                    message: Unable to assign sensor to group - the specified group is a root group.
                   summary: Assignment to root group error
-                  description: >-
-                    Unable to assign sensor to group - the specified group is a root group.
+                  description: Unable to assign sensor to group - the specified group is a root group.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -2651,8 +2809,9 @@ paths:
           required: false
           schema:
             description: The ID of the resource.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: ID
         - name: next
           in: query
@@ -2660,8 +2819,9 @@ paths:
           required: false
           schema:
             description: The next cursor for pagination.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: Next
         - name: limit
           in: query
@@ -2720,7 +2880,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2734,11 +2895,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -2771,6 +2930,25 @@ paths:
                   description: Media type is unsupported.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Internal Server Error
           content:
@@ -2800,7 +2978,7 @@ paths:
         - v1alpha1
         - sensor-group-assignments
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/sensors/{id}:
+  '/networking-uxi/v1alpha1/sensors/{id}':
     patch:
       operationId: sensor_patch
       summary: Sensor Patch
@@ -2847,9 +3025,11 @@ paths:
                     id: dsfldjsah389
                     serial: '123456789'
                     name: Sensor Name
+                    groupName: Group Name
+                    groupPath: 4cca81b7c5d0.2a1cacab1e7c
                     modelNumber: UX-F5C
                     wifiMacAddress: '00:11:22:33:44:55'
-                    ethernetMacAddress: 66:77:88:99:AA:BB
+                    ethernetMacAddress: '66:77:88:99:AA:BB'
                     addressNote: Office
                     longitude: 12.345678
                     latitude: 98.765432
@@ -2868,18 +3048,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -2892,7 +3069,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -2906,11 +3084,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -2958,6 +3134,25 @@ paths:
                   description: Media type is unsupported.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Internal Server Error
           content:
@@ -2999,8 +3194,9 @@ paths:
           required: false
           schema:
             description: The ID of the resource.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: ID
         - name: next
           in: query
@@ -3008,8 +3204,9 @@ paths:
           required: false
           schema:
             description: The next cursor for pagination.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: Next
         - name: limit
           in: query
@@ -3036,6 +3233,8 @@ paths:
                       - id: b1b8bd47-951a-42e3-bbec-f68ee5cc94be
                         serial: '1234567890'
                         name: Sensor Name
+                        groupName: Group Name
+                        groupPath: 4cca81b7c5d0.2a1cacab1e7c
                         modelNumber: UX-F5C
                         wifiMacAddress: '00:11:22:33:44:55'
                         ethernetMacAddress: '00:11:22:33:44:56'
@@ -3074,7 +3273,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3088,11 +3288,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -3125,6 +3323,25 @@ paths:
                   description: Media type is unsupported.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Internal Server Error
           content:
@@ -3154,7 +3371,7 @@ paths:
         - v1alpha1
         - sensors
       x-stability-level: alpha
-  /networking-uxi/v1alpha1/service-test-group-assignments/{id}:
+  '/networking-uxi/v1alpha1/service-test-group-assignments/{id}':
     delete:
       operationId: service_test_group_assignment_delete
       summary: Service Test Group Assignment Delete
@@ -3181,18 +3398,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -3205,7 +3419,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3219,11 +3434,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
@@ -3281,11 +3494,22 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_CANNOT_DELETE_INHERITED_ASSIGNMENT
                     httpStatusCode: 422
-                    message: >-
-                      Unable to delete assignment - an inherited assignment cannot be deleted.
+                    message: Unable to delete assignment - an inherited assignment cannot be deleted.
                   summary: Inherited assignment deletion error
-                  description: >-
-                    Unable to delete assignment - an inherited assignment cannot be deleted.
+                  description: Unable to delete assignment - an inherited assignment cannot be deleted.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -3363,18 +3587,15 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_BAD_REQUEST
                     httpStatusCode: 400
-                    message: >-
-                      The request could not be processed due to a validation error.
+                    message: The request could not be processed due to a validation error.
                     errorDetails:
                       - issues:
-                          - description: >-
-                              The request could not be processed due to a validation error.
+                          - description: The request could not be processed due to a validation error.
                             subject: header
                             source: x-generic-header
                         type: hpe.greenlake.bad_request
                   summary: Bad Request
-                  description: >-
-                    The request could not be processed due to a validation error.
+                  description: The request could not be processed due to a validation error.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
@@ -3387,7 +3608,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3401,11 +3623,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -3461,55 +3681,44 @@ paths:
                 Assignment to root group error:
                   value:
                     debugId: '1234567890'
-                    errorCode: >-
-                      HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_SERVICE_TEST_TO_ROOT_GROUP
+                    errorCode: HPE_GL_NETWORKING_UXI_CANNOT_ASSIGN_SERVICE_TEST_TO_ROOT_GROUP
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign service test to group - the specified group is a root group.
+                    message: Unable to assign service test to group - the specified group is a root group.
                   summary: Assignment to root group error
-                  description: >-
-                    Unable to assign service test to group - the specified group is a root group.
+                  description: Unable to assign service test to group - the specified group is a root group.
                 Group does not exist:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_GROUP_DOES_NOT_EXIST
                     httpStatusCode: 422
-                    message: >-
-                      Unable to assign service test to group - the specified group does not exist.
+                    message: Unable to assign service test to group - the specified group does not exist.
                   summary: Group does not exist
-                  description: >-
-                    Unable to assign service test to group - the specified group does not exist.
+                  description: Unable to assign service test to group - the specified group does not exist.
                 Service test does not exist:
                   value:
                     debugId: '1234567890'
                     errorCode: HPE_GL_NETWORKING_UXI_SERVICE_TEST_DOES_NOT_EXIST
                     httpStatusCode: 422
                     message: >-
-                      Unable to assign service test to group - the specified service test does not exist.
+                      Unable to assign service test to group - the specified service test does not
+                      exist.
                   summary: Service test does not exist
                   description: >-
-                    Unable to assign service test to group - the specified service test does not exist.
-                Service test group assignment already exists:
+                    Unable to assign service test to group - the specified service test does not
+                    exist.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
                   value:
                     debugId: '1234567890'
-                    errorCode: >-
-                      HPE_GL_NETWORKING_UXI_SERVICE_TEST_GROUP_ASSIGNMENT_ALREADY_EXISTS
-                    httpStatusCode: 422
-                    message: >-
-                      Unable to assign service test to group - the service test group assignment already exists.
-                  summary: Service test group assignment already exists
-                  description: >-
-                    Unable to assign service test to group - the service test group assignment already exists.
-                Service test has network exclusions:
-                  value:
-                    debugId: '1234567890'
-                    errorCode: HPE_GL_NETWORKING_UXI_SERVICE_TEST_HAS_NETWORK_EXCLUSIONS
-                    httpStatusCode: 422
-                    message: >-
-                      Unable to assign service test to group - the specified service test has network exclusions.
-                  summary: Service test has network exclusions
-                  description: >-
-                    Unable to assign service test to group - the specified service test has network exclusions.
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -3552,8 +3761,9 @@ paths:
           required: false
           schema:
             description: The ID of the resource.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: ID
         - name: next
           in: query
@@ -3561,8 +3771,9 @@ paths:
           required: false
           schema:
             description: The next cursor for pagination.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: Next
         - name: limit
           in: query
@@ -3621,7 +3832,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3635,11 +3847,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -3670,6 +3880,25 @@ paths:
                     message: Media type is unsupported.
                   summary: Unsupported Media Type
                   description: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -3713,8 +3942,9 @@ paths:
           required: false
           schema:
             description: The ID of the resource.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: ID
         - name: next
           in: query
@@ -3722,8 +3952,9 @@ paths:
           required: false
           schema:
             description: The next cursor for pagination.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: Next
         - name: limit
           in: query
@@ -3783,7 +4014,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3797,11 +4029,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -3832,6 +4062,25 @@ paths:
                     message: Media type is unsupported.
                   summary: Unsupported Media Type
                   description: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -3875,8 +4124,9 @@ paths:
           required: false
           schema:
             description: The ID of the resource.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: ID
         - name: next
           in: query
@@ -3884,8 +4134,9 @@ paths:
           required: false
           schema:
             description: The next cursor for pagination.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: Next
         - name: limit
           in: query
@@ -3950,7 +4201,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -3964,11 +4216,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -3999,6 +4249,25 @@ paths:
                     message: Media type is unsupported.
                   summary: Unsupported Media Type
                   description: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -4042,8 +4311,9 @@ paths:
           required: false
           schema:
             description: The ID of the resource.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: ID
         - name: next
           in: query
@@ -4051,8 +4321,9 @@ paths:
           required: false
           schema:
             description: The next cursor for pagination.
-            type: string
-            nullable: true
+            anyOf:
+              - type: string
+              - type: 'null'
             title: Next
         - name: limit
           in: query
@@ -4119,7 +4390,8 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_UNAUTHORIZED
                     message: >-
-                      You are not authorized to perform this action - the token is missing, expired, revoked, malformed, or invalid for other reasons
+                      You are not authorized to perform this action - the token is missing, expired,
+                      revoked, malformed, or invalid for other reasons
                     httpStatusCode: 401
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
@@ -4133,11 +4405,9 @@ paths:
                     debugId: '1234567890'
                     errorCode: HPE_GL_ERROR_FORBIDDEN
                     httpStatusCode: 403
-                    message: >-
-                      The user has insufficient permissions to complete the request.
+                    message: The user has insufficient permissions to complete the request.
                   summary: Forbidden
-                  description: >-
-                    The user has insufficient permissions to complete the request.
+                  description: The user has insufficient permissions to complete the request.
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '405':
@@ -4168,6 +4438,25 @@ paths:
                     message: Media type is unsupported.
                   summary: Unsupported Media Type
                   description: Media type is unsupported.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              examples:
+                Too Many Requests:
+                  value:
+                    debugId: '1234567890'
+                    errorCode: HPE_GL_ERROR_TOO_MANY_REQUESTS
+                    message: Too many requests.
+                    httpStatusCode: 429
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
@@ -4244,14 +4533,19 @@ components:
           type: string
           title: ID
         group:
+          description: The group component of the agent group assignment
           $ref: '#/components/schemas/AgentGroupAssignmentPostGroup'
+          title: Group
         agent:
+          description: The agent component of the agent group assignment
           $ref: '#/components/schemas/AgentGroupAssignmentPostAgent'
+          title: Agent
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/agent-group-assignment
+          const: networking-uxi/agent-group-assignment
           title: Type
       required:
         - id
@@ -4287,14 +4581,19 @@ components:
           type: string
           title: ID
         group:
+          description: The group component of the agent group assignment
           $ref: '#/components/schemas/AgentGroupAssignmentsGetGroup'
+          title: Group
         agent:
+          description: The agent component of the agent group assignment
           $ref: '#/components/schemas/AgentGroupAssignmentsGetAgent'
+          title: Agent
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/agent-group-assignment
+          const: networking-uxi/agent-group-assignment
           title: Type
       required:
         - id
@@ -4317,8 +4616,9 @@ components:
           title: Count
         next:
           description: The next cursor for pagination.
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Next
       required:
         - items
@@ -4340,7 +4640,9 @@ components:
           type: string
           title: Notes
         pcapMode:
+          description: The pcap mode of the agent
           $ref: '#/components/schemas/AgentPcapMode'
+          title: PcapMode
       title: AgentPatchRequest
     AgentPatchResponse:
       type: object
@@ -4357,43 +4659,61 @@ components:
           description: The name of the agent
           type: string
           title: Name
+        groupName:
+          description: The name of the group that the agent is assigned to
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Group Name
+        groupPath:
+          description: The path of the group that the agent is assigned to
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Group Path
         modelNumber:
           description: The model number of the agent
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Model Number
         wifiMacAddress:
           description: The WiFi MAC address of the agent
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: WiFi MAC Address
         ethernetMacAddress:
           description: The Ethernet MAC address of the agent
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Ethernet MAC Address
         notes:
           description: The notes of the agent
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Notes
         pcapMode:
           description: The pcap mode of the agent
-          type: string
           anyOf:
             - $ref: '#/components/schemas/AgentPcapMode'
-          nullable: true
+            - type: 'null'
           title: PcapMode
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/agent
+          const: networking-uxi/agent
           title: Type
       required:
         - id
         - serial
         - name
+        - groupName
+        - groupPath
         - modelNumber
         - wifiMacAddress
         - ethernetMacAddress
@@ -4423,43 +4743,61 @@ components:
           description: The name of the agent
           type: string
           title: Name
+        groupName:
+          description: The name of the group that the agent is assigned to
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Group Name
+        groupPath:
+          description: The path of the group that the agent is assigned to
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Group Path
         modelNumber:
           description: The model number of the agent
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Model Number
         wifiMacAddress:
           description: The WiFi MAC address of the agent
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: WiFi MAC Address
         ethernetMacAddress:
           description: The Ethernet MAC address of the agent
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Ethernet MAC Address
         notes:
           description: The notes of the agent
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Notes
         pcapMode:
           description: The pcap mode of the agent
-          type: string
           anyOf:
             - $ref: '#/components/schemas/AgentPcapMode'
-          nullable: true
+            - type: 'null'
           title: PcapMode
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/agent
+          const: networking-uxi/agent
           title: Type
       required:
         - id
         - serial
         - name
+        - groupName
+        - groupPath
         - modelNumber
         - wifiMacAddress
         - ethernetMacAddress
@@ -4482,8 +4820,9 @@ components:
           title: Count
         next:
           description: The next cursor for pagination.
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Next
       required:
         - items
@@ -4510,13 +4849,13 @@ components:
       properties:
         debugId:
           type: string
-          title: Debugid
+          title: DebugID
         errorCode:
           type: string
-          title: Errorcode
+          title: ErrorCode
         httpStatusCode:
           type: integer
-          title: Httpstatuscode
+          title: HttpStatusCode
         message:
           type: string
           title: Message
@@ -4524,7 +4863,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
-          title: Errordetails
+          title: ErrorDetails
       required:
         - debugId
         - errorCode
@@ -4567,12 +4906,15 @@ components:
           type: string
           title: Path
         parent:
+          description: The parent group
           $ref: '#/components/schemas/GroupPatchParent'
+          title: Parent
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/group
+          const: networking-uxi/group
           title: Type
       required:
         - id
@@ -4596,8 +4938,9 @@ components:
       properties:
         parentId:
           description: The unique identifier of the parent group
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Parent Group ID
         name:
           description: The name of the group
@@ -4624,12 +4967,15 @@ components:
           type: string
           title: Path
         parent:
+          description: The parent group
           $ref: '#/components/schemas/GroupPostParent'
+          title: Parent
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/group
+          const: networking-uxi/group
           title: Type
       required:
         - id
@@ -4651,10 +4997,9 @@ components:
           title: Name
         parent:
           description: The parent group
-          type: object
           anyOf:
             - $ref: '#/components/schemas/GroupsGetParent'
-          nullable: true
+            - type: 'null'
           title: Parent
         path:
           description: The path of the group
@@ -4665,6 +5010,7 @@ components:
           type: string
           enum:
             - networking-uxi/group
+          const: networking-uxi/group
           title: Type
       required:
         - id
@@ -4698,14 +5044,24 @@ components:
           title: Count
         next:
           description: The next cursor for pagination.
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Next
       required:
         - items
         - count
         - next
       title: GroupsGetResponse
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+      title: HTTPValidationError
     IpVersion:
       type: string
       enum:
@@ -4778,14 +5134,19 @@ components:
           type: string
           title: ID
         group:
+          description: The group component of the network group assignment
           $ref: '#/components/schemas/NetworkGroupAssignmentPostGroup'
+          title: Group
         network:
+          description: The network component of the network group assignment
           $ref: '#/components/schemas/NetworkGroupAssignmentPostNetwork'
+          title: Network
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/network-group-assignment
+          const: networking-uxi/network-group-assignment
           title: Type
       required:
         - id
@@ -4811,14 +5172,19 @@ components:
           type: string
           title: ID
         group:
+          description: The group component of the network group assignment
           $ref: '#/components/schemas/NetworkGroupAssignmentsGetGroup'
+          title: Group
         network:
+          description: The network component of the network group assignment
           $ref: '#/components/schemas/NetworkGroupAssignmentsGetNetwork'
+          title: Network
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/network-group-assignment
+          const: networking-uxi/network-group-assignment
           title: Type
       required:
         - id
@@ -4851,8 +5217,9 @@ components:
           title: Count
         next:
           description: The next cursor for pagination.
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Next
       required:
         - items
@@ -4892,14 +5259,19 @@ components:
           type: string
           title: ID
         group:
+          description: The group component of the sensor group assignment
           $ref: '#/components/schemas/SensorGroupAssignmentPostGroup'
+          title: Group
         sensor:
+          description: The sensor component of the sensor group assignment
           $ref: '#/components/schemas/SensorGroupAssignmentPostSensor'
+          title: Sensor
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/sensor-group-assignment
+          const: networking-uxi/sensor-group-assignment
           title: Type
       required:
         - id
@@ -4935,14 +5307,19 @@ components:
           type: string
           title: ID
         group:
+          description: The group component of the sensor group assignment
           $ref: '#/components/schemas/SensorGroupAssignmentsGetGroup'
+          title: Group
         sensor:
+          description: The sensor component of the sensor group assignment
           $ref: '#/components/schemas/SensorGroupAssignmentsGetSensor'
+          title: Sensor
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/sensor-group-assignment
+          const: networking-uxi/sensor-group-assignment
           title: Type
       required:
         - id
@@ -4965,8 +5342,9 @@ components:
           title: Count
         next:
           description: The next cursor for pagination.
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Next
       required:
         - items
@@ -5002,7 +5380,9 @@ components:
           type: string
           title: Notes
         pcapMode:
+          description: The updated pcap mode for the sensor
           $ref: '#/components/schemas/SensorPcapMode'
+          title: PcapMode
       title: SensorPatchRequest
     SensorPatchResponse:
       type: object
@@ -5019,57 +5399,77 @@ components:
           description: The name of the sensor
           type: string
           title: Name
+        groupName:
+          description: The name of the group that the agent is assigned to
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Group Name
+        groupPath:
+          description: The path of the group that the agent is assigned to
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Group Path
         modelNumber:
           description: The model number of the sensor
           type: string
           title: Model Number
         wifiMacAddress:
           description: The WiFi MAC address of the sensor
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: WiFi MAC Address
         ethernetMacAddress:
           description: The Ethernet MAC address of the sensor
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Ethernet MAC Address
         addressNote:
           description: The address note of the sensor
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Address Note
         longitude:
           description: The longitude of the sensor
-          type: number
-          nullable: true
+          anyOf:
+            - type: number
+            - type: 'null'
           title: Longitude
         latitude:
           description: The latitude of the sensor
-          type: number
-          nullable: true
+          anyOf:
+            - type: number
+            - type: 'null'
           title: Latitude
         notes:
           description: Additional notes for the sensor
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Notes
         pcapMode:
           description: The pcap mode of the sensor
-          type: string
           anyOf:
             - $ref: '#/components/schemas/SensorPcapMode'
-          nullable: true
+            - type: 'null'
           title: PcapMode
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/sensor
+          const: networking-uxi/sensor
           title: Type
       required:
         - id
         - serial
         - name
+        - groupName
+        - groupPath
         - modelNumber
         - wifiMacAddress
         - ethernetMacAddress
@@ -5102,57 +5502,77 @@ components:
           description: The name of the sensor
           type: string
           title: Name
+        groupName:
+          description: The name of the group that the agent is assigned to
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Group Name
+        groupPath:
+          description: The path of the group that the agent is assigned to
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Group Path
         modelNumber:
           description: The model number of the sensor
           type: string
           title: Model Number
         wifiMacAddress:
           description: The WiFi MAC address of the sensor
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: WiFi MAC Address
         ethernetMacAddress:
           description: The Ethernet MAC address of the sensor
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Ethernet MAC Address
         addressNote:
           description: The address note of the sensor
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Address Note
         longitude:
           description: The longitude of the sensor
-          type: number
-          nullable: true
+          anyOf:
+            - type: number
+            - type: 'null'
           title: Longitude
         latitude:
           description: The latitude of the sensor
-          type: number
-          nullable: true
+          anyOf:
+            - type: number
+            - type: 'null'
           title: Latitude
         notes:
           description: The notes of the sensor
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Notes
         pcapMode:
           description: The pcap mode of the sensor
-          type: string
           anyOf:
             - $ref: '#/components/schemas/SensorPcapMode'
-          nullable: true
+            - type: 'null'
           title: PcapMode
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/sensor
+          const: networking-uxi/sensor
           title: Type
       required:
         - id
         - serial
         - name
+        - groupName
+        - groupPath
         - modelNumber
         - wifiMacAddress
         - ethernetMacAddress
@@ -5178,8 +5598,9 @@ components:
           title: Count
         next:
           description: The next cursor for pagination.
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Next
       required:
         - items
@@ -5220,14 +5641,19 @@ components:
           format: uuid
           title: ID
         group:
+          description: The group component of the service test group assignment
           $ref: '#/components/schemas/ServiceTestGroupAssignmentPostGroup'
+          title: Group
         serviceTest:
+          description: The service test component of the service test group assignment
           $ref: '#/components/schemas/ServiceTestGroupAssignmentPostServiceTest'
+          title: Service Test
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/service-test-group-assignment
+          const: networking-uxi/service-test-group-assignment
           title: Type
       required:
         - id
@@ -5263,14 +5689,19 @@ components:
           type: string
           title: ID
         group:
+          description: The group component of the service test group assignment
           $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetGroup'
+          title: Group
         serviceTest:
+          description: The service test component of the service test group assignment
           $ref: '#/components/schemas/ServiceTestGroupAssignmentsGetServiceTest'
+          title: Service Test
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/service-test-group-assignment
+          const: networking-uxi/service-test-group-assignment
           title: Type
       required:
         - id
@@ -5293,8 +5724,9 @@ components:
           title: Count
         next:
           description: The next cursor for pagination.
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Next
       required:
         - items
@@ -5328,8 +5760,9 @@ components:
           title: Name
         target:
           description: The target of the service test
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Target
         template:
           description: The template of the service test
@@ -5344,6 +5777,7 @@ components:
           type: string
           enum:
             - networking-uxi/service-test
+          const: networking-uxi/service-test
           title: Type
       required:
         - id
@@ -5369,14 +5803,36 @@ components:
           title: Count
         next:
           description: The next cursor for pagination.
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Next
       required:
         - items
         - count
         - next
       title: ServiceTestsGetResponse
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
     WiredNetworksGetItem:
       type: object
       properties:
@@ -5389,7 +5845,9 @@ components:
           type: string
           title: Name
         ipVersion:
+          description: The IP version of the wired network
           $ref: '#/components/schemas/IpVersion'
+          title: IP Version
         createdAt:
           description: The creation timestamp of the wired network
           type: string
@@ -5402,13 +5860,15 @@ components:
           title: Updated At
         security:
           description: The security settings of the wired network
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Security
         dnsLookupDomain:
           description: The DNS lookup domain of the wired network
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: DNS Lookup Domain
         disableEdns:
           description: Whether EDNS is disabled for the wired network
@@ -5424,14 +5884,16 @@ components:
           title: External Connectivity
         vLanId:
           description: The VLAN ID of the wired network
-          type: integer
-          nullable: true
+          anyOf:
+            - type: integer
+            - type: 'null'
           title: VLAN ID
         type:
           description: The type of the resource.
           type: string
           enum:
             - networking-uxi/wired-network
+          const: networking-uxi/wired-network
           title: Type
       required:
         - id
@@ -5462,8 +5924,9 @@ components:
           title: Count
         next:
           description: The next cursor for pagination.
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Next
       required:
         - items
@@ -5487,11 +5950,14 @@ components:
           title: SSID
         security:
           description: The security type of the wireless network
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Security
         ipVersion:
+          description: The IP version of the wireless network
           $ref: '#/components/schemas/IpVersion'
+          title: IP Version
         createdAt:
           description: The creation timestamp of the wireless network
           type: string
@@ -5512,8 +5978,9 @@ components:
           title: Band Locking
         dnsLookupDomain:
           description: The DNS lookup domain of the wireless network
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: DNS Lookup Domain
         disableEdns:
           description: Whether EDNS is disabled for the wireless network
@@ -5532,6 +5999,7 @@ components:
           type: string
           enum:
             - networking-uxi/wireless-network
+          const: networking-uxi/wireless-network
           title: Type
       required:
         - id
@@ -5564,8 +6032,9 @@ components:
           title: Count
         next:
           description: The next cursor for pagination.
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Next
       required:
         - items

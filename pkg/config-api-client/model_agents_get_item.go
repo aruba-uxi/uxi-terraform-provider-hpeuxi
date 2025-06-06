@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 6.3.0
+API version: 6.7.0
 Contact: support@capenetworks.com
 */
 
@@ -31,16 +31,14 @@ type AgentsGetItem struct {
 	// The serial number of the agent
 	Serial string `json:"serial"`
 	// The name of the agent
-	Name string `json:"name"`
-	// The model number of the agent
-	ModelNumber NullableString `json:"modelNumber"`
-	// The WiFi MAC address of the agent
-	WifiMacAddress NullableString `json:"wifiMacAddress"`
-	// The Ethernet MAC address of the agent
-	EthernetMacAddress NullableString `json:"ethernetMacAddress"`
-	// The notes of the agent
-	Notes    NullableString        `json:"notes"`
-	PcapMode NullableAgentPcapMode `json:"pcapMode"`
+	Name               string                `json:"name"`
+	GroupName          NullableString        `json:"groupName"`
+	GroupPath          NullableString        `json:"groupPath"`
+	ModelNumber        NullableString        `json:"modelNumber"`
+	WifiMacAddress     NullableString        `json:"wifiMacAddress"`
+	EthernetMacAddress NullableString        `json:"ethernetMacAddress"`
+	Notes              NullableString        `json:"notes"`
+	PcapMode           NullableAgentPcapMode `json:"pcapMode"`
 	// The type of the resource.
 	Type string `json:"type"`
 }
@@ -55,6 +53,8 @@ func NewAgentsGetItem(
 	id string,
 	serial string,
 	name string,
+	groupName NullableString,
+	groupPath NullableString,
 	modelNumber NullableString,
 	wifiMacAddress NullableString,
 	ethernetMacAddress NullableString,
@@ -66,6 +66,8 @@ func NewAgentsGetItem(
 	this.Id = id
 	this.Serial = serial
 	this.Name = name
+	this.GroupName = groupName
+	this.GroupPath = groupPath
 	this.ModelNumber = modelNumber
 	this.WifiMacAddress = wifiMacAddress
 	this.EthernetMacAddress = ethernetMacAddress
@@ -153,6 +155,58 @@ func (o *AgentsGetItem) GetNameOk() (*string, bool) {
 // SetName sets field value
 func (o *AgentsGetItem) SetName(v string) {
 	o.Name = v
+}
+
+// GetGroupName returns the GroupName field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *AgentsGetItem) GetGroupName() string {
+	if o == nil || o.GroupName.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.GroupName.Get()
+}
+
+// GetGroupNameOk returns a tuple with the GroupName field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *AgentsGetItem) GetGroupNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.GroupName.Get(), o.GroupName.IsSet()
+}
+
+// SetGroupName sets field value
+func (o *AgentsGetItem) SetGroupName(v string) {
+	o.GroupName.Set(&v)
+}
+
+// GetGroupPath returns the GroupPath field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *AgentsGetItem) GetGroupPath() string {
+	if o == nil || o.GroupPath.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.GroupPath.Get()
+}
+
+// GetGroupPathOk returns a tuple with the GroupPath field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *AgentsGetItem) GetGroupPathOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.GroupPath.Get(), o.GroupPath.IsSet()
+}
+
+// SetGroupPath sets field value
+func (o *AgentsGetItem) SetGroupPath(v string) {
+	o.GroupPath.Set(&v)
 }
 
 // GetModelNumber returns the ModelNumber field value
@@ -322,6 +376,8 @@ func (o AgentsGetItem) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["serial"] = o.Serial
 	toSerialize["name"] = o.Name
+	toSerialize["groupName"] = o.GroupName.Get()
+	toSerialize["groupPath"] = o.GroupPath.Get()
 	toSerialize["modelNumber"] = o.ModelNumber.Get()
 	toSerialize["wifiMacAddress"] = o.WifiMacAddress.Get()
 	toSerialize["ethernetMacAddress"] = o.EthernetMacAddress.Get()
@@ -339,6 +395,8 @@ func (o *AgentsGetItem) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"serial",
 		"name",
+		"groupName",
+		"groupPath",
 		"modelNumber",
 		"wifiMacAddress",
 		"ethernetMacAddress",

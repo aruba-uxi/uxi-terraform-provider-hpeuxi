@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 6.3.0
+API version: 6.7.0
 Contact: support@capenetworks.com
 */
 
@@ -31,22 +31,18 @@ type SensorPatchResponse struct {
 	// The serial number of the sensor
 	Serial string `json:"serial"`
 	// The name of the sensor
-	Name string `json:"name"`
+	Name      string         `json:"name"`
+	GroupName NullableString `json:"groupName"`
+	GroupPath NullableString `json:"groupPath"`
 	// The model number of the sensor
-	ModelNumber string `json:"modelNumber"`
-	// The WiFi MAC address of the sensor
-	WifiMacAddress NullableString `json:"wifiMacAddress"`
-	// The Ethernet MAC address of the sensor
-	EthernetMacAddress NullableString `json:"ethernetMacAddress"`
-	// The address note of the sensor
-	AddressNote NullableString `json:"addressNote"`
-	// The longitude of the sensor
-	Longitude NullableFloat32 `json:"longitude"`
-	// The latitude of the sensor
-	Latitude NullableFloat32 `json:"latitude"`
-	// Additional notes for the sensor
-	Notes    NullableString         `json:"notes"`
-	PcapMode NullableSensorPcapMode `json:"pcapMode"`
+	ModelNumber        string                 `json:"modelNumber"`
+	WifiMacAddress     NullableString         `json:"wifiMacAddress"`
+	EthernetMacAddress NullableString         `json:"ethernetMacAddress"`
+	AddressNote        NullableString         `json:"addressNote"`
+	Longitude          NullableFloat32        `json:"longitude"`
+	Latitude           NullableFloat32        `json:"latitude"`
+	Notes              NullableString         `json:"notes"`
+	PcapMode           NullableSensorPcapMode `json:"pcapMode"`
 	// The type of the resource.
 	Type string `json:"type"`
 }
@@ -61,6 +57,8 @@ func NewSensorPatchResponse(
 	id string,
 	serial string,
 	name string,
+	groupName NullableString,
+	groupPath NullableString,
 	modelNumber string,
 	wifiMacAddress NullableString,
 	ethernetMacAddress NullableString,
@@ -75,6 +73,8 @@ func NewSensorPatchResponse(
 	this.Id = id
 	this.Serial = serial
 	this.Name = name
+	this.GroupName = groupName
+	this.GroupPath = groupPath
 	this.ModelNumber = modelNumber
 	this.WifiMacAddress = wifiMacAddress
 	this.EthernetMacAddress = ethernetMacAddress
@@ -165,6 +165,58 @@ func (o *SensorPatchResponse) GetNameOk() (*string, bool) {
 // SetName sets field value
 func (o *SensorPatchResponse) SetName(v string) {
 	o.Name = v
+}
+
+// GetGroupName returns the GroupName field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *SensorPatchResponse) GetGroupName() string {
+	if o == nil || o.GroupName.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.GroupName.Get()
+}
+
+// GetGroupNameOk returns a tuple with the GroupName field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *SensorPatchResponse) GetGroupNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.GroupName.Get(), o.GroupName.IsSet()
+}
+
+// SetGroupName sets field value
+func (o *SensorPatchResponse) SetGroupName(v string) {
+	o.GroupName.Set(&v)
+}
+
+// GetGroupPath returns the GroupPath field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *SensorPatchResponse) GetGroupPath() string {
+	if o == nil || o.GroupPath.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.GroupPath.Get()
+}
+
+// GetGroupPathOk returns a tuple with the GroupPath field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *SensorPatchResponse) GetGroupPathOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.GroupPath.Get(), o.GroupPath.IsSet()
+}
+
+// SetGroupPath sets field value
+func (o *SensorPatchResponse) SetGroupPath(v string) {
+	o.GroupPath.Set(&v)
 }
 
 // GetModelNumber returns the ModelNumber field value
@@ -410,6 +462,8 @@ func (o SensorPatchResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["serial"] = o.Serial
 	toSerialize["name"] = o.Name
+	toSerialize["groupName"] = o.GroupName.Get()
+	toSerialize["groupPath"] = o.GroupPath.Get()
 	toSerialize["modelNumber"] = o.ModelNumber
 	toSerialize["wifiMacAddress"] = o.WifiMacAddress.Get()
 	toSerialize["ethernetMacAddress"] = o.EthernetMacAddress.Get()
@@ -430,6 +484,8 @@ func (o *SensorPatchResponse) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"serial",
 		"name",
+		"groupName",
+		"groupPath",
 		"modelNumber",
 		"wifiMacAddress",
 		"ethernetMacAddress",
