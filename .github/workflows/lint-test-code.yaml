@@ -68,12 +68,3 @@ jobs:
 
       - name: Check Provider docs valid
         run: just validate-provider-docs
-
-      - name: Coverage comment
-        uses: py-cov-action/python-coverage-comment-action@v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ANNOTATE_MISSING_LINES: true
-          ANNOTATION_TYPE: warning
-          MINIMUM_GREEN: 100
-          MINIMUM_ORANGE: 70
