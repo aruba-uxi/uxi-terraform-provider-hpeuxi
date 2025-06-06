@@ -46,14 +46,14 @@ terraform version
 
 ### Create manifest
 
-Create a Terraform file in your working directory, and reference the desired provider version from the terraform [registry](https://registry.terraform.io/providers/aruba-uxi/hpeuxi/latest). For more information please consult the [documentation](docs/):
+Create a Terraform file in your working directory, and reference the desired provider version from the terraform [registry](https://registry.terraform.io/providers/HewlettPackard/hpeuxi/latest). For more information please consult the [documentation](docs/):
 
 ```terraform
 terraform {
     required_providers {
         hpeuxi = {
-            source  = "aruba-uxi/hpeuxi"
-            version = ">= 0.0.0-pre.alpha.3"
+        source = "HewlettPackard/hpeuxi"
+        version = "0.1.0-alpha.1"
         }
     }
     required_version = ">= 1.7.0"
@@ -123,7 +123,7 @@ Example `~/.terraformrc` file
 ```
 provider_installation {
   dev_overrides {
-      "registry.terraform.io/aruba-uxi/hpeuxi" = "/Users/<user>/go/bin"
+      "registry.terraform.io/HewlettPackard/hpeuxi" = "/Users/<user>/go/bin"
   }
   direct {}
 }

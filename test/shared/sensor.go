@@ -45,5 +45,7 @@ func CheckStateAgainstSensor(
 		TestOptionalFloatValue(t, entity, "longitude", sensor.Longitude.Get()),
 		TestOptionalValue(t, entity, "notes", sensor.Notes.Get()),
 		TestOptionalValue(t, entity, "pcap_mode", (*string)(sensor.GetPcapMode().Ptr())),
+		TestOptionalValue(t, entity, "group_path", sensor.GroupPath.Get()),
+		TestOptionalValue(t, entity, "group_name", sensor.GroupName.Get()),
 	)
 }

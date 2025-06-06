@@ -42,19 +42,19 @@ The following examples use Bash on Linux (x64).
    > `$PLUGIN_DIRECTORY/$SOURCEHOSTNAME/$SOURCENAMESPACE/$NAME/$VERSION/$OS_$ARCH/`
 
    ```console
-   mkdir -p ~/.local/share/terraform/plugins/registry.terraform.io/aruba-uxi/hpeuxi/${RELEASE}/linux_amd64
+   mkdir -p ~/.local/share/terraform/plugins/registry.terraform.io/HewlettPackard/hpeuxi/${RELEASE}/linux_amd64
    ```
 
 4. Copy the extracted plugin to a target system and move to the Terraform plugins directory.
 
    ```console
-   mv terraform-provider-hpeuxi_${RELEASE}/terraform-provider-hpeuxi_v${RELEASE} ~/.local/share/terraform/plugins/registry.terraform.io/aruba-uxi/hpeuxi/${RELEASE}/linux_amd64
+   mv terraform-provider-hpeuxi_${RELEASE}/terraform-provider-hpeuxi_v${RELEASE} ~/.local/share/terraform/plugins/registry.terraform.io/HewlettPackard/hpeuxi/${RELEASE}/linux_amd64
    ```
 
 5. Verify the presence of the plugin in the Terraform plugins directory.
 
    ```console
-   cd ~/.local/share/terraform/plugins/registry.terraform.io/aruba-uxi/hpeuxi/${RELEASE}/linux_amd64
+   cd ~/.local/share/terraform/plugins/registry.terraform.io/HewlettPackard/hpeuxi/${RELEASE}/linux_amd64
    ls
    ```
 
@@ -90,19 +90,19 @@ The following example uses Zsh (default) on macOS (Apple Silicon).
    > `$PLUGIN_DIRECTORY/$SOURCEHOSTNAME/$SOURCENAMESPACE/$NAME/$VERSION/$OS_$ARCH/`
 
    ```console
-   mkdir -p ~/.terraform.d/plugins/registry.terraform.io/aruba-uxi/hpeuxi/${RELEASE}/darwin_arm64
+   mkdir -p ~/.terraform.d/plugins/registry.terraform.io/HewlettPackard/hpeuxi/${RELEASE}/darwin_arm64
    ```
 
 5. Copy the extracted plugin to a target system and move to the Terraform plugins directory.
 
    ```console
-   mv terraform-provider-hpeuxi_${RELEASE}/terraform-provider-hpeuxi_v${RELEASE} ~/.terraform.d/plugins/registry.terraform.io/aruba-uxi/hpeuxi/${RELEASE}/darwin_arm64
+   mv terraform-provider-hpeuxi_${RELEASE}/terraform-provider-hpeuxi_v${RELEASE} ~/.terraform.d/plugins/registry.terraform.io/HewlettPackard/hpeuxi/${RELEASE}/darwin_arm64
    ```
 
 6. Verify the presence of the plugin in the Terraform plugins directory.
 
    ```console
-   cd ~/.terraform.d/plugins/registry.terraform.io/aruba-uxi/hpeuxi/${RELEASE}/darwin_arm64
+   cd ~/.terraform.d/plugins/registry.terraform.io/HewlettPackard/hpeuxi/${RELEASE}/darwin_arm64
    ls
    ```
 
@@ -155,7 +155,7 @@ A working directory can be initialized with providers that are installed locally
 terraform {
   required_providers {
     uxi = {
-      source = "registry.terraform.io/aruba-uxi/hpeuxi"
+      source = "registry.terraform.io/HewlettPackard/hpeuxi"
       version = ">= x.y.z"
     }
   }
@@ -175,9 +175,9 @@ To verify the initialization, navigate to the working directory for your Terrafo
 Initializing the backend...
 
 Initializing provider plugins...
-- Reusing previous version of aruba-uxi/hpeuxi from the dependency lock file
-- Installing aruba-uxi/hpeuxi x.y.z...
-- Installed aruba-uxi/hpeuxi x.y.z (unauthenticated)
+- Reusing previous version of HewlettPackard/hpeuxi from the dependency lock file
+- Installing HewlettPackard/hpeuxi x.y.z...
+- Installed HewlettPackard/hpeuxi x.y.z (unauthenticated)
 
 Terraform has been successfully initialized!
 ```
@@ -192,5 +192,5 @@ To find the provider version, navigate to the working directory of your Terrafor
 % terraform version
 Terraform x.y.z
 on darwin_arm64
-+ provider registry.terraform.io/aruba-uxi/hpeuxi x.y.z
++ provider registry.terraform.io/HewlettPackard/hpeuxi x.y.z
 ```

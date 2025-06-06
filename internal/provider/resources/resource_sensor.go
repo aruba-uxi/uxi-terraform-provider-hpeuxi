@@ -37,6 +37,8 @@ type sensorResourceModel struct {
 	Latitude           types.Float32 `tfsdk:"latitude"`
 	Notes              types.String  `tfsdk:"notes"`
 	PcapMode           types.String  `tfsdk:"pcap_mode"`
+	GroupPath          types.String  `tfsdk:"group_path"`
+	GroupName          types.String  `tfsdk:"group_name"`
 }
 
 func NewSensorResource() resource.Resource {
@@ -120,6 +122,14 @@ func (r *sensorResource) Schema(
 						util.ConvertToStrings(config_api_client.AllowedSensorPcapModeEnumValues)...,
 					),
 				},
+			},
+			"group_path": schema.StringAttribute{
+				Description: "The path of the group that the sensor is assigned to.",
+				Computed:    true,
+			},
+			"group_name": schema.StringAttribute{
+				Description: "The name of the group that the sensor is assigned to.",
+				Computed:    true,
 			},
 		},
 	}
@@ -207,6 +217,8 @@ func (r *sensorResource) Read(
 	state.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
 	state.PcapMode = types.StringPointerValue((*string)(sensor.GetPcapMode().Ptr()))
+	state.GroupName = types.StringPointerValue(sensor.GroupName.Get())
+	state.GroupPath = types.StringPointerValue(sensor.GroupPath.Get())
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -268,6 +280,8 @@ func (r *sensorResource) Update(
 	plan.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	plan.Notes = types.StringPointerValue(sensor.Notes.Get())
 	plan.PcapMode = types.StringPointerValue((*string)(sensor.GetPcapMode().Ptr()))
+	plan.GroupName = types.StringPointerValue(sensor.GroupName.Get())
+	plan.GroupPath = types.StringPointerValue(sensor.GroupPath.Get())
 
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)

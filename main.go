@@ -28,7 +28,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		Address: "registry.terraform.io/aruba-uxi/hpeuxi",
+		Address: "registry.terraform.io/HewlettPackard/hpeuxi",
 		Debug:   debug,
 	}
 

@@ -28,6 +28,8 @@ func GenerateSensorsGetResponse(id string, postfix string) config_api_client.Sen
 				Latitude:           *config_api_client.NewNullableFloat32(config_api_client.PtrFloat32(0.0)),
 				Notes:              *config_api_client.NewNullableString(config_api_client.PtrString("notes" + postfix)),
 				PcapMode:           *config_api_client.NewNullableSensorPcapMode(config_api_client.SENSORPCAPMODE_LIGHT.Ptr()),
+				GroupPath:          *config_api_client.NewNullableString(config_api_client.PtrString("group_path" + postfix)),
+				GroupName:          *config_api_client.NewNullableString(config_api_client.PtrString("group_name" + postfix)),
 				Type:               shared.SensorType,
 			},
 		},
@@ -58,6 +60,8 @@ func GenerateSensorPatchResponse(id string, postfix string) config_api_client.Se
 		Latitude:           *config_api_client.NewNullableFloat32(config_api_client.PtrFloat32(0.0)),
 		Notes:              *config_api_client.NewNullableString(config_api_client.PtrString("notes" + postfix)),
 		PcapMode:           *config_api_client.NewNullableSensorPcapMode(config_api_client.SENSORPCAPMODE_LIGHT.Ptr()),
+		GroupPath:          *config_api_client.NewNullableString(config_api_client.PtrString("group_path" + postfix)),
+		GroupName:          *config_api_client.NewNullableString(config_api_client.PtrString("group_name" + postfix)),
 		Type:               shared.SensorType,
 	}
 }

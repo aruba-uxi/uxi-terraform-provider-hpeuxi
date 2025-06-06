@@ -5,7 +5,7 @@ set -e
 os="linux"
 arch="amd64"
 repo="HPE/terraform-provider-hpeuxi"
-linux_hpeuxi_dir="${HOME}/.local/share/terraform/plugins/registry.terraform.io/aruba-uxi/hpeuxi"
+linux_hpeuxi_dir="${HOME}/.local/share/terraform/plugins/registry.terraform.io/HewlettPackard/hpeuxi"
 
 get_latest_release () {
   local release_url="https://api.github.com/repos/${repo}/releases/latest"

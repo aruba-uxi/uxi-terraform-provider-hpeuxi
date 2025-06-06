@@ -37,6 +37,8 @@ type agentDataSourceModel struct {
 	EthernetMacAddress types.String `tfsdk:"ethernet_mac_address"`
 	Notes              types.String `tfsdk:"notes"`
 	PcapMode           types.String `tfsdk:"pcap_mode"`
+	GroupPath          types.String `tfsdk:"group_path"`
+	GroupName          types.String `tfsdk:"group_name"`
 	Filter             struct {
 		ID types.String `tfsdk:"id"`
 	} `tfsdk:"filter"`
@@ -88,6 +90,14 @@ func (d *agentDataSource) Schema(
 			},
 			"pcap_mode": schema.StringAttribute{
 				Description: "The packet capture mode of the agent.",
+				Computed:    true,
+			},
+			"group_path": schema.StringAttribute{
+				Description: "The path of the group that the agent is assigned to.",
+				Computed:    true,
+			},
+			"group_name": schema.StringAttribute{
+				Description: "The name of the group that the agent is assigned to.",
 				Computed:    true,
 			},
 			"filter": schema.SingleNestedAttribute{
@@ -150,6 +160,8 @@ func (d *agentDataSource) Read(
 	state.EthernetMacAddress = types.StringPointerValue(agent.EthernetMacAddress.Get())
 	state.Notes = types.StringPointerValue(agent.Notes.Get())
 	state.PcapMode = types.StringPointerValue((*string)(agent.GetPcapMode().Ptr()))
+	state.GroupName = types.StringPointerValue(agent.GroupName.Get())
+	state.GroupPath = types.StringPointerValue(agent.GroupPath.Get())
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
