@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 6.3.0
+API version: 6.7.0
 Contact: support@capenetworks.com
 */
 
@@ -27,8 +27,10 @@ var _ MappedNullable = &AgentGroupAssignmentPostResponse{}
 // AgentGroupAssignmentPostResponse struct for AgentGroupAssignmentPostResponse
 type AgentGroupAssignmentPostResponse struct {
 	// The unique identifier of the agent group assignment
-	Id    string                        `json:"id"`
+	Id string `json:"id"`
+	// The group component of the agent group assignment
 	Group AgentGroupAssignmentPostGroup `json:"group"`
+	// The agent component of the agent group assignment
 	Agent AgentGroupAssignmentPostAgent `json:"agent"`
 	// The type of the resource.
 	Type string `json:"type"`

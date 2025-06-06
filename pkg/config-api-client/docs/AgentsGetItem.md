@@ -7,10 +7,12 @@ Name | Type | Description | Notes
 **Id** | **string** | The unique identifier of the agent | 
 **Serial** | **string** | The serial number of the agent | 
 **Name** | **string** | The name of the agent | 
-**ModelNumber** | **NullableString** | The model number of the agent | 
-**WifiMacAddress** | **NullableString** | The WiFi MAC address of the agent | 
-**EthernetMacAddress** | **NullableString** | The Ethernet MAC address of the agent | 
-**Notes** | **NullableString** | The notes of the agent | 
+**GroupName** | **NullableString** |  | 
+**GroupPath** | **NullableString** |  | 
+**ModelNumber** | **NullableString** |  | 
+**WifiMacAddress** | **NullableString** |  | 
+**EthernetMacAddress** | **NullableString** |  | 
+**Notes** | **NullableString** |  | 
 **PcapMode** | [**NullableAgentPcapMode**](AgentPcapMode.md) |  | 
 **Type** | **string** | The type of the resource. | 
 
@@ -18,7 +20,7 @@ Name | Type | Description | Notes
 
 ### NewAgentsGetItem
 
-`func NewAgentsGetItem(id string, serial string, name string, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, notes NullableString, pcapMode NullableAgentPcapMode, type_ string, ) *AgentsGetItem`
+`func NewAgentsGetItem(id string, serial string, name string, groupName NullableString, groupPath NullableString, modelNumber NullableString, wifiMacAddress NullableString, ethernetMacAddress NullableString, notes NullableString, pcapMode NullableAgentPcapMode, type_ string, ) *AgentsGetItem`
 
 NewAgentsGetItem instantiates a new AgentsGetItem object
 This constructor will assign default values to properties that have it defined,
@@ -93,6 +95,66 @@ and a boolean to check if the value has been set.
 SetName sets Name field to given value.
 
 
+### GetGroupName
+
+`func (o *AgentsGetItem) GetGroupName() string`
+
+GetGroupName returns the GroupName field if non-nil, zero value otherwise.
+
+### GetGroupNameOk
+
+`func (o *AgentsGetItem) GetGroupNameOk() (*string, bool)`
+
+GetGroupNameOk returns a tuple with the GroupName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetGroupName
+
+`func (o *AgentsGetItem) SetGroupName(v string)`
+
+SetGroupName sets GroupName field to given value.
+
+
+### SetGroupNameNil
+
+`func (o *AgentsGetItem) SetGroupNameNil(b bool)`
+
+ SetGroupNameNil sets the value for GroupName to be an explicit nil
+
+### UnsetGroupName
+`func (o *AgentsGetItem) UnsetGroupName()`
+
+UnsetGroupName ensures that no value is present for GroupName, not even an explicit nil
+### GetGroupPath
+
+`func (o *AgentsGetItem) GetGroupPath() string`
+
+GetGroupPath returns the GroupPath field if non-nil, zero value otherwise.
+
+### GetGroupPathOk
+
+`func (o *AgentsGetItem) GetGroupPathOk() (*string, bool)`
+
+GetGroupPathOk returns a tuple with the GroupPath field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetGroupPath
+
+`func (o *AgentsGetItem) SetGroupPath(v string)`
+
+SetGroupPath sets GroupPath field to given value.
+
+
+### SetGroupPathNil
+
+`func (o *AgentsGetItem) SetGroupPathNil(b bool)`
+
+ SetGroupPathNil sets the value for GroupPath to be an explicit nil
+
+### UnsetGroupPath
+`func (o *AgentsGetItem) UnsetGroupPath()`
+
+UnsetGroupPath ensures that no value is present for GroupPath, not even an explicit nil
 ### GetModelNumber
 
 `func (o *AgentsGetItem) GetModelNumber() string`

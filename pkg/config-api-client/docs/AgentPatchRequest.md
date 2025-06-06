@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | Pointer to **string** | The name of the agent | [optional] 
 **Notes** | Pointer to **string** | The notes of the agent | [optional] 
-**PcapMode** | Pointer to [**AgentPcapMode**](AgentPcapMode.md) |  | [optional] 
+**PcapMode** | Pointer to [**AgentPcapMode**](AgentPcapMode.md) | The pcap mode of the agent | [optional] 
 
 ## Methods
 

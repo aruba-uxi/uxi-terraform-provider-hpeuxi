@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 6.3.0
+API version: 6.7.0
 Contact: support@capenetworks.com
 */
 
@@ -29,9 +29,8 @@ type SensorsGetResponse struct {
 	// The list of resources.
 	Items []SensorsGetItem `json:"items"`
 	// The number of resources returned in the response.
-	Count int32 `json:"count"`
-	// The next cursor for pagination.
-	Next NullableString `json:"next"`
+	Count int32          `json:"count"`
+	Next  NullableString `json:"next"`
 }
 
 type _SensorsGetResponse SensorsGetResponse

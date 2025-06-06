@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Id** | **string** | The unique identifier of the service test | 
 **Category** | **string** | The category of the service test | 
 **Name** | **string** | The name of the service test | 
-**Target** | **NullableString** | The target of the service test | 
+**Target** | **NullableString** |  | 
 **Template** | **string** | The template of the service test | 
 **IsEnabled** | **bool** | Indicates if the service test is enabled | 
 **Type** | **string** | The type of the resource. | 

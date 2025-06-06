@@ -41,6 +41,8 @@ func TestConfigurationAPI(t *testing.T) {
 						"ethernetMacAddress": "ethernet_mac_address",
 						"notes":              "notes",
 						"pcapMode":           "light",
+						"groupPath":          "group_path",
+						"groupName":          "group_name",
 						"type":               "networking-uxi/sensor",
 					},
 				},
@@ -59,6 +61,8 @@ func TestConfigurationAPI(t *testing.T) {
 		ethernetMacAddress := "ethernet_mac_address"
 		notes := "notes"
 		pcapMode := config_api_client.AGENTPCAPMODE_LIGHT
+		groupPath := "group_path"
+		groupName := "group_name"
 		require.Nil(t, err)
 
 		defer httpRes.Body.Close()
@@ -74,6 +78,8 @@ func TestConfigurationAPI(t *testing.T) {
 					EthernetMacAddress: *config_api_client.NewNullableString(&ethernetMacAddress),
 					Notes:              *config_api_client.NewNullableString(&notes),
 					PcapMode:           *config_api_client.NewNullableAgentPcapMode(&pcapMode),
+					GroupPath:          *config_api_client.NewNullableString(&groupPath),
+					GroupName:          *config_api_client.NewNullableString(&groupName),
 					Type:               "networking-uxi/sensor",
 				},
 			},
@@ -97,12 +103,16 @@ func TestConfigurationAPI(t *testing.T) {
 				"ethernetMacAddress": "ethernet_mac_address",
 				"notes":              "new_notes",
 				"pcapMode":           "off",
+				"groupPath":          "group_path",
+				"groupName":          "group_name",
 				"type":               "networking-uxi/agent",
 			},
 			)
 		name := "new_name"
 		notes := "new_notes"
 		pcapMode := config_api_client.AGENTPCAPMODE_OFF
+		groupPath := "group_path"
+		groupName := "group_name"
 		agentsPatchRequest := config_api_client.AgentPatchRequest{
 			Name:     &name,
 			Notes:    &notes,
@@ -129,6 +139,8 @@ func TestConfigurationAPI(t *testing.T) {
 			EthernetMacAddress: *config_api_client.NewNullableString(&ethernetMacAddress),
 			Notes:              *config_api_client.NewNullableString(&notes),
 			PcapMode:           *config_api_client.NewNullableAgentPcapMode(&pcapMode),
+			GroupPath:          *config_api_client.NewNullableString(&groupPath),
+			GroupName:          *config_api_client.NewNullableString(&groupName),
 			Type:               "networking-uxi/agent",
 		})
 	})
@@ -288,6 +300,8 @@ func TestConfigurationAPI(t *testing.T) {
 						"latitude":           0.0,
 						"notes":              "notes",
 						"pcapMode":           "light",
+						"groupPath":          "group_path",
+						"groupName":          "group_name",
 						"type":               "networking-uxi/sensor",
 					},
 				},
@@ -308,6 +322,8 @@ func TestConfigurationAPI(t *testing.T) {
 		var Longitude float32 = 0.0
 		var Latitude float32 = 0.0
 		Notes := "notes"
+		GroupPath := "group_path"
+		GroupName := "group_name"
 		require.Nil(t, err)
 
 		defer httpRes.Body.Close()
@@ -326,6 +342,8 @@ func TestConfigurationAPI(t *testing.T) {
 					Latitude:           *config_api_client.NewNullableFloat32(&Latitude),
 					Notes:              *config_api_client.NewNullableString(&Notes),
 					PcapMode:           *config_api_client.NewNullableSensorPcapMode(config_api_client.SENSORPCAPMODE_LIGHT.Ptr()),
+					GroupPath:          *config_api_client.NewNullableString(&GroupPath),
+					GroupName:          *config_api_client.NewNullableString(&GroupName),
 					Type:               "networking-uxi/sensor",
 				},
 			},
@@ -352,6 +370,8 @@ func TestConfigurationAPI(t *testing.T) {
 				"latitude":           0.0,
 				"notes":              "new_notes",
 				"pcapMode":           "off",
+				"groupPath":          "group_path",
+				"groupName":          "group_name",
 				"type":               "networking-uxi/sensor",
 			},
 			)
@@ -373,6 +393,8 @@ func TestConfigurationAPI(t *testing.T) {
 		ethernetMacAddress := "ethernet_mac_address"
 		var longitude float32 = 0.0
 		var latitude float32 = 0.0
+		GroupPath := "group_path"
+		GroupName := "group_name"
 		require.Nil(t, err)
 
 		defer httpRes.Body.Close()
@@ -389,6 +411,8 @@ func TestConfigurationAPI(t *testing.T) {
 			Latitude:           *config_api_client.NewNullableFloat32(&latitude),
 			Notes:              *config_api_client.NewNullableString(&notes),
 			PcapMode:           *config_api_client.NewNullableSensorPcapMode(config_api_client.SENSORPCAPMODE_OFF.Ptr()),
+			GroupPath:          *config_api_client.NewNullableString(&GroupPath),
+			GroupName:          *config_api_client.NewNullableString(&GroupName),
 			Type:               "networking-uxi/sensor",
 		})
 	})

@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ParentId** | Pointer to **NullableString** | The unique identifier of the parent group | [optional] 
+**ParentId** | Pointer to **NullableString** |  | [optional] 
 **Name** | **string** | The name of the group | 
 
 ## Methods

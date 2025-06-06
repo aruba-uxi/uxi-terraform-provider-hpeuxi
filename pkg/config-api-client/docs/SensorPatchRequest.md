@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Name** | Pointer to **string** | The updated sensor name | [optional] 
 **AddressNote** | Pointer to **string** | The updated address note for the sensor | [optional] 
 **Notes** | Pointer to **string** | Additional notes for the sensor | [optional] 
-**PcapMode** | Pointer to [**SensorPcapMode**](SensorPcapMode.md) |  | [optional] 
+**PcapMode** | Pointer to [**SensorPcapMode**](SensorPcapMode.md) | The updated pcap mode for the sensor | [optional] 
 
 ## Methods
 

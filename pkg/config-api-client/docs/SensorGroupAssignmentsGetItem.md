@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** | The unique identifier of the sensor group assignment | 
-**Group** | [**SensorGroupAssignmentsGetGroup**](SensorGroupAssignmentsGetGroup.md) |  | 
-**Sensor** | [**SensorGroupAssignmentsGetSensor**](SensorGroupAssignmentsGetSensor.md) |  | 
+**Group** | [**SensorGroupAssignmentsGetGroup**](SensorGroupAssignmentsGetGroup.md) | The group component of the sensor group assignment | 
+**Sensor** | [**SensorGroupAssignmentsGetSensor**](SensorGroupAssignmentsGetSensor.md) | The sensor component of the sensor group assignment | 
 **Type** | **string** | The type of the resource. | 
 
 ## Methods

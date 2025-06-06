@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** | The unique identifier of the network group assignment | 
-**Group** | [**NetworkGroupAssignmentPostGroup**](NetworkGroupAssignmentPostGroup.md) |  | 
-**Network** | [**NetworkGroupAssignmentPostNetwork**](NetworkGroupAssignmentPostNetwork.md) |  | 
+**Group** | [**NetworkGroupAssignmentPostGroup**](NetworkGroupAssignmentPostGroup.md) | The group component of the network group assignment | 
+**Network** | [**NetworkGroupAssignmentPostNetwork**](NetworkGroupAssignmentPostNetwork.md) | The network component of the network group assignment | 
 **Type** | **string** | The type of the resource. | 
 
 ## Methods

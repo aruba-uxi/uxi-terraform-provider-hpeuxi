@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 6.3.0
+API version: 6.7.0
 Contact: support@capenetworks.com
 */
 
@@ -31,8 +31,7 @@ type ServiceTestsGetItem struct {
 	// The category of the service test
 	Category string `json:"category"`
 	// The name of the service test
-	Name string `json:"name"`
-	// The target of the service test
+	Name   string         `json:"name"`
 	Target NullableString `json:"target"`
 	// The template of the service test
 	Template string `json:"template"`

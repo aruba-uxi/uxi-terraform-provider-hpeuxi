@@ -7,13 +7,15 @@ Name | Type | Description | Notes
 **Id** | **string** | The unique identifier of the sensor | 
 **Serial** | **string** | The serial number of the sensor | 
 **Name** | **string** | The name of the sensor | 
+**GroupName** | **NullableString** |  | 
+**GroupPath** | **NullableString** |  | 
 **ModelNumber** | **string** | The model number of the sensor | 
-**WifiMacAddress** | **NullableString** | The WiFi MAC address of the sensor | 
-**EthernetMacAddress** | **NullableString** | The Ethernet MAC address of the sensor | 
-**AddressNote** | **NullableString** | The address note of the sensor | 
-**Longitude** | **NullableFloat32** | The longitude of the sensor | 
-**Latitude** | **NullableFloat32** | The latitude of the sensor | 
-**Notes** | **NullableString** | The notes of the sensor | 
+**WifiMacAddress** | **NullableString** |  | 
+**EthernetMacAddress** | **NullableString** |  | 
+**AddressNote** | **NullableString** |  | 
+**Longitude** | **NullableFloat32** |  | 
+**Latitude** | **NullableFloat32** |  | 
+**Notes** | **NullableString** |  | 
 **PcapMode** | [**NullableSensorPcapMode**](SensorPcapMode.md) |  | 
 **Type** | **string** | The type of the resource. | 
 
@@ -21,7 +23,7 @@ Name | Type | Description | Notes
 
 ### NewSensorsGetItem
 
-`func NewSensorsGetItem(id string, serial string, name string, modelNumber string, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableSensorPcapMode, type_ string, ) *SensorsGetItem`
+`func NewSensorsGetItem(id string, serial string, name string, groupName NullableString, groupPath NullableString, modelNumber string, wifiMacAddress NullableString, ethernetMacAddress NullableString, addressNote NullableString, longitude NullableFloat32, latitude NullableFloat32, notes NullableString, pcapMode NullableSensorPcapMode, type_ string, ) *SensorsGetItem`
 
 NewSensorsGetItem instantiates a new SensorsGetItem object
 This constructor will assign default values to properties that have it defined,
@@ -96,6 +98,66 @@ and a boolean to check if the value has been set.
 SetName sets Name field to given value.
 
 
+### GetGroupName
+
+`func (o *SensorsGetItem) GetGroupName() string`
+
+GetGroupName returns the GroupName field if non-nil, zero value otherwise.
+
+### GetGroupNameOk
+
+`func (o *SensorsGetItem) GetGroupNameOk() (*string, bool)`
+
+GetGroupNameOk returns a tuple with the GroupName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetGroupName
+
+`func (o *SensorsGetItem) SetGroupName(v string)`
+
+SetGroupName sets GroupName field to given value.
+
+
+### SetGroupNameNil
+
+`func (o *SensorsGetItem) SetGroupNameNil(b bool)`
+
+ SetGroupNameNil sets the value for GroupName to be an explicit nil
+
+### UnsetGroupName
+`func (o *SensorsGetItem) UnsetGroupName()`
+
+UnsetGroupName ensures that no value is present for GroupName, not even an explicit nil
+### GetGroupPath
+
+`func (o *SensorsGetItem) GetGroupPath() string`
+
+GetGroupPath returns the GroupPath field if non-nil, zero value otherwise.
+
+### GetGroupPathOk
+
+`func (o *SensorsGetItem) GetGroupPathOk() (*string, bool)`
+
+GetGroupPathOk returns a tuple with the GroupPath field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetGroupPath
+
+`func (o *SensorsGetItem) SetGroupPath(v string)`
+
+SetGroupPath sets GroupPath field to given value.
+
+
+### SetGroupPathNil
+
+`func (o *SensorsGetItem) SetGroupPathNil(b bool)`
+
+ SetGroupPathNil sets the value for GroupPath to be an explicit nil
+
+### UnsetGroupPath
+`func (o *SensorsGetItem) UnsetGroupPath()`
+
+UnsetGroupPath ensures that no value is present for GroupPath, not even an explicit nil
 ### GetModelNumber
 
 `func (o *SensorsGetItem) GetModelNumber() string`

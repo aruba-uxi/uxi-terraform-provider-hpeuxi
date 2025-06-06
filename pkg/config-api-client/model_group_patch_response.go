@@ -7,7 +7,7 @@ HPE Aruba Networking UXI Configuration
 
 This document outlines the API contracts for HPE Aruba Networking UXI.
 
-API version: 6.3.0
+API version: 6.7.0
 Contact: support@capenetworks.com
 */
 
@@ -31,7 +31,8 @@ type GroupPatchResponse struct {
 	// The name of the group
 	Name string `json:"name"`
 	// The path of the group
-	Path   string           `json:"path"`
+	Path string `json:"path"`
+	// The parent group
 	Parent GroupPatchParent `json:"parent"`
 	// The type of the resource.
 	Type string `json:"type"`

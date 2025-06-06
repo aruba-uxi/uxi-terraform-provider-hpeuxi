@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Id** | **string** | The unique identifier of the group | 
 **Name** | **string** | The name of the group | 
 **Path** | **string** | The path of the group | 
-**Parent** | [**GroupPostParent**](GroupPostParent.md) |  | 
+**Parent** | [**GroupPostParent**](GroupPostParent.md) | The parent group | 
 **Type** | **string** | The type of the resource. | 
 
 ## Methods
