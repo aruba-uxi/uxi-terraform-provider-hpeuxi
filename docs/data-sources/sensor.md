@@ -32,6 +32,8 @@ data "hpeuxi_sensor" "my_sensor" {
 
 - `address_note` (String) The address note of the sensor.
 - `ethernet_mac_address` (String) The ethernet mac address of the sensor.
+- `group_name` (String) The name of the group that the sensor is assigned to.
+- `group_path` (String) The path of the group that the sensor is assigned to.
 - `id` (String) The identifier of the sensor.
 - `latitude` (Number) The geolocation latitude of the sensor.
 - `longitude` (Number) The geolocation longitude of the sensor.
