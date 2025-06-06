@@ -15,7 +15,7 @@ then
 fi
 
 repo="aruba-uxi/terraform-provider-hpeuxi"
-macos_hpeuxi_dir="${HOME}/.terraform.d/plugins/registry.terraform.io/aruba-uxi/hpeuxi"
+macos_hpeuxi_dir="${HOME}/.terraform.d/plugins/registry.terraform.io/HewlettPackard/hpeuxi"
 
 get_latest_release () {
   local release_url="https://api.github.com/repos/${repo}/releases/latest"

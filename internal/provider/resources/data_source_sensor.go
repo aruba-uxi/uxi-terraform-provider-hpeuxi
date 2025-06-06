@@ -40,6 +40,8 @@ type sensorDataSourceModel struct {
 	Latitude           types.Float32 `tfsdk:"latitude"`
 	Notes              types.String  `tfsdk:"notes"`
 	PcapMode           types.String  `tfsdk:"pcap_mode"`
+	GroupPath          types.String  `tfsdk:"group_path"`
+	GroupName          types.String  `tfsdk:"group_name"`
 	Filter             struct {
 		ID types.String `tfsdk:"id"`
 	} `tfsdk:"filter"`
@@ -105,6 +107,14 @@ func (d *sensorDataSource) Schema(
 				Description: "The packet capture mode of the sensor.",
 				Computed:    true,
 			},
+			"group_path": schema.StringAttribute{
+				Description: "The path of the group that the sensor is assigned to.",
+				Computed:    true,
+			},
+			"group_name": schema.StringAttribute{
+				Description: "The name of the group that the sensor is assigned to.",
+				Computed:    true,
+			},
 			"filter": schema.SingleNestedAttribute{
 				Description: "The filter used to filter the specific sensor.",
 				Required:    true,
@@ -168,6 +178,8 @@ func (d *sensorDataSource) Read(
 	state.Longitude = types.Float32PointerValue(sensor.Longitude.Get())
 	state.Notes = types.StringPointerValue(sensor.Notes.Get())
 	state.PcapMode = types.StringPointerValue((*string)(sensor.GetPcapMode().Ptr()))
+	state.GroupName = types.StringPointerValue(sensor.GroupName.Get())
+	state.GroupPath = types.StringPointerValue(sensor.GroupPath.Get())
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)

@@ -31,6 +31,8 @@ func GenerateAgentPatchResponse(id string, postfix string) config_api_client.Age
 	ethernetMacAddress := "ethernet_mac_address" + postfix
 	notes := "notes" + postfix
 	pcapMode := config_api_client.AGENTPCAPMODE_LIGHT
+	groupPath := "group_path" + postfix
+	groupName := "group_name" + postfix
 
 	return config_api_client.AgentPatchResponse{
 		Id:                 "id",
@@ -41,6 +43,8 @@ func GenerateAgentPatchResponse(id string, postfix string) config_api_client.Age
 		EthernetMacAddress: *config_api_client.NewNullableString(&ethernetMacAddress),
 		Notes:              *config_api_client.NewNullableString(&notes),
 		PcapMode:           *config_api_client.NewNullableAgentPcapMode(&pcapMode),
+		GroupPath:          *config_api_client.NewNullableString(&groupPath),
+		GroupName:          *config_api_client.NewNullableString(&groupName),
 		Type:               shared.AgentType,
 	}
 }
@@ -51,6 +55,8 @@ func GenerateAgentsGetResponse(id string, postfix string) config_api_client.Agen
 	ethernetMacAddress := "ethernet_mac_address" + postfix
 	notes := "notes" + postfix
 	pcapMode := config_api_client.AGENTPCAPMODE_LIGHT
+	groupPath := "group_path" + postfix
+	groupName := "group_name" + postfix
 
 	return config_api_client.AgentsGetResponse{
 		Items: []config_api_client.AgentsGetItem{
@@ -63,6 +69,8 @@ func GenerateAgentsGetResponse(id string, postfix string) config_api_client.Agen
 				EthernetMacAddress: *config_api_client.NewNullableString(&ethernetMacAddress),
 				Notes:              *config_api_client.NewNullableString(&notes),
 				PcapMode:           *config_api_client.NewNullableAgentPcapMode(&pcapMode),
+				GroupPath:          *config_api_client.NewNullableString(&groupPath),
+				GroupName:          *config_api_client.NewNullableString(&groupName),
 				Type:               shared.AgentType,
 			},
 		},

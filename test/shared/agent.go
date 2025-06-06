@@ -37,5 +37,7 @@ func CheckStateAgainstAgent(
 		TestOptionalValue(t, stateEntity, "ethernet_mac_address", agent.EthernetMacAddress.Get()),
 		TestOptionalValue(t, stateEntity, "notes", agent.Notes.Get()),
 		TestOptionalValue(t, stateEntity, "pcap_mode", (*string)(agent.GetPcapMode().Ptr())),
+		TestOptionalValue(t, stateEntity, "group_path", agent.GroupPath.Get()),
+		TestOptionalValue(t, stateEntity, "group_name", agent.GroupName.Get()),
 	)
 }
