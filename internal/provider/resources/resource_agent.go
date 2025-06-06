@@ -106,11 +106,11 @@ func (r *agentResource) Schema(
 				},
 			},
 			"group_path": schema.StringAttribute{
-				Description: "The group path of the agent.",
+				Description: "The path of the group that the agent is assigned to.",
 				Computed:    true,
 			},
 			"group_name": schema.StringAttribute{
-				Description: "The group name of the agent.",
+				Description: "The name of the group that the agent is assigned to.",
 				Computed:    true,
 			},
 		},

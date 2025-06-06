@@ -31,8 +31,8 @@ data "hpeuxi_agent" "my_agent" {
 ### Read-Only
 
 - `ethernet_mac_address` (String) The ethernet mac address of the agent.
-- `group_name` (String) The group name of the agent.
-- `group_path` (String) The group path of the agent.
+- `group_name` (String) The name of the group that the agent is assigned to.
+- `group_path` (String) The path of the group that the agent is assigned to.
 - `id` (String) The identifier of the agent.
 - `model_number` (String) The model number of the agent.
 - `name` (String) The name of the agent.
